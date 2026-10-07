@@ -470,4 +470,6 @@ SENT подтверждает отправку с аккаунта, но сам�
 
 Решение зафиксировано: Serhii Khomenko разрабатывает систему самостоятельно, с нуля, по собственной спецификации. Перечисленные проекты не используются как кодовая база; их исходники, компоненты, шаблоны, дизайн, архитектура и промпты не форкаются, не интегрируются и не адаптируются. Эти материалы остаются только сравнительным исследованием рынка. Обычные зависимости реализации согласуются отдельно и прозрачно и не являются заимствованием из указанных проектов.
 
-Документация © 2026 Serhii Khomenko / HomenS.AI · https://homensai.com/ · CC BY-NC 4.0.
+---
+
+© 2026 Serhii Khomenko / HomenS.AI · [homensai.com](https://homensai.com/) · [GitHub](https://github.com/HomenSAI) · [LinkedIn](https://www.linkedin.com/in/serhii-khomenko-homensai/) · [ORCID](https://orcid.org/0009-0009-5371-9717) · [DOI](https://doi.org/10.5281/zenodo.23160031) · info@homensai.com · [CC BY-NC 4.0](https://creativecommons.org/licenses/by-nc/4.0/)

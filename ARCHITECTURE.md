@@ -4,7 +4,7 @@
 
 7 October 2026 · Author of the idea and developer: Serhii Khomenko / HomenS.AI · https://homensai.com/ · Documentation: CC BY-NC 4.0.
 
-Status: design. The commands and modules described here still need to be implemented independently. This document supplements AI_BUILD_SPEC.md and DATA_CONTRACT.md. Servers, Docker and SQL are not required.
+Status: design. The commands and modules described here are not implemented yet. This document supplements AI_BUILD_SPEC.md and DATA_CONTRACT.md. Servers, Docker and SQL are not required.
 
 ## 1. Core decision
 
@@ -26,7 +26,7 @@ flowchart TD
     G --> M
     M --> C
     J --> B[Snapshot and report builder]
-    B --> H[Local HTML: years, months, sorting]
+    B --> H[Local HTML: years, months, days; sorting by date and result]
     B --> F[DOCX and PDF with recommendations]
     H --> U
     F --> U
@@ -39,7 +39,7 @@ This diagram describes the future implementation. HTML does not invoke commands;
 | Module | Input → output | Responsibility |
 |---|---|---|
 | `entrypoint` | Root + JSON command → JSON result | Version, permitted root, person/profile selection and routing |
-| `domain` | Current state + command → new events | State transitions, sending conditions, the 44 quota and profile boundaries |
+| `domain` | Current state + command → new events | State transitions, sending conditions, the monthly limit of 44 submissions and the profile boundaries |
 | `storage` | Transaction → durable journal record | Single writer, revisions, command deduplication and recovery |
 | `profile` | Documents/questionnaire → proposed facts → confirmed version | Sources for every fact and independent language settings |
 | `discovery` | Agent research → target records | Duplicates, freshness, radius and route verification |
@@ -63,7 +63,7 @@ jobpilot/
   adapters/                   # mail, rendering, source import
   reporting/                  # shared calculations, DOCX/PDF/HTML
 schemas/                      # versioned formats
-dashboard_template/           # clean display-only HTML
+dashboard_template/           # statistics page: display only (ready, sample data)
 tests/fixtures/               # synthetic cases
 ```
 
@@ -106,7 +106,7 @@ Every event carries person_id and, where applicable, its profile; the shared quo
 
 ## 4. One record per local transaction
 
-Version 1.1 proposed separate authoritative quota and profile journals. Version 1.2 combines them: quota reservation, send start and application changes are stored in one JSONL transaction object. Recovery no longer has to reconcile two primary files.
+Quota reservation, send start and application changes are stored in one JSONL transaction object, so recovery never has to reconcile two primary files. (Version 1.1 had separate quota and profile journals; version 1.2 merged them.)
 
 A transaction contains:
 
@@ -222,3 +222,7 @@ Verification scenarios are listed in ACCEPTANCE_TESTS.md. Acceptance requires ev
 English is the primary edition at the project root. The complete Russian edition lives in docs/ru; each page links to its counterpart. The same section structure, command identifiers, examples and requirements apply to both. A wording discrepancy is corrected in both editions against the user's requirement and the English base; it is not a second policy configuration.
 
 The future statistics UI defaults to en and supports ru. Label dictionaries have identical keys and are embedded during HTML generation, so switching languages needs no fetch or server. A missing translation falls back to English and is recorded during generation. Date formatting changes presentation only; sorting uses original timestamps. Source company names and recorded evidence are not rewritten when changing the UI language. CV, cover-letter, email and report languages remain independently selected and are not limited to en/ru by the documentation UI.
+
+---
+
+© 2026 Serhii Khomenko / HomenS.AI · [homensai.com](https://homensai.com/) · [GitHub](https://github.com/HomenSAI) · [LinkedIn](https://www.linkedin.com/in/serhii-khomenko-homensai/) · [ORCID](https://orcid.org/0009-0009-5371-9717) · [DOI](https://doi.org/10.5281/zenodo.23160031) · info@homensai.com · [CC BY-NC 4.0](https://creativecommons.org/licenses/by-nc/4.0/)

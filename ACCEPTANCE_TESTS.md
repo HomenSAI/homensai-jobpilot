@@ -62,6 +62,7 @@ After implementation, record for each scenario: ID, code/data version, initial c
 | DASH-02 | A company name contains `</script><script>` or HTML | Content appears as literal text; no code executes |
 | DASH-03 | Failure between replacing JSON and HTML | A snapshot_id mismatch is detected on the next run; a consistent pair is rebuilt |
 | DASH-04 | An empty month, a stale snapshot, keyboard use, and a narrow screen | An empty state, update time, accessible filters, and a table with no loss of data |
+| DASH-05 | Sample file with several years and months; sort by result, filter “successful” / “unsuccessful”, search by company | Rows are grouped year → month → day; sorting by result puts the chosen result first within a day; filters show only matching rows and the count matches |
 | RESTORE-01 | Backup → separate folder → hash/journal reconciliation | History is restored; the copy does not automatically gain permission to send |
 | RELEASE-01 | A synthetic token/CV is deliberately added to the archive/staging index | Publication checks reject it; .gitignore is not treated as a substitute for inspecting staged content |
 
@@ -85,3 +86,7 @@ Additional checks for architecture 1.2:
 3. Read-only email: selected account, complete threads, MAIL and REPORT using synthetic fixtures/a controlled account.
 4. Sending: CONSENT, SUBJECT, QUOTA, CAL, CRASH, and MONTH. Do not enable the automatic queue until these pass.
 5. Release: RESTORE, RELEASE, licenses/attribution, and current instructions for supported agents. Report passed stages separately; do not claim the whole product is ready based on one check.
+
+---
+
+© 2026 Serhii Khomenko / HomenS.AI · [homensai.com](https://homensai.com/) · [GitHub](https://github.com/HomenSAI) · [LinkedIn](https://www.linkedin.com/in/serhii-khomenko-homensai/) · [ORCID](https://orcid.org/0009-0009-5371-9717) · [DOI](https://doi.org/10.5281/zenodo.23160031) · info@homensai.com · [CC BY-NC 4.0](https://creativecommons.org/licenses/by-nc/4.0/)
