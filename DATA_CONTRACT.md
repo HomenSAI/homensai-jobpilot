@@ -1,59 +1,61 @@
-# HomenS.AI JobPilot — контракт данных 1.2
+# HomenS.AI JobPilot — Data Contract 1.2
 
-Проектный контракт для самостоятельной реализации. **Код механизмов пока не написан.** Дополняет AI_BUILD_SPEC.md; модульные границы описаны в [ARCHITECTURE.md](ARCHITECTURE.md). Не является разрешением отправлять письма.
+[English](DATA_CONTRACT.md) | [Русский](docs/ru/DATA_CONTRACT.md)
 
-Автор: Serhii Khomenko / HomenS.AI · https://homensai.com/ · документация: CC BY-NC 4.0.
+A design contract for an independently developed implementation. **The mechanisms described here have not been implemented yet.** Supplements AI_BUILD_SPEC.md; module boundaries are described in [ARCHITECTURE.md](ARCHITECTURE.md). This document does not authorize sending email.
 
-## 1. Файловая база и источник истины
+Author: Serhii Khomenko / HomenS.AI · https://homensai.com/ · documentation: CC BY-NC 4.0.
 
-Для первой версии используется UTF-8 JSON для конфигурации и карточек, JSONL для событий. Без SQL, серверов и внешних библиотек. Все записи имеют `schema_version`; несовместимая версия не переписывается автоматически.
+## 1. File-based database and source of truth
 
-| Путь от корня | Роль |
+The first version uses UTF-8 JSON for configuration and records, and JSONL for events. No SQL, servers, or external libraries. Every record has a `schema_version`; incompatible versions must not be rewritten automatically.
+
+| Path relative to the root | Role |
 |---|---|
-| `Локальные_данные/persons/<person_id>/state/person.json` | Проекция личности, часовой пояс квоты, разрешенные profile_id |
-| `Локальные_данные/persons/<person_id>/journal/transactions.jsonl` | Единственный первичный журнал: заявки, профили, сообщения, согласия и общая квота |
-| `Локальные_данные/persons/<person_id>/journal/writer.lock` | Один писатель на человека; не средство авторизации |
-| `Локальные_данные/persons/<person_id>/state/quota.json` | Восстанавливаемая проекция расхода и резервов |
-| `Локальные_данные/profiles/<profile_id>/profile.json` | Проекция подтвержденных целей, фактов, аккаунта, языков и согласий |
-| `Локальные_данные/profiles/<profile_id>/registry.json` | Восстанавливаемая проекция компаний, вакансий, заявок и очереди |
-| Каталоги заявок: `firm.json`, `vacancy.json`, `schedule.json` | Читаемые проекции связанных записей; не независимые источники статуса |
-| Каталоги заявок: `inf.txt` | Добавляемый человекочитаемый журнал с event_id; старый текст не переписывается |
-| `profiles/<profile_id>/reports/<YYYY-MM>/` | Отчеты, manifest и ревизии только этого профиля |
-| `dashboard/profiles/<profile_id>/summary.json` и `index.html` | Снимок выбранного профиля; dashboard/index.html — локальное меню |
+| `Локальные_данные/persons/<person_id>/state/person.json` | Projection of the person's identity, quota time zone, and permitted profile_id values |
+| `Локальные_данные/persons/<person_id>/journal/transactions.jsonl` | The only primary journal: applications, profiles, messages, consent, and the shared quota |
+| `Локальные_данные/persons/<person_id>/journal/writer.lock` | One writer per person; not an authorization mechanism |
+| `Локальные_данные/persons/<person_id>/state/quota.json` | Rebuildable projection of consumed and reserved slots |
+| `Локальные_данные/profiles/<profile_id>/profile.json` | Projection of confirmed objectives, facts, account, languages, and consent |
+| `Локальные_данные/profiles/<profile_id>/registry.json` | Rebuildable projection of companies, vacancies, applications, and the queue |
+| Application directories: `firm.json`, `vacancy.json`, `schedule.json` | Readable projections of linked records; not independent sources of status |
+| Application directories: `inf.txt` | Append-only, human-readable journal with event_id; existing text must not be rewritten |
+| `profiles/<profile_id>/reports/<YYYY-MM>/` | Reports, manifests, and revisions for this profile only |
+| `dashboard/profiles/<profile_id>/summary.json` and `index.html` | Snapshot of the selected profile; dashboard/index.html is the local menu |
 
-Новые события сначала надежно записываются в журнал, затем обновляются проекции. Изменение проекции без события запрещено. Коррекция факта/классификации — новое событие с `supersedes_event_id`, а не исправление прошлого. Повторная проекция не дублирует строки inf.txt: проверять event_id и почтовой dedup_key.
+New events are first durably recorded in the journal, then projections are updated. Changing a projection without an event is prohibited. Correcting a fact or classification requires a new event with `supersedes_event_id`, not an edit to the past. Rebuilding a projection must not duplicate inf.txt lines: check event_id and the mail dedup_key.
 
-Сбой между записью транзакции и обновлением registry/inf.txt исправляется повторным построением проекций. Изменения квоты и заявки находятся в одной записи первичного журнала, а не в двух независимых журналах. Каждая полная строка — транзакция с sequence, command_id, request_hash, previous_record_hash, событиями и record_hash. Точный порядок записи и проверки определен в ARCHITECTURE.md §4. Артефакты сначала сохраняются неизменяемыми версиями, затем регистрируются ссылками/хешами в журнале.
+A failure between committing a transaction and updating registry/inf.txt is resolved by rebuilding projections. Quota and application changes belong to one primary journal record, not two independent journals. Each complete line is a transaction containing sequence, command_id, request_hash, previous_record_hash, events, and record_hash. The exact write and validation order is defined in ARCHITECTURE.md §4. Artifacts are saved as immutable versions first, then registered in the journal by reference and hash.
 
-## 2. Идентификаторы, пути и время
+## 2. Identifiers, paths, and time
 
-- `person_id` неизменен для одного человека. Несколько профилей/аккаунтов этого человека используют одну квоту. Отдельные копии пакета не имеют общего счетчика автоматически: нужна сверка внешних подач; распределенную синхронизацию первая версия не обещает.
-- `profile_id`, `company_id`, `branch_id`, `vacancy_id`, `application_id`, `event_id`, `operation_id`, `send_attempt_id` — стабильные UUID. Имя папки — только подпись, не ключ записи.
-- Заявка связывает ровно один профиль и конкретную цель. `vacancy_id = null` допустим для инициативной подачи; такую подачу нельзя выдавать за опубликованную вакансию.
-- Дубликаты проверяются по нормализованному домену, организации, филиалу и истории. Разные вакансии одной фирмы хранятся отдельно, но повторная подача требует явного решения по политике профиля.
-- Пути — относительные. После канонизации запретить выход из корня, включая `..`, абсолютные пути и перенаправляющие junction/symlink. В названиях папок убрать Windows-символы `<>:"/\\|?*`, завершающие точки/пробелы и зарезервированные имена; при совпадении добавить краткий ID. Не переносить уже существующую папку из-за изменения даты плана.
-- Момент события хранится ISO 8601 UTC, например `2026-10-07T08:00:00Z`; отдельно `timezone`, например `Europe/Berlin`. План содержит UTC-момент и исходное местное время. Неоднозначное/несуществующее время при переходе часов требует выбора, не догадки.
-- `occurred_at` — фактическое время источника; `recorded_at` — время регистрации агентом. Месяц ответа определяется первым, не датой проверки почты. Плановая дата не заменяет фактическую подачу.
-- Почтовая дедупликация: `(account_id, gmail_message_id)`. `rfc_message_id` и thread_id хранятся отдельно; одинаковый thread_id не означает одинаковое сообщение.
+- `person_id` is immutable for one person. Multiple profiles/accounts belonging to that person share one quota. Separate copies of the package do not automatically share a counter: external submissions must be reconciled; the first version does not promise distributed synchronization.
+- `profile_id`, `company_id`, `branch_id`, `vacancy_id`, `application_id`, `event_id`, `operation_id`, and `send_attempt_id` are stable UUIDs. A folder name is only a label, not a record key.
+- An application links exactly one profile to one specific target. `vacancy_id = null` is allowed for an unsolicited application; such an application must not be presented as a published vacancy.
+- Deduplication considers the normalized domain, organization, branch, and history. Different vacancies at one company are stored separately, but a repeat application requires an explicit decision under the profile policy.
+- Paths are relative. After canonicalization, reject paths that escape the root, including `..`, absolute paths, and redirecting junctions/symlinks. Folder names must omit Windows characters `<>:"/\\|?*`, trailing dots/spaces, and reserved names; append a short ID to resolve a collision. Do not move an existing folder because its planned date changes.
+- Store event timestamps in ISO 8601 UTC, such as `2026-10-07T08:00:00Z`, with a separate `timezone`, such as `Europe/Berlin`. A plan contains both the UTC timestamp and the original local time. Ambiguous or nonexistent times during clock changes require a choice, not a guess.
+- `occurred_at` is the actual timestamp from the source; `recorded_at` is when the agent records it. The response month is determined by the former, not the mail-check date. A planned date does not replace the actual submission date.
+- Mail deduplication uses `(account_id, gmail_message_id)`. Store `rfc_message_id` and thread_id separately; the same thread_id does not imply the same message.
 
-## 3. Минимальные поля записей
+## 3. Minimum record fields
 
-| Запись | Обязательные смысловые поля |
+| Record | Required semantic fields |
 |---|---|
-| Подтверждаемый факт | fact_id, value, source_ref, status proposed/confirmed/rejected, confirmed_at/by, sensitivity, disclosure_allowed |
-| Источник | source_id, URL или относительный путь, checked_at, краткий подтверждаемый факт, уровень проверки |
-| Компания/филиал | IDs, название, город/адрес филиала, домен, каналы подачи, source_refs; отсутствующие контакты null |
-| Вакансия | ID, company_id/branch_id, роль, фактические требования, source_refs, checked_at, дедлайн либо null, актуальность |
-| Маршрут | start_ref, mode, distance_km, travel_minutes, transfers, walk_minutes, evening_return, checked_at, source_ref, verified |
-| Заявка | application_id, profile_id/person_id, IDs цели, package_version, relative_path, state, planned_at, sent_at, channel, consent_ref |
-| Пакет | CV/письмо/email, языки, relative paths, SHA-256 файлов и текста, fact_ids, source_refs, qa_checked_at |
-| Событие | schema_version, event_id, operation_id, profile_id/person_id, application_id, type, occurred_at, recorded_at, source_ref, payload |
-| Почтовое событие | account_id, gmail_message_id, rfc_message_id, thread_id, From/To, дата, классификация, linked_application_id либо null |
-| Согласие | consent_id, scope, mode, account_id, условия, granted_at, revoked_at либо null, связь с package_hash при разовой отправке |
+| Fact awaiting confirmation | fact_id, value, source_ref, status proposed/confirmed/rejected, confirmed_at/by, sensitivity, disclosure_allowed |
+| Source | source_id, URL or relative path, checked_at, concise verifiable fact, verification level |
+| Company/branch | IDs, name, branch city/address, domain, application channels, source_refs; missing contacts are null |
+| Vacancy | ID, company_id/branch_id, role, factual requirements, source_refs, checked_at, deadline or null, current validity |
+| Route | start_ref, mode, distance_km, travel_minutes, transfers, walk_minutes, evening_return, checked_at, source_ref, verified |
+| Application | application_id, profile_id/person_id, target IDs, package_version, relative_path, state, planned_at, sent_at, channel, consent_ref |
+| Package | CV/letter/email, languages, relative paths, SHA-256 hashes of files and text, fact_ids, source_refs, qa_checked_at |
+| Event | schema_version, event_id, operation_id, profile_id/person_id, application_id, type, occurred_at, recorded_at, source_ref, payload |
+| Mail event | account_id, gmail_message_id, rfc_message_id, thread_id, From/To, date, classification, linked_application_id or null |
+| Consent | consent_id, scope, mode, account_id, conditions, granted_at, revoked_at or null, association with package_hash for a one-time send |
 
-Неизвестное значение — `null` с reason/status, а не выдуманная строка. Не хранить пароль, токен или полное тело письма в обычных логах. При неоднозначной связи письма с заявкой сохранить unlinked событие; не выбирать фирму только по похожему названию.
+An unknown value is `null` with a reason/status, not a fabricated string. Do not store passwords, tokens, or complete message bodies in ordinary logs. If the relationship between a message and an application is ambiguous, store an unlinked event; do not choose a company merely because its name looks similar.
 
-## 4. Состояния заявки и результат — раздельные оси
+## 4. Application state and outcome are separate dimensions
 
 ```text
 discovered → drafting → ready_for_review → approved → scheduled
@@ -63,88 +65,88 @@ discovered → drafting → ready_for_review → approved → scheduled
                                      └─→ failed_before_send
 ```
 
-- `approved` связывается с проверенной версией пакета или действующим ограниченным согласием профиля. Изменение получателя/текста/вложения/существенных дат возвращает ready_for_review.
-- `sending` разрешено лишь после проверок аккаунта, квоты, календаря и согласия. В draft_only переход запрещен.
-- `sent_verified` требует внешнего доказательства отправки. Для Gmail — запись SENT/ID/получатель/время; для портала — подтверждение подачи, а не нажатие кнопки.
-- `send_uncertain`: ответ сервиса потерян либо evidence противоречивы. Не повторять операцию, не освобождать слот по таймеру.
-- `failed_before_send`: подтверждено, что внешняя подача не состоялась. Только тогда освобождается резерв.
-- `overdue`, `paused`, `cancelled` относятся к очереди, а не превращают подготовленную заявку в отправленную. Перенос не меняет исходную фактическую дату.
+- `approved` is tied to a reviewed package version or active, limited profile consent. Changing the recipient/text/attachment/material dates returns the application to ready_for_review.
+- `sending` is permitted only after checking the account, quota, calendar, and consent. This transition is prohibited in draft_only.
+- `sent_verified` requires external evidence of submission. For Gmail, this means a SENT record/ID/recipient/time; for a portal, submission confirmation, not merely clicking a button.
+- `send_uncertain`: the service response was lost or the evidence is contradictory. Do not repeat the operation or release the slot after a timeout.
+- `failed_before_send`: it is confirmed that no external submission occurred. Only then is the reservation released.
+- `overdue`, `paused`, and `cancelled` apply to the queue; they do not turn a prepared application into a sent one. Rescheduling does not change the original actual date.
 
-Отдельные оси:
+Separate dimensions:
 
-- доставка: `unknown / permanent_bounce / temporary_failure` — SENT не равняется доставке;
-- результат: `no_response / rejected / positive / needs_user / ambiguous`;
-- входящее событие: substantive_response, auto_ack, delivery_notice, advertisement, unlinked;
-- действия: thank_you_sent, period_question_sent и другие follow-up не являются результатом заявки.
+- Delivery: `unknown / permanent_bounce / temporary_failure` — SENT does not mean delivered.
+- Outcome: `no_response / rejected / positive / needs_user / ambiguous`.
+- Incoming event: substantive_response, auto_ack, delivery_notice, advertisement, unlinked.
+- Actions: thank_you_sent, period_question_sent, and other follow-ups are not application outcomes.
 
-Новое содержательное письмо может менять результат. Предыдущие ответы сохраняются как история; отчеты не теряют второй/третий ответ. Результат «отказ» без объяснения формулируется «причина не указана»; неизвестный смысл не классифицируется как положительный.
+A new substantive message may change the outcome. Previous responses remain in the history; reports must retain second and third responses. A rejection without an explanation is described as “reason not provided”; unclear meaning must not be classified as positive.
 
-## 5. Квота 44 и восстановление отправки
+## 5. The 44-submission quota and send recovery
 
-Лимит относится к управляемому процессу JobPilot, не является ограничением самого Gmail. Все управляемые подачи должны проходить один проверяемый preflight/резерв; прямой вызов отправки в обход него не входит в разрешенный сценарий. Один текст prompt не обеспечивает технический запрет: до реализации и проверки общего механизма рабочую автоотправку не включать. Отправки вручную или из независимой копии можно учесть только при внесении/сверке пользователем; продукт не обещает видеть неизвестные ему действия.
+The limit applies to the managed JobPilot workflow; it is not a Gmail limit. All managed submissions must pass through one verifiable preflight/reservation mechanism; a direct send that bypasses it is outside the authorized workflow. A prompt alone cannot enforce a technical restriction: do not enable operational automatic sending before the shared mechanism is implemented and tested. Manual submissions or submissions from an independent copy can be counted only when the user enters/reconciles them; the product does not claim to observe actions it does not know about.
 
-Файловый контракт предполагает **одного писателя на человека в каждый момент**. Все изменения его профилей и квоты берут единственный journal/writer.lock. Lock создается эксклюзивно (`CreateNew`/эквивалент), а не проверкой «файла нет → записать». В lock хранить владельца/run_id и время. Lock защищает только короткую локальную транзакцию; поиск, рендер и внешний вызов выполняются после освобождения. Конкурентный агент при занятом lock не начинает отправку. Просроченный lock не удалять только по возрасту: сначала доказать отсутствие владельца и сверить pending операции.
+The file contract assumes **one writer per person at any moment**. All changes to that person's profiles and quota acquire the same journal/writer.lock. Create the lock exclusively (`CreateNew` or equivalent), not by checking “file absent → write.” Store the owner/run_id and timestamp in the lock. It protects only a short local transaction; search, rendering, and external calls occur after release. A concurrent agent must not start sending while the lock is held. Do not delete a stale lock based on age alone: first establish that its owner is absent and reconcile pending operations.
 
-Порядок реальной отправки:
+Actual sending follows this order:
 
-1. Проверить действующее согласие, точный аккаунт/получателя, package_hash, актуальность цели и время. Установить operation_id/send_attempt_id.
-2. Под lock перечитать квоту и историю. Резерв расходуется/освобождается только событием. `consumed + reserved <= configured_limit <= 44`.
-3. Записать reservation (или перевод планового резерва в in-flight) и send_started одной транзакцией, надежно сохранить ее на диске **до** вызова внешнего сервиса; отпустить lock. За attempt_id закреплен один исполнитель; повторный запуск только сверяет эту попытку.
-4. Выполнить один внешний вызов. Успех сверить с evidence, затем записать quota_consumed и sent_verified со связанными ID; обновить проекции.
-5. При доказанном отсутствии подачи записать failed_before_send и quota_released. При неизвестном исходе оставить pending/send_uncertain и блокировать повтор.
-6. Следующая сессия сначала восстанавливает pending операции через почтовую/портальную сверку. Если исход нельзя доказать, запросить решение человека; повторный запрос отправки запрещен.
+1. Check active consent, exact account/recipient, package_hash, target validity, and time. Assign operation_id/send_attempt_id.
+2. Under the lock, reread quota and history. A reservation is consumed/released only by an event. `consumed + reserved <= configured_limit <= 44`.
+3. Record the reservation (or transition a planned reservation to in-flight) and send_started in one transaction; durably persist it **before** calling the external service, then release the lock. Each attempt_id has one executor; a repeated run only reconciles that attempt.
+4. Make one external call. Verify success against evidence, then record quota_consumed and sent_verified with linked IDs; update projections.
+5. If non-submission is proven, record failed_before_send and quota_released. If the outcome is unknown, keep pending/send_uncertain and block retries.
+6. The next session first recovers pending operations by reconciling mail/portal evidence. If the outcome cannot be proven, request a human decision; issuing another send request is prohibited.
 
-Нет обещания exactly-once от Gmail. Идемпотентность локального журнала и восстановление по evidence предотвращают слепые повторы, но не создают удаленную транзакцию. Этим должны заниматься собственные проверяемые инструменты, а не только prompt.
+There is no promise of exactly-once delivery from Gmail. Local journal idempotency and evidence-based recovery prevent blind retries, but do not create a remote transaction. Independently implemented, verifiable tools must handle this, not just a prompt.
 
-Фактически отправленный CV с последующим bounce расходует слот. Подготовка/план не расходуют слот, но активные резервы уменьшают доступность. Обычные ответы без CV не расходуют квоту; повторное вложение CV расходует новый слот. Replacement — новая заявка с `replaces_application_id` и общим `replacement_chain_id`; максимум одна замена на цепочку.
+A CV actually sent and subsequently bounced consumes a slot. Preparation/planning does not consume a slot, but active reservations reduce availability. Ordinary replies without a CV do not consume quota; attaching the CV again consumes a new slot. A replacement is a new application with `replaces_application_id` and a shared `replacement_chain_id`; at most one replacement is permitted per chain.
 
-После quota_consumed или quota_released соответствующая reservation больше не активна; нельзя одновременно прибавить ее в used и reserved. План может резервировать будущий месяц отдельно, но не расходует квоту текущего. Согласие на режим отправки не отменяет проверку остатка.
+After quota_consumed or quota_released, the corresponding reservation is no longer active; it must not be counted in both used and reserved. A plan may reserve slots for a future month separately, but does not consume the current month's quota. Consent to a sending mode does not waive the remaining-quota check.
 
-В момент смены месяца проверять фактическое время и заново резервировать слот нового месяца до внешнего вызова. Если операция осталась неопределенной на границе месяцев, блокировать новые отправки данного человека до выяснения времени/исхода; нельзя переносить резерв и повторять письмо. Изменение часового пояса человека требует пересчета/проверки истории, не обнуляет квоту. Изменения лимита допускаются только вниз.
+At a month boundary, check the actual time and reserve a slot in the new month again before the external call. If an operation remains uncertain across the boundary, block new submissions for that person until its time/outcome is established; do not move the reservation and resend the message. Changing the person's time zone requires recalculating/checking history and does not reset the quota. Limit changes are allowed only downward.
 
-## 6. Запись, восстановление и резервные копии
+## 6. Writes, recovery, and backups
 
-JSON-проекции сохраняются во временный соседний файл, проверяются чтением, затем заменяются атомарным rename/replace в том же каталоге. JSONL дописывается целой строкой транзакции под lock с flush/fsync. Обрыв последней строки — диагностируемый сбой: сохранить исходник, остановить отправки и восстановить по последней целой записи/evidence. Дубли с тем же ID и иным содержимым считаются конфликтом. Повтор command_id с тем же запросом возвращает сохраненный результат; новая команда с устаревшей expected_revision получает REVISION_CONFLICT.
+Save JSON projections to a temporary sibling file, validate them by reading, then atomically rename/replace within the same directory. Append JSONL as a complete transaction line under the lock with flush/fsync. A truncated final line is a diagnosable failure: preserve the original, stop sending, and recover from the last complete record/evidence. Duplicate IDs with different content are conflicts. Repeating command_id with the same request returns the stored result; a new command with a stale expected_revision receives REVISION_CONFLICT.
 
-Резервирование общей квоты и события профиля фиксируются в одной транзакции. Состояние проекций восстанавливается по journal sequence; поврежденный checkpoint отбрасывается после диагностики и строится заново из журнала. При повреждении/неполной первичной истории включать режим подготовки до сверки. Формат 1.1 с двумя журналами требует явной миграции в копию; не смешивать форматы автоматически.
+Shared quota reservations and profile events are committed in one transaction. Rebuild projection state from the journal sequence; after diagnosis, discard a damaged checkpoint and rebuild from the journal. Damaged/incomplete primary history puts the system in preparation mode until reconciliation. Version 1.1's two-journal format requires explicit migration into a copy; do not mix formats automatically.
 
-Резервная копия создается без активных писателей или как согласованный снимок. Хранить manifest файлов/хешей; тест восстановления выполняется в отдельной папке без отправок. Восстановленная копия не становится вторым активным отправителем. Импорт старых архивов сохраняет mapping старого пути → application_id, не меняет оригиналы и не активирует чужие согласия.
+Create backups with no active writers or as a consistent snapshot. Keep a file/hash manifest; test restoration in a separate folder with sending disabled. A restored copy does not become a second active sender. Importing old archives preserves an old path → application_id mapping, leaves originals unchanged, and does not activate another person's consent.
 
-## 7. Календарь и поиск
+## 7. Calendar and search
 
-Настройки хранят `timezone`, local_send_time, cadence, excluded_weekdays, holiday_region/excluded_dates, report_cutoff_time. Праздники проверяются для выбранной страны/региона и года с источником; пустой список означает «еще не проверено», а не «праздников нет».
+Settings store `timezone`, local_send_time, cadence, excluded_weekdays, holiday_region/excluded_dates, and report_cutoff_time. Verify holidays for the selected country/region and year, with a source; an empty list means “not checked yet,” not “there are no holidays.”
 
-Для равномерного распределения N заявок по D разрешенным дням: базово floor(N/D) на день, остаток разнести по месяцу с минимальной разницей между дневными количествами. При N>D несколько подач в один день допускаются только отдельными персонализированными операциями; точные времена показать пользователю, не выполнять одну массовую рассылку. Плановые резервы учитываются в месячной доступности. Пропущенные дни не нагонять без принятого нового плана.
+To distribute N applications evenly over D permitted days, allocate floor(N/D) per day and spread the remainder across the month, minimizing differences between daily counts. When N>D, multiple submissions on one day are allowed only as separate personalized operations; show the exact times to the user rather than running a bulk mailing. Planned reservations count toward monthly availability. Do not catch up on missed days without an accepted new plan.
 
-Расширение радиуса — явное изменение пользовательского критерия с событием, а не молчаливое добавление удаленных целей. Результат поиска хранит перечень источников/запросов, дату, проверенную зону, найденные уникальные цели и исключенные причины. «Ближние варианты исчерпаны» означает исчерпана проверенная выборка, не доказательство отсутствия всех фирм.
+Expanding the radius is an explicit, recorded change to the user's criteria, not a silent addition of distant targets. Search results retain the sources/queries, date, checked area, unique targets found, and exclusion reasons. “Nearby options exhausted” means the checked sample has been exhausted, not proof that no other companies exist.
 
-## 8. Статистика и отчет
+## 8. Statistics and reports
 
-Для месяца M в часовом поясе человека:
+For month M in the person's time zone:
 
-- `sent_count`: фактические подачи CV, произошедшие в M; не число папок/планов.
-- `response_event_count`: новые содержательные входящие сообщения в M, в том числе на старые заявки. Автоответы/DSN не входят.
-- `responded_application_count`: уникальные заявки с такими ответами; три ответа на одну заявку — 3 события и 1 заявка.
-- `prior_month_response_event_count`: часть response_event_count, связанная с подачами до M.
-- `rejected_application_count / positive_application_count`: уникальные заявки с ответом в M, по последнему содержательному результату на cutoff. Переход «отказ → приглашение» не считается одновременно двумя итоговыми статусами; события остаются видимы.
-- `waiting_application_count`: отправленные в M заявки без содержательного ответа на cutoff и без подтвержденной постоянной недоставки. Это не сумма всех исторических ожиданий; исторический backlog показывается отдельно.
-- `delivery_error_application_count`: уникальные заявки с новым подтвержденным постоянным bounce в M; показывать отдельно, не как отказ работодателя.
-- `quota_used / quota_reserved / quota_remaining`: общая квота человека, а не только показанного профиля. `remaining = limit - used - reserved`.
+- `sent_count`: actual CV submissions that occurred in M, not the number of folders/plans.
+- `response_event_count`: new substantive incoming messages in M, including responses to older applications. Automatic replies/DSNs are excluded.
+- `responded_application_count`: unique applications with such responses; three responses to one application mean 3 events and 1 application.
+- `prior_month_response_event_count`: the subset of response_event_count linked to submissions before M.
+- `rejected_application_count / positive_application_count`: unique applications with a response in M, classified by the latest substantive outcome at cutoff. A transition from “rejection → invitation” is not counted as two final statuses; the events remain visible.
+- `waiting_application_count`: applications sent in M with no substantive response at cutoff and no confirmed permanent delivery failure. This is not the total historical waiting count; show the historical backlog separately.
+- `delivery_error_application_count`: unique applications with a new confirmed permanent bounce in M; show these separately, not as employer rejections.
+- `quota_used / quota_reserved / quota_remaining`: the person's shared quota, not just the displayed profile's quota. `remaining = limit - used - reserved`.
 
-Две таблицы дашборда: **подачи месяца** и **события ответов месяца**. Их нельзя складывать как одно количество заявок. Если отчет объединяет оба множества, одну заявку показывать одной строкой с новыми событиями и датами; при нескольких новых ответах все IDs хранить в manifest. Отправленные без CV follow-up отдельны и не увеличивают sent_count.
+Two dashboard tables: **submissions this month** and **response events this month**. Their counts must not be added together as one application total. If a report combines both sets, display one row per application with its new events and dates; if there are several new responses, retain all IDs in the manifest. Follow-ups sent without a CV are separate and do not increase sent_count.
 
-Отчет: `profiles/<profile_id>/reports/<YYYY-MM>/Report_YYYY-MM_r001.docx/.pdf` + `manifest_r001.json`. Manifest содержит период/timezone/cutoff/revision/source_revision, application_ids и response keys. Один ответ принадлежит месяцу фактического получения. Перегенерация того же месяца сохраняет новые ревизии; это не новое событие ответа. Новый ответ на старую заявку с другим ID входит в новый месяц.
+Report: `profiles/<profile_id>/reports/<YYYY-MM>/Report_YYYY-MM_r001.docx/.pdf` + `manifest_r001.json`. The manifest contains period/timezone/cutoff/revision/source_revision, application_ids, and response keys. Each response belongs to the month when it was actually received. Regenerating the same month saves new revisions; it is not a new response event. A new response with a different ID to an old application belongs to the new month.
 
-Рыночный раздел — отдельная страница PDF и соответствующий раздел DOCX: профессия, радиус, транспорт, дата исследования, источники, найденные уникальные фирмы/вакансии, уже использованные/еще не использованные в проверенной выборке, рекомендация. Неизвестное — «оценка недоступна». Для всех чисел указать охват; нельзя превращать размер найденной выборки в точный размер рынка.
+The market section is a separate PDF page and a corresponding DOCX section: occupation, radius, transport, research date, sources, unique companies/vacancies found, targets already used/not yet used within the checked sample, and recommendations. Unknown figures are labeled “estimate unavailable.” State the coverage for every figure; the size of a found sample must not become an exact market-size claim.
 
-## 9. Контракт статического HTML
+## 9. Static HTML contract
 
-`dashboard/profiles/<profile_id>/summary.json` содержит schema_version, source_revision, generated_at, last_mail_check_at, timezone, profile_id, person quota и строки таблиц. Для каждой строки только разрешенные статистические поля; без тел писем, домашнего адреса, исходных CV и секретов. Страницы разных профилей не смешивают данные; dashboard/index.html — локальное меню ссылок. Один расчет reporting из зафиксированной sequence питает HTML, DOCX и PDF.
+`dashboard/profiles/<profile_id>/summary.json` contains schema_version, source_revision, generated_at, last_mail_check_at, timezone, profile_id, person quota, and table rows. Every row contains only permitted statistical fields; no message bodies, home address, original CVs, or secrets. Pages for different profiles do not mix data; dashboard/index.html is a local menu of links. One reporting calculation from a fixed sequence feeds HTML, DOCX, and PDF.
 
-HTML содержит тот же snapshot_id/source_revision, что и summary.json. Оба файла генерировать из одного снимка; при сбое между заменами сверить ID и перестроить пару. Старый файл не знает о будущем сбое: он может показать только последнее обновление и предупреждение по возрасту. Не обещать, что он определит пропущенную проверку без запуска агента.
+HTML contains the same snapshot_id/source_revision as summary.json. Generate both files from one snapshot; if a failure occurs between replacements, compare IDs and rebuild the pair. An old file cannot know about a later failure: it can show only its last update and an age-based warning. Do not promise that it will detect a missed check without an agent run.
 
-Значения из вакансий/писем выводятся через textContent, не innerHTML. При встраивании JSON в script блок экранировать `<`, `>` и `&` (в частности `</script>`); не использовать eval. Ссылки разрешать только по проверенному протоколу и корню пути. Не выполнять сетевых запросов; внешние источники открываются только по явному клику пользователя. Сортировка сравнивает даты ISO/epoch, не строки DD.MM.YYYY. Предусмотреть клавиатуру, подписи элементов, заголовки таблиц, пустые состояния, печать и маркер актуальности.
+Display values from vacancies/messages using textContent, not innerHTML. When embedding JSON in a script block, escape `<`, `>`, and `&` (in particular `</script>`); do not use eval. Allow links only with a validated protocol and path root. Make no network requests; external sources open only after an explicit user click. Sorting compares ISO/epoch dates, not DD.MM.YYYY strings. Provide keyboard support, element labels, table headers, empty states, printing, and a freshness marker.
 
-## 10. Граница готовности
+## 10. Readiness boundary
 
-Этот контракт не равен реализации lock, journal, quota или Gmail. До рабочих отправок требуется пройти ACCEPTANCE_TESTS.md на синтетических данных, отдельно подтвердить почтовой инструмент и проверить восстановление. Политики, не обеспеченные технически, в интерфейсе показываются как «не реализовано», а не как действующая защита.
+This contract is not an implementation of locks, the journal, quota, or Gmail. Before operational sending, pass ACCEPTANCE_TESTS.md using synthetic data, separately confirm the mail tool, and verify recovery. Policies that are not technically enforced must be shown as “not implemented,” not as active protection.

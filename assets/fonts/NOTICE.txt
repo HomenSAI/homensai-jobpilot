@@ -1,0 +1,19 @@
+IBM Plex (Sans, Mono) — fonts used by the HomenS.AI JobPilot pages
+Шрифты IBM Plex (Sans, Mono) для страниц HomenS.AI JobPilot
+
+Copyright © 2017 IBM Corp. with Reserved Font Name "Plex".
+License / Лицензия: SIL Open Font License, Version 1.1 (full text: OFL.txt in this folder).
+The fonts may be used, embedded and redistributed, including commercially; they may not be sold on their own, and the license text
+and copyright notice must be kept when they are distributed.
+
+Source / Источник: official npm packages @ibm/plex-sans 1.1.0 and @ibm/plex-mono 2.5.0 (fonts/complete/woff2), files UNMODIFIED
+(no subsetting, no re-encoding), the same files as in HomenS.AI Core. Official site: https://www.ibm.com/plex/ · https://github.com/IBM/plex
+
+SHA-256:
+  IBMPlexMono-Regular.woff2   ba204497f16b6d334cee9d1e963a831b73e3a56e1d6300a8489d18df7214b350
+  IBMPlexSans-Bold.woff2      fa7130d854a660b39a7fc9e6e0f2dc23dba5f1346e2adea3e1fe37b6d884133d
+  IBMPlexSans-Italic.woff2    13284fab1821ba6e3652c1580fcf2bbfd8c9309520c69b3d1224dab40b37c597
+  IBMPlexSans-Regular.woff2   ba711a3085ff9f27440b6b9c4550cfc47c97bf36591d5da958b975bb3add8c1a
+  IBMPlexSans-SemiBold.woff2  f78048030eab62e860efa39a0df79e2e5581bf122eb95b9bc42c0b8a4988d205
+
+To remove / Как убрать: delete this folder and the @font-face blocks in assets/site.css; the pages keep working with system fonts.

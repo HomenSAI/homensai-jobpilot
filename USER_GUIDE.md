@@ -2,14 +2,26 @@
 
 [English](USER_GUIDE.md) | [Русский](docs/ru/USER_GUIDE.md)
 
-**Draft 1.2 · 2026-10-07**
-**For:** Windows and ChatGPT Desktop with Codex. This is the primary step-by-step setup path for this draft.
+**Draft 1.2 · 2026-10-07** · The same guide is available as a web page with a menu: [overview_install.html](overview_install.html).
+**For:** Windows and ChatGPT Desktop with Codex. Claude Code is an alternative; its full step-by-step setup is not written yet.
 
-The approved project name is **HomenS.AI JobPilot**. The planned GitHub repository name is `homensai-jobpilot`; its actual URL will be added once the repository exists.
+The setup takes about 30–40 minutes. Do the steps in order. Every step says what you should see on the screen, so you always know whether it worked. No Git, Python or other developer tools are needed on your computer.
 
-> **Package status.** This guide describes how to run the future published HomenS.AI JobPilot package. The current folder contains design documentation, not a ready-to-run product or a published ZIP. Before release, the author must add the real GitHub repository URL, publish the archive, and include every file listed below. Do not download an arbitrary archive from an unverified link.
+## What comes first: the agent or the archive?
 
-For the current documentation build, start with [README.md](README.md). It lists the files that actually exist and provides a starting prompt that does not require the missing TODO file. The steps below apply to the complete operational release. Claude Code is an alternative, but this guide does not yet include its complete step-by-step setup procedure.
+First the agent, then the archive, then you connect the two. The agent comes first because its availability depends on your account: it is better to find out now than after you have prepared everything else. The archive is only a folder of files; it becomes useful when the agent opens it.
+
+| Part | What you do | Steps |
+|---|---|---|
+| 1. The agent | Install ChatGPT Desktop, sign in, make sure Codex is available | 1 |
+| 2. The project folder | Download the project archive from GitHub in your browser and extract it | 2 |
+| 3. Connect and start | Open the folder as a local project, set permissions, make the first safe start | 3–6 |
+| 4. Your data | Profile, Gmail (optional), the first queue | 7–9 |
+| 5. Daily work | Screen control (optional), daily checks, statistics and reports, updates | 10–13 |
+
+> **Package status.** This guide describes the finished release. The current folder holds design documents, not a ready-to-run product or a published release archive. Do not download an archive from a link you cannot verify. The repository is [HomenSAI/homensai-jobpilot](https://github.com/HomenSAI/homensai-jobpilot).
+
+For the current documentation build, start with [README.md](README.md). It lists the files that really exist and gives a starting prompt that does not need the missing to-do file. The steps below apply to the complete working release.
 
 ## What you need
 
@@ -23,7 +35,7 @@ For the current documentation build, start with [README.md](README.md). It lists
 
 Local file access requires a **local Codex project** opened on your computer. An ordinary cloud ChatGPT project does not by itself provide access to a folder on your computer.
 
-## Set up Codex: follow these steps in order
+## Part 1 · The agent
 
 ### 1. Install ChatGPT Desktop and sign in
 
@@ -34,15 +46,23 @@ Local file access requires a **local Codex project** opened on your computer. An
 
 If Codex does not appear in the interface, check whether the feature is available for your account and organization. Do not install unofficial builds. OpenAI describes installation and first launch in its [Quickstart](https://learn.chatgpt.com/docs/quickstart).
 
+**You should see:** the main window with your account name and a mode selector that includes Codex.
+
+## Part 2 · The project folder
+
 ### 2. Download and extract the project ZIP
 
-1. Go to the published JobPilot GitHub repository. **The repository URL will be added to this guide before release:** `[JobPilot repository URL]`.
+1. Open the project repository on GitHub in your browser: <https://github.com/HomenSAI/homensai-jobpilot>. Use the release archive offered there once the first release is published.
 2. On the repository page, choose **Code → Download ZIP**.
 3. In File Explorer, create a folder such as `Documents\HomenSAI-JobPilot`.
 4. Extract the ZIP into that folder. Check that it contains `README.md`, `USER_GUIDE.md`, `AI_BUILD_SPEC.md`, `AGENTS.md`, `CLAUDE.md`, `TODO_FOR_AI.md`, and `dashboard_template`.
 5. Do not extract the archive into a Windows system folder. If you move the working folder after setup, update its path in Codex.
 
 The extracted folder will hold both project instructions and local working data. Personal profiles, CVs, emails, OAuth tokens, and user statistics must not be published on GitHub.
+
+**You should see:** in the folder itself, not inside another folder: `README.md`, `USER_GUIDE.md`, `AI_BUILD_SPEC.md`, `AGENTS.md`, `CLAUDE.md`, `TODO_FOR_AI.md` and `dashboard_template`.
+
+## Part 3 · Connect the agent to the folder and start
 
 ### 3. Create a local project and select its root folder
 
@@ -55,6 +75,8 @@ The extracted folder will hold both project instructions and local working data.
 
 Simply telling the chat “work at path `…`” is not enough. The folder must actually be opened or attached as the project's local folder. Do not create only an ordinary ChatGPT Project without an attached local folder. See the official instructions for [local projects and adding folders](https://learn.chatgpt.com/docs/projects).
 
+**You should see:** the project in the list, with the folder that contains `README.md` as its primary folder.
+
 ### 4. Create a dedicated setup chat
 
 1. Open your new local project.
@@ -63,6 +85,8 @@ Simply telling the chat “work at path `…`” is not enough. The folder must 
 4. Name the chat, for example **Initial JobPilot setup**.
 
 You can use separate chats for setup, searching, daily checks, and monthly reports. The project's file database and journal preserve state across chats; do not rely solely on one conversation's history.
+
+**You should see:** a chat inside the project with “Local” shown next to the message box.
 
 ### 5. Configure Codex permissions
 
@@ -74,6 +98,8 @@ You can use separate chats for setup, searching, daily checks, and monthly repor
 6. Web search, file access, email, and screen control are separate capabilities. Permission for one does not automatically enable the others.
 
 Before working with local files, check the project name and primary folder again. Official explanations: [permission modes](https://learn.chatgpt.com/docs/permission-modes) and [sandboxing and access boundaries](https://learn.chatgpt.com/docs/sandboxing).
+
+**You should see:** “Ask for approval” (or the equivalent) in the permissions menu, and the project folder as the working folder.
 
 ### 6. Perform the first safe startup
 
@@ -92,6 +118,10 @@ and ask only the necessary questions. Start in draft-only mode.
 
 A published release must include `README.md`, `AGENTS.md`, and `TODO_FOR_AI.md`. If they are absent, stop: the current documents are not yet a complete operational package. The agent should show its plan, ask for missing information, and save confirmed settings in the project folder.
 
+**You should see:** the agent names the correct folder, lists the files, says that it works in draft-only mode and proposes a plan.
+
+## Part 4 · Your data, mail and the first queue
+
 ### 7. Create your profile and add your information
 
 1. Select or create a separate personal profile. Do not combine different people's data. For multiple search directions belonging to the same person, use the same `person_id`: the limit of 44 is shared, not renewed for each profile.
@@ -102,6 +132,8 @@ A published release must include `README.md`, `AGENTS.md`, and `TODO_FOR_AI.md`.
 6. Specify your search goal, starting location, radius in kilometres, transport mode (car and/or public transport), acceptable journey time, preferred towns, schedule, and exceptions. The agent will show the selected time zone, weekdays, and verified regional holidays. For “every other day,” specify whether you mean calendar days or every second permitted working day. The values in `examples/settings.example.json` are examples, not your settings.
 
 Do not put secrets, passwords, verification codes, or OAuth tokens in profile files. Check that `Локальные_данные/` is excluded from publication and synchronization with a public GitHub repository.
+
+**You should see:** a list of confirmed facts with a source for each, and your settings repeated back to you for approval.
 
 ### 8. Connect Gmail separately if you need email tracking
 
@@ -114,6 +146,8 @@ Do not put secrets, passwords, verification codes, or OAuth tokens in profile fi
 
 Local folder access and Gmail access are configured separately. If the required connector or its official parameters have not been published, the email integration is not ready for setup: do not substitute an arbitrary server. See Codex's official section on [MCP and connecting OAuth tools](https://learn.chatgpt.com/docs/extend/mcp).
 
+**You should see:** the exact Gmail address you intended, and only the permissions you approved.
+
 ### 9. Prepare and review your first queue
 
 1. Ask the agent to find companies/vacancies within your chosen radius and collect sources, contacts, requirements, and verification dates.
@@ -124,6 +158,10 @@ Local folder access and Gmail access are configured separately. If the required 
 6. Use draft mode before sending anything. Sending is permitted only after the approved profile has been configured and the specific message checked; email service confirmations must not be bypassed.
 
 If the agent reports “sending outcome unknown,” do not simply ask it to send again: first reconcile the attempt with SENT or the portal's confirmation. Changing an attachment or recipient requires a fresh review of a previously checked message. The default subject limit is 50 characters including spaces; this is a product rule, not an email service limit.
+
+**You should see:** drafts in the month folders, and a queue with exact dates and a counter of remaining slots.
+
+## Part 5 · Optional features and daily work
 
 ### 10. Enable screen control only if needed
 
@@ -136,6 +174,8 @@ Searching and managing local files do not normally require mouse control. If a p
 
 The current official procedure is described under [Computer Use](https://learn.chatgpt.com/docs/computer-use). This capability is optional for the basic workflow.
 
+**You should see:** the application you allowed in Settings → Computer Use, and nothing else.
+
 ### 11. Daily work and scheduling
 
 For a manual check, open the local project, create a **Daily check** chat, and ask the agent to read the rules and perform the current safe plan item. The agent will update the file database and journal, then generate or refresh the statistics.
@@ -144,10 +184,12 @@ If your application supports scheduled tasks for a local project, verify a manua
 
 The task must use the same primary folder and journal, not a separate copy or new worktree without local data. Missed submissions are recorded separately and rescheduled; they are not automatically sent in a catch-up batch when the computer starts.
 
+**You should see:** after a check, updated files and journal and a refreshed statistics page.
+
 ### 12. Open your statistics and generate a report
 
 1. After a check, open the generated `Локальные_данные\dashboard\profiles\<profile_id>\index.html` by double-clicking it or using your browser. The root `Локальные_данные\dashboard\index.html` is the profile selection menu. No server is needed.
-2. Select a year and month, sort the table by date, and use the filters. The page is read-only; the agent updates the underlying database.
+2. The page shows years, months and days. Sort by date or by result (successful or unsuccessful first), filter by outcome and search by company or role. The page is read-only; the agent updates the underlying data.
 3. At the end of the reporting period, ask the agent to prepare DOCX/PDF files in the selected language and template, if provided.
 4. Check your surname, first name, reporting period, application rows, and the date and brief substance of each reply. Applications without a reply must use the appropriate translation of “no response received.”
 5. The report is saved locally and is not automatically emailed.
@@ -156,9 +198,13 @@ Statistics distinguish the number of response messages from the number of applic
 
 A separate PDF page contains a market recommendation with its date, search radius, transport mode, verified sources, and coverage. Unavailable estimates are marked explicitly; the size of the discovered sample is not presented as the exact size of the market. Your profile's reports are stored in `Локальные_данные\profiles\<profile_id>\reports\<YYYY-MM>\`.
 
+**You should see:** the statistics page with years, months and days. You can try it now with sample data: [dashboard_template/index.html](dashboard_template/index.html).
+
 ### 13. Update the package and back up your data
 
 Before updating, copy `Локальные_данные/` to a separate backup folder. Download the new ZIP into a new folder, compare versions and instructions, then ask the agent to migrate only confirmed user settings. Do not extract an update over personal data or publish `Локальные_данные/`.
+
+**You should see:** a backup folder with a copy of `Локальные_данные/` made before the update.
 
 ## Troubleshooting
 
@@ -181,4 +227,6 @@ Before updating, copy `Локальные_данные/` to a separate backup fo
 
 Menu names and feature availability can change. Before public release, verify links and interface screenshots against the current documentation.
 
-Documentation © 2026 Serhii Khomenko / HomenS.AI · [author's website](https://homensai.com/) · [CC BY-NC 4.0](https://creativecommons.org/licenses/by-nc/4.0/).
+---
+
+© 2026 Serhii Khomenko / HomenS.AI · [homensai.com](https://homensai.com/) · [GitHub](https://github.com/HomenSAI) · [LinkedIn](https://www.linkedin.com/in/serhii-khomenko-homensai/) · [ORCID](https://orcid.org/0009-0009-5371-9717) · [DOI](https://doi.org/10.5281/zenodo.23160031) · info@homensai.com · [CC BY-NC 4.0](https://creativecommons.org/licenses/by-nc/4.0/)

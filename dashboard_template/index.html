@@ -1,0 +1,1200 @@
+<!doctype html>
+<!-- © 2026 Serhii Khomenko / HomenS.AI · https://homensai.com/ · https://github.com/HomenSAI · https://www.linkedin.com/in/serhii-khomenko-homensai/
+     Code and markup: PolyForm Noncommercial 1.0.0 — https://polyformproject.org/licenses/noncommercial/1.0.0
+     Statistics page template. View-only: no network requests, no writing, no Gmail access. The data block below is a SYNTHETIC SAMPLE
+     (invented companies); the agent replaces it with the snapshot of one profile. Keep "<" escaped as < inside the JSON. -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>HomenS.AI JobPilot | Statistics</title>
+<meta name="description" content="Applications and replies by year, month and day, with sorting by date and result.">
+<meta name="author" content="Serhii Khomenko">
+<meta name="theme-color" content="#edf1f4" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0f1720" media="(prefers-color-scheme: dark)">
+<script>try{var t=localStorage.getItem("homensai.theme");if(t==="light"||t==="dark")document.documentElement.setAttribute("data-theme",t)}catch(e){}</script>
+<style>
+/* Same visual language as HomenS.AI Core and homensai.com. Fonts load from ../assets/fonts when the file sits in dashboard_template/;
+   in any other folder the page uses system fonts (nothing is downloaded). */
+@font-face { font-family: "IBM Plex Sans"; font-style: normal; font-weight: 400; font-display: swap; src: url("../assets/fonts/IBMPlexSans-Regular.woff2") format("woff2"); }
+@font-face { font-family: "IBM Plex Sans"; font-style: normal; font-weight: 500 600; font-display: swap; src: url("../assets/fonts/IBMPlexSans-SemiBold.woff2") format("woff2"); }
+@font-face { font-family: "IBM Plex Sans"; font-style: normal; font-weight: 700; font-display: swap; src: url("../assets/fonts/IBMPlexSans-Bold.woff2") format("woff2"); }
+@font-face { font-family: "IBM Plex Mono"; font-style: normal; font-weight: 400 600; font-display: swap; src: url("../assets/fonts/IBMPlexMono-Regular.woff2") format("woff2"); }
+:root {
+  --bg:#edf1f4; --surface:#f9fbfc; --text:#14212e; --muted:#44525f; --line:#d9e0e6; --accent:#1e4f8a; --accent-text:#fff;
+  --teal:#147283; --gold:#7d5f16; --ok:#1f7a46; --warn:#9a5b00; --bad:#b3261e; --focus:#ffbf47; --radius:12px;
+  --font:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; font-size:100%;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --bg:#0f1720; --surface:#16212c; --text:#e6ecf1; --muted:#a9b6c2; --line:#243240; --accent:#6f9fd8; --accent-text:#0f1720; --teal:#4fbac8; --gold:#d4b25e; --ok:#5fc388; --warn:#e0a548; --bad:#f08a83; } }
+:root[data-theme="dark"] { --bg:#0f1720; --surface:#16212c; --text:#e6ecf1; --muted:#a9b6c2; --line:#243240; --accent:#6f9fd8; --accent-text:#0f1720; --teal:#4fbac8; --gold:#d4b25e; --ok:#5fc388; --warn:#e0a548; --bad:#f08a83; }
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { margin:0; background:var(--bg); color:var(--text); font:1rem/1.55 var(--font); overflow-x:clip; }
+a { color:var(--accent); text-underline-offset:.18em; }
+:focus-visible { outline:3px solid var(--focus); outline-offset:2px; }
+p { margin:0 0 .6rem; color:var(--muted); } small { color:var(--muted); }
+h1,h2,h3 { margin:0; line-height:1.2; text-wrap:balance; }
+h1 { font-size:clamp(1.7rem,4.5vw,2.5rem); font-weight:600; letter-spacing:-.02em; }
+code { font-family:var(--mono); font-size:.92em; }
+[hidden] { display:none !important; }
+.wrap { max-width:1100px; margin:0 auto; padding:0 1.25rem; }
+.skip-link { position:absolute; left:-9999px; } .skip-link:focus { left:1rem; top:1rem; background:var(--surface); padding:.5rem 1rem; z-index:50; }
+
+.topbar { position:sticky; top:0; z-index:30; background:color-mix(in srgb,var(--bg) 88%,transparent); backdrop-filter:blur(10px); border-bottom:1px solid var(--line); }
+.topbar .wrap { max-width:1240px; display:flex; align-items:center; gap:1rem; min-height:4rem; }
+.brand { display:flex; align-items:center; gap:.6rem; font-weight:700; letter-spacing:-.02em; text-decoration:none; color:var(--text); white-space:nowrap; flex:none; }
+.brand-mark { width:2rem; height:2rem; color:var(--text); flex:none; } .brand .ai { color:var(--teal); } .brand .sub { font-weight:500; color:var(--muted); }
+.nav-main { display:flex; flex:1; flex-wrap:wrap; min-width:0; }
+.nav-link { display:flex; align-items:center; gap:.3rem; font-size:.72rem; letter-spacing:.04em; white-space:nowrap; text-transform:uppercase; color:var(--muted); padding:.45rem .35rem; text-decoration:none; border-radius:9px; }
+.nav-link:hover { color:var(--text); background:color-mix(in srgb,var(--text) 7%,transparent); }
+.nav-link[aria-current="page"] { color:var(--text); box-shadow:inset 0 -2px 0 var(--accent); border-radius:0; }
+.dot { width:.45rem; height:.45rem; border-radius:50%; background:var(--accent); } .dot.teal { background:var(--teal); } .dot.gold { background:var(--gold); }
+.tools { display:flex; align-items:center; gap:.5rem; margin-left:auto; flex:none; }
+.langs { display:inline-flex; border:1px solid var(--line); border-radius:999px; overflow:hidden; }
+.langs button { font:inherit; font-size:.75rem; padding:.15rem .65rem; color:var(--muted); background:none; border:0; cursor:pointer; }
+.langs button + button { border-left:1px solid var(--line); } .langs button[aria-pressed="true"] { background:var(--text); color:var(--bg); }
+.icon-btn { display:inline-flex; align-items:center; justify-content:center; width:2.4rem; height:2.4rem; padding:0; color:var(--text); background:none; border:1px solid var(--line); border-radius:50%; cursor:pointer; }
+.icon-btn:hover { border-color:var(--accent); } .icon-btn svg { width:1.15rem; height:1.15rem; fill:none; stroke:currentColor; stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round; }
+
+.head { padding:2.25rem 0 1rem; position:relative; isolation:isolate; }
+.head::before { content:""; position:absolute; z-index:-1; top:0; bottom:0; left:50%; width:100vw; transform:translateX(-50%);
+  background-image:linear-gradient(color-mix(in srgb,var(--accent) 13%,transparent) 1px,transparent 1px),linear-gradient(90deg,color-mix(in srgb,var(--accent) 13%,transparent) 1px,transparent 1px),linear-gradient(color-mix(in srgb,var(--accent) 6%,transparent) 1px,transparent 1px),linear-gradient(90deg,color-mix(in srgb,var(--accent) 6%,transparent) 1px,transparent 1px);
+  background-size:120px 120px,120px 120px,24px 24px,24px 24px; -webkit-mask-image:linear-gradient(#000 50%,transparent); mask-image:linear-gradient(#000 50%,transparent); }
+.eyebrow { font:.75rem var(--mono); letter-spacing:.16em; text-transform:uppercase; color:var(--muted); margin-bottom:.8rem; }
+.lead { max-width:64ch; margin-top:.9rem; font-size:1.08rem; }
+.pills { display:flex; flex-wrap:wrap; gap:.5rem; margin-top:1rem; }
+.pill { display:inline-flex; align-items:center; gap:.35rem; font:.78rem var(--mono); padding:.2rem .7rem; border:1px solid var(--line); border-radius:999px; background:var(--surface); color:var(--muted); }
+.pill.ok { color:var(--ok); border-color:var(--ok); } .pill.warn { color:var(--warn); border-color:var(--warn); } .pill.info { color:var(--accent); border-color:var(--accent); }
+.notice { border-left:4px solid var(--warn); padding:.55rem 1rem; background:var(--surface); margin:1rem 0 0; border-radius:0 var(--radius) var(--radius) 0; }
+.notice p { margin:0; }
+
+.tiles { display:grid; gap:.75rem; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); margin:.5rem 0 1rem; }
+.tile { background:var(--surface); border:1px solid var(--line); border-radius:var(--radius); padding:.7rem .9rem; }
+.tile b { display:block; font-size:1.5rem; letter-spacing:-.02em; font-variant-numeric:tabular-nums; } .tile span { color:var(--muted); font-size:.85rem; }
+.tile.ok b { color:var(--ok); } .tile.bad b { color:var(--bad); } .tile.warn b { color:var(--warn); }
+.quota { margin:.2rem 0 1.2rem; }
+.bar { height:.55rem; border-radius:99px; overflow:hidden; background:var(--line); display:flex; margin:.4rem 0; }
+.bar i { display:block; height:100%; } .bar .u { background:var(--accent); } .bar .r { background:var(--gold); }
+
+.controls { background:var(--surface); border:1px solid var(--line); border-radius:var(--radius); padding:1rem 1.1rem; margin:0 0 1.25rem; display:grid; gap:.9rem; }
+.ctl-row { display:flex; flex-wrap:wrap; gap:.75rem 1rem; align-items:end; }
+label { display:grid; gap:.25rem; font-weight:600; font-size:.88rem; }
+select, input[type=search] { font:inherit; font-weight:400; padding:.45rem .6rem; min-width:10rem; border:1px solid var(--line); border-radius:8px; background:var(--bg); color:var(--text); }
+.chips { display:flex; flex-wrap:wrap; gap:.5rem; }
+.chip { font:inherit; font-size:.9rem; padding:.3rem .8rem; border:1px solid var(--line); border-radius:999px; background:var(--bg); color:var(--muted); cursor:pointer; }
+.chip[aria-pressed="true"] { background:var(--accent); color:var(--accent-text); border-color:var(--accent); }
+.chip .n { font-family:var(--mono); font-size:.8em; opacity:.8; margin-left:.3rem; }
+.btn { font:inherit; font-size:.9rem; padding:.4rem .9rem; border-radius:8px; border:1px solid var(--accent); background:transparent; color:var(--accent); cursor:pointer; }
+.count { color:var(--muted); font-size:.9rem; margin:0 0 .75rem; }
+
+details.year, details.month { margin:0 0 1rem; }
+details.year > summary, details.month > summary { cursor:pointer; list-style:none; }
+details > summary::-webkit-details-marker { display:none; }
+details.year > summary { display:flex; flex-wrap:wrap; align-items:baseline; gap:.4rem 1rem; padding:.6rem 0; border-bottom:2px solid var(--line); }
+details.year > summary h2 { font-size:1.6rem; letter-spacing:-.02em; }
+details.year > summary::before, details.month > summary::before { content:"▸"; color:var(--accent); font-size:.9em; width:1em; }
+details[open] > summary::before { content:"▾"; }
+.sum { color:var(--muted); font-size:.9rem; }
+details.month { background:var(--surface); border:1px solid var(--line); border-radius:var(--radius); padding:.2rem 1rem .6rem; margin:.8rem 0; }
+details.month > summary { display:flex; flex-wrap:wrap; align-items:baseline; gap:.3rem 1rem; padding:.7rem 0; }
+details.month > summary h3 { font-size:1.15rem; }
+.mstats { display:grid; grid-template-columns:repeat(auto-fit,minmax(120px,1fr)); gap:.5rem; margin:.2rem 0 .9rem; }
+.mstats div { border:1px solid var(--line); border-radius:8px; padding:.35rem .6rem; background:var(--bg); }
+.mstats b { display:block; font-size:1.15rem; font-variant-numeric:tabular-nums; } .mstats span { color:var(--muted); font-size:.78rem; }
+.day { margin:.9rem 0 0; }
+.day h4 { margin:0 0 .35rem; font-size:.98rem; display:flex; flex-wrap:wrap; gap:.2rem .8rem; align-items:baseline; }
+.day h4 small { font-weight:400; }
+.tscroll { overflow-x:auto; border:1px solid var(--line); border-radius:8px; }
+table { width:100%; border-collapse:collapse; font-size:.93rem; min-width:640px; }
+th { font:.7rem var(--mono); letter-spacing:.1em; text-transform:uppercase; color:var(--muted); text-align:left; padding:.4rem .6rem; border-bottom:1px solid var(--line); white-space:nowrap; background:var(--bg); }
+td { padding:.45rem .6rem; border-bottom:1px solid var(--line); vertical-align:top; } tr:last-child td { border-bottom:0; }
+td.time { font-family:var(--mono); white-space:nowrap; color:var(--muted); } td .co { font-weight:600; display:block; } td .sub { color:var(--muted); font-size:.85rem; }
+.badge { display:inline-flex; align-items:center; font-size:.82rem; padding:.05rem .55rem; border-radius:999px; border:1px solid var(--line); white-space:nowrap; }
+.badge.ok { color:var(--ok); border-color:var(--ok); } .badge.bad { color:var(--bad); border-color:var(--bad); } .badge.warn { color:var(--warn); border-color:var(--warn); }
+.badge.wait { color:var(--accent); border-color:var(--accent); } .badge.err { color:var(--bad); border-style:dashed; border-color:var(--bad); }
+.kind { font-size:.82rem; color:var(--muted); white-space:nowrap; } .kind.reply { color:var(--teal); } .kind.bounce { color:var(--bad); }
+.empty { padding:2rem 1rem; text-align:center; border:1px dashed var(--line); border-radius:var(--radius); color:var(--muted); }
+.help { margin:2rem 0 1rem; padding:1rem 1.2rem; background:var(--surface); border:1px solid var(--line); border-radius:var(--radius); }
+.help ul { margin:.4rem 0 0; padding-left:1.2rem; color:var(--muted); } .help li { margin:.3rem 0; }
+.site-footer { border-top:1px solid var(--line); margin-top:2rem; padding:1.25rem 0 2.5rem; color:var(--muted); font-size:.9rem; } .site-footer p { margin:0 0 .4rem; }
+.to-top { position:fixed; right:1rem; bottom:1rem; z-index:40; display:inline-flex; align-items:center; gap:.4rem; height:2.75rem; padding:0 1rem 0 .8rem; color:var(--accent); background:var(--surface); border:1px solid var(--line); border-radius:999px; box-shadow:0 2px 8px rgba(0,0,0,.18); font:600 .85rem var(--mono); text-decoration:none; }
+.to-top svg { width:1rem; height:1rem; fill:none; stroke:currentColor; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+@media (max-width:1000px) { .nav-main { display:none; } }
+@media (max-width:640px) { .wrap { padding:0 1rem; } .brand .sub { display:none; } select, input[type=search] { min-width:0; width:100%; } .ctl-row > label { flex:1 1 100%; } }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior:auto; } }
+@media print { .topbar, .controls, .to-top, .help { display:none; } details.year:not([open]) > *:not(summary), details.month:not([open]) > *:not(summary) { display:block; } body { background:#fff; color:#000; } }
+</style>
+</head>
+<body>
+<a class="skip-link" href="#main" data-i="skip">Skip to content</a>
+<header class="topbar"><div class="wrap">
+<a class="brand" href="../PROJECT_OVERVIEW.html" id="brand" aria-label="HomenS.AI JobPilot"><svg class="brand-mark" focusable="false" viewBox="0 0 100 100" aria-hidden="true"><path d="M50.0 13.0 L48.1 13.1 L46.1 13.2 L44.2 13.5 L42.3 13.8 L42.2 21.0 L40.7 21.5 L39.2 22.0 L37.8 22.6 L36.4 23.3 L31.5 18.0 L29.8 19.0 L28.3 20.1 L26.7 21.2 L25.2 22.5 L28.8 28.8 L27.7 29.9 L26.7 31.1 L25.7 32.4 L24.8 33.7 L18.0 31.5 L17.0 33.2 L16.2 35.0 L15.5 36.7 L14.8 38.6 L21.0 42.2 L20.7 43.8 L20.4 45.3 L20.2 46.9 L20.0 48.4 L13.0 50.0 L13.1 51.9 L13.2 53.9 L13.5 55.8 L13.8 57.7 L21.0 57.8 L21.5 59.3 L22.0 60.8 L22.6 62.2 L23.3 63.6 L18.0 68.5 L19.0 70.2 L20.1 71.7 L21.2 73.3 L22.5 74.8 L28.8 71.2 L29.9 72.3 L31.1 73.3 L32.4 74.3 L33.7 75.2 L31.5 82.0 L33.2 83.0 L35.0 83.8 L36.7 84.5 L38.6 85.2 L42.2 79.0 L43.8 79.3 L45.3 79.6 L46.9 79.8 L48.4 80.0 L50.0 87.0 Z" fill="#c9a24a"/><path d="M50 20 A30 30 0 0 1 50 80" fill="none" stroke="#2bb3c4" stroke-width="5"/><g fill="none" stroke="#2bb3c4" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M50 36 H64 L70 30"/><path d="M50 50 H72"/><path d="M50 64 H62 L68 70"/></g><g fill="#2bb3c4"><circle cx="71" cy="29" r="4"/><circle cx="74" cy="50" r="4"/><circle cx="69" cy="71" r="4"/></g><circle cx="50" cy="50" r="9" fill="currentColor"/><circle cx="50" cy="50" r="3.5" fill="#c9a24a"/></svg><span>HomenS<span class="ai">.AI</span> <span class="sub">JobPilot</span></span></a>
+<nav class="nav-main" id="demo-nav" aria-label="Project pages" hidden></nav>
+<div class="tools">
+<span class="langs" role="group" aria-label="Language"><button type="button" data-lang="en" aria-pressed="true">EN</button><button type="button" data-lang="ru" aria-pressed="false">RU</button></span>
+<button class="icon-btn" id="theme-btn" type="button" data-i-label="theme"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M12 4v16"/><path d="M12 4a8 8 0 0 1 0 16z" fill="currentColor"/></svg></button>
+</div>
+</div></header>
+
+<main id="main" class="wrap">
+<div class="head">
+<div class="eyebrow" data-i="eyebrow">Statistics</div>
+<h1 data-i="title">Applications and replies</h1>
+<p class="lead" data-i="lead"></p>
+<div class="pills" id="meta"></div>
+<div class="notice" id="demo-note" hidden><p data-i="demo"></p></div>
+</div>
+
+<section aria-labelledby="quota-h" class="quota">
+<h2 id="quota-h" style="font-size:1.1rem;margin:1rem 0 .3rem" data-i="quota_h"></h2>
+<div class="bar" id="quota-bar" role="img"><i class="u"></i><i class="r"></i></div>
+<p id="quota-text"></p>
+</section>
+
+<section class="controls" aria-label="Filters and sorting" id="controls">
+<div class="ctl-row">
+<label><span data-i="year">Year</span><select id="f-year"></select></label>
+<label><span data-i="month">Month</span><select id="f-month"></select></label>
+<label><span data-i="sort">Sort by</span><select id="f-sort"></select></label>
+<label style="flex:1 1 14rem"><span data-i="search">Search</span><input type="search" id="f-search" data-i-ph="search_ph" autocomplete="off"></label>
+</div>
+<div><div style="font-weight:600;font-size:.88rem;margin-bottom:.3rem" data-i="result">Result</div><div class="chips" id="f-result" role="group" aria-label="Result"></div></div>
+<div class="ctl-row"><button type="button" class="btn" id="expand" data-i="expand">Expand all</button><button type="button" class="btn" id="collapse" data-i="collapse">Collapse all</button><button type="button" class="btn" id="reset" data-i="reset">Reset</button></div>
+</section>
+
+<p class="count" id="count" aria-live="polite"></p>
+<div id="out"></div>
+
+<section class="help" aria-labelledby="help-h">
+<h2 id="help-h" style="font-size:1.05rem" data-i="help_h"></h2>
+<ul id="help-list"></ul>
+</section>
+</main>
+
+<footer class="site-footer"><div class="wrap">
+<p>© 2026 Serhii Khomenko / HomenS.AI · <a href="https://homensai.com/" rel="me noopener">homensai.com</a> · <a href="https://github.com/HomenSAI" rel="me noopener">GitHub</a> · <a href="https://www.linkedin.com/in/serhii-khomenko-homensai/" rel="me noopener">LinkedIn</a> · <a href="https://orcid.org/0009-0009-5371-9717" rel="me noopener">ORCID</a> · <a href="https://doi.org/10.5281/zenodo.23160031" rel="noopener">DOI</a> · <a href="mailto:info@homensai.com">info@homensai.com</a></p>
+<p><small data-i="license"></small></p>
+</div></footer>
+<a class="to-top" id="to-top" href="#" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"/></svg><span data-i="top">Top</span></a>
+
+<script type="application/json" id="jp-data">{
+ "schema_version": "1.2",
+ "snapshot_id": "sample-0001",
+ "source_revision": 128,
+ "generated_at": "2026-10-07T18:00:00Z",
+ "last_mail_check_at": "2026-10-07T17:42:00Z",
+ "timezone": "Europe/Berlin",
+ "profile_id": "sample-profile",
+ "demo": true,
+ "default_language": "en",
+ "quota": {
+  "limit": 44,
+  "reserved": {
+   "2026-10": 4
+  }
+ },
+ "applications": [
+  {
+   "id": "A001",
+   "company": "Muster Maschinenbau GmbH",
+   "city": "Stuttgart",
+   "role": "Maintenance technician",
+   "channel": "Web form",
+   "sent_at": "2025-12-04T12:50:00Z",
+   "outcome": "rejected"
+  },
+  {
+   "id": "A002",
+   "company": "Beispiel Automation AG",
+   "city": "Esslingen",
+   "role": "Service technician",
+   "channel": "Web form",
+   "sent_at": "2025-12-10T13:30:00Z",
+   "outcome": "rejected"
+  },
+  {
+   "id": "A003",
+   "company": "Probe Anlagenbau GmbH",
+   "city": "Ludwigsburg",
+   "role": "Maintenance technician",
+   "channel": "Company portal",
+   "sent_at": "2025-12-15T10:20:00Z",
+   "outcome": "no_response"
+  },
+  {
+   "id": "A004",
+   "company": "Demo Fördertechnik KG",
+   "city": "Böblingen",
+   "role": "Commissioning engineer",
+   "channel": "Email",
+   "sent_at": "2025-12-23T10:00:00Z",
+   "outcome": "rejected"
+  },
+  {
+   "id": "A005",
+   "company": "Nordlicht Steuerungen GmbH",
+   "city": "Waiblingen",
+   "role": "Design engineer (3D CAD)",
+   "channel": "Web form",
+   "sent_at": "2025-12-29T13:40:00Z",
+   "outcome": "rejected"
+  },
+  {
+   "id": "A006",
+   "company": "Test Robotik GmbH",
+   "city": "Fellbach",
+   "role": "Maintenance technician",
+   "channel": "Web form",
+   "sent_at": "2026-08-04T11:20:00Z",
+   "outcome": "rejected"
+  },
+  {
+   "id": "A007",
+   "company": "Exempel Werkzeugbau",
+   "city": "Kirchheim unter Teck",
+   "role": "Maintenance technician",
+   "channel": "Email",
+   "sent_at": "2026-08-06T12:50:00Z",
+   "outcome": "no_response"
+  },
+  {
+   "id": "A008",
+   "company": "Sample Systems GmbH",
+   "city": "Sindelfingen",
+   "role": "Maintenance technician",
+   "channel": "Web form",
+   "sent_at": "2026-08-07T09:45:00Z",
+   "outcome": "no_response"
+  },
+  {
+   "id": "A009",
+   "company": "Platzhalter Elektrotechnik",
+   "city": "Leonberg",
+   "role": "Commissioning engineer",
+   "channel": "Web form",
+   "sent_at": "2026-08-12T05:20:00Z",
+   "outcome": "no_response"
+  },
+  {
+   "id": "A010",
+   "company": "Modell Verpackungstechnik",
+   "city": "Göppingen",
+   "role": "Design engineer (3D CAD)",
+   "channel": "Web form",
+   "sent_at": "2026-08-13T06:45:00Z",
+   "outcome": "no_response"
+  },
+  {
+   "id": "A011",
+   "company": "Fiktiv Antriebstechnik AG",
+   "city": "Nürtingen",
+   "role": "Maintenance technician",
+   "channel": "Email",
+   "sent_at": "2026-08-14T07:40:00Z",
+   "outcome": "needs_user"
+  },
+  {
+   "id": "A012",
+   "company": "Beispielwerk Präzisionsteile",
+   "city": "Reutlingen",
+   "role": "Controls technician",
+   "channel": "Email",
+   "sent_at": "2026-08-17T12:00:00Z",
+   "outcome": "rejected"
+  },
+  {
+   "id": "A013",
+   "company": "Übung Montagetechnik GmbH",
+   "city": "Plochingen",
+   "role": "Design engineer (3D CAD)",
+   "channel": "Email",
+   "sent_at": "2026-08-18T05:50:00Z",
+   "outcome": "positive"
+  },
+  {
+   "id": "A014",
+   "company": "Vorlage Sondermaschinen",
+   "city": "Backnang",
+   "role": "Automation engineer",
+   "channel": "Email",
+   "sent_at": "2026-08-20T08:45:00Z",
+   "outcome": "positive"
+  },
+  {
+   "id": "A015",
+   "company": "Angenommen Hydraulik GmbH",
+   "city": "Schorndorf",
+   "role": "Service technician",
+   "channel": "Web form",
+   "sent_at": "2026-08-21T07:50:00Z",
+   "outcome": "delivery_error",
+   "bounce_at": "2026-08-21T07:53:00Z",
+   "bounce_note": "Address does not exist (permanent failure)"
+  },
+  {
+   "id": "A016",
+   "company": "Muster Logistiksysteme",
+   "city": "Filderstadt",
+   "role": "Mechanical engineer",
+   "channel": "Email",
+   "sent_at": "2026-08-24T11:05:00Z",
+   "outcome": "needs_user"
+  },
+  {
+   "id": "A017",
+   "company": "Kunstname Anlagen GmbH",
+   "city": "Herrenberg",
+   "role": "Commissioning engineer",
+   "channel": "Email",
+   "sent_at": "2026-08-25T09:45:00Z",
+   "outcome": "rejected"
+  },
+  {
+   "id": "A018",
+   "company": "Zeigt Messtechnik",
+   "city": "Ditzingen",
+   "role": "Commissioning engineer",
+   "channel": "Web form",
+   "sent_at": "2026-08-27T08:40:00Z",
+   "outcome": "needs_user"
+  },
+  {
+   "id": "A019",
+   "company": "Ersatz Kabelsysteme",
+   "city": "Winnenden",
+   "role": "Mechanical engineer",
+   "channel": "Web form",
+   "sent_at": "2026-08-28T07:00:00Z",
+   "outcome": "no_response"
+  },
+  {
+   "id": "A020",
+   "company": "Erfunden Prüfsysteme AG",
+   "city": "Tübingen",
+   "role": "Mechanical engineer",
+   "channel": "Company portal",
+   "sent_at": "2026-08-31T08:45:00Z",
+   "outcome": "needs_user"
+  },
+  {
+   "id": "A021",
+   "company": "Probefirma Fertigung",
+   "city": "Kornwestheim",
+   "role": "Service technician",
+   "channel": "Email",
+   "sent_at": "2026-09-01T06:15:00Z",
+   "outcome": "no_response"
+  },
+  {
+   "id": "A022",
+   "company": "Dummy Industrieservice",
+   "city": "Geislingen",
+   "role": "Production planner",
+   "channel": "Company portal",
+   "sent_at": "2026-09-02T12:30:00Z",
+   "outcome": "no_response"
+  },
+  {
+   "id": "A023",
+   "company": "Illustration Schaltanlagen",
+   "city": "Weinstadt",
+   "role": "Commissioning engineer",
+   "channel": "Company portal",
+   "sent_at": "2026-09-03T10:10:00Z",
+   "outcome": "positive"
+  },
+  {
+   "id": "A024",
+   "company": "Beispiel \u0026 Söhne Metallbau",
+   "city": "Remseck",
+   "role": "Automation engineer",
+   "channel": "Email",
+   "sent_at": "2026-09-04T09:50:00Z",
+   "outcome": "no_response"
+  },
+  {
+   "id": "A025",
+   "company": "Testwerk Oberflächentechnik",
+   "city": "Ostfildern",
+   "role": "Automation engineer",
+   "channel": "Email",
+   "sent_at": "2026-09-07T06:40:00Z",
+   "outcome": "positive"
+  },
+  {
+   "id": "A026",
+   "company": "Mock Automatisierung GmbH",
+   "city": "Rottenburg",
+   "role": "Production planner",
+   "channel": "Email",
+   "sent_at": "2026-09-08T06:00:00Z",
+   "outcome": "rejected"
+  },
+  {
+   "id": "A027",
+   "company": "Skizze Kunststofftechnik",
+   "city": "Metzingen",
+   "role": "Commissioning engineer",
+   "channel": "Email",
+   "sent_at": "2026-09-09T06:05:00Z",
+   "outcome": "no_response"
+  },
+  {
+   "id": "A028",
+   "company": "Wunsch Fahrzeugtechnik",
+   "city": "Leinfelden",
+   "role": "Commissioning engineer",
+   "channel": "Company portal",
+   "sent_at": "2026-09-10T05:40:00Z",
+   "outcome": "needs_user"
+  },
+  {
+   "id": "A029",
+   "company": "Muster Maschinenbau GmbH",
+   "city": "Stuttgart",
+   "role": "Mechanical engineer",
+   "channel": "Web form",
+   "sent_at": "2026-09-11T09:30:00Z",
+   "outcome": "no_response"
+  },
+  {
+   "id": "A030",
+   "company": "Beispiel Automation AG",
+   "city": "Esslingen",
+   "role": "Design engineer (3D CAD)",
+   "channel": "Email",
+   "sent_at": "2026-09-14T09:30:00Z",
+   "outcome": "rejected"
+  },
+  {
+   "id": "A031",
+   "company": "Probe Anlagenbau GmbH",
+   "city": "Ludwigsburg",
+   "role": "Automation engineer",
+   "channel": "Email",
+   "sent_at": "2026-09-15T05:05:00Z",
+   "outcome": "positive"
+  },
+  {
+   "id": "A032",
+   "company": "Demo Fördertechnik KG",
+   "city": "Böblingen",
+   "role": "Production planner",
+   "channel": "Web form",
+   "sent_at": "2026-09-16T07:30:00Z",
+   "outcome": "rejected"
+  },
+  {
+   "id": "A033",
+   "company": "Nordlicht Steuerungen GmbH",
+   "city": "Waiblingen",
+   "role": "Production planner",
+   "channel": "Email",
+   "sent_at": "2026-09-17T05:50:00Z",
+   "outcome": "no_response"
+  },
+  {
+   "id": "A034",
+   "company": "Test Robotik GmbH",
+   "city": "Fellbach",
+   "role": "Mechanical engineer",
+   "channel": "Email",
+   "sent_at": "2026-09-18T08:00:00Z",
+   "outcome": "rejected"
+  },
+  {
+   "id": "A035",
+   "company": "Exempel Werkzeugbau",
+   "city": "Kirchheim unter Teck",
+   "role": "Design engineer (3D CAD)",
+   "channel": "Email",
+   "sent_at": "2026-09-21T05:50:00Z",
+   "outcome": "needs_user"
+  },
+  {
+   "id": "A036",
+   "company": "Sample Systems GmbH",
+   "city": "Sindelfingen",
+   "role": "Automation engineer",
+   "channel": "Web form",
+   "sent_at": "2026-09-22T05:15:00Z",
+   "outcome": "positive"
+  },
+  {
+   "id": "A037",
+   "company": "Platzhalter Elektrotechnik",
+   "city": "Leonberg",
+   "role": "Automation engineer",
+   "channel": "Web form",
+   "sent_at": "2026-09-23T09:15:00Z",
+   "outcome": "positive"
+  },
+  {
+   "id": "A038",
+   "company": "Modell Verpackungstechnik",
+   "city": "Göppingen",
+   "role": "Design engineer (3D CAD)",
+   "channel": "Email",
+   "sent_at": "2026-09-24T07:05:00Z",
+   "outcome": "rejected"
+  },
+  {
+   "id": "A039",
+   "company": "Fiktiv Antriebstechnik AG",
+   "city": "Nürtingen",
+   "role": "Mechanical engineer",
+   "channel": "Web form",
+   "sent_at": "2026-09-25T08:20:00Z",
+   "outcome": "rejected"
+  },
+  {
+   "id": "A040",
+   "company": "Beispielwerk Präzisionsteile",
+   "city": "Reutlingen",
+   "role": "Design engineer (3D CAD)",
+   "channel": "Email",
+   "sent_at": "2026-09-28T11:30:00Z",
+   "outcome": "delivery_error",
+   "bounce_at": "2026-09-28T11:35:00Z",
+   "bounce_note": "Address does not exist (permanent failure)"
+  },
+  {
+   "id": "A041",
+   "company": "Übung Montagetechnik GmbH",
+   "city": "Plochingen",
+   "role": "Design engineer (3D CAD)",
+   "channel": "Email",
+   "sent_at": "2026-09-29T07:20:00Z",
+   "outcome": "rejected"
+  },
+  {
+   "id": "A042",
+   "company": "Vorlage Sondermaschinen",
+   "city": "Backnang",
+   "role": "Automation engineer",
+   "channel": "Email",
+   "sent_at": "2026-09-30T10:50:00Z",
+   "outcome": "positive"
+  },
+  {
+   "id": "A043",
+   "company": "Angenommen Hydraulik GmbH",
+   "city": "Schorndorf",
+   "role": "Design engineer (3D CAD)",
+   "channel": "Company portal",
+   "sent_at": "2026-10-01T06:30:00Z",
+   "outcome": "rejected"
+  },
+  {
+   "id": "A044",
+   "company": "Muster Logistiksysteme",
+   "city": "Filderstadt",
+   "role": "Design engineer (3D CAD)",
+   "channel": "Email",
+   "sent_at": "2026-10-02T06:40:00Z",
+   "outcome": "needs_user"
+  },
+  {
+   "id": "A045",
+   "company": "Kunstname Anlagen GmbH",
+   "city": "Herrenberg",
+   "role": "Controls technician",
+   "channel": "Email",
+   "sent_at": "2026-10-05T12:30:00Z",
+   "outcome": "no_response"
+  },
+  {
+   "id": "A046",
+   "company": "Zeigt Messtechnik",
+   "city": "Ditzingen",
+   "role": "Design engineer (3D CAD)",
+   "channel": "Email",
+   "sent_at": "2026-10-06T06:45:00Z",
+   "outcome": "no_response"
+  },
+  {
+   "id": "A047",
+   "company": "Ersatz Kabelsysteme",
+   "city": "Winnenden",
+   "role": "Commissioning engineer",
+   "channel": "Web form",
+   "sent_at": "2026-10-07T08:10:00Z",
+   "outcome": "no_response"
+  },
+  {
+   "id": "A048",
+   "company": "Erfunden Prüfsysteme AG",
+   "city": "Tübingen",
+   "role": "Production planner",
+   "channel": "Email",
+   "sent_at": "2026-10-05T10:45:00Z",
+   "outcome": "no_response"
+  },
+  {
+   "id": "A049",
+   "company": "Probefirma Fertigung",
+   "city": "Kornwestheim",
+   "role": "Commissioning engineer",
+   "channel": "Web form",
+   "sent_at": "2026-10-06T08:30:00Z",
+   "outcome": "no_response"
+  },
+  {
+   "id": "A050",
+   "company": "Dummy Industrieservice",
+   "city": "Geislingen",
+   "role": "Automation engineer",
+   "channel": "Web form",
+   "sent_at": "2026-10-07T11:15:00Z",
+   "outcome": "no_response"
+  },
+  {
+   "id": "A051",
+   "company": "Illustration Schaltanlagen",
+   "city": "Weinstadt",
+   "role": "Commissioning engineer",
+   "channel": "Email",
+   "sent_at": "2026-10-02T11:20:00Z",
+   "outcome": "rejected"
+  }
+ ],
+ "responses": [
+  {
+   "id": "R001",
+   "application_id": "A001",
+   "received_at": "2025-12-08T13:08:00Z",
+   "kind": "rejected",
+   "note": "Rejection, profile does not match"
+  },
+  {
+   "id": "R002",
+   "application_id": "A002",
+   "received_at": "2025-12-17T17:17:00Z",
+   "kind": "rejected",
+   "note": "No suitable vacancy at the moment"
+  },
+  {
+   "id": "R003",
+   "application_id": "A004",
+   "received_at": "2025-12-26T13:37:00Z",
+   "kind": "rejected",
+   "note": "Rejection, reason not specified"
+  },
+  {
+   "id": "R004",
+   "application_id": "A005",
+   "received_at": "2026-01-07T18:13:00Z",
+   "kind": "rejected",
+   "note": "Position already filled"
+  },
+  {
+   "id": "R005",
+   "application_id": "A006",
+   "received_at": "2026-08-10T13:20:00Z",
+   "kind": "rejected",
+   "note": "Position already filled"
+  },
+  {
+   "id": "R007",
+   "application_id": "A012",
+   "received_at": "2026-08-20T16:50:00Z",
+   "kind": "rejected",
+   "note": "Position already filled"
+  },
+  {
+   "id": "R006",
+   "application_id": "A011",
+   "received_at": "2026-08-24T09:46:00Z",
+   "kind": "needs_user",
+   "note": "Asks for additional documents"
+  },
+  {
+   "id": "R009",
+   "application_id": "A014",
+   "received_at": "2026-08-24T10:35:00Z",
+   "kind": "positive",
+   "note": "Invitation to a visit"
+  },
+  {
+   "id": "R008",
+   "application_id": "A013",
+   "received_at": "2026-08-25T11:27:00Z",
+   "kind": "positive",
+   "note": "Positive reply, asks for dates"
+  },
+  {
+   "id": "R010",
+   "application_id": "A016",
+   "received_at": "2026-08-26T11:37:00Z",
+   "kind": "needs_user",
+   "note": "Question about salary expectation"
+  },
+  {
+   "id": "R012",
+   "application_id": "A018",
+   "received_at": "2026-08-31T13:05:00Z",
+   "kind": "needs_user",
+   "note": "Question about salary expectation"
+  },
+  {
+   "id": "R011",
+   "application_id": "A017",
+   "received_at": "2026-09-03T14:24:00Z",
+   "kind": "rejected",
+   "note": "Position already filled"
+  },
+  {
+   "id": "R013",
+   "application_id": "A020",
+   "received_at": "2026-09-07T12:53:00Z",
+   "kind": "needs_user",
+   "note": "Asks about earliest start date"
+  },
+  {
+   "id": "R014",
+   "application_id": "A023",
+   "received_at": "2026-09-09T14:58:00Z",
+   "kind": "positive",
+   "note": "Asked for a phone call"
+  },
+  {
+   "id": "R017",
+   "application_id": "A026",
+   "received_at": "2026-09-10T06:06:00Z",
+   "kind": "rejected",
+   "note": "Rejection, reason not specified"
+  },
+  {
+   "id": "R015",
+   "application_id": "A025",
+   "received_at": "2026-09-14T11:51:00Z",
+   "kind": "needs_user",
+   "note": "Asks about earliest start date"
+  },
+  {
+   "id": "R016",
+   "application_id": "A025",
+   "received_at": "2026-09-17T14:11:00Z",
+   "kind": "positive",
+   "note": "Asked for a phone call"
+  },
+  {
+   "id": "R018",
+   "application_id": "A028",
+   "received_at": "2026-09-18T10:47:00Z",
+   "kind": "needs_user",
+   "note": "Asks about earliest start date"
+  },
+  {
+   "id": "R020",
+   "application_id": "A031",
+   "received_at": "2026-09-21T09:27:00Z",
+   "kind": "positive",
+   "note": "Invitation to a visit"
+  },
+  {
+   "id": "R019",
+   "application_id": "A030",
+   "received_at": "2026-09-22T12:07:00Z",
+   "kind": "rejected",
+   "note": "No suitable vacancy at the moment"
+  },
+  {
+   "id": "R021",
+   "application_id": "A032",
+   "received_at": "2026-09-24T12:44:00Z",
+   "kind": "rejected",
+   "note": "Position already filled"
+  },
+  {
+   "id": "R026",
+   "application_id": "A037",
+   "received_at": "2026-09-25T11:48:00Z",
+   "kind": "positive",
+   "note": "Positive reply, asks for dates"
+  },
+  {
+   "id": "R023",
+   "application_id": "A035",
+   "received_at": "2026-09-28T06:32:00Z",
+   "kind": "needs_user",
+   "note": "Asks about earliest start date"
+  },
+  {
+   "id": "R022",
+   "application_id": "A034",
+   "received_at": "2026-09-28T10:20:00Z",
+   "kind": "rejected",
+   "note": "Rejection, reason not specified"
+  },
+  {
+   "id": "R024",
+   "application_id": "A036",
+   "received_at": "2026-09-29T06:50:00Z",
+   "kind": "needs_user",
+   "note": "Asks for additional documents"
+  },
+  {
+   "id": "R028",
+   "application_id": "A039",
+   "received_at": "2026-09-29T12:26:00Z",
+   "kind": "rejected",
+   "note": "Position already filled"
+  },
+  {
+   "id": "R027",
+   "application_id": "A038",
+   "received_at": "2026-09-30T08:50:00Z",
+   "kind": "rejected",
+   "note": "Rejection, reason not specified"
+  },
+  {
+   "id": "R030",
+   "application_id": "A042",
+   "received_at": "2026-10-05T11:51:00Z",
+   "kind": "positive",
+   "note": "Invitation to an interview"
+  },
+  {
+   "id": "R031",
+   "application_id": "A043",
+   "received_at": "2026-10-06T07:36:00Z",
+   "kind": "rejected",
+   "note": "Rejection, profile does not match"
+  },
+  {
+   "id": "R025",
+   "application_id": "A036",
+   "received_at": "2026-10-06T09:19:00Z",
+   "kind": "positive",
+   "note": "Positive reply, asks for dates"
+  },
+  {
+   "id": "R029",
+   "application_id": "A041",
+   "received_at": "2026-10-07T09:07:00Z",
+   "kind": "rejected",
+   "note": "Rejection, profile does not match"
+  },
+  {
+   "id": "R032",
+   "application_id": "A044",
+   "received_at": "2026-10-07T15:00:00Z",
+   "kind": "needs_user",
+   "note": "Asks about earliest start date"
+  },
+  {
+   "id": "R033",
+   "application_id": "A051",
+   "received_at": "2026-10-07T15:00:00Z",
+   "kind": "rejected",
+   "note": "Position already filled"
+  }
+ ]
+}</script>
+<script>
+(function () {
+  "use strict";
+  var DATA = JSON.parse(document.getElementById("jp-data").textContent);
+
+  /* ---------- Texts (both dictionaries have identical keys) ---------- */
+  var T = {
+    en: {
+      skip: "Skip to content", eyebrow: "Statistics", title: "Applications and replies",
+      lead: "Every application and every reply, grouped by year, month and day. Sort by date or by result, filter by outcome and search by company or role. The page only displays the snapshot; the agent updates the data.",
+      demo: "Sample data: the companies and results below are invented to show how the page works. The agent replaces them with the snapshot of one real profile.",
+      quota_h: "Monthly limit", year: "Year", month: "Month", sort: "Sort by", search: "Search", search_ph: "Company, city or role",
+      result: "Result", all_years: "All years", all_months: "All months", expand: "Expand all", collapse: "Collapse all", reset: "Reset", top: "Top", theme: "Switch light / dark theme",
+      s_date_desc: "Date: newest first", s_date_asc: "Date: oldest first", s_res_good: "Result: successful first", s_res_bad: "Result: unsuccessful first",
+      r_all: "All", r_positive: "Successful", r_rejected: "Unsuccessful", r_pending: "Waiting", r_needs_user: "Needs your decision", r_delivery_error: "Delivery error",
+      k_sent: "Sent", k_reply: "Reply", k_bounce: "Not delivered",
+      c_sent: "Sent", c_replies: "Replies", c_resp_apps: "Applications with a reply", c_pos: "Successful", c_rej: "Unsuccessful", c_wait: "Waiting", c_err: "Delivery errors", c_old: "Replies to earlier months",
+      q_used: "Used", q_reserved: "Reserved", q_left: "Left",
+      th_time: "Time", th_event: "Event", th_company: "Company", th_role: "Role", th_channel: "Channel", th_result: "Result", th_note: "Note", th_orig: "Sent on",
+      day_sent: "sent", day_replies: "replies", day_errors: "not delivered",
+      none: "Nothing matches the current filters.", showing: "Showing {a} of {b} entries", entries: "entries",
+      gen: "Snapshot", mail: "Mail checked", tz: "Time zone", profile: "Profile", fresh: "Up to date", stale: "May be outdated: snapshot is {h} h old", sample: "Sample snapshot",
+      help_h: "How the numbers are counted",
+      h1: "A month counts applications by the day they were actually sent, and replies by the day they were received, even when the reply belongs to an earlier month.",
+      h2: "“Successful” is a positive reply (for example an invitation). “Unsuccessful” is a rejection. “Waiting” means no substantive reply yet. “Needs your decision” is an invitation, question or document request that the agent never answers on its own.",
+      h3: "A delivery error is shown separately: it is not a rejection by the employer. A sent application that later bounced still used one slot of the monthly limit.",
+      h4: "Three replies to one application are three reply events but one application with a reply. Automatic acknowledgements and delivery notices are not counted as replies.",
+      h5: "The limit is shared by all profiles of one person. “Reserved” slots are planned but not yet sent.",
+      license: "Statistics page template · code: PolyForm Noncommercial 1.0.0 · no network requests, nothing is saved or sent from this page.",
+      nav_overview: "Overview", nav_install: "Install", nav_profile: "Profile", nav_arch: "Architecture", nav_safety: "Safety", nav_market: "Market", nav_roadmap: "Roadmap", nav_stats: "Statistics"
+    },
+    ru: {
+      skip: "Перейти к содержанию", eyebrow: "Статистика", title: "Заявки и ответы",
+      lead: "Все заявки и все ответы, сгруппированные по годам, месяцам и дням. Сортируйте по дате или по результату, фильтруйте по исходу и ищите по компании или должности. Страница только показывает снимок; данные обновляет агент.",
+      demo: "Примеры данных: компании и результаты ниже придуманы, чтобы показать работу страницы. Агент заменяет их снимком одного реального профиля.",
+      quota_h: "Месячный лимит", year: "Год", month: "Месяц", sort: "Сортировка", search: "Поиск", search_ph: "Компания, город или должность",
+      result: "Результат", all_years: "Все годы", all_months: "Все месяцы", expand: "Развернуть всё", collapse: "Свернуть всё", reset: "Сбросить", top: "Наверх", theme: "Переключить светлую / тёмную тему",
+      s_date_desc: "Дата: сначала новые", s_date_asc: "Дата: сначала старые", s_res_good: "Результат: сначала успешные", s_res_bad: "Результат: сначала неуспешные",
+      r_all: "Все", r_positive: "Успешно", r_rejected: "Неуспешно", r_pending: "Ожидание", r_needs_user: "Нужно ваше решение", r_delivery_error: "Ошибка доставки",
+      k_sent: "Отправлено", k_reply: "Ответ", k_bounce: "Не доставлено",
+      c_sent: "Отправлено", c_replies: "Ответов", c_resp_apps: "Заявок с ответом", c_pos: "Успешно", c_rej: "Неуспешно", c_wait: "Ожидание", c_err: "Ошибок доставки", c_old: "Ответов на прошлые месяцы",
+      q_used: "Использовано", q_reserved: "Зарезервировано", q_left: "Осталось",
+      th_time: "Время", th_event: "Событие", th_company: "Компания", th_role: "Должность", th_channel: "Канал", th_result: "Результат", th_note: "Заметка", th_orig: "Отправлено",
+      day_sent: "отправлено", day_replies: "ответов", day_errors: "не доставлено",
+      none: "Ничего не подходит под текущие фильтры.", showing: "Показано {a} из {b} записей", entries: "записей",
+      gen: "Снимок", mail: "Почта проверена", tz: "Часовой пояс", profile: "Профиль", fresh: "Актуально", stale: "Возможно устарело: снимку {h} ч", sample: "Пример снимка",
+      help_h: "Как считаются числа",
+      h1: "Месяц считает заявки по дню фактической отправки, а ответы — по дню получения, даже если ответ относится к заявке прошлого месяца.",
+      h2: "«Успешно» — положительный ответ (например, приглашение). «Неуспешно» — отказ. «Ожидание» — содержательного ответа ещё нет. «Нужно ваше решение» — приглашение, вопрос или просьба о документах: на них агент сам не отвечает.",
+      h3: "Ошибка доставки показана отдельно: это не отказ работодателя. Отправленная заявка, которая потом не дошла, всё равно заняла один слот месячного лимита.",
+      h4: "Три ответа на одну заявку — это три события-ответа, но одна заявка с ответом. Автоответы и уведомления о доставке ответами не считаются.",
+      h5: "Лимит общий для всех профилей одного человека. «Зарезервировано» — запланированные, но ещё не отправленные слоты.",
+      license: "Шаблон страницы статистики · код: PolyForm Noncommercial 1.0.0 · без сетевых запросов, эта страница ничего не сохраняет и не отправляет.",
+      nav_overview: "Обзор", nav_install: "Установка", nav_profile: "Профиль", nav_arch: "Архитектура", nav_safety: "Безопасность", nav_market: "Рынок", nav_roadmap: "План работ", nav_stats: "Статистика"
+    }
+  };
+
+  /* ---------- State ---------- */
+  var params = new URLSearchParams(location.search);
+  var lang = params.get("lang") === "ru" || params.get("lang") === "en" ? params.get("lang") : (DATA.default_language === "ru" ? "ru" : "en");
+  var tz = DATA.timezone || "UTC";
+  var state = { year: "all", month: "all", sort: "date_desc", result: "all", q: "" };
+  var RANK = { positive: 0, needs_user: 1, pending: 2, rejected: 3, delivery_error: 4 };
+  var BADGE = { positive: "ok", rejected: "bad", pending: "wait", needs_user: "warn", delivery_error: "err" };
+
+  function t(k) { return T[lang][k] || T.en[k] || k; }
+  function el(tag, cls, text) { var e = document.createElement(tag); if (cls) e.className = cls; if (text !== undefined) e.textContent = text; return e; }
+  function pad(n) { return (n < 10 ? "0" : "") + n; }
+
+  /* ---------- Dates (grouping uses the snapshot time zone; sorting uses real timestamps) ---------- */
+  var fmtParts = new Intl.DateTimeFormat("en-CA", { timeZone: tz, year: "numeric", month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit", hourCycle: "h23" });
+  function parts(iso) {
+    var o = {}; fmtParts.formatToParts(new Date(iso)).forEach(function (p) { o[p.type] = p.value; });
+    return { y: +o.year, m: +o.month, d: +o.day, hh: o.hour, mm: o.minute, key: o.year + "-" + o.month + "-" + o.day, mkey: o.year + "-" + o.month, ts: Date.parse(iso) };
+  }
+  function dayLabel(key) { var a = key.split("-"); return new Intl.DateTimeFormat(lang === "ru" ? "ru-RU" : "en-GB", { timeZone: "UTC", weekday: "short", day: "numeric", month: "short", year: "numeric" }).format(new Date(Date.UTC(+a[0], +a[1] - 1, +a[2]))); }
+  function monthLabel(mkey) { var a = mkey.split("-"); var s = new Intl.DateTimeFormat(lang === "ru" ? "ru-RU" : "en-GB", { timeZone: "UTC", month: "long", year: "numeric" }).format(new Date(Date.UTC(+a[0], +a[1] - 1, 15))); return s.charAt(0).toUpperCase() + s.slice(1); }
+  function stamp(iso) { return new Intl.DateTimeFormat(lang === "ru" ? "ru-RU" : "en-GB", { timeZone: tz, dateStyle: "medium", timeStyle: "short" }).format(new Date(iso)); }
+
+  /* ---------- Build entries ---------- */
+  var apps = {}; (DATA.applications || []).forEach(function (a) { apps[a.id] = a; });
+  var entries = [];
+  (DATA.applications || []).forEach(function (a) {
+    var p = parts(a.sent_at);
+    entries.push({ id: "s:" + a.id, kind: "sent", p: p, app: a, result: a.outcome === "no_response" ? "pending" : a.outcome, note: a.note || "" });
+    if (a.bounce_at) entries.push({ id: "b:" + a.id, kind: "bounce", p: parts(a.bounce_at), app: a, result: "delivery_error", note: a.bounce_note || "" });
+  });
+  (DATA.responses || []).forEach(function (r) {
+    var a = apps[r.application_id]; if (!a) return;
+    entries.push({ id: "r:" + r.id, kind: "reply", p: parts(r.received_at), app: a, result: r.kind, note: r.note || "", sentp: parts(a.sent_at) });
+  });
+
+  /* ---------- Statistics (definitions follow DATA_CONTRACT §8) ---------- */
+  function statsFor(list) {
+    var s = { sent: 0, replies: 0, respApps: {}, pos: {}, rej: {}, wait: 0, err: {}, old: 0 };
+    list.forEach(function (e) {
+      if (e.kind === "sent") { s.sent++; if (e.app.outcome === "no_response") s.wait++; }
+      else if (e.kind === "reply") {
+        s.replies++; s.respApps[e.app.id] = 1;
+        if (e.sentp && e.sentp.mkey !== e.p.mkey) s.old++;
+        if (e.app.outcome === "positive") s.pos[e.app.id] = 1; else if (e.app.outcome === "rejected") s.rej[e.app.id] = 1;
+      } else if (e.kind === "bounce") s.err[e.app.id] = 1;
+    });
+    return { sent: s.sent, replies: s.replies, respApps: Object.keys(s.respApps).length, pos: Object.keys(s.pos).length, rej: Object.keys(s.rej).length, wait: s.wait, err: Object.keys(s.err).length, old: s.old };
+  }
+  var limit = (DATA.quota && DATA.quota.limit) || 44;
+  var reservedBy = (DATA.quota && DATA.quota.reserved) || {};
+  var usedOverride = (DATA.quota && DATA.quota.used) || {};
+  function usedIn(mkey) { if (usedOverride[mkey] !== undefined) return usedOverride[mkey]; return entries.filter(function (e) { return e.kind === "sent" && e.p.mkey === mkey; }).length; }
+  var nowKey = parts(DATA.generated_at).mkey;
+
+  /* ---------- Controls ---------- */
+  var selYear = document.getElementById("f-year"), selMonth = document.getElementById("f-month"), selSort = document.getElementById("f-sort"),
+      inpQ = document.getElementById("f-search"), chipBox = document.getElementById("f-result");
+  var years = [], monthsByYear = {};
+  entries.forEach(function (e) { if (years.indexOf(e.p.y) < 0) years.push(e.p.y); (monthsByYear[e.p.y] = monthsByYear[e.p.y] || {})[e.p.mkey] = 1; });
+  years.sort(function (a, b) { return b - a; });
+
+  function fillSelect(sel, items, current) {
+    sel.textContent = "";
+    items.forEach(function (it) { var o = el("option", "", it[1]); o.value = it[0]; if (it[0] === current) o.selected = true; sel.appendChild(o); });
+  }
+  function fillMonths() {
+    var items = [["all", t("all_months")]];
+    var ys = state.year === "all" ? years : [+state.year];
+    var keys = []; ys.forEach(function (y) { Object.keys(monthsByYear[y] || {}).forEach(function (k) { keys.push(k); }); }); keys.sort().reverse();
+    keys.forEach(function (k) { items.push([k, monthLabel(k)]); });
+    if (state.month !== "all" && keys.indexOf(state.month) < 0) state.month = "all";
+    fillSelect(selMonth, items, state.month);
+  }
+  function fillControls() {
+    fillSelect(selYear, [["all", t("all_years")]].concat(years.map(function (y) { return [String(y), String(y)]; })), state.year);
+    fillMonths();
+    fillSelect(selSort, [["date_desc", t("s_date_desc")], ["date_asc", t("s_date_asc")], ["res_good", t("s_res_good")], ["res_bad", t("s_res_bad")]], state.sort);
+    chipBox.textContent = "";
+    var counts = { all: entries.length };
+    entries.forEach(function (e) { counts[e.result] = (counts[e.result] || 0) + 1; });
+    ["all", "positive", "rejected", "pending", "needs_user", "delivery_error"].forEach(function (k) {
+      var b = el("button", "chip", t("r_" + k)); b.type = "button"; b.setAttribute("aria-pressed", state.result === k ? "true" : "false"); b.dataset.r = k;
+      b.appendChild(el("span", "n", String(counts[k] || 0))); chipBox.appendChild(b);
+    });
+    inpQ.value = state.q;
+  }
+
+  /* ---------- Rendering ---------- */
+  function badge(result) { return el("span", "badge " + (BADGE[result] || ""), t("r_" + result)); }
+  function tile(cls, value, label) { var d = el("div", "tile " + cls); d.appendChild(el("b", "", String(value))); d.appendChild(el("span", "", label)); return d; }
+  function mstat(value, label) { var d = el("div"); d.appendChild(el("b", "", String(value))); d.appendChild(el("span", "", label)); return d; }
+
+  function visible() {
+    var q = state.q.trim().toLowerCase();
+    return entries.filter(function (e) {
+      if (state.year !== "all" && String(e.p.y) !== state.year) return false;
+      if (state.month !== "all" && e.p.mkey !== state.month) return false;
+      if (state.result !== "all" && e.result !== state.result) return false;
+      if (q && (e.app.company + " " + e.app.city + " " + e.app.role).toLowerCase().indexOf(q) < 0) return false;
+      return true;
+    });
+  }
+  function rowCmp(sort) {
+    return function (a, b) {
+      if (sort === "res_good" || sort === "res_bad") {
+        var d = (RANK[a.result] - RANK[b.result]) * (sort === "res_good" ? 1 : -1); if (d) return d;
+      }
+      if (sort === "date_asc") return a.p.ts - b.p.ts;
+      return b.p.ts - a.p.ts;
+    };
+  }
+  function group(list) {
+    var Y = {};
+    list.forEach(function (e) { var y = (Y[e.p.y] = Y[e.p.y] || {}); var m = (y[e.p.mkey] = y[e.p.mkey] || {}); (m[e.p.key] = m[e.p.key] || []).push(e); });
+    return Y;
+  }
+
+  function render() {
+    var out = document.getElementById("out"); out.textContent = "";
+    var list = visible();
+    document.getElementById("count").textContent = t("showing").replace("{a}", list.length).replace("{b}", entries.length);
+    if (!list.length) { out.appendChild(el("div", "empty", t("none"))); return; }
+    var asc = state.sort === "date_asc";
+    var Y = group(list);
+    var ykeys = Object.keys(Y).map(Number).sort(function (a, b) { return asc ? a - b : b - a; });
+    var first = true;
+    ykeys.forEach(function (y) {
+      var yd = el("details", "year"); yd.open = true;
+      var ys = el("summary"); ys.appendChild(el("h2", "", String(y)));
+      var yst = statsFor(entries.filter(function (e) { return e.p.y === y; }));
+      ys.appendChild(el("span", "sum", yst.sent + " " + t("day_sent") + " · " + yst.replies + " " + t("day_replies") + " · " + yst.pos + " " + t("c_pos").toLowerCase()));
+      yd.appendChild(ys);
+      var mkeys = Object.keys(Y[y]).sort(); if (!asc) mkeys.reverse();
+      mkeys.forEach(function (mk) {
+        var md = el("details", "month"); md.open = first; first = false; md.dataset.mk = mk;
+        var ms = el("summary"); ms.appendChild(el("h3", "", monthLabel(mk)));
+        var all = entries.filter(function (e) { return e.p.mkey === mk; }); var st = statsFor(all);
+        var used = usedIn(mk), res = reservedBy[mk] || 0;
+        ms.appendChild(el("span", "sum", st.sent + " " + t("day_sent") + " · " + st.replies + " " + t("day_replies") + " · " + t("q_used").toLowerCase() + " " + used + "/" + limit));
+        md.appendChild(ms);
+        var stats = el("div", "mstats");
+        stats.appendChild(mstat(st.sent, t("c_sent"))); stats.appendChild(mstat(st.replies, t("c_replies"))); stats.appendChild(mstat(st.respApps, t("c_resp_apps")));
+        stats.appendChild(mstat(st.pos, t("c_pos"))); stats.appendChild(mstat(st.rej, t("c_rej"))); stats.appendChild(mstat(st.wait, t("c_wait")));
+        stats.appendChild(mstat(st.err, t("c_err"))); stats.appendChild(mstat(st.old, t("c_old")));
+        stats.appendChild(mstat(used + " / " + res + " / " + Math.max(0, limit - used - res), t("q_used") + " / " + t("q_reserved") + " / " + t("q_left")));
+        md.appendChild(stats);
+        var dkeys = Object.keys(Y[y][mk]).sort(); if (!asc) dkeys.reverse();
+        dkeys.forEach(function (dk) {
+          var rows = Y[y][mk][dk].slice().sort(rowCmp(state.sort));
+          var day = el("div", "day"); var h = el("h4", "", dayLabel(dk));
+          var ds = statsFor(rows); var bits = [];
+          if (ds.sent) bits.push(ds.sent + " " + t("day_sent")); if (ds.replies) bits.push(ds.replies + " " + t("day_replies")); if (ds.err) bits.push(ds.err + " " + t("day_errors"));
+          h.appendChild(el("small", "", bits.join(" · "))); day.appendChild(h);
+          var wrap = el("div", "tscroll"), tb = el("table"), th = el("thead"), hr = el("tr");
+          ["th_time", "th_event", "th_company", "th_role", "th_channel", "th_result", "th_note"].forEach(function (k) { var c = el("th", "", t(k)); c.scope = "col"; hr.appendChild(c); });
+          th.appendChild(hr); tb.appendChild(th); var body = el("tbody");
+          rows.forEach(function (e) {
+            var tr = el("tr");
+            tr.appendChild(el("td", "time", e.p.hh + ":" + e.p.mm));
+            var kd = el("td"); kd.appendChild(el("span", "kind " + e.kind, t("k_" + e.kind))); tr.appendChild(kd);
+            var cd = el("td"); cd.appendChild(el("span", "co", e.app.company)); cd.appendChild(el("span", "sub", e.app.city)); tr.appendChild(cd);
+            tr.appendChild(el("td", "", e.app.role)); tr.appendChild(el("td", "", e.app.channel));
+            var rd = el("td"); rd.appendChild(badge(e.result)); tr.appendChild(rd);
+            var note = e.note; if (e.kind === "reply" && e.sentp) note = (note ? note + " · " : "") + t("th_orig") + " " + dayLabel(e.sentp.key);
+            tr.appendChild(el("td", "", note)); body.appendChild(tr);
+          });
+          tb.appendChild(body); wrap.appendChild(tb); day.appendChild(wrap); md.appendChild(day);
+        });
+        yd.appendChild(md);
+      });
+      out.appendChild(yd);
+    });
+  }
+
+  /* ---------- Static texts ---------- */
+  function applyTexts() {
+    document.documentElement.lang = lang;
+    document.title = "HomenS.AI JobPilot | " + t("eyebrow");
+    document.querySelectorAll("[data-i]").forEach(function (n) { n.textContent = t(n.getAttribute("data-i")); });
+    document.querySelectorAll("[data-i-ph]").forEach(function (n) { n.placeholder = t(n.getAttribute("data-i-ph")); });
+    document.querySelectorAll("[data-i-label]").forEach(function (n) { var s = t(n.getAttribute("data-i-label")); n.setAttribute("aria-label", s); n.title = s; });
+    document.querySelectorAll(".langs button").forEach(function (b) { b.setAttribute("aria-pressed", b.dataset.lang === lang ? "true" : "false"); });
+    var help = document.getElementById("help-list"); help.textContent = "";
+    ["h1", "h2", "h3", "h4", "h5"].forEach(function (k) { help.appendChild(el("li", "", t(k))); });
+    // meta pills
+    var meta = document.getElementById("meta"); meta.textContent = "";
+    if (DATA.profile_id) meta.appendChild(el("span", "pill", t("profile") + ": " + DATA.profile_id));
+    meta.appendChild(el("span", "pill", t("tz") + ": " + tz));
+    meta.appendChild(el("span", "pill", t("gen") + ": " + stamp(DATA.generated_at)));
+    if (DATA.last_mail_check_at) meta.appendChild(el("span", "pill", t("mail") + ": " + stamp(DATA.last_mail_check_at)));
+    var age = Math.round((Date.now() - Date.parse(DATA.generated_at)) / 36e5);
+    if (DATA.demo) meta.appendChild(el("span", "pill info", t("sample")));
+    else if (age > 72) meta.appendChild(el("span", "pill warn", t("stale").replace("{h}", age)));
+    else meta.appendChild(el("span", "pill ok", t("fresh")));
+    document.getElementById("demo-note").hidden = !DATA.demo;
+    // quota of the snapshot month
+    var used = usedIn(nowKey), res = reservedBy[nowKey] || 0, left = Math.max(0, limit - used - res);
+    var bar = document.getElementById("quota-bar"); bar.children[0].style.width = (used / limit * 100) + "%"; bar.children[1].style.width = (res / limit * 100) + "%";
+    var txt = monthLabel(nowKey) + " — " + t("q_used") + ": " + used + " · " + t("q_reserved") + ": " + res + " · " + t("q_left") + ": " + left + " (" + limit + ")";
+    document.getElementById("quota-text").textContent = txt; bar.setAttribute("aria-label", txt);
+    // project navigation, only for the sample inside the repository
+    var nav = document.getElementById("demo-nav");
+    if (DATA.demo) {
+      var pre = lang === "ru" ? "../docs/ru/" : "../";
+      var items = [["overview", "PROJECT_OVERVIEW.html", ""], ["install", "overview_install.html", "teal"], ["profile", "overview_profile.html", "gold"], ["arch", "overview_architecture.html", ""], ["safety", "overview_safety.html", "teal"], ["market", "overview_market.html", "gold"], ["roadmap", "overview_roadmap.html", ""]];
+      nav.textContent = "";
+      items.forEach(function (it) { var a = el("a", "nav-link"); a.href = pre + it[1]; var d = el("i", "dot " + it[2]); d.setAttribute("aria-hidden", "true"); a.appendChild(d); a.appendChild(document.createTextNode(t("nav_" + it[0]))); nav.appendChild(a); });
+      var cur = el("a", "nav-link"); cur.href = "#"; cur.setAttribute("aria-current", "page"); var d2 = el("i", "dot teal"); d2.setAttribute("aria-hidden", "true"); cur.appendChild(d2); cur.appendChild(document.createTextNode(t("nav_stats"))); nav.appendChild(cur);
+      nav.hidden = false;
+      document.getElementById("brand").href = pre + "PROJECT_OVERVIEW.html";
+    } else { nav.hidden = true; document.getElementById("brand").removeAttribute("href"); }
+    fillControls(); render();
+  }
+
+  /* ---------- Events ---------- */
+  selYear.addEventListener("change", function () { state.year = selYear.value; fillMonths(); render(); });
+  selMonth.addEventListener("change", function () { state.month = selMonth.value; render(); });
+  selSort.addEventListener("change", function () { state.sort = selSort.value; render(); });
+  inpQ.addEventListener("input", function () { state.q = inpQ.value; render(); });
+  chipBox.addEventListener("click", function (ev) {
+    var b = ev.target.closest("button[data-r]"); if (!b) return; state.result = b.dataset.r;
+    chipBox.querySelectorAll("button").forEach(function (x) { x.setAttribute("aria-pressed", x === b ? "true" : "false"); }); render();
+  });
+  document.getElementById("expand").addEventListener("click", function () { document.querySelectorAll("#out details").forEach(function (d) { d.open = true; }); });
+  document.getElementById("collapse").addEventListener("click", function () { document.querySelectorAll("#out details.month").forEach(function (d) { d.open = false; }); });
+  document.getElementById("reset").addEventListener("click", function () { state = { year: "all", month: "all", sort: "date_desc", result: "all", q: "" }; fillControls(); render(); });
+  document.querySelectorAll(".langs button").forEach(function (b) {
+    b.addEventListener("click", function () {
+      lang = b.dataset.lang; applyTexts();
+      try { var u = new URL(location.href); u.searchParams.set("lang", lang); history.replaceState(null, "", u); } catch (e) { /* file URL: ignore */ }
+    });
+  });
+  document.getElementById("theme-btn").addEventListener("click", function () {
+    var root = document.documentElement;
+    var dark = root.getAttribute("data-theme") === "dark" || (!root.getAttribute("data-theme") && matchMedia("(prefers-color-scheme: dark)").matches);
+    var next = dark ? "light" : "dark"; root.setAttribute("data-theme", next);
+    try { localStorage.setItem("homensai.theme", next); } catch (e) { /* optional */ }
+  });
+  var top = document.getElementById("to-top");
+  function onScroll() { top.hidden = (window.pageYOffset || document.documentElement.scrollTop) < 300; }
+  top.addEventListener("click", function (e) { e.preventDefault(); window.scrollTo({ top: 0, behavior: "smooth" }); });
+  window.addEventListener("scroll", onScroll, { passive: true }); onScroll();
+
+  applyTexts();
+})();
+</script>
+</body>
+</html>
