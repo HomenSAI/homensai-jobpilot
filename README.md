@@ -65,3 +65,16 @@ The selected model is **PolyForm Noncommercial 1.0.0 for code** and **CC BY-NC 4
 The product is experimental. Discovery and assessment are performed by the chosen external agent; factual accuracy and employment are not guaranteed. Local storage does not mean information read by a cloud agent remains solely on the computer.
 
 Documentation © 2026 Serhii Khomenko / HomenS.AI · [CC BY-NC 4.0](https://creativecommons.org/licenses/by-nc/4.0/).
+
+## License
+
+Software and source code in HomenS.AI JobPilot are licensed under the
+[PolyForm Noncommercial License 1.0.0](LICENSE).
+
+Documentation is licensed under
+[CC BY-NC 4.0](https://creativecommons.org/licenses/by-nc/4.0/).
+
+Commercial use of the software is not permitted under the PolyForm Noncommercial License.
+
+Copyright © 2026 Serhii Khomenko / HomenS.AI  
+Contact: info@homensai.com
