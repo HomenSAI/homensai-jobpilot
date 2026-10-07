@@ -10,7 +10,7 @@ A local AI agent finds jobs near you, prepares tailored applications and keeps t
 
 ## What this repository contains
 
-Project documentation **1.2 (7 October 2026)**, an illustrated overview and a ready statistics page. It is **not a working application yet**: mail integration, scheduling, document generation and the builder of real statistics are not implemented. The documents do not connect any account and do not give permission to send anything.
+Project documentation **version 1.2.0 (7 October 2026)**, an illustrated overview and a ready statistics page. It is **not a working application yet**: mail integration, scheduling, document generation and the builder of real statistics are not implemented. The documents do not connect any account and do not give permission to send anything.
 
 English is the primary language and lives at the repository root; the complete Russian edition is in `docs/ru`. Both editions share the same rules, data formats and technical identifiers. The languages of the CV, cover letter, email and report are chosen separately from the interface language.
 
@@ -25,6 +25,7 @@ English is the primary language and lives at the repository root; the complete R
 | [DATA_CONTRACT.md](DATA_CONTRACT.md) | Records, events, states, the monthly limit, recovery and statistics |
 | [ACCEPTANCE_TESTS.md](ACCEPTANCE_TESTS.md) | Test scenarios for the future implementation. Not a report of passed tests |
 | [REVIEW.md](REVIEW.md) | Project status: what is done, what changed in 1.2, what remains |
+| [VERSION](VERSION), [CHANGELOG.md](CHANGELOG.md) | The current version (1.2.0) and the history of changes |
 | [examples/settings.example.json](examples/settings.example.json) | A neutral settings example without personal data. Not an active configuration |
 | [assets/](assets/) | Shared styles, scripts and IBM Plex fonts used by the pages |
 | [LICENSE](LICENSE), [.gitignore](.gitignore) | Code license; exclusion of local data and secrets from Git |
