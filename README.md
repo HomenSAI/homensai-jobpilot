@@ -7,7 +7,7 @@ Job discovery and personalized application management through a local AI agent.
 **Approved product name:** HomenS.AI JobPilot.  
 **Planned GitHub repository name:** `homensai-jobpilot`. The name is confirmed; creating and publishing the repository is a separate step.
 
-**Concept and project author:** Serhii Khomenko · [HomenS.AI](https://homensai.com/) · [Author on GitHub](https://github.com/HomenSAI) · info@homensai.com.
+**Author of the idea and developer:** Serhii Khomenko · [HomenS.AI](https://homensai.com/) · [Author on GitHub](https://github.com/HomenSAI) · info@homensai.com.
 
 ## What this folder contains
 
@@ -54,7 +54,7 @@ Platform constraints define the available actions. Within them, current user ins
 - No more than 44 actual CV submissions per person per calendar month, including repeat submissions and replacements. A new profile/chat does not reset the quota.
 - CV, cover-letter, email and report languages are selected independently. Reports are neutral and include results plus a separate market-recommendation page.
 - Setup defaults to draft_only. Gmail and external-action permissions are configured separately; no deleting, archiving or relabeling messages.
-- Original implementation based on Serhii Khomenko's concept. Code, templates and prompts from reviewed GitHub alternatives are not used.
+- Original design and development by Serhii Khomenko, author of the idea and developer. Code, templates and prompts from reviewed GitHub alternatives are not used.
 
 ## Publication and rights
 

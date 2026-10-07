@@ -3,7 +3,7 @@
 [English](../../REVIEW.md) | [Русский](REVIEW.md)
 
 **07.10.2026 · документация 1.0 → 1.1 → 1.2**
-Автор идеи и проекта: Serhii Khomenko / HomenS.AI · https://homensai.com/ · CC BY-NC 4.0.
+Автор идеи и разработчик: Serhii Khomenko / HomenS.AI · https://homensai.com/ · CC BY-NC 4.0.
 
 ## Что изучено
 

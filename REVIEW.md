@@ -3,7 +3,7 @@
 [English](REVIEW.md) | [Русский](docs/ru/REVIEW.md)
 
 **7 October 2026 · documentation 1.0 → 1.1 → 1.2**  
-Concept and project author: Serhii Khomenko / HomenS.AI · https://homensai.com/ · CC BY-NC 4.0.
+Author of the idea and developer: Serhii Khomenko / HomenS.AI · https://homensai.com/ · CC BY-NC 4.0.
 
 ## Scope
 
@@ -44,7 +44,7 @@ Authorship and visual identity remain in place. The agent and folder are require
 - A complete Claude Code user walkthrough; USER_GUIDE currently details Codex on Windows.
 - Execution of acceptance scenarios, mail recovery checks and shared quota tests.
 - LICENSE, LICENSE-DOCS, NOTICE, release-file rights checks and a real repository link.
-- Video production: only a storyboard exists, not an MP4.
+- Video production: only the walkthrough script exists, not an MP4.
 
 The added .gitignore and JSON example are useful now but do not demonstrate that the future system works. Test scenarios are not marked PASS without implementation and evidence.
 

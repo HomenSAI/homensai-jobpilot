@@ -2,7 +2,7 @@
 
 [English](ARCHITECTURE.md) | [Русский](docs/ru/ARCHITECTURE.md)
 
-7 October 2026 · Concept and project author: Serhii Khomenko / HomenS.AI · https://homensai.com/ · Documentation: CC BY-NC 4.0.
+7 October 2026 · Author of the idea and developer: Serhii Khomenko / HomenS.AI · https://homensai.com/ · Documentation: CC BY-NC 4.0.
 
 Status: design. The commands and modules described here still need to be implemented independently. This document supplements AI_BUILD_SPEC.md and DATA_CONTRACT.md. Servers, Docker and SQL are not required.
 
