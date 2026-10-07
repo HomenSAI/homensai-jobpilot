@@ -10,7 +10,7 @@ A local AI agent finds jobs near you, prepares tailored applications and keeps t
 
 ## What this repository contains
 
-Project documentation **version 1.3.0 (7 October 2026)**, an illustrated overview and a ready statistics page. There is **no program code**: the AI agent does the work by following the rules in these documents and keeps plain files. The instruction files for the agent (AGENTS.md, CLAUDE.md, TODO_FOR_AI.md) are not written yet, and mail connection, document generation and real statistics have not been tried. The documents do not connect any account and do not give permission to send anything.
+Project documentation **version 1.3.1 (7 October 2026)**, an illustrated overview and a ready statistics page. There is **no program code**: the AI agent does the work by following the rules in these documents and keeps plain files. The instruction files for the agent (AGENTS.md, CLAUDE.md, TODO_FOR_AI.md) are not written yet, and mail connection, document generation and real statistics have not been tried. The documents do not connect any account and do not give permission to send anything.
 
 English is the primary language and lives at the repository root; the complete Russian edition is in `docs/ru`. Both editions share the same rules, data formats and technical identifiers. The languages of the CV, cover letter, email and report are chosen separately from the interface language.
 
@@ -19,13 +19,13 @@ English is the primary language and lives at the repository root; the complete R
 | [PROJECT_OVERVIEW.html](PROJECT_OVERVIEW.html) | Illustrated overview with a menu: install, profile, architecture, safety, market, roadmap. Open it by double-clicking |
 | [overview_install.html](overview_install.html) | Step-by-step installation (the agent, then the project archive, then the connection) |
 | [USER_GUIDE.md](USER_GUIDE.md) | The same installation guide as Markdown |
-| [dashboard_template/index.html](dashboard_template/index.html) | The statistics page: years, months and days, sorting by date and result. Shows sample data |
+| [dashboard_template/index.html](dashboard_template/index.html) | The statistics page: years, months and days, sorting by date and result. The data is in `summary.js` next to it (sample data here) |
 | [AI_BUILD_SPEC.md](AI_BUILD_SPEC.md) | The rules and requirements for the AI agent |
 | [ARCHITECTURE.md](ARCHITECTURE.md) | The parts of the system, the person's journal, standard actions and resuming in a new chat |
 | [DATA_CONTRACT.md](DATA_CONTRACT.md) | Records, events, states, the monthly limit, recovery and statistics |
 | [ACCEPTANCE_TESTS.md](ACCEPTANCE_TESTS.md) | Checks to perform by hand in a chat, on synthetic data. Not a report of passed checks |
 | [REVIEW.md](REVIEW.md) | Project status: what is done, what changed in 1.3, what remains |
-| [VERSION](VERSION), [CHANGELOG.md](CHANGELOG.md) | The current version (1.3.0) and the history of changes |
+| [VERSION](VERSION), [CHANGELOG.md](CHANGELOG.md) | The current version (1.3.1) and the history of changes |
 | [examples/settings.example.json](examples/settings.example.json) | A neutral settings example without personal data. Not an active configuration |
 | [assets/](assets/) | Shared styles, scripts and IBM Plex fonts used by the pages |
 | [LICENSE](LICENSE), [.gitignore](.gitignore) | Code license; exclusion of local data and secrets from Git |

@@ -76,8 +76,8 @@ Planned instruction files (they are Markdown, not code, and do not exist yet): `
   dashboard/
     index.html                      # local entry page linking to profiles
     profiles/<profile_id>/
-      summary.json                  # this profile plus the person's shared quota
-      index.html                    # the same snapshot embedded in the page
+      summary.js                  # this profile plus the person's shared quota
+      index.html                    # an unchanged copy of dashboard_template/index.html
 ```
 
 The `Локальные_данные` directory name is a shared technical path in both language versions.
@@ -100,6 +100,7 @@ Rules for the agent:
 4. **A damaged or half-written last line** is not repaired silently. The agent stops, keeps the file as it is, tells the user and recovers from the last complete line and the mail evidence.
 5. **One writer at a time.** Before writing, the agent creates `writer.lock` containing the run id and the time. If the file already exists and is not its own, it stops and asks the user whether another chat is still working; it removes the lock only after the user confirms that no other chat is active. When the work is done, it deletes its own lock. This is a convention: it protects only if every chat follows it, which is why the user is asked to keep one chat working at a time.
 6. A quota or send decision always rereads the journal; a summary from an earlier part of the chat is never trusted.
+7. **Count with the system's own tool, not by eye.** To find out how many slots a month has used, the agent counts the journal lines that contain a `sent_verified` event recorded in that month, using a command that the operating system already has (on Windows, for example, `Select-String` and `Measure-Object` in PowerShell) and shows the number to the user. It compares the result with `quota.json`; if they differ, the journal is right and `quota.json` is rebuilt. The same applies to checksums of files (`Get-FileHash`). No script is added to the package for this.
 
 Document packages are first prepared in a temporary folder and checked. They are then saved as a new, numbered version folder (`v001`, `v002`), and only then registered in the journal with file names, sizes and, where the system's own tools can provide it, a checksum. A package that was accepted is never changed in place: a change creates a new version and returns the application to review.
 
@@ -182,7 +183,7 @@ For a report the agent counts once, from a fixed journal position, and copies th
 
 `dashboard/index.html` is a local entry page that links to the separate profile snapshots. A profile page includes only its own applications and the person's shared quota. Adding a profile does not put its data into another person's open snapshot.
 
-The statistics page contains its data as an embedded JSON block, the sorting and filtering, and the update time. The agent updates it by replacing that block. The page does not send commands and does not query Gmail. The agent writes the page file as a whole; the separate `summary.json` is checked against `snapshot_id` in the next session.
+The statistics page reads its data from the file `summary.js` next to it, and contains the sorting, the filtering and the update time. The agent writes only `summary.js`; the page file is a copy of the template and is never edited, so a mistake in the data cannot break the page. The page does not send commands and does not query Gmail. The agent writes `summary.js` as a whole and compares its `snapshot_id` with the reports in the next session.
 
 The journal grows by a few lines a day, which plain files handle easily. No indexes, queues or background workers are needed. The ability to rebuild every view from the full journal always remains.
 

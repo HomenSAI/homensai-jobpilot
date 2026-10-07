@@ -60,7 +60,7 @@ For each scenario record: ID, the version of the documents and the agent used, t
 | MARKET-01 | Sources are inaccessible and market size is unknown | The separate page exists and says “estimate unavailable,” without invented figures |
 | DASH-01 | Offline file:// opening, year/month selection, and sorting | No fetch or server; proper chronological sorting, not string sorting of DD.MM.YYYY values |
 | DASH-02 | A company name contains `</script><script>` or HTML | Content appears as literal text; no code executes |
-| DASH-03 | Failure between replacing JSON and HTML | A snapshot_id mismatch is detected on the next run; a consistent pair is rebuilt |
+| DASH-03 | `summary.js` is missing, damaged or stops half-written | The page says that the data file is missing or invalid and shows no numbers; the next session rewrites the file from the journal |
 | DASH-04 | An empty month, a stale snapshot, keyboard use, and a narrow screen | An empty state, update time, accessible filters, and a table with no loss of data |
 | DASH-05 | Sample file with several years and months; sort by result, filter “successful” / “unsuccessful”, search by company | Rows are grouped year → month → day; sorting by result puts the chosen result first within a day; filters show only matching rows and the count matches |
 | RESTORE-01 | Backup → separate folder → hash/journal reconciliation | History is restored; the copy does not automatically gain permission to send |
