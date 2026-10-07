@@ -2,13 +2,13 @@
 
 [English](CHANGELOG.md) | [Русский](docs/ru/CHANGELOG.md)
 
-The project version is in the file [VERSION](VERSION). While there is no program yet, the version describes the documentation set and the statistics page; from the first working code on, it is the version of the release as a whole.
+The project version is in the file [VERSION](VERSION). The project is a documentation package that an AI agent follows; there is no separate program, so this is the version of the package (documents, examples and the statistics page).
 
 Rules: `MAJOR.MINOR.PATCH`. MAJOR changes when data formats or rules change so that old data no longer fits. MINOR is a new feature or a new part of the documentation. PATCH is a fix or a wording change without new capabilities. Every change to `main` adds a line here; the number is raised when a release is made. Each release gets a git tag `vX.Y.Z`.
 
 ## 1.2.0 — 7 October 2026
 
-First tagged release. Documentation and the statistics page; no working program yet.
+First tagged release: the documentation and the statistics page.
 
 - Illustrated overview split into short pages with a menu (overview, install, profile, architecture, safety, market, roadmap), in English and Russian, in the visual style of homensai.com and HomenS.AI Core: light and dark theme, language switch, “Top” button, links to the author on every page. IBM Plex fonts are bundled (SIL OFL 1.1).
 - New statistics page `dashboard_template/index.html`: year → month → day, sorting by date and by result (successful / unsuccessful), filters, search, EN/RU. Shows synthetic sample data only.
