@@ -1,20 +1,20 @@
-# HomenS.AI JobPilot — Data Contract 1.2
+# HomenS.AI JobPilot — Data Contract 1.3
 
 [English](DATA_CONTRACT.md) | [Русский](docs/ru/DATA_CONTRACT.md)
 
-A design contract for an independently developed implementation. **The mechanisms described here have not been implemented yet.** Supplements AI_BUILD_SPEC.md; module boundaries are described in [ARCHITECTURE.md](ARCHITECTURE.md). This document does not authorize sending email.
+A contract for the files and procedures that the AI agent follows. **There is no program: nothing described here is enforced technically.** The agent keeps to it, and the user checks it with the acceptance scenarios. Supplements AI_BUILD_SPEC.md; the parts of the system are described in [ARCHITECTURE.md](ARCHITECTURE.md). This document does not authorize sending email.
 
 Author: Serhii Khomenko / HomenS.AI · https://homensai.com/ · documentation: CC BY-NC 4.0.
 
 ## 1. File-based database and source of truth
 
-The first version uses UTF-8 JSON for configuration and records, and JSONL for events. No SQL, servers, or external libraries. Every record has a `schema_version`; incompatible versions must not be rewritten automatically.
+The first version uses UTF-8 JSON for configuration and records, and JSONL for events. No SQL, servers, scripts or external libraries. Every record has a `schema_version`; incompatible versions must not be rewritten automatically.
 
 | Path relative to the root | Role |
 |---|---|
 | `Локальные_данные/persons/<person_id>/state/person.json` | Projection of the person's identity, quota time zone, and permitted profile_id values |
 | `Локальные_данные/persons/<person_id>/journal/transactions.jsonl` | The only primary journal: applications, profiles, messages, consent, and the shared quota |
-| `Локальные_данные/persons/<person_id>/journal/writer.lock` | One writer per person; not an authorization mechanism |
+| `Локальные_данные/persons/<person_id>/journal/writer.lock` | A marker file that exists only while one chat is writing; a convention, not an authorization mechanism |
 | `Локальные_данные/persons/<person_id>/state/quota.json` | Rebuildable projection of consumed and reserved slots |
 | `Локальные_данные/profiles/<profile_id>/profile.json` | Projection of confirmed objectives, facts, account, languages, and consent |
 | `Локальные_данные/profiles/<profile_id>/registry.json` | Rebuildable projection of companies, vacancies, applications, and the queue |
@@ -25,7 +25,7 @@ The first version uses UTF-8 JSON for configuration and records, and JSONL for e
 
 New events are first durably recorded in the journal, then projections are updated. Changing a projection without an event is prohibited. Correcting a fact or classification requires a new event with `supersedes_event_id`, not an edit to the past. Rebuilding a projection must not duplicate inf.txt lines: check event_id and the mail dedup_key.
 
-A failure between committing a transaction and updating registry/inf.txt is resolved by rebuilding projections. Quota and application changes belong to one primary journal record, not two independent journals. Each complete line is a transaction containing sequence, command_id, request_hash, previous_record_hash, events, and record_hash. The exact write and validation order is defined in ARCHITECTURE.md §4. Artifacts are saved as immutable versions first, then registered in the journal by reference and hash.
+A failure between writing a journal line and updating registry/inf.txt is resolved by rebuilding the views from the journal. Quota and application changes belong to one primary journal line, not to two independent journals. Each complete line is one completed action containing `sequence`, `action_id`, `events` and a short `result`. The write and check order is defined in ARCHITECTURE.md §4. Artifacts are saved as immutable versions first, then registered in the journal by reference (file names, sizes and, where available, a checksum).
 
 ## 2. Identifiers, paths, and time
 
@@ -83,9 +83,9 @@ A new substantive message may change the outcome. Previous responses remain in t
 
 ## 5. The 44-submission quota and send recovery
 
-The limit applies to the managed JobPilot workflow; it is not a Gmail limit. All managed submissions must pass through one verifiable preflight/reservation mechanism; a direct send that bypasses it is outside the authorized workflow. A prompt alone cannot enforce a technical restriction: do not enable operational automatic sending before the shared mechanism is implemented and tested. Manual submissions or submissions from an independent copy can be counted only when the user enters/reconciles them; the product does not claim to observe actions it does not know about.
+The limit applies to the managed JobPilot workflow; it is not a Gmail limit. All managed submissions must pass through the same written send check and slot reservation; a send that skips them is outside the authorized workflow. Because there is no program, a technical restriction cannot be enforced: the limit is kept by the agent following this procedure. Fully automatic sending is therefore off by default and is switched on only for a profile whose user has accepted this limitation and after the sending scenarios of ACCEPTANCE_TESTS.md have been checked in that user's environment. Manual submissions or submissions made from an independent copy are counted only when the user enters or reconciles them; the system does not claim to see actions it does not know about.
 
-The file contract assumes **one writer per person at any moment**. All changes to that person's profiles and quota acquire the same journal/writer.lock. Create the lock exclusively (`CreateNew` or equivalent), not by checking “file absent → write.” Store the owner/run_id and timestamp in the lock. It protects only a short local transaction; search, rendering, and external calls occur after release. A concurrent agent must not start sending while the lock is held. Do not delete a stale lock based on age alone: first establish that its owner is absent and reconcile pending operations.
+The file contract assumes **one writer per person at any moment**. All changes to that person's profiles and quota are written under the same `journal/writer.lock`. Before writing, the agent creates the file with its run_id and the time; if the file already exists and is not its own, it stops and asks the user whether another chat is still working. The lock covers only the short moment of writing; searching, rendering and external calls happen after it is removed. A second chat must not start sending while the lock exists. A lock is not removed because of its age alone: the user first confirms that its owner is no longer working, and unfinished operations are reconciled. The lock is a convention and protects only if every chat follows it.
 
 Actual sending follows this order:
 
@@ -96,7 +96,7 @@ Actual sending follows this order:
 5. If non-submission is proven, record failed_before_send and quota_released. If the outcome is unknown, keep pending/send_uncertain and block retries.
 6. The next session first recovers pending operations by reconciling mail/portal evidence. If the outcome cannot be proven, request a human decision; issuing another send request is prohibited.
 
-There is no promise of exactly-once delivery from Gmail. Local journal idempotency and evidence-based recovery prevent blind retries, but do not create a remote transaction. Independently implemented, verifiable tools must handle this, not just a prompt.
+There is no promise of exactly-once delivery from Gmail. Checking the journal before sending and evidence-based recovery prevent blind retries but do not create a remote transaction. The protection is procedural: the agent must follow the order above, and the user is told so.
 
 A CV actually sent and subsequently bounced consumes a slot. Preparation/planning does not consume a slot, but active reservations reduce availability. Ordinary replies without a CV do not consume quota; attaching the CV again consumes a new slot. A replacement is a new application with `replaces_application_id` and a shared `replacement_chain_id`; at most one replacement is permitted per chain.
 
@@ -106,9 +106,9 @@ At a month boundary, check the actual time and reserve a slot in the new month a
 
 ## 6. Writes, recovery, and backups
 
-Save JSON projections to a temporary sibling file, validate them by reading, then atomically rename/replace within the same directory. Append JSONL as a complete transaction line under the lock with flush/fsync. A truncated final line is a diagnosable failure: preserve the original, stop sending, and recover from the last complete record/evidence. Duplicate IDs with different content are conflicts. Repeating command_id with the same request returns the stored result; a new command with a stale expected_revision receives REVISION_CONFLICT.
+Write each view file completely: write a temporary file next to the target, read it back to check it, then replace the target. Add a journal line as a whole while holding `writer.lock`. A truncated final line is a failure to be diagnosed: keep the original, stop sending, and recover from the last complete line and the evidence. Duplicate IDs with different content are conflicts. Repeating an `action_id` returns the stored result; if the journal has moved on since the agent read it (a new line was added), the agent rereads it before continuing.
 
-Shared quota reservations and profile events are committed in one transaction. Rebuild projection state from the journal sequence; after diagnosis, discard a damaged checkpoint and rebuild from the journal. Damaged/incomplete primary history puts the system in preparation mode until reconciliation. The two-journal format of version 1.1 needs an explicit migration into a copy; formats are never mixed automatically.
+Quota reservations and profile events are written in one journal line. The views are rebuilt from the journal in order of `sequence`. A damaged or incomplete primary history puts the system in preparation mode until reconciliation. The two-journal format of version 1.1 needs an explicit migration into a copy; formats are never mixed automatically.
 
 Create backups with no active writers or as a consistent snapshot. Keep a file/hash manifest; test restoration in a separate folder with sending disabled. A restored copy does not become a second active sender. Importing old archives preserves an old path → application_id mapping, leaves originals unchanged, and does not activate another person's consent.
 
@@ -149,7 +149,7 @@ Display values from vacancies/messages using textContent, not innerHTML. When em
 
 ## 10. Readiness boundary
 
-This contract is not an implementation of locks, the journal, quota, or Gmail. Before operational sending, pass ACCEPTANCE_TESTS.md using synthetic data, separately confirm the mail tool, and verify recovery. Policies that are not technically enforced must be shown as “not implemented,” not as active protection.
+This contract describes files and procedures; it is not a technical protection of locks, the journal, the quota or Gmail. Before sending for real, pass the scenarios of ACCEPTANCE_TESTS.md by hand using synthetic data, separately confirm the mail tool, and check recovery. A rule that only the agent follows is described as a procedure, never as technical protection.
 
 ---
 

@@ -6,11 +6,11 @@
 
 ## Where the project stands
 
-**Finished:** the specification, architecture, data contract and acceptance scenarios (English and Russian); the illustrated overview with a menu and the step-by-step installation page; the statistics page with years, months and days, sorting by date and result, and filters (it works with sample data); a neutral settings example; the license for the code.
+**Finished:** the specification, architecture, data contract and acceptance scenarios (English and Russian); the illustrated overview with a menu and the step-by-step installation page; the statistics page with years, months and days, sorting by date and result, and filters (it works with sample data); a neutral settings example; the license.
 
-**Not built yet:** the local commands and the single JSONL journal; the agent's builder that fills the statistics page with real data; Gmail reading and controlled sending; the questionnaire; the document generators; passing the acceptance scenarios.
+**Not done yet:** the instruction files for the agent (AGENTS.md, CLAUDE.md, TODO_FOR_AI.md); checking a Gmail connection; performing the acceptance scenarios by hand; real data in the statistics page.
 
-Version 1.2 added ARCHITECTURE.md, the bilingual layout (English at the root, Russian in `docs/ru`), one transactional journal per person for quota and application events, and a shared calculation for reports and HTML. This improves the design; the executable system is not built.
+There is **no program code** and none is planned: the AI agent follows the written rules and keeps plain files. Version 1.2 added ARCHITECTURE.md, the bilingual layout (English at the root, Russian in `docs/ru`) and one journal per person for quota and application events. Version 1.3 removed the local commands, scripts and modules from the design: the journal, the limit and recovery are procedures that the agent follows, and the documents say openly that they are not technical locks.
 
 The review covered AI_BUILD_SPEC.md, the HTML overview and the user guide. Personal archives, Gmail and existing applications were not touched. Code from the reviewed GitHub alternatives was not used. The review checks the consistency of the project; it is not an audit of external services or of the labour market.
 
@@ -21,7 +21,7 @@ The review covered AI_BUILD_SPEC.md, the HTML overview and the user guide. Perso
 | No entry README; the start required files that did not exist | README lists the files that really exist and separates the documentation build from the future release |
 | The database format was left open | JSON/JSONL without SQL; DATA_CONTRACT defines identifiers, paths, the authoritative records and the projections |
 | The specification shared reports and logs, while the HTML kept them inside profiles | Reports and logs belong to a profile; the quota belongs to the person |
-| “Atomic quota” had no mechanism | Exclusive writer lock, reservation before the call, operation identifiers and recovery; 1.2 puts all primary records into one journal |
+| “Atomic quota” had no mechanism | Because there is no program, a written procedure: a single-writer marker file, a reservation line before the call, action identifiers and recovery; the documents state openly that this is procedural, not a technical lock |
 | An uncertain send could trigger a duplicate | `send_uncertain` keeps the reservation and requires reconciliation with evidence instead of a blind retry |
 | Reply, delivery and thank-you could collapse into one status | Submission, delivery, outcome and follow-up actions have separate states |
 | “Replies” could mean messages or applications | Separate counters for reply events and for applications with a reply, including late replies |
@@ -41,14 +41,14 @@ The product name is **HomenS.AI JobPilot** and the repository is `homensai-jobpi
 
 ## Remaining stages (none of them is a working feature yet)
 
-- Working tools, the questionnaire, the builder of the statistics snapshot and the document generator.
-- AGENTS.md, CLAUDE.md and TODO_FOR_AI.md, after the implementation stage is approved.
+- The instruction files AGENTS.md, CLAUDE.md and TODO_FOR_AI.md, with a checklist for every standard action.
+- The questionnaire and the document templates as instructions for the agent.
 - Choice and verification of a specific Gmail connection and its exact setup parameters.
 - A complete step-by-step setup for Claude Code; the installation guide currently details Codex on Windows.
-- Running the acceptance scenarios, mail recovery checks and shared-limit tests.
+- Performing the acceptance scenarios by hand: mail recovery, the shared limit, interrupted work, two chats at once.
 - LICENSE-DOCS, NOTICE and a rights check of all release files.
 
-The `.gitignore`, the JSON example and the statistics template are usable now, but they do not show that the future system works. Test scenarios are not marked PASS without an implementation and evidence.
+The `.gitignore`, the JSON example and the statistics template are usable now, but they do not show that the system works. Test scenarios are not marked PASS without a recorded hand check and evidence.
 
 ## Checks performed
 

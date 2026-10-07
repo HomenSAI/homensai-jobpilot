@@ -1,12 +1,12 @@
-# HomenS.AI JobPilot — acceptance scenarios 1.2
+# HomenS.AI JobPilot — acceptance scenarios 1.3
 
 [English](ACCEPTANCE_TESTS.md) | [Русский](docs/ru/ACCEPTANCE_TESTS.md)
 
 Author: Serhii Khomenko / HomenS.AI · https://homensai.com/ · CC BY-NC 4.0.
 
-**These are requirements for future verification, not results of completed tests.** Every scenario currently has the status “not run: operational implementation absent.” Test code must be independently written and all test data must be synthetic. Do not send test applications to real employers.
+**These are checks to be carried out, not results of completed tests.** There is no program to test: each scenario is performed **by hand, in a chat with the agent, on synthetic data**, and the agent's behaviour and the resulting files are judged against the expected result. Until a scenario is performed its status is “not run”. Never send test applications to real employers.
 
-After implementation, record for each scenario: ID, code/data version, initial conditions, actual result, PASS/FAIL/NOT RUN, evidence paths, and observed limitations. Checking documentation is not a substitute for testing the email integration.
+For each scenario record: ID, the version of the documents and the agent used, the starting conditions, the actual result, PASS/FAIL/NOT RUN, paths to the evidence (journal lines, files, screenshots) and the limitations observed. The record is kept in a Markdown log in the user's data folder. Reading the documentation is not a substitute for testing the mail connection. A pass shows that this agent followed the rules this time; it is not a guarantee for later runs.
 
 ## Basic scenarios
 
@@ -39,8 +39,8 @@ After implementation, record for each scenario: ID, code/data version, initial c
 | CAL-02 | A missed run and a daylight-saving transition | No catch-up batch is sent; missed items become overdue; ambiguous time is resolved explicitly |
 | CRASH-01 | Failure after reservation but before sending | The next run reconciles operation_id; it neither consumes nor releases a slot based on an assumption |
 | CRASH-02 | The service accepts an email but the call's response is lost | State is send_uncertain; SENT reconciliation produces exactly one confirmed record; no repeat send call occurs |
-| CRASH-03 | Failure after the single atomic reservation+send_started record but before projection updates | The reservation and application are restored from one transaction; inf.txt entries are not duplicated |
-| CRASH-04 | A truncated JSONL line and a stale lock | The original is preserved and sends stop; the lock is not removed solely because a timeout elapsed |
+| CRASH-03 | The chat stops after the single journal line with reservation + send_started but before the views are updated | The reservation and application are restored from that one line; inf.txt entries are not duplicated |
+| CRASH-04 | A truncated last journal line and a leftover writer.lock | The original is preserved and sends stop; the lock is not removed solely because of its age; the user is asked |
 | MONTH-01 | An uncertain send in the month's final minute | All new sends for the person remain blocked pending reconciliation; time and month are not guessed |
 
 ## Email, reports, and the local page
@@ -68,23 +68,23 @@ After implementation, record for each scenario: ID, code/data version, initial c
 
 ## Acceptance by stage
 
-Additional checks for architecture 1.2:
+Additional checks for architecture 1.3 (rules and files):
 
 | ID | Conditions and action | Expected result |
 |---|---|---|
-| TX-01 | Repeat command_id with the same/different request_hash | The previous result / IDEMPOTENCY_CONFLICT; no extra events |
-| TX-02 | Two new commands with the same expected_revision | One commits; the other receives REVISION_CONFLICT |
-| TX-03 | A damaged checkpoint with an intact journal | The snapshot is rebuilt; authoritative history and quota are preserved |
-| RUN-01 | A new chat after send_started | run.resume finds the attempt and invokes reconcile, not another send |
-| MAIL-07 | Failure before completing an incoming-message page | The cursor is not advanced; replaying the page creates no duplicates |
-| ADAPTER-01 | The tool cannot confirm SENT, or only agent_bridge is available | Capabilities are reported accurately; scheduled_send is not declared ready |
+| TX-01 | The same action_id is asked for again, once with the same and once with a different request | The earlier result is reported; no extra events are added |
+| TX-02 | Two chats try to write at the same time (writer.lock exists) | The second chat stops and asks the user; it neither overwrites the lock nor writes |
+| TX-03 | A view file (quota.json or registry.json) is damaged or missing, the journal is intact | The view is rebuilt from the journal; history and quota are preserved |
+| RUN-01 | A new chat after send_started | “Resume work” finds the attempt and reconciles it; it does not send again |
+| MAIL-07 | The chat stops before a whole page of incoming messages is processed | The mail position is not advanced; reading the page again creates no duplicates |
+| ADAPTER-01 | The agent's mail tool cannot confirm SENT | Capabilities are reported accurately; scheduled automatic sending is not declared ready |
 | L10N-01 | Switch documentation or UI between en/ru | Rules, IDs, and counters match; CV/report languages do not change |
-| PROJECTION-01 | Generate PDF and HTML from the same source_revision | Final business counters are identical |
+| PROJECTION-01 | Build the PDF and the statistics page from the same journal position | The final business counters are identical |
 
 1. File workflow: BOOT, PATH, PROFILE, FACT, PRIVACY, journal, and recovery. No email sending.
 2. Documents/search/dashboard: verifiable sources, languages, DOC/TEMPLATE, SEARCH/ROUTE, and DASH.
 3. Read-only email: selected account, complete threads, MAIL and REPORT using synthetic fixtures/a controlled account.
-4. Sending: CONSENT, SUBJECT, QUOTA, CAL, CRASH, and MONTH. Do not enable the automatic queue until these pass.
+4. Sending: CONSENT, SUBJECT, QUOTA, CAL, CRASH, and MONTH. Do not enable the automatic queue until these pass in your own environment.
 5. Release: RESTORE, RELEASE, licenses/attribution, and current instructions for supported agents. Report passed stages separately; do not claim the whole product is ready based on one check.
 
 ---

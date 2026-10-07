@@ -2,7 +2,7 @@
 
 [English](USER_GUIDE.md) | [Русский](docs/ru/USER_GUIDE.md)
 
-**Draft 1.2 · 2026-10-07** · The same guide is available as a web page with a menu: [overview_install.html](overview_install.html).
+**Draft 1.3 · 2026-10-07** · The same guide is available as a web page with a menu: [overview_install.html](overview_install.html).
 **For:** Windows and ChatGPT Desktop with Codex. Claude Code is an alternative; its full step-by-step setup is not written yet.
 
 The setup takes about 30–40 minutes. Do the steps in order. Every step says what you should see on the screen, so you always know whether it worked. No Git, Python or other developer tools are needed on your computer.
