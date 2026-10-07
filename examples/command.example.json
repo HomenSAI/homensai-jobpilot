@@ -1,0 +1,15 @@
+{
+  "schema_version": "1.2",
+  "example_only": true,
+  "_notice": "Copyright (c) 2026 Serhii Khomenko. HomenS.AI JobPilot. https://homensai.com/ . Documentation example: CC BY-NC 4.0. Not an active task.",
+  "command": "queue.plan",
+  "command_id": "00000000-0000-4000-8000-000000000003",
+  "person_id": "00000000-0000-4000-8000-000000000001",
+  "profile_id": "00000000-0000-4000-8000-000000000002",
+  "expected_revision": 0,
+  "payload": {
+    "month": "2026-11",
+    "application_ids": [],
+    "mode": "preview"
+  }
+}

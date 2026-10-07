@@ -1,0 +1,19 @@
+# HomenS.AI JobPilot — Serhii Khomenko — https://homensai.com/
+# Personal data and secrets must not enter a public repository.
+/Локальные_данные/
+/local_data/
+.env
+.env.*
+!.env.example
+credentials*.json
+token*.json
+*.pem
+*.key
+/backups/
+/tmp/
+__pycache__/
+*.py[cod]
+.DS_Store
+Thumbs.db
+# Future render/test output is local, not release content.
+/test-output/

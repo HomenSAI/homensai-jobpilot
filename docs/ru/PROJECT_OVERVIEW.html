@@ -1,0 +1,295 @@
+<!doctype html>
+<!-- Copyright (c) 2026 Serhii Khomenko. HomenS.AI JobPilot. https://homensai.com/
+     Code/markup: PolyForm Noncommercial 1.0.0 — https://polyformproject.org/licenses/noncommercial/1.0.0
+     Documentation text: CC BY-NC 4.0 — https://creativecommons.org/licenses/by-nc/4.0/ -->
+<html lang="ru">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="author" content="Serhii Khomenko"><meta name="description" content="HomenS.AI JobPilot: проектная архитектура локальной системы поиска работы, подготовки заявок и учета ответов.">
+<title>HomenS.AI JobPilot | Поиск работы и управление заявками</title>
+<style>
+    :root {
+      color-scheme: light;
+      --bg: #edf1f4;
+      --surface: #f9fbfc;
+      --ink: #14212e;
+      --ink-2: #44525f;
+      --ink-3: #5d6975;
+      --line: #d9e0e6;
+      --blue: #1e4f8a;
+      --teal: #147283;
+      --gold: #7d5f16;
+      --logo-gold: #c9a24a;
+      --logo-cyan: #2bb3c4;
+      --soft-blue: #e7eef5;
+      --soft-teal: #e6f2f2;
+      --radius: 18px;
+      --max: 1120px;
+      font-family: "IBM Plex Sans", "Segoe UI", sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: var(--bg); color: var(--ink); line-height: 1.6; }
+    a { color: var(--blue); text-underline-offset: .18em; }
+    a:focus-visible { outline: 3px solid var(--gold); outline-offset: 3px; }
+    .skip-link { position: absolute; left: 16px; top: -100px; padding: 10px 16px; background: var(--surface); z-index: 10; }
+    .skip-link:focus { top: 12px; }
+    .contents { display: flex; flex-wrap: wrap; gap: 10px 22px; padding: 14px 0; border-block: 1px solid var(--line); }
+    section[id] { scroll-margin-top: 20px; }
+    .shell { max-width: var(--max); margin: 0 auto; padding: 28px 22px 56px; }
+    header { display: flex; justify-content: space-between; align-items: center; gap: 16px; padding: 6px 0 34px; }
+    .brand { display: flex; gap: 12px; align-items: center; color: var(--ink); text-decoration: none; font-weight: 600; }
+    .mark { width: 42px; height: 42px; flex: 0 0 42px; display: block; }
+    .brand-lockup { display: grid; line-height: 1.12; }
+    .brand-lockup strong { font-size: 1.02rem; letter-spacing: -.02em; }
+    .brand-lockup small { margin-top: 4px; color: var(--ink-3); font-size: .75rem; font-weight: 400; letter-spacing: .02em; }
+    .status { color: var(--ink-2); border: 1px solid var(--line); background: var(--surface); border-radius: 999px; padding: 6px 12px; font: .78rem "IBM Plex Mono", Consolas, monospace; }
+    .hero { padding: clamp(28px, 6vw, 70px); background-color: var(--surface); background-image: linear-gradient(to right, rgba(217,224,230,.56) 1px, transparent 1px), linear-gradient(to bottom, rgba(217,224,230,.56) 1px, transparent 1px); background-size: 32px 32px; border: 1px solid var(--line); border-radius: 26px; box-shadow: 0 18px 50px #14212e0c; }
+    .eyebrow { color: var(--gold); letter-spacing: .12em; text-transform: uppercase; font: 600 .78rem "IBM Plex Mono", Consolas, monospace; }
+    h1 { max-width: 850px; margin: 12px 0 18px; line-height: 1.1; font-size: clamp(2.2rem, 5vw, 4rem); letter-spacing: -.04em; }
+    h2 { margin: 0 0 16px; line-height: 1.2; font-size: clamp(1.55rem, 3vw, 2.15rem); letter-spacing: -.025em; }
+    h3 { margin: 0 0 8px; font-size: 1.12rem; }
+    p { margin: 0 0 12px; color: var(--ink-2); }
+    .lead { max-width: 760px; font-size: 1.15rem; }
+    .hero-note { margin-top: 24px; padding: 14px 16px; border-left: 4px solid var(--gold); background: #f7f3e9; color: var(--ink-2); border-radius: 0 12px 12px 0; }
+    section { margin-top: 52px; }
+    .section-intro { max-width: 760px; margin-bottom: 20px; }
+    .flow { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; counter-reset: step; padding: 0; list-style: none; }
+    .flow li { min-height: 150px; position: relative; padding: 20px; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); }
+    .flow li::before { counter-increment: step; content: "0" counter(step); display: block; color: var(--gold); font-family: "IBM Plex Mono", Consolas, monospace; margin-bottom: 18px; }
+    .flow li:not(:nth-child(4n))::after { content: "→"; position: absolute; right: -14px; top: 48%; z-index: 1; color: var(--teal); font-weight: 600; }
+    .flow strong { display: block; margin-bottom: 6px; }
+    .flow span { color: var(--ink-2); font-size: .95rem; }
+    .two-col { display: grid; grid-template-columns: 1.15fr .85fr; gap: 18px; align-items: start; }
+    .panel { padding: 24px; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); }
+    .panel.blue { background: var(--soft-blue); border-color: #d4e0eb; }
+    .panel.teal { background: var(--soft-teal); border-color: #d0e6e5; }
+    .panel ul { margin: 12px 0 0; padding-left: 1.15rem; color: var(--ink-2); }
+    .panel li { margin: 7px 0; }
+    .profile-form { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+    .profile-form article { min-height: 124px; padding: 18px; border-radius: 14px; background: var(--surface); border: 1px solid var(--line); }
+    .profile-form small { color: var(--ink-3); }
+    .filetree { overflow-wrap: anywhere; white-space: pre-wrap; margin: 14px 0 0; padding: 18px; border-radius: 14px; background: #14212e; color: #f2f5f7; font: .9rem/1.7 "IBM Plex Mono", Consolas, monospace; }
+    .safety { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+    .safety article { padding: 20px; border-top: 3px solid var(--teal); background: var(--surface); border-radius: 0 0 14px 14px; }
+    .safety article:nth-child(2) { border-top-color: var(--gold); }
+    .safety article:nth-child(3) { border-top-color: var(--blue); }
+    .scenes { display: grid; gap: 10px; }
+    .scene { display: grid; grid-template-columns: 80px 1fr; gap: 14px; align-items: start; padding: 14px 16px; background: var(--surface); border: 1px solid var(--line); border-radius: 12px; }
+    .scene time { color: var(--gold); font: 500 .94rem "IBM Plex Mono", Consolas, monospace; }
+    .scene p { margin: 0; }
+    .table-wrap { overflow-x: auto; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); }
+    .comparison { width: 100%; min-width: 760px; border-collapse: collapse; }
+    .comparison th, .comparison td { padding: 14px 16px; border-bottom: 1px solid var(--line); vertical-align: top; text-align: left; }
+    .comparison th { color: var(--ink-3); font: 600 .78rem "IBM Plex Mono", Consolas, monospace; text-transform: uppercase; letter-spacing: .08em; }
+    .comparison tr:last-child td { border-bottom: 0; }
+    .comparison td:first-child { min-width: 160px; color: var(--ink); font-weight: 600; }
+    footer { margin-top: 56px; padding-top: 24px; border-top: 1px solid var(--line); color: var(--ink-3); font-size: .92rem; }
+    .links { display: flex; flex-wrap: wrap; gap: 14px; margin: 14px 0; }
+    @media (max-width: 760px) {
+      .shell { padding-inline: 16px; }
+      header { align-items: flex-start; flex-direction: column; }
+      .flow { grid-template-columns: repeat(2, 1fr); }
+      .flow li:not(:nth-child(4n))::after { content: none; }
+      .flow li:nth-child(odd)::after { content: "→"; display: block; position: absolute; right: -14px; top: 48%; color: var(--teal); }
+      .two-col, .safety { grid-template-columns: 1fr; }
+      .profile-form { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 440px) {
+      .flow, .profile-form { grid-template-columns: 1fr; }
+      .flow li::after { content: none !important; }
+      .scene { grid-template-columns: 1fr; gap: 4px; }
+    }
+    @media print {
+      body { background: white; }
+      .shell { max-width: none; padding: 0; }
+      .hero, .panel, .flow li, .profile-form article, .safety article, .scene { box-shadow: none; break-inside: avoid; }
+      a { color: var(--ink); }
+    }
+  
+    .language-switch { display:flex; flex-wrap:wrap; align-items:center; gap:12px; margin-bottom:20px; }
+    .language-switch a[aria-current="page"] { font-weight:700; text-decoration:none; padding:4px 10px; border:1px solid var(--line); border-radius:999px; background:var(--surface); }
+    .architecture { padding:24px; border:1px solid var(--line); border-radius:var(--radius); background:var(--surface); }
+    .arch-node { padding:16px 20px; border:1px solid #d0e6e5; background:var(--soft-teal); border-radius:12px; }
+    .arch-node strong,.arch-node span { display:block; }
+    .arch-node span { color:var(--ink-2); font-size:.94rem; margin-top:4px; }
+    .arch-split { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+    .arch-split .arch-node:last-child { background:var(--soft-blue); border-color:#d4e0eb; }
+    .arch-arrow { text-align:center; color:var(--teal); font-size:1.5rem; line-height:1.5; }
+    code { overflow-wrap:anywhere; }
+    @media (max-width:760px) { .arch-split { grid-template-columns:1fr; } }
+</style></head><body>
+<a class="skip-link" href="#title">Перейти к описанию проекта</a><main class="shell">
+<header><a class="brand" href="https://homensai.com/" aria-label="HomenS.AI — сайт Serhii Khomenko"><svg class="mark" viewBox="0 0 100 100" aria-hidden="true"><path d="M50.0 13.0 L48.1 13.1 L46.1 13.2 L44.2 13.5 L42.3 13.8 L42.2 21.0 L40.7 21.5 L39.2 22.0 L37.8 22.6 L36.4 23.3 L31.5 18.0 L29.8 19.0 L28.3 20.1 L26.7 21.2 L25.2 22.5 L28.8 28.8 L27.7 29.9 L26.7 31.1 L25.7 32.4 L24.8 33.7 L18.0 31.5 L17.0 33.2 L16.2 35.0 L15.5 36.7 L14.8 38.6 L21.0 42.2 L20.7 43.8 L20.4 45.3 L20.2 46.9 L20.0 48.4 L13.0 50.0 L13.1 51.9 L13.2 53.9 L13.5 55.8 L13.8 57.7 L21.0 57.8 L21.5 59.3 L22.0 60.8 L22.6 62.2 L23.3 63.6 L18.0 68.5 L19.0 70.2 L20.1 71.7 L21.2 73.3 L22.5 74.8 L28.8 71.2 L29.9 72.3 L31.1 73.3 L32.4 74.3 L33.7 75.2 L31.5 82.0 L33.2 83.0 L35.0 83.8 L36.7 84.5 L38.6 85.2 L42.2 79.0 L43.8 79.3 L45.3 79.6 L46.9 79.8 L48.4 80.0 L50.0 87.0 Z" fill="#c9a24a"/><path d="M50 20 A30 30 0 0 1 50 80" fill="none" stroke="#2bb3c4" stroke-width="5"/><g fill="none" stroke="#2bb3c4" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M50 36 H64 L70 30"/><path d="M50 50 H72"/><path d="M50 64 H62 L68 70"/></g><g fill="#2bb3c4"><circle cx="71" cy="29" r="4"/><circle cx="74" cy="50" r="4"/><circle cx="69" cy="71" r="4"/></g><circle cx="50" cy="50" r="9" fill="currentColor"/><circle cx="50" cy="50" r="3.5" fill="#c9a24a"/></svg><span class="brand-lockup"><strong>HomenS.A Inc.</strong><small>Serhii Khomenko · HomenS.AI</small></span></a><span class="status">Проектная документация · 1.2 · 07.10.2026</span></header>
+<nav class="language-switch" aria-label="Язык документации"><a href="../../PROJECT_OVERVIEW.html" lang="en" hreflang="en">English</a><a href="PROJECT_OVERVIEW.html" lang="ru" hreflang="ru" aria-current="page">Русский</a></nav>
+<nav class="contents" aria-label="Разделы проекта"><a href="#agent-title">Как запускать</a><a href="#architecture-title">Архитектура</a><a href="#profile-title">Профиль</a><a href="#data-title">База и учет</a><a href="#improvements-title">Улучшения 1.2</a><a href="#permissions-title">Разрешения</a><a href="README.md">Файлы и статус</a></nav>
+<section class="hero" aria-labelledby="title"><div class="eyebrow">Поиск работы · Управление заявками</div><h1 id="title">HomenS.AI JobPilot</h1>
+<p>Название утверждено автором. Имя будущего GitHub-репозитория: <code>homensai-jobpilot</code>; публикация — отдельный этап.</p>
+<p><strong>Сейчас это документация, не работающая система.</strong> Команды, почтовая интеграция, анкета, генераторы и дашборд еще не реализованы. <a href="README.md">Фактический состав комплекта</a>.</p>
+<p class="lead">Локальный агент Codex или Claude Code и папка проекта помогают вести поиск, готовить индивидуальные заявки, учитывать ответы и собирать отчеты. Малые локальные инструменты будут проверять квоту и состояние операций.</p>
+<div class="hero-note">Сначала — мастер-профиль из документов и ответов человека с подтверждением фактов. Затем — резюме под конкретную вакансию. Краткое старое CV не считается полной биографией.</div>
+<div class="hero-note"><strong>Статическая статистика обязательна.</strong> Агент обновляет HTML-снимок; пользователь открывает его локально и смотрит таблицы. Страница работает без сервера, Docker и сетевых запросов, не изменяет базу и не получает доступ к Gmail.</div>
+<div class="hero-note"><strong>Авторская идея Serhii Khomenko · самостоятельная реализация.</strong> Требования основаны на его собственном процессе. Сторонний код просмотренных GitHub-проектов не использовался и не будет использоваться; ссылки ниже служат только обзору рынка.</div></section>
+<section id="agent-title">
+<h2>Запуск: папка, локальный агент и статистика</h2>
+<p class="section-intro">Распакованная папка и локальный агент Codex или Claude Code — обязательные части проекта. Английский — основной язык документации; русская версия находится в том же проекте. Языки CV, сопроводительных материалов и отчета пользователь выбирает независимо.</p>
+<div class="two-col"><article class="panel blue"><h3>Запуск через Codex</h3><ol>
+<li>Установить ChatGPT Desktop с <a href="https://chatgpt.com/download/">официальной страницы</a>, войти и выбрать Codex.</li>
+<li>Скачать ZIP опубликованного проекта и распаковать в отдельную локальную папку.</li>
+<li>В Codex открыть Projects → Add local project/Open folder, выбрать корень распакованного проекта и назначить его основной папкой.</li>
+<li>Создать новый чат внутри этого локального проекта.</li>
+<li>Выбрать Ask for approval и разрешить работу с папкой проекта.</li>
+<li>Попросить прочитать README, руководство, правила и спецификацию. В будущем рабочем релизе агент также читает AGENTS.md и TODO_FOR_AI.md.</li>
+</ol><p><a href="USER_GUIDE.md">Полное пошаговое руководство</a> · <a href="https://learn.chatgpt.com/docs/projects">Локальные проекты Codex</a> · <a href="https://learn.chatgpt.com/docs/permission-modes">Режимы разрешений</a></p>
+<p>Текущий комплект содержит проектные документы. Стартовый запрос для этой стадии приведен в README; он не запускает еще не реализованные инструменты.</p></article>
+<article class="panel teal"><h3>Что делает агент</h3><p>Проверяет папку и доступные инструменты, уточняет недостающие данные, выполняет разрешенные действия и сохраняет их результат. Одного пути в сообщении недостаточно: папка должна быть открыта как локальный проект с доступом к файлам.</p>
+<p>В будущем релизе новый чат начинает с <code>run.resume</code>: читает сохраненное состояние, незавершенные операции и следующий шаг. История чата не заменяет журнал проекта.</p>
+<p>Агент обновляет отдельные снимки профилей: <code>dashboard/profiles/&lt;profile_id&gt;/summary.json</code> и <code>index.html</code>. Локальный вход <code>dashboard/index.html</code> открывает нужный профиль. Страница показывает таблицы по годам и месяцам, сортирует даты и фильтрует строки.</p></article></div>
+</section>
+
+<section id="architecture-title">
+<h2>Архитектура 1.2: работа по команде, состояние в файлах</h2>
+<p class="section-intro">Агент исследует рынок и готовит тексты. Небольшие локальные инструменты проверяют правила и сохраняют результаты. Каждый инструмент выполняет команду и завершается; постоянный сервер и Docker не нужны. Ниже — схема будущей реализации.</p>
+<div class="architecture" role="group" aria-label="Схема будущей архитектуры">
+<div class="arch-node"><strong>Пользователь и чат</strong><span>Codex / Claude Code · вопросы, поиск и тексты</span></div><div class="arch-arrow" aria-hidden="true">↓</div>
+<div class="arch-node"><strong>Локальные команды</strong><span>Короткий запуск → проверка → сохраненный результат</span></div><div class="arch-arrow" aria-hidden="true">↓</div>
+<div class="arch-split"><div class="arch-node"><strong>Правила + журнал человека</strong><span>Профиль, календарь, квота 44; одна транзакция на операцию</span></div><div class="arch-node"><strong>Почтовый адаптер ↔ Gmail</strong><span>Внешнее подключение: чтение, разрешенная отправка, проверка</span></div></div>
+<div class="arch-arrow" aria-hidden="true">↓</div><div class="arch-node"><strong>Документы и локальная статистика</strong><span>Карточки, очередь, DOCX/PDF, HTML по профилям</span></div></div>
+<p class="hero-note">Один человек — один первичный журнал <code>persons/&lt;person_id&gt;/journal/transactions.jsonl</code> и один <code>writer.lock</code>. Реестры профилей, очередь, <code>inf.txt</code> и статистика восстанавливаются из этого журнала. Это позволяет учитывать несколько направлений поиска в общей квоте и продолжать работу из нового чата без повторной отправки.</p>
+<p>Команды <code>run.resume</code>, <code>send.preflight</code>, <code>send.execute</code> и сборка снимков пока описаны как контракт, но еще не реализованы. Почтовой адаптер сообщает реально доступные возможности; подключение аккаунта само по себе не доказывает готовность автоматической отправки. <a href="ARCHITECTURE.md">Подробная архитектура</a> · <a href="DATA_CONTRACT.md">Контракт данных</a>.</p>
+</section>
+
+<section id="flow-title">
+<h2>Как проходит одна заявка</h2><p>Агент ведет процесс в чате; проверяемое состояние сохраняется в проектной папке.</p><ol class="flow">
+<li><strong>Профиль</strong><span>CV, документы и анкета с подтверждением фактов.</span></li>
+<li><strong>Поиск</strong><span>Фирмы и вакансии в заданном радиусе; сначала ближайшие и удобные по дороге.</span></li>
+<li><strong>Подбор</strong><span>Сопоставление требований с подтвержденным опытом человека.</span></li>
+<li><strong>Документы</strong><span>Адресные CV, сопроводительное письмо, текст email и визуальная проверка PDF.</span></li>
+<li><strong>План</strong><span>Сразу, каждый рабочий день или через день; время, праздники и квота учитываются.</span></li>
+<li><strong>Gmail</strong><span>Разрешенное подключение, проверка адресата, вложений и всей цепочки.</span></li>
+<li><strong>Контроль</strong><span>Ответы, недоставка, проверка отправки и запись уникальных событий.</span></li>
+<li><strong>Отчет</strong><span>Сводка на выбранном языке и отдельная страница рекомендаций по рынку.</span></li></ol>
+<p>Пользователь выбирает радиус, автомобиль или общественный транспорт. Проверяются время в пути, пересадки, пеший участок и возможность вернуться вечером. Добавление городов не меняет заданные приоритеты; география расширяется постепенно.</p>
+</section>
+
+<section id="profile-title">
+<h2>Мастер-профиль: больше, чем резюме</h2><p class="section-intro">Пользователь сохраняет CV и материалы в локальной папке профиля или заполняет анкету. Агент показывает извлеченные сведения и их источники для подтверждения. Полная биография остается в проекте, а в заявку попадает релевантная часть.</p>
+<div class="profile-form">
+<article><h3>Опыт</h3><small>Работодатели, должности, даты, задачи, инструменты, команда, результаты.</small></article>
+<article><h3>Образование</h3><small>Школа, профессия, вуз, курсы, признание квалификации, дипломы и сертификаты.</small></article>
+<article><h3>Навыки</h3><small>Языки, цифровые и технические навыки, уровень и подтверждающие примеры.</small></article>
+<article><h3>Проекты</h3><small>Практика, волонтерство, портфолио, неформальное обучение и достижения.</small></article>
+<article><h3>Предпочтения</h3><small>Роли, формат работы, радиус, транспорт, время дороги и график.</small></article>
+<article><h3>Языки и отчет</h3><small>Независимый выбор языка CV, сопроводительного письма, email и отчета; необязательный шаблон.</small></article>
+<article><h3>Источники</h3><small>Документ или самоописание, дата, статус проверки и разрешение на использование.</small></article>
+</div><p class="hero-note"><strong>Нейтральный отчет на выбранном языке.</strong> Агент работает с копией пользовательского шаблона, сохраняя оригинал. Без шаблона создается таблица с фамилией, именем, периодом, датой подачи, фирмой, вакансией, каналом, датой ответа и кратким результатом. Ведомственные поля и чужая символика автоматически не добавляются. Отсутствие ответа обозначается на языке отчета; если ответ есть, указывается краткая причина или решение, а не факт отправки благодарности.</p>
+</section>
+
+<section id="research-title">
+<h2>Анкета — полная база для адресных документов</h2><p class="section-intro">Мастер-профиль хранит широкий набор подтвержденных навыков и опыта. Для каждой подачи агент составляет краткое, читаемое резюме на выбранном языке.</p><div class="two-col">
+<article class="panel blue"><h3>Что собирает профиль</h3><p>Образование и обучение, опыт по каждой должности, языки, цифровые и профессиональные навыки, проекты, достижения, волонтерство, сертификаты и исходные документы. Также — измеримые результаты, инструменты, примеры STAR, желаемые роли и мобильность.</p></article>
+<article class="panel teal"><h3>Что получит работодатель</h3><p>Только выбранные и проверенные факты, подходящие вакансии. Полная биография остается локально; чувствительные сведения и фотография не собираются по умолчанию.</p></article></div>
+</section>
+
+<section id="data-title">
+<h2>Единая база и месячная структура</h2><div class="two-col"><article class="panel blue"><h3>Файлы с устойчивыми идентификаторами</h3><p>UTF-8 JSON/JSONL без SQL. Организация, филиал, вакансия, заявка и ответ — разные сущности. Единственный первичный журнал принадлежит человеку; профильные карточки, очередь и статистика — восстанавливаемые представления.</p><pre class="filetree">HomenSAI-JobPilot/
+  README.md · USER_GUIDE.md · AI_BUILD_SPEC.md
+  ARCHITECTURE.md · DATA_CONTRACT.md
+  docs/ru/                         # RU
+  AGENTS.md · CLAUDE.md · TODO_FOR_AI.md  # FUTURE
+  dashboard_template/index.html    # FUTURE
+  Локальные_данные/                 # PRIVATE
+    persons/&lt;person_id&gt;/
+      journal/transactions.jsonl
+      journal/writer.lock
+    profiles/&lt;profile_id&gt;/
+      profile.json · registry.json
+      source_documents/
+      runs/ · reports/
+      2026/10_Октябрь/
+        001_Company_City_Role/
+          firm.json · vacancy.json · sources.md
+          CV_&lt;role&gt;_&lt;lang&gt;_v001.docx/.pdf
+          CoverLetter_&lt;lang&gt;_v001.docx/.pdf
+          EmailText_&lt;lang&gt;.txt · schedule.json
+          inf.txt · qa-check.json
+    dashboard/
+      index.html
+      profiles/&lt;profile_id&gt;/
+        summary.json · index.html</pre><p><small>RU — русская документация. FUTURE — файлы будущего рабочего релиза. PRIVATE — личная папка, исключенная из Git. Структура показывает целевое устройство, а не перечень уже реализованных модулей.</small></p><p><a href="DATA_CONTRACT.md">Данные, состояния и восстановление</a>.</p></article>
+<article class="panel teal"><h3>Правила работы</h3><ul>
+<li>Главные действия выполняются в чате локального Codex или Claude Code. TODO задает порядок задач; доказательства действий сохраняются в журнале.</li>
+<li>После установки включена подготовка черновиков. Очередь хранится в папке и обрабатывается агентом.</li>
+<li><strong>Не более 44 фактических отправок резюме в календарный месяц на человека</strong> по всем профилям и каналам. Повторная подача и замена после недоставки занимают слот; последующая недоставка его не возвращает.</li>
+<li>План распределяется по разрешенным рабочим дням и блокирует 45-ю отправку. Внешние подачи также заносятся в общий журнал; непроверенный остаток не считается доступным.</li>
+<li>Отчет показывает использованные, зарезервированные и оставшиеся слоты. Подготовленная папка или дата в очереди не доказывают отправку.</li>
+<li>Приглашения, положительные ответы и вопросы требуют решения человека.</li>
+<li>Подтвержденная недоставка сохраняется. Одна новая подходящая фирма по умолчанию готовится как черновик; автоматическая замена возможна только с отдельным разрешением этого профиля.</li>
+<li>Вопрос о ближайшем сроке практики возможен по разрешенным правилам профиля после чтения цепочки и проверки, что вопрос еще не задавался.</li>
+<li>Месячный отчет — нейтральный, на выбранном языке, с пользовательским шаблоном при наличии и отдельной страницей рыночных рекомендаций.</li>
+<li>Gmail-письма не удаляются и не архивируются, метки не меняются.</li>
+<li>Статическая HTML-страница показывает данные и сортирует строки. Личные документы и учетные данные не публикуются на GitHub.</li>
+</ul></article></div>
+</section>
+
+<section id="github-title">
+<h2>GitHub: обзор рынка</h2><p class="section-intro">Сравнение публичных страниц и README на 07.10.2026. Это обзор заявленных функций, а не аудит кода. Репозитории в рамках обзора не скачивались и не запускались; их код не использовался.</p><div class="table-wrap"><table class="comparison"><thead><tr><th>Проект</th><th>Заявленные возможности</th><th>Отличия от нашей спецификации</th></tr></thead><tbody><tr><td><a href="https://github.com/Shanupower/career-os">Career OS</a></td><td>Поиск, оценка соответствия, CV/письма, outreach и CRM; AGPL-3.0.</td><td>Проверка маршрутов и работа с полными Gmail-цепочками требуют отдельной проверки.</td></tr><tr><td><a href="https://github.com/tcpsyn/CareerPulse">CareerPulse</a></td><td>Несколько источников вакансий, AI matching, профили, DOCX/PDF, расписание и очередь.</td><td>Нужные правила фирм, Gmail и месячных отчетов не подтверждены.</td></tr><tr><td><a href="https://github.com/Gsync/jobsync">JobSync</a></td><td>Self-hosted tracker, импорт CV, поиск, AI и интеграция агентов; MIT.</td><td>Специализированный Gmail-журнал и нейтральный месячный отчет не подтверждены.</td></tr><tr><td><a href="https://github.com/rutuu/ApplyTrail">ApplyTrail</a></td><td>Локальное чтение Gmail и классификация ответов/отказов; MIT.</td><td>Не охватывает весь поиск, маршруты и создание пакета.</td></tr><tr><td><a href="https://github.com/wihlarkop/applykit">ApplyKit</a></td><td>Импорт профиля, оценка соответствия по фактам, адаптация CV/писем; MIT.</td><td>Поиск с учетом дороги и полный Gmail-журнал не описаны.</td></tr><tr><td><a href="https://github.com/artbyjazi/simply-apply">SimplyApply</a></td><td>Локальный поиск и адаптация CV с проверкой фактов; AGPL-3.0.</td><td>Акцент на подаче, а не длительном почтовом учете и отчетах.</td></tr></tbody></table></div><div class="hero-note"><strong>Самостоятельная идея и реализация Serhii Khomenko.</strong> Перечисленные проекты служат только обзору рынка. Их исходники, компоненты, шаблоны, дизайн, архитектура и промпты не копируются и не адаптируются. Лицензии в таблице описывают сторонние проекты и не означают их использование в JobPilot.</div>
+</section>
+
+<section id="safety-title">
+<h2>Приватность и подтвержденные факты</h2><div class="safety">
+<article><h3>Раздельные профили</h3><p>У каждого человека — свои документы, аккаунт и журнал. Направления поиска одного человека делят квоту 44; данные разных людей не смешиваются.</p></article>
+<article><h3>Источники фактов</h3><p>Факты привязаны к документу или подтвержденному самоописанию. ИИ не придумывает даты, результаты, навыки, сертификаты или уровень языка.</p></article>
+<article><h3>Разрешенный доступ</h3><p>OAuth относится к выбранному аккаунту и нужным действиям. Секреты хранятся средствами подключения, вне публикуемого проекта; операция сверяется с разрешениями профиля.</p></article></div>
+</section>
+
+<section id="use-terms-title">
+<h2>Экспериментальный продукт и условия использования</h2><p class="section-intro">JobPilot помогает организовать процесс. Точность и полнота результатов стороннего ИИ требуют проверки.</p><div class="two-col">
+<article class="panel blue"><h3>Поиск и оценка информации</h3><p>Поиск фирм и вакансий, извлечение требований, сводки и предварительная классификация ответов выполняются выбранным внешним агентом — ChatGPT/Codex или Anthropic/Claude — на основе найденных источников. JobPilot задает правила, сохраняет записи и помогает подготовить документы и проконтролировать этапы. Он не гарантирует полноту рынка или правильную обработку каждого факта.</p></article>
+<article class="panel teal"><h3>Проверка результатов</h3><p>Доступность вакансий, актуальность контактов, точность маршрутов и получение ответа не гарантируются. Перед решением и отправкой пользователь проверяет работодателя, требования, даты, документы и адресата. Продукт используется на свой риск; пользователь отвечает за свои решения и передаваемые сведения.</p></article></div>
+<div class="hero-note"><strong>Авторство и выбранная лицензия.</strong> Для собственного кода, включая HTML/CSS/JavaScript, выбрана PolyForm Noncommercial 1.0.0: некоммерческие копирование, изменение и распространение разрешены на условиях лицензии. Коммерческое использование требует отдельного разрешения автора. Для документации выбрана CC BY-NC 4.0. Авторское уведомление сохраняется в исходных файлах, на страницах — видимая ссылка на Serhii Khomenko / HomenS.AI. Это source-available проект, не open source по определению OSI. Лицензия не разрешает выдавать измененную версию за официальную с помощью бренда или логотипа. Ограничения гарантий и ответственности действуют в пределах применимого закона.</div>
+<div class="links"><a href="https://polyformproject.org/licenses/noncommercial/1.0.0">PolyForm Noncommercial 1.0.0 · код</a><a href="https://creativecommons.org/licenses/by-nc/4.0/">CC BY-NC 4.0 · документация</a><a href="https://opensource.org/osd">Определение Open Source</a><a href="https://www.gesetze-im-internet.de/bgb/__307.html">BGB § 307 · стандартные условия</a><a href="https://www.gesetze-im-internet.de/bgb/__309.html">BGB § 309 · ограничения ответственности</a><a href="https://www.gesetze-im-internet.de/urhg/__31.html">UrhG § 31 · права использования</a></div>
+<p><small>Это выбранная модель проекта, а не юридическая консультация или опубликованный текст лицензии. До GitHub-релиза необходимо оформить LICENSE, LICENSE-DOCS и NOTICE и проверить права на материалы.</small></p>
+</section>
+
+<section id="permissions-title">
+<h2>Подключения и разрешения пользователя</h2><p class="section-intro">Спецификация сама не открывает папку или почту. Пользователь выбирает локальный проект, подключает нужный аккаунт и разрешает управление экраном, если оно действительно требуется.</p><div class="two-col">
+<article class="panel blue"><h3>Папка и Codex</h3><ul><li>Войти в ChatGPT Desktop, выбрать Codex и открыть распакованный корень как локальный проект.</li><li>Разрешить чтение и запись в этой папке; действия за ее границами требуют отдельного разрешения.</li><li>Название «Поиск работы» не дает доступа к файлам без привязанной локальной папки.</li><li>Проверить фактические разрешения в интерфейсе и доступную информацию о статусе. Для этого проекта не нужен полный доступ к диску или запуск от администратора.</li></ul></article>
+<article class="panel teal"><h3>Gmail и OAuth</h3><ul><li>Подключить поддерживаемый Gmail-инструмент и проверить точный адрес аккаунта.</li><li>Доступ к папке и почте настраивается раздельно.</li><li>Разделять чтение и отправку; не помещать пароль или токен в чат и проект.</li><li>Проверить реальные возможности инструмента. Если нужное действие недоступно, продолжить подготовку локально и сообщить об ограничении.</li></ul></article></div>
+<div class="safety" style="margin-top:14px"><article><h3>Мышь и экран</h3><p>Когда это необходимо, установить и включить Computer Use; в Settings → Computer Use разрешить нужные приложения. На Windows целевое окно должно быть видно на активном рабочем столе.</p></article>
+<article><h3>Повторный запуск</h3><p>Доступная Scheduled task может разбудить агента. Локальный компьютер и приложение должны работать, папка — быть доступной. Иначе новый чат запускается вручную и продолжает по сохраненному состоянию.</p></article>
+<article><h3>Доступные возможности</h3><p>Чтение, отправка, проверка SENT, поиск, маршруты и рендер проверяются отдельно. Приглашения, вопросы и неизвестные решения передаются пользователю.</p></article></div><div class="links"><a href="https://learn.chatgpt.com/docs/sandboxing">Codex: sandbox</a><a href="https://learn.chatgpt.com/docs/projects">Codex: projects</a><a href="https://learn.chatgpt.com/docs/environments/modes">Codex: Local / Worktree / Cloud</a><a href="https://learn.chatgpt.com/docs/automations">Codex: Scheduled tasks</a><a href="https://learn.chatgpt.com/docs/config-file/config-reference">Codex: config.toml</a><a href="https://learn.chatgpt.com/docs/computer-use">Computer Use</a><a href="https://learn.chatgpt.com/docs/extend/mcp">MCP / OAuth</a></div>
+</section>
+
+<section id="video-title">
+<h2>Раскадровка видеоотчета · 90–120 секунд</h2><p>Это сценарий будущего видео, а не готовый MP4.</p><div class="scenes">
+<div class="scene"><time>00:00</time><p>Скачать ZIP, распаковать проект и открыть папку в локальном Codex или Claude Code.</p></div>
+<div class="scene"><time>00:15</time><p>Выбрать английское или русское руководство, создать чат и поручить агенту прочитать правила.</p></div>
+<div class="scene"><time>00:30</time><p>Добавить CV в мастер-профиль или заполнить анкету; подтвердить факты и выбрать языки документов.</p></div>
+<div class="scene"><time>00:45</time><p>Агент ищет фирмы и вакансии, проверяет маршруты и сохраняет источники.</p></div>
+<div class="scene"><time>01:00</time><p>Готовит адресные документы и очередь заявок в папке проекта.</p></div>
+<div class="scene"><time>01:15</time><p>Следующий запуск продолжает с сохраненного состояния, сверяет Gmail и записывает результаты.</p></div>
+<div class="scene"><time>01:35</time><p>Готовит отчет и рыночные рекомендации, обновляет локальный HTML с таблицами по годам и месяцам.</p></div></div>
+</section>
+
+<section id="improvements-title">
+<h2>Что уточнено в версии 1.2</h2><div class="safety">
+<article><h3>Один журнал на человека</h3><p>Квота и действия записываются одной транзакцией под общим writer.lock. Несколько профилей не ведут конкурирующие первичные журналы.</p></article>
+<article><h3>Продолжение после сбоя</h3><p>Новый чат использует run.resume. Неопределенная отправка требует сверки; повторный запуск не означает новое письмо. Проекции можно восстановить из журнала.</p></article>
+<article><h3>Две версии документации</h3><p>Основная — английская; русская входит в тот же проект. Документы и статистика получают одну ревизию данных, а языки заявок и отчетов выбираются отдельно.</p></article></div>
+<p>Сохраняются правила версии 1.1: три ответа на одну заявку — три события, но одна заявка с ответом; поздний ответ относится к месяцу получения. Отчеты хранят ревизии. Приемочные сценарии описывают нужные проверки квоты, календаря, восстановления, Gmail, документов и HTML; наличие сценариев не означает, что программа уже прошла тесты.</p>
+<div class="links"><a href="ARCHITECTURE.md">Архитектура</a><a href="AI_BUILD_SPEC.md">Спецификация для ИИ</a><a href="DATA_CONTRACT.md">Данные и состояния</a><a href="ACCEPTANCE_TESTS.md">Приемочные сценарии</a><a href="REVIEW.md">Обзор улучшений</a></div>
+</section>
+
+<section id="release-title">
+<h2>Что предстоит реализовать</h2><ul>
+<li>Локальные команды и единый JSONL-журнал, изоляцию профилей, проверяемое восстановление и тесты сбоев; импорт старых архивов — отдельный этап.</li>
+<li>Анкету, генерацию документов, локальный HTML-шаблон с группировкой по годам/месяцам, сортировкой и удобными фильтрами.</li>
+<li>Первый проверяемый сценарий на вымышленных данных: профиль → цель → пакет → план → имитация ответа → отчет и офлайн HTML.</li>
+<li>После этого — чтение Gmail и управляемую отправку с проверкой доказательств. Режим выбирается для каждого профиля: черновики, подтверждение каждого письма или разрешенная автоматическая очередь.</li>
+<li>Жесткий предел 44 подачи на человека в месяц и устойчивую к сбоям проверку резервов; этот лимит не повышается настройкой.</li>
+<li>Выбор источников вакансий и маршрутов, проверку условий использования и возможностей API.</li>
+<li>При доступности — расписанный запуск агента; ручное продолжение должно работать самостоятельно.</li>
+<li>LICENSE, LICENSE-DOCS и NOTICE, проверку прав и приватности перед публикацией, затем формат видео. Код перечисленных GitHub-проектов не заимствуется.</li></ul>
+</section>
+<footer><p><strong>Автор идеи и проекта: Serhii Khomenko.</strong> Концепция основана на его рабочем процессе. Код, шаблоны и архитектура просмотренных GitHub-проектов не использованы; реализация создается самостоятельно. Бренд — HomenS.AI. Wordmark «HomenS.A Inc.» воспроизводится как элемент дизайна сайта, а не заявление о юридическом статусе. Официальный SVG-знак, инженерная сетка и палитра предоставлены автором в <code>deploy_ver_2.21.zip</code>; архив сверен с контактной страницей 07.10.2026. Сайт описывает себя как частный некоммерческий.</p><div class="links"><a href="https://homensai.com/">homensai.com</a><a href="https://homensai.com/contact.html">Contact</a><a href="https://github.com/HomenSAI">GitHub / HomenSAI</a><a href="https://www.linkedin.com/in/serhii-khomenko-homensai">LinkedIn</a><a href="https://orcid.org/0009-0009-5371-9717">ORCID</a><a href="https://github.com/HomenSAI/rtx3080-local-ai-benchmarks">RTX 3080 AI benchmarks</a><a href="https://github.com/HomenSAI/two-worlds-one-mind">Book · GitHub</a><a href="https://zenodo.org/records/23160031">Book · Zenodo</a><a href="mailto:info@homensai.com">info@homensai.com</a></div><p>Документация 1.2 · 07.10.2026 · без персональных профилей, резюме и учетных данных. Основная версия — английская, русская содержательно ей соответствует. <a href="README.md">Состав проекта</a> · <a href="USER_GUIDE.md">Руководство</a>.</p><div class="links"><a href="https://europass.europa.eu/en/how-complete-my-europass-profile">Europass</a><a href="https://www.make-it-in-germany.com/en/working-in-germany/job/application">Make it in Germany</a><a href="https://developers.google.com/workspace/gmail/api/auth/scopes">Gmail OAuth scopes</a></div></footer></main></body></html>

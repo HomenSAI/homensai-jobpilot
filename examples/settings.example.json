@@ -1,0 +1,69 @@
+{
+  "schema_version": "1.2",
+  "example_only": true,
+  "_notice": "Copyright (c) 2026 Serhii Khomenko. HomenS.AI JobPilot. https://homensai.com/ . Documentation example: CC BY-NC 4.0. Not active settings.",
+  "person_id": "00000000-0000-4000-8000-000000000001",
+  "profile_id": "00000000-0000-4000-8000-000000000002",
+  "timezone": "Europe/Berlin",
+  "localization": {
+    "default_language": "en",
+    "supported_languages": ["en", "ru"],
+    "ui_language": "en",
+    "document_languages_inherit_ui": false
+  },
+  "languages": {
+    "cv_language": null,
+    "cover_letter_language": null,
+    "email_language": null,
+    "report_language": null
+  },
+  "search": {
+    "goal": null,
+    "roles": [],
+    "start_location": null,
+    "radius_km": null,
+    "transport_modes": [],
+    "max_travel_minutes": null,
+    "max_transfers": null,
+    "max_walk_minutes": null,
+    "evening_return_required": true,
+    "priority_cities": [],
+    "expand_radius_without_consent": false
+  },
+  "schedule": {
+    "cadence": "allowed_workdays",
+    "local_send_time": "10:00",
+    "daily_check_time": "12:00",
+    "excluded_weekdays": [6, 7],
+    "weekday_numbering": "ISO: Monday=1, Sunday=7",
+    "holiday_region": null,
+    "excluded_dates": [],
+    "holidays_verified": false,
+    "missed_send_policy": "needs_reschedule"
+  },
+  "quota": {
+    "max_cv_submissions_per_person_month": 44,
+    "include_external_submissions": true
+  },
+  "mail": {
+    "account_id": null,
+    "connector_id": null,
+    "mode": "draft_only",
+    "subject_max_unicode_characters": 50,
+    "thank_you_enabled": false,
+    "period_question_enabled": false,
+    "replacement_auto_send_enabled": false,
+    "max_replacements_per_chain": 1,
+    "consent_ref": null
+  },
+  "privacy": {
+    "cloud_processing_consent_ref": null,
+    "include_sensitive_facts": false
+  },
+  "report": {
+    "template_relative_path": null,
+    "market_appendix_required": true,
+    "cutoff_local_time": "16:00",
+    "email_report_automatically": false
+  }
+}
