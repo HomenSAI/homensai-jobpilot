@@ -250,7 +250,7 @@ td.time { font-family:var(--mono); white-space:nowrap; color:var(--muted); } td 
   var BADGE = { positive: "ok", rejected: "bad", pending: "wait", needs_user: "warn", delivery_error: "err" };
 
   function t(k) { return T[lang][k] || T.en[k] || k; }
-  function el(tag, cls, text) { var e = document.createElement(tag); if (cls) e.className = cls; if (text !== undefined) e.textContent = text; return e; }
+  function el(tag, cls, text) { var e = document.createElement(tag); if (cls) e.className = cls; if (text !== undefined) e.textContent = (text === null || text === "" ? "—" : text); return e; }
   function pad(n) { return (n < 10 ? "0" : "") + n; }
 
   /* ---------- Dates (grouping uses the snapshot time zone; sorting uses real timestamps) ---------- */
@@ -339,7 +339,7 @@ td.time { font-family:var(--mono); white-space:nowrap; color:var(--muted); } td 
       if (state.year !== "all" && String(e.p.y) !== state.year) return false;
       if (state.month !== "all" && e.p.mkey !== state.month) return false;
       if (state.result !== "all" && e.result !== state.result) return false;
-      if (q && (e.app.company + " " + e.app.city + " " + e.app.role).toLowerCase().indexOf(q) < 0) return false;
+      if (q && ((e.app.company || "") + " " + (e.app.city || "") + " " + (e.app.role || "")).toLowerCase().indexOf(q) < 0) return false;
       return true;
     });
   }

@@ -1,0 +1,91 @@
+{
+  "schema_version": "1.2",
+  "example_only": true,
+  "_notice": "Copyright (c) 2026 Serhii Khomenko. HomenS.AI JobPilot. https://homensai.com/ . Documentation example: CC BY-NC 4.0. This is the structure of Локальные_данные/workspace.json; the agent creates it in step A1 of TODO_FOR_AI.md.",
+  "workspace_id": "00000000-0000-4000-8000-000000000001",
+  "format_version": "1.4",
+  "language": "ru",
+  "stage": "new",
+  "progress": {
+    "step": "A1",
+    "done": [],
+    "note": ""
+  },
+  "created_at": "2026-10-08T08:00:00Z",
+  "person_ids": [],
+  "capabilities": {
+    "filesystem": {
+      "status": "available",
+      "checked_at": "2026-10-08T08:00:00Z",
+      "note": ""
+    },
+    "web_search": {
+      "status": "unknown",
+      "checked_at": "2026-10-08T08:00:00Z",
+      "note": ""
+    },
+    "route_lookup": {
+      "status": "unknown",
+      "checked_at": "2026-10-08T08:00:00Z",
+      "note": ""
+    },
+    "mail_reading": {
+      "status": "unavailable",
+      "checked_at": "2026-10-08T08:00:00Z",
+      "note": "no mail tool connected"
+    },
+    "mail_thread_reading": {
+      "status": "unavailable",
+      "checked_at": "2026-10-08T08:00:00Z",
+      "note": ""
+    },
+    "mail_sending": {
+      "status": "unavailable",
+      "checked_at": "2026-10-08T08:00:00Z",
+      "note": ""
+    },
+    "sent_proof": {
+      "status": "unavailable",
+      "checked_at": "2026-10-08T08:00:00Z",
+      "note": ""
+    },
+    "image_reading": {
+      "status": "unknown",
+      "checked_at": "2026-10-08T08:00:00Z",
+      "note": "scans and photos of documents"
+    },
+    "docx": {
+      "status": "unknown",
+      "checked_at": "2026-10-08T08:00:00Z",
+      "note": ""
+    },
+    "pdf": {
+      "status": "unknown",
+      "checked_at": "2026-10-08T08:00:00Z",
+      "note": ""
+    },
+    "scheduled_wakeup": {
+      "status": "unknown",
+      "checked_at": "2026-10-08T08:00:00Z",
+      "note": ""
+    }
+  },
+  "_allowed_values": {
+    "stage": [
+      "new",
+      "consent_given",
+      "story_ready",
+      "documents_ready",
+      "knowledge_base_draft",
+      "knowledge_base_confirmed",
+      "profile_created",
+      "ready"
+    ],
+    "capabilities.*.status": [
+      "available",
+      "unavailable",
+      "unknown"
+    ],
+    "progress": "free structure for the agent: the current step, the topics or sections already done, one line of note; updated after every topic"
+  }
+}

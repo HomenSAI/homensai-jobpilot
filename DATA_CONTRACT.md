@@ -13,12 +13,12 @@ The first version uses UTF-8 JSON for configuration and records, and JSONL for e
 | Path relative to the root | Role |
 |---|---|
 | `Локальные_данные/persons/<person_id>/state/person.json` | Projection of the person's identity, quota time zone, and permitted profile_id values |
-| `Локальные_данные/workspace.json` | Workspace id, format version, language, `stage` of the first run, results of the capability checks of the agent's tools |
+| `Локальные_данные/workspace.json` | Workspace id, format version (`major.minor` of the documentation, now `1.4`), language, `stage` of the first run, `person_ids`, results of the capability checks of the agent's tools (`examples/workspace.example.json`) |
 | `Локальные_данные/Положите_сюда/1_Мои_документы`, `2_Рассказ_о_себе`, `3_Шаблон_отчёта` | The person's originals, story and optional report template; the agent only reads them and never changes them |
 | `Локальные_данные/persons/<person_id>/База_знаний/Жизнеописание.md` | The knowledge base: the master source of confirmed facts, see §3a |
 | `Локальные_данные/persons/<person_id>/journal/transactions.jsonl` | The only primary journal: applications, profiles, messages, consent, and the shared quota |
 | `Локальные_данные/persons/<person_id>/journal/writer.lock` | A marker file that exists only while one chat is writing; a convention, not an authorization mechanism |
-| `Локальные_данные/persons/<person_id>/state/quota.json` | Rebuildable projection of consumed and reserved slots |
+| `Локальные_данные/persons/<person_id>/state/quota.json` | Rebuildable projection of consumed and reserved slots (`examples/quota.example.json`); missing or different from the journal means “rebuild” |
 | `Локальные_данные/profiles/<profile_id>/profile.json` | Projection of confirmed objectives, facts, account, languages, and consent |
 | `Локальные_данные/profiles/<profile_id>/registry.json` | Rebuildable projection of companies, vacancies, applications, and the queue |
 | Application directories: `firm.json`, `vacancy.json`, `schedule.json` | Readable projections of linked records; not independent sources of status |
@@ -26,7 +26,7 @@ The first version uses UTF-8 JSON for configuration and records, and JSONL for e
 | `profiles/<profile_id>/reports/<YYYY-MM>/` | Reports, manifests, and revisions for this profile only |
 | `dashboard/profiles/<profile_id>/summary.js` and `index.html` | The data file of the selected profile and an unchanged copy of the page template; dashboard/index.html is the local menu |
 
-New events are first durably recorded in the journal, then projections are updated. Changing a projection without an event is prohibited. Correcting a fact or classification requires a new event with `supersedes_event_id`, not an edit to the past. Rebuilding a projection must not duplicate inf.txt lines: check event_id and the mail dedup_key.
+New events are first durably recorded in the journal, then projections are updated. The line format, the event names and the counting rules are in §3c. (Exception: a file that the agent creates as a whole, such as `profile.json`, a package or `summary.js`, is written and checked first, and its event is recorded right after, because the journal records completed actions.) Changing a projection without an event is prohibited. Correcting a fact or classification requires a new event with `supersedes_event_id`, not an edit to the past. Rebuilding a projection must not duplicate inf.txt lines: check event_id and the mail dedup_key.
 
 A failure between writing a journal line and updating registry/inf.txt is resolved by rebuilding the views from the journal. Quota and application changes belong to one primary journal line, not to two independent journals. Each complete line is one completed action containing `sequence`, `action_id`, `events` and a short `result`. The write and check order is defined in ARCHITECTURE.md §4. Artifacts are saved as immutable versions first, then registered in the journal by reference (file names, sizes and, where available, a checksum).
 
@@ -39,7 +39,7 @@ A failure between writing a journal line and updating registry/inf.txt is resolv
 - Paths are relative. After canonicalization, reject paths that escape the root, including `..`, absolute paths, and redirecting junctions/symlinks. Folder names must omit Windows characters `<>:"/\\|?*`, trailing dots/spaces, and reserved names; append a short ID to resolve a collision. Do not move an existing folder because its planned date changes.
 - Store event timestamps in ISO 8601 UTC, such as `2026-10-07T08:00:00Z`, with a separate `timezone`, such as `Europe/Berlin`. A plan contains both the UTC timestamp and the original local time. Ambiguous or nonexistent times during clock changes require a choice, not a guess.
 - `occurred_at` is the actual timestamp from the source; `recorded_at` is when the agent records it. The response month is determined by the former, not the mail-check date. A planned date does not replace the actual submission date.
-- Mail deduplication uses `(account_id, gmail_message_id)`. Store `rfc_message_id` and thread_id separately; the same thread_id does not imply the same message.
+- Mail deduplication uses `(account_id, gmail_message_id)`. Store `rfc_message_id` and thread_id separately; the same thread_id does not imply the same message. The same `rfc_message_id` with a different `gmail_message_id` is the same message delivered twice: it is recorded once.
 
 ## 3. Minimum record fields
 
@@ -77,7 +77,7 @@ Every fact is **one line** in this form:
 | `[F012]` | `fact_id`: F plus a running number, never reused |
 | text | the fact in the person's language; one fact per line |
 | `source:` | a file in `Положите_сюда/` with the place, or `interview 07.10.2026`, or `self-reported` (the person says so, no document) |
-| `status:` | `proposed`, `confirmed <date>` or `rejected` (these three words are always English so that any agent can read them) |
+| `status:` | `proposed`, `confirmed <date>` or `rejected` (these words are always English so that any agent can read them); a replaced fact reads `rejected (replaced by F031)` |
 | `use:` | `cv` (may appear in application documents) or `internal` (only for the agent's understanding) |
 | `sens:` | `normal` or `sensitive` (sensitive facts never go into documents without the person's explicit choice) |
 
@@ -100,6 +100,53 @@ Rules: a fact is never deleted; a correction adds a new line and marks the old o
 
 The knowledge base (§3a) belongs to the person and is shared by all profiles of that person; `profile.json` holds only the settings of this search direction. A value that is not yet known stays `null` or an empty list; it is never filled with a guess.
 
+## 3c. The journal: line format, event types, counting
+
+**A journal line** is one JSON object on one line, written compactly (no spaces after `:` and `,`), keys in this order: `schema_version`, `sequence`, `action_id`, `person_id`, `recorded_at`, `events`, `result`. Each event has `event_id`, `type`, `occurred_at` and the fields of its type. `action_id` and `event_id` are UUIDs; `person_id`, `profile_id`, `application_id` and `send_attempt_id` are the readable ids of §2. The first line of a new journal has `sequence` 1. A full example of a send is `examples/journal.example.jsonl`; `examples/quota.example.json` shows the quota view and `examples/workspace.example.json` the workspace file.
+
+**Event types.** Only these names are used; fields in bold are mandatory.
+
+| Type | Fields | Written when |
+|---|---|---|
+| `person_created` | **display_name**, **timezone** (may be null until the search setup) | the person's folder is created (A2) |
+| `consent_granted` / `consent_revoked` | **consent_id**, **scope** (`cloud_processing`, `mail_reading`, `mail_sending_profile`, `send_once`), profile_id, account_id, package_manifest_sha256 (for `send_once`), text_shown | the person says yes / withdraws |
+| `story_saved` | **file** | the story is saved (A3) |
+| `documents_listed` | **count**, **files** | the documents folder is read (A4); an empty folder gives count 0 |
+| `knowledge_base_updated` | **file**, **section**, **fact_ids**, **sha256** (of the file after the agent's write) | after each write to `Жизнеописание.md` |
+| `profile_created` / `profile_changed` | **profile_id**, **file**, changed_fields | `profile.json` is written |
+| `package_registered` | **application_id**, **package_version**, **relative_path**, **manifest** (list of `{name,size,sha256}`), **recipient**, **recipient_source** (`vacancy_page`, `company_site`, `person_statement`, with URL or date), **channel**, **subject** | a package is saved |
+| `package_approved` | **application_id**, **package_version**, **manifest_sha256**, **mode**, consent_id | the person approves this exact package; in `draft_only` it means “checked, the person may send it by hand” |
+| `approval_revoked` | **application_id**, **reason** (for example `PACKAGE_CHANGED`) | a file of an approved package differs from its manifest; the application returns to `ready_for_review` |
+| `quota_reserved` | **application_id**, **send_attempt_id**, **reserved_month** | a slot is reserved (together with `send_started`, or when a plan is committed) |
+| `send_started` | **application_id**, **send_attempt_id**, **account_id**, **recipient**, **quota_applies** (true for a CV; false for a thank-you or a question), outbox | before the external call |
+| `sent_verified` | **application_id**, **send_attempt_id**, **gmail_message_id**, **thread_id**, **recipient**, company, city, role, channel | the message is found in SENT |
+| `failed_before_send` / `send_uncertain` | **application_id**, **send_attempt_id**, **evidence** | proven non-send / unknown outcome |
+| `quota_consumed` | **application_id**, **send_attempt_id**, **consumed_month**, reservation_closed_month | together with `sent_verified` (also for a submission the person reports from outside: then `source`=`person_reported`) |
+| `quota_released` | **application_id**, **send_attempt_id**, **released_month**, reservation_closed_month | together with `failed_before_send` |
+| `send_blocked` | **application_id**, **reason_codes** | a requested send was refused by the send check (an allowed check writes nothing by itself; `send_started` follows) |
+| `mail_received` | **gmail_message_id** (null only when `source`=`person_reported`), rfc_message_id, thread_id, **classification** (`substantive_response`, `auto_ack`, `delivery_notice`, `advertisement`, `unlinked`), linked_application_id or null, outcome (`positive`, `rejected`, `needs_user`, `ambiguous`), delivery (`permanent_bounce`, `temporary_failure`), source, snippet (at most 200 characters) | a new message is read |
+| `mail_checked` | **coverage** (`complete` or `incomplete`), **position** | a mail scan is saved |
+| `thank_you_sent` / `period_question_sent` | the fields of `send_started` + `sent_verified`, **reply_to_gmail_message_id** | follow-ups; they never consume quota |
+| `replacement_prepared` | **application_id**, **replaces_application_id**, **replacement_chain_id** | after a confirmed bounce |
+| `statistics_updated` | **profile_id**, **snapshot_id**, **source_revision**, **file** | `summary.js` is written; the file is written first, then this line (it records a completed action) |
+| `report_built` | **profile_id**, **month**, **revision**, **files** | a report is built |
+
+Month fields are the **local month of the person** (`person.json`, `timezone`) at `occurred_at` of the event, written as `YYYY-MM` by the agent when it writes the line. This is what makes counting simple and independent of time-zone conversions.
+
+**Counting.** The agent never counts by eye and never converts months of old lines.
+- used(M) = number of events with `"consumed_month":"M"`
+- reserved(M) = number of `"reserved_month":"M"` minus the number of events (`quota_consumed`, `quota_released`) with `"reservation_closed_month":"M"`
+- remaining(M) = limit − used(M) − reserved(M)
+These counts are read with the system's own text search (ARCHITECTURE.md §4a), tolerant of spaces around `:`; if there are several matches in one line, every match counts. An uncertain send (`send_uncertain`) stays reserved. `quota.json` (see the example) is rebuilt from these counts whenever it is missing or differs.
+
+**Reason codes** of a refused send: `ACCOUNT_MISMATCH`, `APPROVAL_MISSING` (no `package_approved` event for this version), `PACKAGE_CHANGED`, `MODE_DRAFT_ONLY`, `MODE_NOT_ALLOWED`, `CONSENT_MISSING`, `RECIPIENT_UNSOURCED`, `RECIPIENT_MISMATCH`, `SUBJECT_TOO_LONG`, `QUOTA_EXHAUSTED`, `DAILY_LIMIT`, `CALENDAR_NOT_ALLOWED`, `SEND_UNCERTAIN` (also for a send that was started and has no result), `LOCK_HELD`, `JOURNAL_DAMAGED`, `CAPABILITY_MISSING`.
+
+**Which actions write a line.** Every action that changes a file of the person or contacts the outside writes one line (events above). Read-only actions (resume, inspect, a send check that ends “allowed”, reading mail with nothing new) write nothing; a refused send writes `send_blocked`. A person's statement that something happened outside (“Muster rejected me”) is recorded as `mail_received` with `source` = `person_reported`: the agent asks which application it concerns (it shows the candidates, it never links by similarity of names), when the message arrived, and whether the person can show it; `occurred_at` is the date the person names; the message is matched with the mailbox at the next scan.
+
+**The lock file.** `journal/writer.lock` is one line: `{"run_id":"<UUID>","created_at":"<UTC time>"}`. The agent creates its `run_id` at the start of the chat and writes it into the first line of its session note in `runs/`, so that after a restart it recognizes its own lock. After the person confirms that another chat is no longer working, and before removing a foreign lock, the agent checks: the last line is valid JSON, `sequence` has no gaps, and no `send_started` lacks `sent_verified` / `failed_before_send` (such a send is `send_uncertain`); unfinished outbox folders are reconciled. While a `send_started` has no result, no new send is allowed for that person, by any chat.
+
+**The send card.** Before any send in `approval_per_message` the agent shows: recipient and where its address comes from, subject, the whole body, attachment names, the account, slots used and remaining. The person then answers “send” in a new message. An approval given earlier, before the card, does not count; a refused send records no approval; after the fix the person is asked again. In `scheduled_send_with_profile_consent` the same card is part of the plan that the person accepted.
+
 ## 4. Application state and outcome are separate dimensions
 
 ```text
@@ -110,7 +157,7 @@ discovered → drafting → ready_for_review → approved → scheduled
                                      └─→ failed_before_send
 ```
 
-- `approved` is tied to a reviewed package version or active, limited profile consent. Changing the recipient/text/attachment/material dates returns the application to ready_for_review.
+- `approved` is a `package_approved` event tied to one reviewed package version (its manifest of file names, sizes and checksums) or to an active, limited profile consent. In `draft_only` it means “checked; the person may send it by hand”, never an automatic send. Changing the recipient/text/attachment/material dates returns the application to ready_for_review.
 - `sending` is permitted only after checking the account, quota, calendar, and consent. This transition is prohibited in draft_only.
 - `sent_verified` requires external evidence of submission. For Gmail, this means a SENT record/ID/recipient/time; for a portal, submission confirmation, not merely clicking a button.
 - `send_uncertain`: the service response was lost or the evidence is contradictory. Do not repeat the operation or release the slot after a timeout.
@@ -135,7 +182,7 @@ The file contract assumes **one writer per person at any moment**. All changes t
 Actual sending follows this order:
 
 1. Check active consent, exact account/recipient, package_hash, target validity, and time. Assign operation_id/send_attempt_id.
-2. Under the lock, reread quota and history. A reservation is consumed/released only by an event. `consumed + reserved <= configured_limit <= 44`.
+2. Under the lock, reread quota and history. A reservation is consumed/released only by an event. `consumed + reserved <= configured_limit <= 44` (counted as in §3c). A 45th submission is refused at planning and again at the send check; no package is prepared for sending.
 3. Record the reservation (or transition a planned reservation to in-flight) and send_started in one transaction; durably persist it **before** calling the external service, then release the lock. Each attempt_id has one executor; a repeated run only reconciles that attempt.
 4. Make one external call. Verify success against evidence, then record quota_consumed and sent_verified with linked IDs; update projections.
 5. If non-submission is proven, record failed_before_send and quota_released. If the outcome is unknown, keep pending/send_uncertain and block retries.
@@ -160,6 +207,8 @@ Create backups with no active writers or as a consistent snapshot. Keep a file/h
 ## 7. Calendar and search
 
 Settings store `timezone`, local_send_time, cadence, excluded_weekdays, holiday_region/excluded_dates, and report_cutoff_time. Verify holidays for the selected country/region and year, with a source; an empty list means “not checked yet,” not “there are no holidays.”
+
+**Calendar check at the send check.** An allowed day is a weekday that is not in `excluded_dates` or a verified holiday. The allowed time is within 60 minutes of `local_send_time`. If `holidays_verified` is false: a scheduled mode is refused (`CALENDAR_NOT_ALLOWED`, “holidays not verified”); in `approval_per_message` the person's explicit “send now” after the send card counts as confirming the day, and the card shows a warning. Several sends on one day are allowed only if each one has its own approval and the plan was accepted; never more than 100 CVs a day.
 
 To distribute N applications evenly over D permitted days, allocate floor(N/D) per day and spread the remainder across the month, minimizing differences between daily counts. When N>D, multiple submissions on one day are allowed only as separate personalized operations; show the exact times to the user rather than running a bulk mailing. Planned reservations count toward monthly availability. Do not catch up on missed days without an accepted new plan.
 
@@ -186,7 +235,7 @@ The market section is a separate PDF page and a corresponding DOCX section: occu
 
 ## 9. Static HTML contract
 
-`dashboard/profiles/<profile_id>/summary.js` (the text `window.JP_DATA = ` followed by one JSON object) contains schema_version, source_revision, generated_at, last_mail_check_at, timezone, profile_id, person quota, and table rows. Every row contains only permitted statistical fields; no message bodies, home address, original CVs, or secrets. The statistics page (`dashboard_template/index.html`) reads two lists: `applications` (id, company, city, role, channel, `sent_at`, `outcome`, optional `bounce_at`) and `responses` (id, `application_id`, `received_at`, `kind`, note), plus `quota` (limit, reserved slots per month). `outcome` and `kind` use the values `positive`, `rejected`, `no_response`, `needs_user` and `delivery_error`. The page shows them as successful, unsuccessful, waiting, needs your decision and delivery error. Pages for different profiles do not mix data; dashboard/index.html is a local menu of links. One reporting calculation from a fixed sequence feeds HTML, DOCX, and PDF.
+`dashboard/profiles/<profile_id>/summary.js` (the text `window.JP_DATA = ` followed by one JSON object) contains schema_version, `snapshot_id` (`<profile_id>-s<N>`), `source_revision` (N: the journal `sequence` at which the numbers were counted), generated_at, `last_mail_check_at` (from the last `mail_checked` event, or null), timezone, profile_id, `default_language` (`en` or `ru`), the person's quota (`limit`, `used` and `reserved` as objects by month: the quota is shared by all profiles of the person, so `used` is counted from the person's journal, not from the rows of this profile), and table rows. Every row contains only permitted statistical fields; no message bodies, home address, original CVs, or secrets. The statistics page (`dashboard_template/index.html`) reads two lists: `applications` (id, company, city, role, channel, `sent_at`, `outcome`, optional `bounce_at`) and `responses` (id, `application_id`, `received_at`, `kind`, note), plus `quota` (limit, reserved slots per month). `outcome` and `kind` use the values `positive`, `rejected`, `no_response`, `needs_user` and `delivery_error`. Automatic acknowledgements (`auto_ack`) and out-of-office replies are not responses and are left out of `responses`. A confirmed permanent bounce sets `bounce_at` (and optionally `bounce_note`) on the application. Unknown company, city, role or channel are `null`; the page shows a dash. The local menu `dashboard/index.html` has no template: the agent writes a plain page with one link per profile. The page shows them as successful, unsuccessful, waiting, needs your decision and delivery error. Pages for different profiles do not mix data; dashboard/index.html is a local menu of links. One reporting calculation from a fixed sequence feeds HTML, DOCX, and PDF.
 
 `summary.js` contains the same `snapshot_id` and `source_revision` as the reports of that snapshot. The agent writes the file as a whole (a temporary file, a check that it reads back as valid, then replacement); the page file `index.html` is a copy of the template and is not edited. If `summary.js` is missing or damaged, the page says so. An old file cannot know about a later failed check: it can show only its last update and an age-based warning. Do not promise that it will detect a missed check without an agent run.
 

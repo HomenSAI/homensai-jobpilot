@@ -103,7 +103,24 @@ Rules for the agent:
 4. **A damaged or half-written last line** is not repaired silently. The agent stops, keeps the file as it is, tells the user and recovers from the last complete line and the mail evidence.
 5. **One writer at a time.** Before writing, the agent creates `writer.lock` containing the run id and the time. If the file already exists and is not its own, it stops and asks the user whether another chat is still working; it removes the lock only after the user confirms that no other chat is active. When the work is done, it deletes its own lock. This is a convention: it protects only if every chat follows it, which is why the user is asked to keep one chat working at a time.
 6. A quota or send decision always rereads the journal; a summary from an earlier part of the chat is never trusted.
-7. **Count with the system's own tool, not by eye.** To find out how many slots a month has used, the agent counts the journal lines that contain a `"type":"sent_verified"` event with `occurred_at` in that month (the month is the person's local month, so lines within one day of the UTC month boundary are read by hand and converted to the person's time zone), using a command that the operating system already has (on Windows, for example, `Select-String` and `Measure-Object` in PowerShell) and shows the number to the user. It compares the result with `quota.json`; if they differ, the journal is right and `quota.json` is rebuilt. The same applies to checksums of files (`Get-FileHash`). No script is added to the package for this.
+7. **Count with the system's own tool, not by eye.** The slots used or reserved in a month are read from the journal by text search for the month fields of the quota events (formulas in DATA_CONTRACT.md §3c; commands in §4a below). The agent shows the number and how it was found. It compares the result with `quota.json`; if they differ or the file is missing, the journal is right and `quota.json` is rebuilt (`examples/quota.example.json`). The same applies to checksums of files. No script is added to the package for this.
+8. **Writing a line.** If the journal does not exist, the first line has `sequence` 1. The agent adds the line with its own file tool and reads the end of the file back to check that the new line is whole and valid JSON. The lock file has a fixed format (DATA_CONTRACT.md §3c).
+
+### 4a. Commands the agent may use
+
+The agent uses only commands that the person's operating system already has, typed inline in the chat; nothing is saved into the package as a script. Allowed uses: the current time, a new UUID, a file checksum, a text search with counting, a JSON validity check, a time-zone conversion for the current moment, a directory listing, and copying or deleting the agent's own temporary files. Windows (PowerShell) forms; the agent uses the equivalent on macOS or Linux:
+
+| Need | PowerShell |
+|---|---|
+| Current UTC time | `(Get-Date).ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssZ")` |
+| New UUID | `[guid]::NewGuid().ToString()` |
+| Checksum of a file | `(Get-FileHash -Algorithm SHA256 -LiteralPath <file>).Hash.ToLower()` |
+| Local month of the person now | `[TimeZoneInfo]::ConvertTime([DateTimeOffset]::UtcNow,[TimeZoneInfo]::FindSystemTimeZoneById('W. Europe Standard Time')).ToString('yyyy-MM')` (the agent maps the person's IANA zone, for example `Europe/Berlin`, to the Windows name) |
+| Count events of a month | `(Select-String -Path <journal> -Pattern '"consumed_month"\s*:\s*"2026-10"' -AllMatches \| ForEach-Object { $_.Matches.Count } \| Measure-Object -Sum).Sum` (empty result means 0) |
+| Check that every journal line is valid JSON | `Get-Content <journal> \| ForEach-Object { $_ \| ConvertFrom-Json } \| Out-Null` (an error names the bad line) |
+| Last journal line | `Get-Content <journal> -Tail 1` |
+
+Time-zone conversion of an old moment is not needed: months are written into the events when they happen. Text files are written with the agent's own file tool, not with shell redirection. These forms have not yet been tried on a real Windows machine; the first trial is part of the acceptance checks.
 
 Document packages are first prepared in a temporary folder and checked. They are then saved as a new, numbered version folder (`v001`, `v002`), and only then registered in the journal with file names, sizes and, where the system's own tools can provide it, a checksum. A package that was accepted is never changed in place: a change creates a new version and returns the application to review.
 
@@ -128,13 +145,13 @@ Instead of programmed commands, the agent performs named actions. Each action is
 | Build report / statistics | Report files and the statistics page with the same numbers |
 | Backup / restore check | A consistent copy and a check in a separate folder |
 
-The agent's answer for every action states: the outcome (`ok`, `needs_input`, `conflict`, `blocked` or `failed`), a reason code, the journal position, the files it produced, and the next step in ordinary language. Reason codes stay stable: `ACCOUNT_MISMATCH`, `QUOTA_EXHAUSTED`, `SEND_UNCERTAIN`, `CAPABILITY_MISSING`, `JOURNAL_DAMAGED`, `PACKAGE_CHANGED`.
+The agent's answer for every action states: the outcome (`ok`, `needs_input`, `conflict`, `blocked` or `failed`), a reason code, the journal position, the files it produced, and the next step in ordinary language. Reason codes stay stable; the full list is in DATA_CONTRACT.md §3c (for example `ACCOUNT_MISMATCH`, `QUOTA_EXHAUSTED`, `SEND_UNCERTAIN`, `PACKAGE_CHANGED`, `SUBJECT_TOO_LONG`, `MODE_DRAFT_ONLY`, `LOCK_HELD`). Which actions write a journal line is also defined there.
 
 “Plan queue” only previews. Reservations become active only after “Commit plan”; the journal determines the real remaining quota. A successful “Send check” is not permission that lasts: “Send” checks the current journal position, the time, the consent and the package again.
 
 ## 6. Sending and the outbox
 
-The outbox is a prepared folder for one attempt: recipient, subject and body, files, `account_id`, `application_id`, `attempt_id` and the reference to the consent. It contains no secrets. It is not a separate mail server.
+The outbox is a prepared folder for one attempt, `outbox/<send_attempt_id>/`: copies of the package files that will be attached, `message.txt` (recipient, subject and body exactly as sent) and `attempt.json` (`account_id`, `application_id`, `send_attempt_id`, `consent_id`, the checksums of the copied files). It contains no secrets. It is not a separate mail server. An attempt with a `send_started` and no result is treated as open.
 
 1. Prepare the outbox and check that the package has not changed since approval.
 2. In one journal line record `send_started` and reserve a slot (or turn a planned reservation into an in-flight one). Exactly one chat owns each `attempt_id`.
@@ -150,7 +167,7 @@ De-duplication of thank-you messages uses: account_id + incoming gmail_message_i
 
 Codex and Claude Code follow the same rules. How a tool is called and how it signs in is the business of the agent's platform, not of these rules.
 
-At setup the agent tests each capability separately: filesystem, web search, route lookup, mail reading, whole-thread reading, mail sending, proof of sending (SENT), DOCX rendering, PDF rendering and scheduled wake-up. For each it records available / unavailable / unknown, the time of the check and a non-secret tool version in `workspace.json`. A line in a settings file is not evidence of a working capability.
+At setup the agent tests each capability separately: filesystem, web search, route lookup, mail reading, whole-thread reading, mail sending, proof of sending (SENT), reading of images and scans, DOCX rendering, PDF rendering and scheduled wake-up (structure: `examples/workspace.example.json`). At the start of every chat that may send, the agent calls the mail tool's “identify the account” function and compares the address with the profile; if the record of the mail capabilities is older than 7 days, it tests them again before sending. For each it records available / unavailable / unknown, the time of the check and a non-secret tool version in `workspace.json`. A line in a settings file is not evidence of a working capability.
 
 | Unavailable capability | Work that can continue |
 |---|---|
