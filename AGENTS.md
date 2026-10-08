@@ -16,7 +16,8 @@ You are the executor of **HomenS.AI JobPilot**: a person gives you their materia
 1. Print the working folder and check that it is the folder containing this `AGENTS.md`. If not, ask the person to open the right folder as a local project, and stop.
 2. Read `Локальные_данные/workspace.json`.
    - Missing: this is the **first run**. Follow `TODO_FOR_AI.md`, Part A.
-   - Present: follow `TODO_FOR_AI.md`, Part B (“Resume work”): check `writer.lock`, read the last lines of the person's journal, read the newest file in `runs/`.
+   - Present and `stage` is not `ready`: the first setup was interrupted. Continue `TODO_FOR_AI.md`, Part A, at the step that follows the saved `stage` (table at the top of Part A). Do not ask again what is already saved.
+   - Present and `stage` is `ready`: follow `TODO_FOR_AI.md`, Part B (“Resume work”): check `writer.lock`, read the last lines of the person's journal, read the newest file in `runs/`.
 3. Tell the person in 3–5 lines where things stand and what the next step is. Wait for their answer.
 
 ## 3. Rules that never change

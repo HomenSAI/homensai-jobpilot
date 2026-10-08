@@ -4,7 +4,19 @@ Follow this file together with `AGENTS.md` (rules that never change). Details an
 
 The current step is stored in `Локальные_данные/workspace.json` as `stage`:
 `new` → `consent_given` → `story_ready` → `documents_ready` → `knowledge_base_draft` → `knowledge_base_confirmed` → `profile_created` → `ready`.
-After every finished step update `stage`, write one journal line, and tell the person what comes next.
+After every finished step update `stage` and tell the person what comes next. From A2 on (when the person's folder and journal exist) also write one journal line per finished step: create `journal/writer.lock`, append the line, delete your lock (`ARCHITECTURE.md` §4). Step A1 happens before any person exists, so it is recorded only in `workspace.json`.
+
+**If the first setup was interrupted** (`workspace.json` exists, `stage` is not `ready`), continue at the step after the saved stage and do not ask again what is saved:
+
+| Saved `stage` | Continue at |
+|---|---|
+| `new` | A2 |
+| `consent_given` | A3 |
+| `story_ready` | A4 |
+| `documents_ready` | A5 (start) |
+| `knowledge_base_draft` | A5 (read `Жизнеописание.md` and the interview file, see which topics are done, continue with the next one), then A6 |
+| `knowledge_base_confirmed` | A7 |
+| `profile_created` | A8, then A9 |
 
 ---
 
@@ -18,7 +30,7 @@ The logic in one line: **the person's story first, then their documents, then th
 - Create `Локальные_данные/workspace.json`: `workspace_id` (new UUID), `format_version`, `language`, `stage`, `capabilities`.
 
 **A2. Who is the person and what is allowed**
-- Ask only: the name to use and the preferred language of the conversation. (Where the person lives is asked once, in A7.)
+- Ask only: the name to use and the preferred language of the conversation. (Where the person lives, the goals and the travel conditions are asked once, in A7, unless the story has already answered them.)
 - Create `person_id`: a short readable id from the name (lowercase Latin letters, digits and hyphens, for example `ivan-petrov`); never change it later. Create `persons/<person_id>/` with `journal/`, `state/`, `outbox/`, `База_знаний/`. Write the journal line `person_created`.
 - Explain the consent in plain words (`AGENTS.md` §3) and ask for a yes or no. Record `consent_granted` (what, when) in the journal. If no: work only with an anonymized example and say that results will be less useful. `stage: consent_given`.
 - If a second person wants to use the same folder: give them their own `person_id` and their own subfolders in `Положите_сюда/<name>/`.
@@ -36,7 +48,7 @@ The logic in one line: **the person's story first, then their documents, then th
 **A5. Analyze and write the knowledge base** (`stage: knowledge_base_draft`)
 - Read the story and every file in the documents folder. Do not change them. Note for each fact which file and which place it comes from.
 - Write the proposed facts into `persons/<person_id>/База_знаний/Жизнеописание.md` in the format of `DATA_CONTRACT.md` §3a, every fact with `status: proposed`. Write `knowledge_base_updated` into the journal.
-- Find the gaps: go through the topics `identity`, `goals`, `experience` (one position at a time), `education`, `certificates`, `languages`, `skills`, `projects`, `strengths` (3–5 real situations: task, action, result), `conditions`, `private_notes` (what not to show an employer) and see which ones the story and the documents do not cover. Ask about the gaps **one topic at a time**; the questions are in `Положите_сюда/2_Рассказ_о_себе/Вопросы_для_рассказа.md`. Always ask explicitly about certificates, courses, licences, languages with their level, and the driving licence and a car (it matters for the journey).
+- Find the gaps: go through the topics `identity`, `goals`, `experience` (one position at a time), `education`, `certificates`, `languages`, `skills`, `projects`, `strengths` (3–5 real situations: task, action, result), `conditions`, `private_notes` (what not to show an employer) and see which ones the story and the documents do not cover. Ask about the gaps **one topic at a time**, except `goals` and `conditions`, which are asked in A7 together with the search setup (what the story already says about them is kept and only confirmed there); the questions are in `Положите_сюда/2_Рассказ_о_себе/Вопросы_для_рассказа.md`. Always ask explicitly about certificates, courses, licences, languages with their level, and the driving licence and a car (it matters for the journey).
 - **Save after every topic**: append the person's answers word for word to the same `Интервью_<ДД.ММ.ГГГГ>.md`, then add the new facts (`status: proposed`) to `Жизнеописание.md`. Do not ask about health, religion or family status. Say back, in three to five lines, what you understood. If the person mentions a document they have not given you, ask them to put it into `1_Мои_документы`.
 
 **A6. Confirm the facts** (`stage: knowledge_base_confirmed` when done)
@@ -45,7 +57,7 @@ The logic in one line: **the person's story first, then their documents, then th
 - Write `knowledge_base_updated` after each section. When all sections are done: tell the person that the knowledge base is ready, where the file is, and that they may open and read it.
 
 **A7. The search setup** (`stage: profile_created`)
-Now ask what we are looking for and how. A profile is one search direction (for example “mechanical engineer near Stuttgart”). Ask **one question at a time**, in this order; offer the options; repeat the answers back at the end and ask “is this right?”. Then create `profiles/<profile_id>/profile.json` (`profile_id`: a short readable id) with exactly these fields (the structure is `examples/settings.example.json`; the meaning is `DATA_CONTRACT.md` §3b), an empty `registry.json`, `runs/` and `reports/`, and write `profile_created` into the journal.
+Now ask what we are looking for and how. **Nothing is asked twice:** first read the knowledge base and the interview file; whatever the person has already said (for example the town where they live, the wish for an internship, a car) is not asked again but shown in the read-back for confirmation. The answers to this table are also added to the knowledge base as `proposed` facts in the sections `goals` and `conditions`, so that both files agree; when the person says “right” to the read-back, mark these facts `confirmed <date>`. A profile is one search direction (for example “mechanical engineer near Stuttgart”). Ask **one question at a time**, in this order; offer the options; repeat the answers back at the end and ask “is this right?”. Then create `profiles/<profile_id>/profile.json` (`profile_id`: a short readable id) with exactly these fields (the structure is `examples/settings.example.json`; the meaning is `DATA_CONTRACT.md` §3b), an empty `registry.json`, `runs/` and `reports/`, and write `profile_created` into the journal.
 
 | Ask | Options / example | Saved as |
 |---|---|---|
@@ -58,7 +70,7 @@ Now ask what we are looking for and how. A profile is one search direction (for 
 | How long may the way take, how many transfers, how far on foot, must the evening return be possible? | minutes one way; number; minutes; yes/no | `search.max_travel_minutes`, `search.max_transfers`, `search.max_walk_minutes`, `search.evening_return_required` |
 | Preferred towns? | list, in order of priority | `search.priority_cities` |
 | Languages of the CV, the cover letter, the email text and the report | four separate answers | `languages.cv_language`, `cover_letter_language`, `email_language`, `report_language` |
-| How should the applications be spread? | at once · every working day · every second working day (ask: calendar day or working day); time of day | `schedule.cadence`, `schedule.local_send_time` |
+| How should the applications be spread? | at once · every permitted working day · every second permitted working day; time of day | `schedule.cadence`, `schedule.local_send_time` |
 | Is there a report template? | look into `Положите_сюда/3_Шаблон_отчёта/`; if a file is there, note its relative path | `report.template_relative_path` |
 
 - From the answer to “where do you live” derive `timezone` and propose `schedule.holiday_region`; verify the holidays with a source and show them to the person (an empty list means “not checked”, never “no holidays”).
@@ -98,7 +110,7 @@ Names are those of `ARCHITECTURE.md` §5. Always: read the journal first, write 
 2. The mail account is the one named in the profile; the recipient is the one on the application and its address has a source.
 3. The package is unchanged since approval (version folder, file names, sizes).
 4. Subject ≤ 50 characters (after NFC normalization); body, attachments and dates match the package.
-5. Limit: slots used this month (counted with the system's tool) plus reserved is below 44; month by the person's time zone.
+5. Limit: slots used this month (counted with the system's tool) plus slots reserved for other messages is below 44, so that this message makes at most 44; month by the person's time zone.
 6. Calendar: allowed day and time; not a catch-up batch; fewer than 100 CVs that day.
 7. No earlier `send_started` or `sent_verified` for this application; no uncertain send open for this person.
 8. Mail sending and proof of sending are available.

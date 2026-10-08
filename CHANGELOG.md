@@ -6,6 +6,17 @@ The project version is in the file [VERSION](VERSION). The project is a document
 
 Rules: `MAJOR.MINOR.PATCH`. MAJOR changes when data formats or rules change so that old data no longer fits. MINOR is a new feature or a new part of the documentation. PATCH is a fix or a wording change without new capabilities. Every change to `main` adds a line here; the number is raised when a release is made. Each release gets a git tag `vX.Y.Z`.
 
+## 1.4.2 — 8 October 2026
+
+Logic check of the whole package; contradictions removed.
+
+- An interrupted first setup is resumed: `AGENTS.md` and `TODO_FOR_AI.md` now say what to do when `workspace.json` exists but `stage` is not `ready`, with a table “saved stage → next step” (before, the agent would have jumped to the daily work).
+- Nothing is asked twice: the search setup first reads the story and the knowledge base, shows what is already known in the read-back and saves the answers also as confirmed facts in `goals` and `conditions`.
+- The journal starts with the person's folder (step A2); every journal write in the first setup follows the lock procedure.
+- Rhythm of sending: only the options that exist in the settings (every permitted working day, every second permitted working day); the “calendar day” question is gone.
+- Send check: the limit wording is exact (this message makes at most 44). Counting rule: the month is the person's local month; lines near the UTC month boundary are checked by hand.
+- Acceptance scenarios FIRST-09 and FIRST-10. Release date in README corrected.
+
 ## 1.4.1 — 8 October 2026
 
 The first setup follows the order described by the author: the person's story first (by voice if nothing is written), then the documents, then the questions about the search.
