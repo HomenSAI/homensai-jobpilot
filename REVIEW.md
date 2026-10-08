@@ -6,11 +6,11 @@
 
 ## Where the project stands
 
-**Finished:** the specification, architecture, data contract and acceptance scenarios (English and Russian); the illustrated overview with a menu and the step-by-step installation page; the statistics page with years, months and days, sorting by date and result, and filters (it works with sample data); a neutral settings example; the license.
+**Finished:** the specification, architecture, data contract and acceptance scenarios (English and Russian); draft instructions for the agent (`AGENTS.md`, `CLAUDE.md`, `TODO_FOR_AI.md`); the ready folders for the person's materials and the knowledge base format; the illustrated overview with a menu and the step-by-step installation page; the statistics page with years, months and days, sorting by date and result, and filters (it works with sample data); a neutral settings example; the license.
 
-**Not done yet:** the instruction files for the agent (AGENTS.md, CLAUDE.md, TODO_FOR_AI.md); checking a Gmail connection; performing the acceptance scenarios by hand; real data in the statistics page.
+**Not done yet:** trying the instruction files in practice (Codex and Claude Code, with a person who prepared nothing, who filled the folders, and with a voice interview); checking a Gmail connection; performing the acceptance scenarios by hand; real data in the statistics page.
 
-There is **no program code** and none is planned: the AI agent follows the written rules and keeps plain files. Version 1.2 added ARCHITECTURE.md, the bilingual layout (English at the root, Russian in `docs/ru`) and one journal per person for quota and application events. Version 1.3 removed the local commands, scripts and modules from the design: the journal, the limit and recovery are procedures that the agent follows, and the documents say openly that they are not technical locks.
+There is **no program code** and none is planned: the AI agent follows the written rules and keeps plain files. Version 1.2 added ARCHITECTURE.md, the bilingual layout (English at the root, Russian in `docs/ru`) and one journal per person for quota and application events. Version 1.3 removed the local commands, scripts and modules from the design: the journal, the limit and recovery are procedures that the agent follows, and the documents say openly that they are not technical locks. Version 1.4 added the instruction files that let the agent start by itself, the ready folders for the person's materials, the knowledge base (one file with the person's life story as confirmed facts) and the interview by voice or text instead of a form, and aligned the AI files with the HTML pages and the guide.
 
 The review covered AI_BUILD_SPEC.md, the HTML overview and the user guide. Personal archives, Gmail and existing applications were not touched. Code from the reviewed GitHub alternatives was not used. The review checks the consistency of the project; it is not an audit of external services or of the labour market.
 
@@ -41,8 +41,8 @@ The product name is **HomenS.AI JobPilot** and the repository is `homensai-jobpi
 
 ## Remaining stages (none of them is a working feature yet)
 
-- The instruction files AGENTS.md, CLAUDE.md and TODO_FOR_AI.md, with a checklist for every standard action.
-- The questionnaire and the document templates as instructions for the agent.
+- Trying `AGENTS.md`, `CLAUDE.md` and `TODO_FOR_AI.md` in practice and correcting what the agents misunderstand.
+- The document templates (CV, cover letter) as instructions for the agent.
 - Choice and verification of a specific Gmail connection and its exact setup parameters.
 - A complete step-by-step setup for Claude Code; the installation guide currently details Codex on Windows.
 - Performing the acceptance scenarios by hand: mail recovery, the shared limit, interrupted work, two chats at once.

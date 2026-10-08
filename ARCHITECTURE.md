@@ -1,4 +1,4 @@
-# HomenS.AI JobPilot — Architecture 1.3
+# HomenS.AI JobPilot — Architecture 1.4
 
 [English](ARCHITECTURE.md) | [Русский](docs/ru/ARCHITECTURE.md)
 
@@ -39,7 +39,7 @@ The HTML page does not give commands to anyone; data is updated only when the ag
 | Part | What the agent does | Where it is kept |
 |---|---|---|
 | Workspace | Checks the folder, the format version, the selected person and profile; reports what it can really do | `workspace.json` |
-| Profile | Documents or questionnaire → proposed facts → facts confirmed by the user, with the source of every fact and separate language settings | `profiles/<profile_id>/profile.json` |
+| Profile and knowledge base | Materials from `Положите_сюда` and an interview in the chat → proposed facts → facts confirmed by the user, with the source of every fact; then the search profile (goals, radius, separate language settings) | `persons/<person_id>/База_знаний/Жизнеописание.md`, `profiles/<profile_id>/profile.json` |
 | Discovery | Records research results as targets: duplicates, freshness, radius, route verification | `registry.json` |
 | Documents | Builds the package from requirements and confirmed facts: versions, fact references, visual check status | application folder |
 | Planning | Spreads packages over permitted workdays, reserves slots, reschedules, marks overdue entries | `registry.json`, journal |
@@ -49,7 +49,7 @@ The HTML page does not give commands to anyone; data is updated only when the ag
 
 The agent proposes recommendation text and mail classifications. Counting, de-duplication and state changes follow the written rules and are always recorded in the journal first.
 
-Planned instruction files (they are Markdown, not code, and do not exist yet): `AGENTS.md` for Codex, `CLAUDE.md` for Claude Code, `TODO_FOR_AI.md` with the step-by-step checklists.
+Instruction files (Markdown, not code; drafts that have not yet been tried in practice): `AGENTS.md` for Codex, `CLAUDE.md` for Claude Code (it imports `AGENTS.md`), `TODO_FOR_AI.md` with the first-run flow and the step-by-step checklists. The agent loads its rules file by itself when the folder is opened, so the person only has to say “start”.
 
 ## 3. The accounting unit is a person
 
@@ -57,8 +57,13 @@ Planned instruction files (they are Markdown, not code, and do not exist yet): `
 
 ```text
 Локальные_данные/
-  workspace.json                    # workspace_id, format, active person/profile, capability check results
+  workspace.json                    # workspace_id, format, language, stage of the first run, capability check results
+  Положите_сюда/                    # the ONLY place where the person puts things (the agent only reads it)
+    1_Мои_документы/                # CVs, diplomas, certificates, references (originals, never changed)
+    2_Рассказ_о_себе/               # the person's story: voice transcripts, notes, interviews, the questions
+    3_Шаблон_отчёта/                # optional report template
   persons/<person_id>/
+    База_знаний/Жизнеописание.md    # the knowledge base: the person's life story as confirmed facts
     journal/transactions.jsonl       # sole authoritative journal
     journal/writer.lock              # exists only while one chat is writing
     state/person.json               # person and profile-list view
@@ -67,8 +72,6 @@ Planned instruction files (they are Markdown, not code, and do not exist yet): `
   profiles/<profile_id>/
     profile.json                    # current confirmed configuration
     registry.json                   # companies, vacancies, applications, queue
-    inbox/                          # unconfirmed imports and proposals
-    source_documents/               # personal originals
     versions/                       # profile/document versions
     runs/                           # work sessions: plans, results, questions
     reports/<YYYY-MM>/              # report revisions and manifests
@@ -165,6 +168,8 @@ Because the agent's own mail tool is the only way to send, nothing separate exis
 
 Instruction files define the rules; the journal holds the state. The to-do list describes stages, but a checkbox in Markdown is not proof of sending or of quota use.
 
+**First run.** A folder without `workspace.json` is new. The agent then starts Part A of `TODO_FOR_AI.md` on its own: introduction, check of its tools, consent, reading the materials from `Положите_сюда` or an interview, confirmation of the facts in the knowledge base, the first search profile. Its position is kept in `workspace.json` as `stage` (`new`, `consent_given`, `materials_read`, `knowledge_base_draft`, `knowledge_base_confirmed`, `profile_created`, `ready`), so an interrupted first run continues where it stopped.
+
 When resuming, the agent:
 
 1. Checks workspace_id, format, the selected profile and the capabilities of its tools.
@@ -189,7 +194,7 @@ The journal grows by a few lines a day, which plain files handle easily. No inde
 
 ## 10. Format changes and the first release boundary
 
-The documentation version is 1.3; `schema_version` in the examples stays 1.2 because the file formats did not change. Older 1.1 data is not migrated automatically: a migration first makes a copy and a report, matches overlapping records of the two old journals by operation_id and then writes the single journal. Originals stay available. No real JobPilot data exists at present, so this revision changes only documents and examples.
+The documentation version is 1.4; `schema_version` in the examples stays 1.2 because the file formats did not change. Older 1.1 data is not migrated automatically: a migration first makes a copy and a report, matches overlapping records of the two old journals by operation_id and then writes the single journal. Originals stay available. No real JobPilot data exists at present, so this revision changes only documents and examples.
 
 The first trial is a full pass on synthetic data, done by hand in a chat: profile → one target → registered package → plan → simulated reply → neutral report and offline HTML. Reading Gmail and controlled sending are added separately. The checks for interrupted work and for two chats at once come before any scheduled sending. Automatic search never implies a complete or guaranteed view of the market.
 

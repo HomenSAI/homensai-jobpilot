@@ -41,7 +41,7 @@
 <div class="eyebrow">Roadmap</div>
 <h1>What exists, <span class="accent">what is next</span></h1>
 <p class="lead">This page separates what is finished from what is only planned, so that nothing planned is mistaken for something that already works.</p>
-<div class="pills"><span class="pill">Version 1.3</span><span class="pill">7 October 2026</span></div>
+<div class="pills"><span class="pill">Version 1.4</span><span class="pill">7 October 2026</span></div>
 </div>
 
 <section id="now">
@@ -49,12 +49,13 @@
 <div class="grid2">
 <article class="panel teal"><h3>Finished</h3><ul>
 <li>The rules for the agent: specification, architecture, data contract and acceptance scenarios, in English and Russian.</li>
+<li>The instruction files for the agent as drafts (AGENTS.md, CLAUDE.md, TODO_FOR_AI.md), the ready folders for your materials and the knowledge base format.</li>
 <li>This illustrated overview and the step-by-step installation guide.</li>
 <li>The statistics page: years, months and days, sorting by date and result, filters. It works with sample data.</li>
 <li>A neutral settings example and the license for the project.</li>
 </ul></article>
 <article class="panel blue"><h3>Not done yet</h3><ul>
-<li>The instruction files for the agent: AGENTS.md, CLAUDE.md and TODO_FOR_AI.md.</li>
+<li>Trying the instruction files for the agent (AGENTS.md, CLAUDE.md, TODO_FOR_AI.md) in practice: with someone who prepared nothing, with someone who filled the folders, and with a voice interview.</li>
 <li>Checking a Gmail connection and its exact setup.</li>
 <li>Performing the acceptance scenarios by hand, on synthetic data.</li>
 <li>Real data in the statistics page (the agent writes its data file summary.js).</li>
@@ -63,8 +64,17 @@
 </div>
 </section>
 
+<section id="v14">
+<div class="sec-head"><div class="num">02 · Version 1.4</div><h2>What version 1.4 changes</h2></div>
+<div class="rules">
+<article><h3>The agent starts by itself</h3><p>AGENTS.md, CLAUDE.md and TODO_FOR_AI.md are in the package. You open the folder and say “Start”; the agent introduces itself and asks one question at a time.</p></article>
+<article><h3>Ready folders for your files</h3><p>Three folders in <code>Локальные_данные\Положите_сюда</code>: documents, your story, report template. You put things there before or after the first run.</p></article>
+<article><h3>A knowledge base instead of a form</h3><p>Your whole life story as confirmed facts in one readable file, written from your files and from an interview by voice or text.</p></article>
+</div>
+</section>
+
 <section id="v13">
-<div class="sec-head"><div class="num">02 · Version 1.3</div><h2>What version 1.3 changes</h2></div>
+<div class="sec-head"><div class="num">03 · Version 1.3</div><h2>What version 1.3 changed</h2></div>
 <div class="rules">
 <article><h3>No program</h3><p>The project is rules and files only. Scripts and local commands were removed from the design: the agent keeps the journal and the limit by following written procedures.</p></article>
 <article><h3>One journal per person</h3><p>Every completed action is one line in a single journal, written under a marker file writer.lock. Several profiles never keep competing journals. Everything else can be rebuilt from it.</p></article>
@@ -75,9 +85,9 @@
 </section>
 
 <section id="todo">
-<div class="sec-head"><div class="num">03 · Next</div><h2>What remains to be done</h2></div>
+<div class="sec-head"><div class="num">04 · Next</div><h2>What remains to be done</h2></div>
 <div class="panel"><ul>
-<li>Write the instruction files AGENTS.md, CLAUDE.md and TODO_FOR_AI.md, with a checklist for every standard action.</li>
+<li>Try the instruction files in Codex and in Claude Code and correct what the agents misunderstand.</li>
 <li>A first full trial on synthetic data, by hand in a chat: profile → target → package → plan → simulated reply → report and offline HTML.</li>
 <li>Checks of interrupted work and of two chats writing at once.</li>
 <li>Then Gmail reading and controlled sending with proof checks. Each profile chooses draft mode, approval of each message, or — with the limitation accepted — an automatic queue.</li>
@@ -92,7 +102,7 @@
 <footer class="site-footer"><div class="wrap">
 <p>© 2026 Serhii Khomenko / HomenS.AI · <a href="https://homensai.com/" rel="me noopener">homensai.com</a> · <a href="https://github.com/HomenSAI" rel="me noopener">GitHub</a> · <a href="https://www.linkedin.com/in/serhii-khomenko-homensai/" rel="me noopener">LinkedIn</a> · <a href="https://orcid.org/0009-0009-5371-9717" rel="me noopener">ORCID</a> · <a href="https://doi.org/10.5281/zenodo.23160031" rel="noopener">DOI</a> · <a href="mailto:info@homensai.com">info@homensai.com</a></p>
 <p>Documents: <a href="README.md">README</a> · <a href="USER_GUIDE.md">User guide</a> · <a href="AI_BUILD_SPEC.md">Build specification</a> · <a href="ARCHITECTURE.md">Architecture</a> · <a href="DATA_CONTRACT.md">Data contract</a> · <a href="ACCEPTANCE_TESTS.md">Acceptance scenarios</a> · <a href="REVIEW.md">Review and status</a></p>
-<p><small>Documentation 1.3 · 7 October 2026 · no personal profiles, CVs or credentials. Code: PolyForm Noncommercial 1.0.0 · documentation: <a href="https://creativecommons.org/licenses/by-nc/4.0/">CC BY-NC 4.0</a>. The “HomenS.A Inc.” wordmark on the author’s site is a design element, not a statement about a legal entity.</small></p>
+<p><small>Documentation 1.4 · 7 October 2026 · no personal profiles, CVs or credentials. Code: PolyForm Noncommercial 1.0.0 · documentation: <a href="https://creativecommons.org/licenses/by-nc/4.0/">CC BY-NC 4.0</a>. The “HomenS.A Inc.” wordmark on the author’s site is a design element, not a statement about a legal entity.</small></p>
 </div></footer>
 <a class="to-top" id="to-top" href="#" aria-label="Back to top"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"/></svg>Top</a>
 </body></html>

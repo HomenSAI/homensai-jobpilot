@@ -6,8 +6,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>The master profile | HomenS.AI JobPilot</title>
-<meta name="description" content="How a confirmed biography becomes a tailored CV and a neutral report.">
+<title>Your knowledge base | HomenS.AI JobPilot</title>
+<meta name="description" content="Where to put your materials, how you tell the agent about yourself, and how your life story becomes a tailored CV.">
 <meta name="author" content="Serhii Khomenko">
 <meta name="theme-color" content="#edf1f4" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#0f1720" media="(prefers-color-scheme: dark)">
@@ -39,35 +39,45 @@
 <main id="main" class="wrap">
 <div class="page-head">
 <div class="eyebrow">Profile</div>
-<h1>A master profile: <span class="accent">more than a CV</span></h1>
-<p class="lead">Put an existing CV and supporting material into the profile folder, or fill in the questionnaire. The agent shows each extracted fact with its source, and you confirm it. The full biography stays in the project; every application receives only the relevant part.</p>
-<div class="pills"><span class="pill">Facts need your confirmation</span><span class="pill">One CV per vacancy</span><span class="pill">Photo is optional</span></div>
+<h1>Your <span class="accent">life story</span> in one file</h1>
+<p class="lead">Put your documents into three ready folders, or simply tell the agent about yourself by voice. The agent writes your whole life story as facts into one file, the knowledge base, and you confirm every fact. Each application then takes only the relevant, confirmed part.</p>
+<div class="pills"><span class="pill">Folders are ready in the ZIP</span><span class="pill">Voice or text</span><span class="pill">Facts need your confirmation</span></div>
 </div>
 
-<section id="contents">
-<div class="sec-head"><div class="num">01 · Contents</div><h2>What the profile records</h2></div>
+<section id="folders">
+<div class="sec-head"><div class="num">01 · Folders</div><h2>Where to put your materials</h2><p>The only place where you have to put anything by hand is <code>Локальные_данные\Положите_сюда</code> (“put here”). It already exists in the project folder. The agent only reads it and never changes your files.</p></div>
+<div class="table-scroll"><table class="cmp"><thead><tr><th>Folder</th><th>What to put there</th></tr></thead><tbody>
+<tr><td><code>1_Мои_документы</code><br><small>my documents</small></td><td>CVs of any version, diplomas, certificates, references, official letters, a portfolio, samples of your letters. Any format, no sorting.</td></tr>
+<tr><td><code>2_Рассказ_о_себе</code><br><small>my story</small></td><td>Your story in your own words: a transcript of a voice recording, notes, answers to the prepared questions. The agent also saves interviews here, word for word.</td></tr>
+<tr><td><code>3_Шаблон_отчёта</code><br><small>report template</small></td><td>Only if you have your own report sample.</td></tr>
+</tbody></table></div>
+<p style="margin-top:.75rem">You can fill the folders before the first run or leave them empty. How to prepare them, including the voice recording: <a href="overview_install.html#prepare">Install → Prepare your materials</a>.</p>
+</section>
+
+<section id="voice">
+<div class="sec-head"><div class="num">02 · Interview</div><h2>Tell it by voice or in text</h2><p>If you have nothing prepared, the agent interviews you. It asks one topic at a time, accepts long spoken answers, saves them word for word after every topic, and says back what it understood.</p></div>
 <div class="facts">
-<article><h3>Experience</h3><small>Employers, roles, dates, tasks, tools, teams and results.</small></article>
-<article><h3>Education</h3><small>School, vocational training, university, courses, recognition of qualifications, diplomas and certificates.</small></article>
-<article><h3>Skills</h3><small>Languages, digital and technical skills, level and examples.</small></article>
-<article><h3>Projects</h3><small>Internships, volunteering, portfolio, informal learning, achievements.</small></article>
-<article><h3>Preferences</h3><small>Target roles, working arrangements, radius, transport, journey time, schedule.</small></article>
-<article><h3>Languages and reports</h3><small>Separate language settings for the CV, cover letter, email and report; an optional report template.</small></article>
-<article><h3>Sources</h3><small>For every fact: a document or a self-description, a date, the verification status and permission to use it.</small></article>
+<article><h3>Who you are</h3><small>Name, place, languages, what you want, what you do not want.</small></article>
+<article><h3>Every job</h3><small>Employer, place, role, period, daily tasks, tools, team, results.</small></article>
+<article><h3>Education and certificates</h3><small>School, training, university, courses, who issued what and when.</small></article>
+<article><h3>Languages and skills</h3><small>Level of reading, writing, speaking; technical and computer skills, where and when used.</small></article>
+<article><h3>Projects and real situations</h3><small>Internships, volunteering, projects; three to five stories: the task, what you did, the result.</small></article>
+<article><h3>Conditions and privacy</h3><small>Radius, transport, schedule, start date; what must never be shown to an employer.</small></article>
 </div>
+<p style="margin-top:.75rem"><small>The agent does not ask about health, religion or family status. If you mention such things yourself, they are marked as sensitive and never go into a CV without your explicit choice.</small></p>
 </section>
 
-<section id="questionnaire">
-<div class="sec-head"><div class="num">02 · Questionnaire</div><h2>From a broad profile to a short CV</h2><p>The profile holds a wide record of confirmed skills and experience. For each application the agent writes a concise, readable CV in the language you selected.</p></div>
+<section id="kb">
+<div class="sec-head"><div class="num">03 · Knowledge base</div><h2>One file with your whole life story</h2><p>From your documents and your story the agent writes the file <code>Локальные_данные\persons\&lt;your id&gt;\База_знаний\Жизнеописание.md</code>. It is written in your language, you can open and read it in any text editor, and you can correct it by hand.</p></div>
 <div class="grid2">
-<article class="panel blue"><h3>What the profile holds</h3><p>Education and training, experience in each role, languages, digital and professional skills, projects, achievements, volunteering, certificates and source documents. It also records measurable results, tools, STAR examples, target roles and mobility.</p></article>
-<article class="panel teal"><h3>What the employer receives</h3><p>Only selected, verified facts that matter for the vacancy. The full biography stays local. Sensitive data and a photograph are not collected unless you add them yourself.</p></article>
+<article class="panel blue"><h3>How a fact looks</h3><pre class="cmd" style="white-space:pre-wrap">- [F012] Mechanical engineer at Muster GmbH, Stuttgart, 2012–2016; commissioning of packaging lines | source: Zeugnis_Muster.pdf p.2 | status: confirmed 2026-10-07 | use: cv | sens: normal</pre><p>One fact per line, with its source, its status (<code>proposed</code>, <code>confirmed</code> or <code>rejected</code>), whether it may appear in application documents (<code>use</code>) and whether it is sensitive (<code>sens</code>).</p></article>
+<article class="panel teal"><h3>Rules</h3><ul><li>The agent first writes every fact as <code>proposed</code>; only your confirmation makes it <code>confirmed</code>.</li><li>A fact is never deleted: a correction adds a new line and marks the old one <code>rejected</code>.</li><li>A fact without a document stays valid, marked <code>self-reported</code>.</li><li>CVs and letters use only confirmed facts that are allowed for documents.</li><li>Your own words are kept unchanged in <code>2_Рассказ_о_себе</code>.</li></ul></article>
 </div>
 </section>
 
-<section id="report">
-<div class="sec-head"><div class="num">03 · Report</div><h2>A neutral report in the chosen language</h2></div>
-<div class="notice"><p>If you supply a report template, the agent works on a copy and keeps the original unchanged. Without a template it creates a table with surname, first name, period, submission date, company, vacancy, channel, reply date and a short outcome. No institutional fields or third-party branding are added. A missing reply is labelled in the report language; an actual reply is summarized by its reason or decision, not by whether a thank-you was sent.</p></div>
+<section id="cv">
+<div class="sec-head"><div class="num">04 · From the file to a CV</div><h2>A short CV for every vacancy</h2><p>The knowledge base holds the broad record. For each application the agent writes a concise, readable CV and cover letter in the language you selected, from confirmed facts only, and shows which fact each statement comes from. You see the gaps and decide what to clarify. A photo is optional.</p></div>
+<div class="notice"><p><strong>A neutral report in the chosen language.</strong> If you put a report template into <code>3_Шаблон_отчёта</code>, the agent works on a copy and keeps the original unchanged. Without a template it creates a table with surname, first name, period, submission date, company, vacancy, channel, reply date and a short outcome. No institutional fields or third-party branding are added. A missing reply is labelled in the report language; an actual reply is summarized by its reason or decision, not by whether a thank-you was sent.</p></div>
 </section>
 
 <div class="pager"><a href="overview_install.html">← Install</a><a href="overview_architecture.html">Architecture →</a></div>
@@ -75,7 +85,7 @@
 <footer class="site-footer"><div class="wrap">
 <p>© 2026 Serhii Khomenko / HomenS.AI · <a href="https://homensai.com/" rel="me noopener">homensai.com</a> · <a href="https://github.com/HomenSAI" rel="me noopener">GitHub</a> · <a href="https://www.linkedin.com/in/serhii-khomenko-homensai/" rel="me noopener">LinkedIn</a> · <a href="https://orcid.org/0009-0009-5371-9717" rel="me noopener">ORCID</a> · <a href="https://doi.org/10.5281/zenodo.23160031" rel="noopener">DOI</a> · <a href="mailto:info@homensai.com">info@homensai.com</a></p>
 <p>Documents: <a href="README.md">README</a> · <a href="USER_GUIDE.md">User guide</a> · <a href="AI_BUILD_SPEC.md">Build specification</a> · <a href="ARCHITECTURE.md">Architecture</a> · <a href="DATA_CONTRACT.md">Data contract</a> · <a href="ACCEPTANCE_TESTS.md">Acceptance scenarios</a> · <a href="REVIEW.md">Review and status</a></p>
-<p><small>Documentation 1.3 · 7 October 2026 · no personal profiles, CVs or credentials. Code: PolyForm Noncommercial 1.0.0 · documentation: <a href="https://creativecommons.org/licenses/by-nc/4.0/">CC BY-NC 4.0</a>. The “HomenS.A Inc.” wordmark on the author’s site is a design element, not a statement about a legal entity.</small></p>
+<p><small>Documentation 1.4 · 7 October 2026 · no personal profiles, CVs or credentials. Code: PolyForm Noncommercial 1.0.0 · documentation: <a href="https://creativecommons.org/licenses/by-nc/4.0/">CC BY-NC 4.0</a>. The “HomenS.A Inc.” wordmark on the author’s site is a design element, not a statement about a legal entity.</small></p>
 </div></footer>
 <a class="to-top" id="to-top" href="#" aria-label="Back to top"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"/></svg>Top</a>
 </body></html>

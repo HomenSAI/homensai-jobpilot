@@ -1,4 +1,4 @@
-# HomenS.AI JobPilot — acceptance scenarios 1.3
+# HomenS.AI JobPilot — acceptance scenarios 1.4
 
 [English](ACCEPTANCE_TESTS.md) | [Русский](docs/ru/ACCEPTANCE_TESTS.md)
 
@@ -68,7 +68,7 @@ For each scenario record: ID, the version of the documents and the agent used, t
 
 ## Acceptance by stage
 
-Additional checks for architecture 1.3 (rules and files):
+Additional checks for architecture 1.3–1.4 (rules and files):
 
 | ID | Conditions and action | Expected result |
 |---|---|---|
@@ -80,6 +80,20 @@ Additional checks for architecture 1.3 (rules and files):
 | ADAPTER-01 | The agent's mail tool cannot confirm SENT | Capabilities are reported accurately; scheduled automatic sending is not declared ready |
 | L10N-01 | Switch documentation or UI between en/ru | Rules, IDs, and counters match; CV/report languages do not change |
 | PROJECTION-01 | Build the PDF and the statistics page from the same journal position | The final business counters are identical |
+
+### First run and the knowledge base (version 1.4)
+
+| ID | Conditions and action | Expected result |
+|---|---|---|
+| FIRST-01 | A new folder with empty intake folders; the person says only “Start” | The agent loads its rules by itself, names the working folder, explains in a few lines what will happen, asks one question at a time, and offers two ways: put files into the folders, or an interview by voice or text |
+| FIRST-02 | Files are in `1_Мои_документы` and a transcript is in `2_Рассказ_о_себе` | The agent asks for consent before reading; after a yes it writes `Жизнеописание.md` with every fact `proposed`, each with a source; the originals are unchanged (same names, sizes and dates) |
+| FIRST-03 | No consent to cloud processing | The agent reads no personal files, works only with an anonymized example and says that results will be less useful |
+| FIRST-04 | The interview chat stops after the third topic; a new chat is started | The agent finds `workspace.json` (`stage`) and the saved answers, tells the person what is done and continues with the fourth topic; nothing is asked again or lost |
+| FIRST-05 | The person confirms some facts, corrects one and rejects one | Statuses become `confirmed <date>` / a new line replaces the corrected one and the old one is `rejected` / `rejected`; no line is deleted; each section change is a `knowledge_base_updated` journal line |
+| KB-01 | The person edits one line of `Жизнеописание.md` by hand and adds a new line without a status | At the next chat the agent notices, treats both as `proposed` and asks for confirmation |
+| KB-02 | A fact is marked `sens: sensitive` or `use: internal` | It never appears in a CV, a cover letter or a report; the agent does not ask about health, religion or family status |
+| KB-03 | A requirement of a vacancy has no confirmed fact | The CV does not contain it; the agent shows the gap in the requirement table and asks the person |
+| KB-04 | A second person wants to use the same folder | The agent creates a separate `person_id`, a subfolder `Положите_сюда/<name>/` with three subfolders and a separate knowledge base; the first person's data is not read |
 
 1. File workflow: BOOT, PATH, PROFILE, FACT, PRIVACY, journal, and recovery. No email sending.
 2. Documents/search/dashboard: verifiable sources, languages, DOC/TEMPLATE, SEARCH/ROUTE, and DASH.

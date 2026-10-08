@@ -51,17 +51,31 @@
 <div class="phase"><b>Part 2 · Project folder</b>Download the project archive from GitHub in your browser and extract it into a folder. <small>Step 2</small></div>
 <div class="phase"><b>Part 3 · Connect and start</b>Open the folder as a local project, set permissions and run the first safe start. <small>Steps 3–6</small></div>
 </div>
-<p style="margin-top:1rem">After that you add your own data (steps 7–9), connect mail if you want it (step 8) and settle into the daily routine (steps 10–13).</p>
-<div class="notice warn"><p><strong>Package status.</strong> This guide describes the finished release. The current folder holds design documents, not a ready-to-run product or a published release archive. Do not download an archive from a link you cannot verify. Repository: <a href="https://github.com/HomenSAI/homensai-jobpilot">github.com/HomenSAI/homensai-jobpilot</a>. For the current documentation build, start with the <a href="README.md">README</a>: it lists the files that really exist and gives a starting prompt that does not need the missing to-do file.</p></div>
+<p style="margin-top:1rem">You can gather your materials at any time, even before step 1 (see “Prepare your materials” below). In step 7 you tell the agent about yourself, in step 8 you connect mail (optional), in step 9 you check the first queue; steps 10–13 are optional features and the daily routine.</p>
+<div class="notice warn"><p><strong>Package status.</strong> This guide describes the finished release. The current folder holds the design documents and draft instructions for the agent (AGENTS.md, CLAUDE.md, TODO_FOR_AI.md) that have not yet been tried in practice. Do not download an archive from a link you cannot verify. Repository: <a href="https://github.com/HomenSAI/homensai-jobpilot">github.com/HomenSAI/homensai-jobpilot</a>.</p></div>
 </section>
 
 <section id="needs">
 <div class="sec-head"><div class="num">Before you start</div><h2>What you need</h2></div>
 <div class="grid2">
 <article class="panel blue"><h3>Computer and accounts</h3><ul><li>A Windows computer with internet access.</li><li>A ChatGPT account with Codex available (check in step 1).</li><li>A Gmail account, only if you want mail tracking.</li></ul></article>
-<article class="panel teal"><h3>Your material</h3><ul><li>Your original CV and, if you have them, proof of experience, education and skills.</li><li>The languages for application documents and reports.</li><li>A dedicated folder for the project, for example <code>Documents\HomenSAI-JobPilot</code>.</li></ul></article>
+<article class="panel teal"><h3>Your material</h3><ul><li>Your CV, diplomas and certificates in any format, if you have them — see “Prepare your materials” below.</li><li>Or just your voice: you can tell the agent about yourself and it writes everything down.</li><li>The languages for application documents and reports.</li><li>A dedicated folder for the project, for example <code>Documents\HomenSAI-JobPilot</code>.</li></ul></article>
 </div>
 <p style="margin-top:.75rem">Working with local files needs a <strong>local Codex project</strong> opened on your computer. An ordinary cloud ChatGPT project does not give access to a folder on your computer.</p>
+</section>
+
+<section id="prepare">
+<div class="sec-head"><div class="num">Prepare</div><h2>Prepare your materials — you can do it first</h2><p>The project ZIP contains a ready folder <code>Локальные_данные\Положите_сюда</code> (“put here”) with three subfolders. It is the only place where you have to put anything by hand. Fill it right after step 2, or gather the files now and copy them later. If you prepare nothing, the agent asks you everything itself (step 7).</p></div>
+<div class="table-scroll"><table class="cmp"><thead><tr><th>Folder</th><th>What to put there</th></tr></thead><tbody>
+<tr><td><code>1_Мои_документы</code><br><small>my documents</small></td><td>CVs of any version, diplomas, certificates, references, official letters, a portfolio, samples of your own letters. PDF, DOCX, TXT, photos and scans. No sorting or renaming needed.</td></tr>
+<tr><td><code>2_Рассказ_о_себе</code><br><small>my story</small></td><td>Your story in your own words: a transcript of a voice recording, notes, answers to the questions in <code>Вопросы_для_рассказа.md</code> (it lies in this folder).</td></tr>
+<tr><td><code>3_Шаблон_отчёта</code><br><small>report template</small></td><td>Only if you have your own report sample. Otherwise leave it empty.</td></tr>
+</tbody></table></div>
+<div class="grid2" style="margin-top:1rem">
+<article class="panel blue"><h3>Tell your story by voice</h3><ol><li>Open a chat with Claude or ChatGPT and switch on voice mode (the microphone icon).</li><li>Say: “I will tell you about myself for my CV. Ask me questions one topic at a time. At the end write down my story word for word, adding nothing, as a text file.” You can paste the questions from <code>Вопросы_для_рассказа.md</code>.</li><li>Talk as long as you want, in parts, on different days, in any order. If you do not remember something, say so.</li><li>Save the text file into <code>2_Рассказ_о_себе</code>.</li></ol></article>
+<article class="panel teal"><h3>Or let the agent ask you</h3><p>Prepare nothing. At step 6 start the agent in your project folder and say that you want to tell about yourself, by voice or in text. It asks the questions one topic at a time, saves your answers word for word into <code>2_Рассказ_о_себе</code> and writes your knowledge base from them.</p></article>
+</div>
+<div class="notice"><p>The agent only reads these folders; it never changes, moves or deletes your files. Everything stays on your computer and is not published (the folder <code>Локальные_данные</code> is excluded from Git). From your files and your story the agent writes your <strong>knowledge base</strong>: one file with your whole life story as facts (<code>Локальные_данные\persons\&lt;your id&gt;\База_знаний\Жизнеописание.md</code>). It shows you every fact for confirmation, and CVs and letters use only confirmed facts.</p></div>
 </section>
 
 <section id="p1">
@@ -79,7 +93,7 @@
 <ol class="guide" style="counter-reset: g 1">
 <li><h3>Download and extract the project archive</h3>
 <ol><li>Open the project repository on GitHub (<a href="https://github.com/HomenSAI/homensai-jobpilot">github.com/HomenSAI/homensai-jobpilot</a>) in your browser.</li><li>Choose <strong>Code → Download ZIP</strong>.</li><li>In File Explorer create a folder such as <code>Documents\HomenSAI-JobPilot</code>.</li><li>Extract the ZIP into that folder.</li><li>Do not extract into a Windows system folder.</li></ol>
-<p class="see"><b>You should see:</b> in the folder, directly (not inside another folder): <code>README.md</code>, <code>USER_GUIDE.md</code>, <code>AI_BUILD_SPEC.md</code>, <code>AGENTS.md</code>, <code>CLAUDE.md</code>, <code>TODO_FOR_AI.md</code> and <code>dashboard_template</code>.</p>
+<p class="see"><b>You should see:</b> in the folder, directly (not inside another folder): <code>README.md</code>, <code>USER_GUIDE.md</code>, <code>AI_BUILD_SPEC.md</code>, <code>AGENTS.md</code>, <code>CLAUDE.md</code>, <code>TODO_FOR_AI.md</code>, <code>dashboard_template</code> and the folder <code>Локальные_данные\Положите_сюда</code> with three subfolders.</p>
 <p class="stuck"><b>If the files are one level deeper:</b> you extracted into an extra subfolder. Move the contents up, or pick the inner folder in step 3.</p>
 <p>The folder will hold both the project instructions and your local working data. Personal profiles, CVs, emails, OAuth tokens and statistics must never be published on GitHub.</p></li>
 </ol>
@@ -101,27 +115,26 @@
 <p class="see"><b>You should see:</b> “Ask for approval” (or the equivalent) in the permissions menu, and the project folder as the working folder.</p>
 <p>Official explanations: <a href="https://learn.chatgpt.com/docs/permission-modes">permission modes</a>, <a href="https://learn.chatgpt.com/docs/sandboxing">sandboxing</a>.</p></li>
 <li><h3>Make the first safe start</h3>
-<p>Paste this text into the new chat:</p>
-<pre class="cmd">Work only inside the open local HomenS.AI JobPilot folder.
-First confirm the actual working directory and list the files you find.
-Read README.md, USER_GUIDE.md, AGENTS.md, AI_BUILD_SPEC.md and DATA_CONTRACT.md,
-then locate TODO_FOR_AI.md.
-Check that the package is complete and perform only the first safe plan item.
-Do nothing outside this folder; do not send CVs or modify email.
-If a required file is missing, do not create it on your own: explain what is missing
-and ask only the necessary questions. Start in draft-only mode.</pre>
-<p class="see"><b>You should see:</b> the agent names the correct folder, lists the files, reports that it works in draft-only mode and proposes a plan.</p>
-<p class="stuck"><b>If AGENTS.md or TODO_FOR_AI.md is missing:</b> stop. The package is not yet a complete working release. Do not ask the agent to invent the missing files.</p></li>
+<p>Type this into the new chat (or simply “Start”):</p>
+<pre class="cmd">Start. Read AGENTS.md and TODO_FOR_AI.md and lead me through the first run.</pre>
+<p>The agent loads its rules by itself (Codex reads AGENTS.md, Claude Code reads CLAUDE.md). It introduces itself, confirms the working folder, checks its tools and then asks you, one question at a time: your name, your city, the language you prefer, and whether you agree that it reads your personal materials. Answer in your own words, by voice if your app has the microphone button.</p>
+<p class="see"><b>You should see:</b> the agent names the correct folder, explains in a few lines what will happen, says that it works in draft-only mode and asks its first question.</p>
+<p class="stuck"><b>If the agent does not know what to do, or says that AGENTS.md or TODO_FOR_AI.md is missing:</b> the folder is the wrong one or the archive is incomplete. Check steps 2 and 3. Do not ask the agent to invent the missing files.</p></li>
 </ol>
 </section>
 
 <section id="p4">
 <div class="sec-head"><div class="num">Part 4</div><h2>Your data, mail and the first queue</h2></div>
 <ol class="guide" style="counter-reset: g 6">
-<li><h3>Create your profile and add your information</h3>
-<ol><li>Select or create a personal profile. Do not mix different people’s data. Several search directions of one person share one <code>person_id</code>: the limit of 44 is shared, not renewed for each profile.</li><li>Copy your CV and selected supporting documents into <code>Локальные_данные\profiles\&lt;profile_id&gt;\source_documents\</code>, or fill in the questionnaire if the release includes one. <strong>Before the cloud agent reads these files for the first time, agree to share the selected information with its provider.</strong> “Local” storage does not mean offline processing. You can start with an anonymized example.</li><li>Ask the agent to extract the facts and show them. Confirm, correct or reject every uncertain item. The agent must not invent experience, dates, certificates, language levels or achievements.</li><li>Choose the language of the CV, the cover letter / email text and the report separately. A language is never guessed from your country, city or interface language.</li><li>If you have a report template, place it in the profile’s templates folder and give the agent its path. The original stays unchanged; the report is a separate neutral copy. Without a template the system creates a simple table with your surname, first name and the outcome of each application.</li><li>Set your goal, starting place, radius in kilometres, transport (car and/or public transport), acceptable journey time, preferred towns, schedule and exceptions. For “every other day”, say whether you mean calendar days or every second permitted working day. The values in <code>examples/settings.example.json</code> are examples, not your settings.</li></ol>
-<p class="see"><b>You should see:</b> a list of confirmed facts with a source for each, and your settings repeated back to you for approval.</p>
-<p class="stuck"><b>Never</b> put passwords, one-time codes or OAuth tokens into profile files. Check that <code>Локальные_данные/</code> is excluded from publication.</p></li>
+<li><h3>Tell the agent about yourself and confirm your facts</h3>
+<ol><li>If you have not done it yet, put your files into <code>Локальные_данные\Положите_сюда\1_Мои_документы</code> and your recorded story into <code>2_Рассказ_о_себе</code> (see “Prepare your materials” above), then say “ready”. If you prepared nothing, say that you want to tell about yourself, by voice or in text.</li>
+<li><strong>Before the agent reads your personal files it explains that a cloud agent may pass what it reads to its provider, and asks your consent.</strong> “Stored locally” does not mean “processed offline”. You can say no and start with an anonymized example.</li>
+<li>The agent reads everything, or interviews you topic by topic: who you are, what you want, every job, education, certificates, languages, skills, projects, real situations, conditions, what not to show. It saves your answers after every topic, so nothing is lost if the chat stops.</li>
+<li>It then shows you the facts it wrote, section by section. For each fact say: <em>right</em>, <em>correct it</em> or <em>wrong</em>. The agent never invents experience, dates, certificates, language levels or achievements. A fact without a document stays valid but is marked “self-reported”.</li>
+<li>Choose the language of the CV, the cover letter / email text and the report separately. A language is never guessed from your country, city or interface language.</li>
+<li>Tell it your goal, starting place, radius in kilometres, transport (car and/or public transport), acceptable journey time, preferred towns, schedule and earliest start. For “every other day” say whether you mean calendar days or every second permitted working day. If you have a report template, put it into <code>3_Шаблон_отчёта</code>. Several search directions of one person share one limit of 44 per month.</li></ol>
+<p class="see"><b>You should see:</b> the file <code>Локальные_данные\persons\&lt;your id&gt;\База_знаний\Жизнеописание.md</code> with your life story as facts, each marked <code>confirmed</code> or <code>self-reported</code>, and your search settings repeated back to you for approval. You can open and read the file in any text editor.</p>
+<p class="stuck"><b>Never</b> put passwords, one-time codes or OAuth tokens into any file. Private notes stay marked as sensitive and never go into a CV without your explicit choice. Check that <code>Локальные_данные/</code> is excluded from publication.</p></li>
 <li><h3>Connect Gmail separately, only if you need mail tracking</h3>
 <ol><li>Check that the release names the exact Gmail tool or server and its required permissions. Do not guess a URL or add an arbitrary server.</li><li>If the release uses an MCP server, open <strong>Settings → MCP servers → Add server</strong>, enter only the parameters given in the release and save. If it uses a connected app, open the Apps / Connectors page.</li><li>Choose <strong>Authenticate / Connect</strong>, use the official OAuth screen and check the Gmail address before you confirm.</li><li>Start with reading and search only. Enable sending separately if you need it. Do not allow deleting, archiving or changing labels. The default mode stays <code>draft_only</code>.</li><li>If anything asks you to type a password, code or token into a chat, a file or a repository — refuse and stop.</li></ol>
 <p class="see"><b>You should see:</b> the exact Gmail address you intended, and only the permissions you approved.</p>
@@ -170,7 +183,7 @@ and ask only the necessary questions. Start in draft-only mode.</pre>
 <footer class="site-footer"><div class="wrap">
 <p>© 2026 Serhii Khomenko / HomenS.AI · <a href="https://homensai.com/" rel="me noopener">homensai.com</a> · <a href="https://github.com/HomenSAI" rel="me noopener">GitHub</a> · <a href="https://www.linkedin.com/in/serhii-khomenko-homensai/" rel="me noopener">LinkedIn</a> · <a href="https://orcid.org/0009-0009-5371-9717" rel="me noopener">ORCID</a> · <a href="https://doi.org/10.5281/zenodo.23160031" rel="noopener">DOI</a> · <a href="mailto:info@homensai.com">info@homensai.com</a></p>
 <p>Documents: <a href="README.md">README</a> · <a href="USER_GUIDE.md">User guide</a> · <a href="AI_BUILD_SPEC.md">Build specification</a> · <a href="ARCHITECTURE.md">Architecture</a> · <a href="DATA_CONTRACT.md">Data contract</a> · <a href="ACCEPTANCE_TESTS.md">Acceptance scenarios</a> · <a href="REVIEW.md">Review and status</a></p>
-<p><small>Documentation 1.3 · 7 October 2026 · no personal profiles, CVs or credentials. Code: PolyForm Noncommercial 1.0.0 · documentation: <a href="https://creativecommons.org/licenses/by-nc/4.0/">CC BY-NC 4.0</a>. The “HomenS.A Inc.” wordmark on the author’s site is a design element, not a statement about a legal entity.</small></p>
+<p><small>Documentation 1.4 · 7 October 2026 · no personal profiles, CVs or credentials. Code: PolyForm Noncommercial 1.0.0 · documentation: <a href="https://creativecommons.org/licenses/by-nc/4.0/">CC BY-NC 4.0</a>. The “HomenS.A Inc.” wordmark on the author’s site is a design element, not a statement about a legal entity.</small></p>
 </div></footer>
 <a class="to-top" id="to-top" href="#" aria-label="Back to top"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"/></svg>Top</a>
 </body></html>

@@ -1,4 +1,4 @@
-# HomenS.AI JobPilot — Data Contract 1.3
+# HomenS.AI JobPilot — Data Contract 1.4
 
 [English](DATA_CONTRACT.md) | [Русский](docs/ru/DATA_CONTRACT.md)
 
@@ -13,6 +13,9 @@ The first version uses UTF-8 JSON for configuration and records, and JSONL for e
 | Path relative to the root | Role |
 |---|---|
 | `Локальные_данные/persons/<person_id>/state/person.json` | Projection of the person's identity, quota time zone, and permitted profile_id values |
+| `Локальные_данные/workspace.json` | Workspace id, format version, language, `stage` of the first run, results of the capability checks of the agent's tools |
+| `Локальные_данные/Положите_сюда/1_Мои_документы`, `2_Рассказ_о_себе`, `3_Шаблон_отчёта` | The person's originals, story and optional report template; the agent only reads them and never changes them |
+| `Локальные_данные/persons/<person_id>/База_знаний/Жизнеописание.md` | The knowledge base: the master source of confirmed facts, see §3a |
 | `Локальные_данные/persons/<person_id>/journal/transactions.jsonl` | The only primary journal: applications, profiles, messages, consent, and the shared quota |
 | `Локальные_данные/persons/<person_id>/journal/writer.lock` | A marker file that exists only while one chat is writing; a convention, not an authorization mechanism |
 | `Локальные_данные/persons/<person_id>/state/quota.json` | Rebuildable projection of consumed and reserved slots |
@@ -30,7 +33,7 @@ A failure between writing a journal line and updating registry/inf.txt is resolv
 ## 2. Identifiers, paths, and time
 
 - `person_id` is immutable for one person. Multiple profiles/accounts belonging to that person share one quota. Separate copies of the package do not automatically share a counter: external submissions must be reconciled; the first version does not promise distributed synchronization.
-- `profile_id`, `company_id`, `branch_id`, `vacancy_id`, `application_id`, `event_id`, `operation_id`, and `send_attempt_id` are stable UUIDs. A folder name is only a label, not a record key.
+- `person_id` and `profile_id` are short readable identifiers (lowercase Latin letters, digits and hyphens, for example `ivan-petrov`) because they are folder names; they are chosen once and never changed. `company_id`, `branch_id`, `vacancy_id`, `application_id`, `event_id`, `operation_id`, and `send_attempt_id` are stable UUIDs. A company or application folder name is only a label, not a record key.
 - An application links exactly one profile to one specific target. `vacancy_id = null` is allowed for an unsolicited application; such an application must not be presented as a published vacancy.
 - Deduplication considers the normalized domain, organization, branch, and history. Different vacancies at one company are stored separately, but a repeat application requires an explicit decision under the profile policy.
 - Paths are relative. After canonicalization, reject paths that escape the root, including `..`, absolute paths, and redirecting junctions/symlinks. Folder names must omit Windows characters `<>:"/\\|?*`, trailing dots/spaces, and reserved names; append a short ID to resolve a collision. Do not move an existing folder because its planned date changes.
@@ -54,6 +57,31 @@ A failure between writing a journal line and updating registry/inf.txt is resolv
 | Consent | consent_id, scope, mode, account_id, conditions, granted_at, revoked_at or null, association with package_hash for a one-time send |
 
 An unknown value is `null` with a reason/status, not a fabricated string. Do not store passwords, tokens, or complete message bodies in ordinary logs. If the relationship between a message and an application is ambiguous, store an unlinked event; do not choose a company merely because its name looks similar.
+
+## 3a. The knowledge base: the person's life story
+
+The knowledge base is **one Markdown file per person**: `Локальные_данные/persons/<person_id>/База_знаний/Жизнеописание.md`. It holds everything the person has told or documented about themselves, in the person's own language. It is the master source of facts; a CV is only a projection of it for one vacancy. A person can open, read and correct the file in any text editor. At the start of every chat the agent checks whether the file was changed by hand: every changed or new line without a status is treated as `proposed` and shown to the person for confirmation.
+
+The file has a fixed set of sections. The heading is written in the person's language, followed by the section id in braces:
+
+`identity` (name, place, time zone, contact details the person allows) · `goals` · `experience` (one `###` subsection per position) · `education` · `certificates` · `languages` · `skills` · `projects` · `strengths` (real situations: task, action, result) · `conditions` (radius, transport, schedule, start date) · `private_notes` (what must not be shown to an employer).
+
+Every fact is **one line** in this form:
+
+```text
+- [F012] Mechanical engineer at Muster GmbH, Stuttgart, 2012–2016; commissioning of packaging lines | source: Zeugnis_Muster.pdf p.2 | status: confirmed 2026-10-07 | use: cv | sens: normal
+```
+
+| Part | Meaning |
+|---|---|
+| `[F012]` | `fact_id`: F plus a running number, never reused |
+| text | the fact in the person's language; one fact per line |
+| `source:` | a file in `Положите_сюда/` with the place, or `interview 07.10.2026`, or `self-reported` (the person says so, no document) |
+| `status:` | `proposed`, `confirmed <date>` or `rejected` (these three words are always English so that any agent can read them) |
+| `use:` | `cv` (may appear in application documents) or `internal` (only for the agent's understanding) |
+| `sens:` | `normal` or `sensitive` (sensitive facts never go into documents without the person's explicit choice) |
+
+Rules: a fact is never deleted; a correction adds a new line and marks the old one `rejected`. Only `confirmed` facts with `use: cv` may be used in a CV or letter. The raw words of the person are kept separately and unchanged in `Положите_сюда/2_Рассказ_о_себе/` (for example `Интервью_<date>.md`). Each change of the file is recorded in the journal as `knowledge_base_updated` (file, section, fact ids).
 
 ## 4. Application state and outcome are separate dimensions
 

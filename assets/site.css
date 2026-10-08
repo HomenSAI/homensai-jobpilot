@@ -171,6 +171,7 @@ table.cmp th, table.cmp td { padding: .7rem .9rem; border-bottom: 1px solid var(
 table.cmp th { font: .72rem var(--font-mono); letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
 table.cmp tr:last-child td { border-bottom: 0; }
 table.cmp td:first-child { font-weight: 600; min-width: 9rem; }
+table.cmp td:first-child code { white-space: nowrap; overflow-wrap: normal; }
 .badge { display: inline-flex; align-items: center; gap: .3rem; font-size: .85rem; padding: .1rem .6rem; border-radius: 999px; border: 1px solid var(--line); white-space: nowrap; }
 .badge.ok { color: var(--ok); border-color: var(--ok); }
 .badge.warn { color: var(--warn); border-color: var(--warn); }

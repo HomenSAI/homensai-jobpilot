@@ -2,9 +2,9 @@
 
 [English](AI_BUILD_SPEC.md) | [Русский](docs/ru/AI_BUILD_SPEC.md)
 
-**Project specification for Codex / Claude Code — draft 1.3, 7 October 2026**
+**Project specification for Codex / Claude Code — draft 1.4, 7 October 2026**
 
-**Status:** project documentation. The system contains **no program code**: the AI agent follows the written rules and keeps plain files. This is not a finished product, not permission to connect email and not permission to send applications. Until it is separately approved, the to-do list is not created, personal folders are not migrated and no real submissions are made.
+**Status:** project documentation. The system contains **no program code**: the AI agent follows the written rules and keeps plain files. This is not a finished product, not permission to connect email and not permission to send applications. The instruction files for the agent (`AGENTS.md`, `CLAUDE.md`, `TODO_FOR_AI.md`) are part of the package; they are drafts that have not yet been tried in practice. Personal folders are not migrated and no real submissions are made without the user's permission.
 
 Start with [README.md](README.md). The parts of the system and their responsibilities are described in [ARCHITECTURE.md](ARCHITECTURE.md), formats and recovery in [DATA_CONTRACT.md](DATA_CONTRACT.md), test scenarios in [ACCEPTANCE_TESTS.md](ACCEPTANCE_TESTS.md). The step-by-step installation exists in two forms with the same content: [USER_GUIDE.md](USER_GUIDE.md) and the page [overview_install.html](overview_install.html). These documents refine the specification; they do not include working automation. The version number of the specification and the version number of a software release are different values.
 
@@ -41,7 +41,7 @@ The only working root is the extracted folder that the user has explicitly allow
 
 The locally opened project folder and one chosen AI agent (Codex or Claude Code) are required for the system to work. The package also has a mandatory **static HTML statistics page**: the agent updates the local data and the page's snapshot; the user only views the tables. The page does not search for companies, does not change records or the queue and has no access to Gmail. It is an ordinary local file, not a server: Docker, a backend and the internet are not needed to display it.
 
-The key principle of the profile: the system keeps the person's complete confirmed biography and does not treat a short old CV as the complete history. The user can put CVs and other materials into the profile folder or fill in the provided questionnaire; the agent extracts and structures the facts with sources and confirmation. For each vacancy it produces short, relevant CVs and Anschreiben from confirmed facts only. This is an independent original work of Serhii Khomenko; no third-party code from the reviewed GitHub alternatives is used.
+The key principle of the profile: the system keeps the person's complete confirmed biography and does not treat a short old CV as the complete history. The user puts CVs and other materials into the ready folders `Положите_сюда`, or simply tells the agent about themselves, by voice or in text, in an interview; the agent extracts and structures the facts with sources and confirmation. For each vacancy it produces short, relevant CVs and Anschreiben from confirmed facts only. This is an independent original work of Serhii Khomenko; no third-party code from the reviewed GitHub alternatives is used.
 
 ## 2. Experience of existing working folders
 
@@ -56,9 +56,9 @@ Therefore the existing roots cannot simply be merged. The new system needs a com
 
 ## 3. Architecture: a local folder and an AI agent
 
-The local AI agent and the extracted folder it can access are the required working parts of the system. The user chooses Codex or Claude Code, opens exactly this folder in it, creates a chat or task and asks it to read `README.md`, the agent rules file and `TODO_FOR_AI.md`. Without a working agent that has permission for this folder the system does not search, keep records or update statistics. The agent works inside the allowed folder, reflects progress in files and turns to the user when data is missing, a choice is needed or a new permission is required. It is not a system that gets access to Gmail or the computer by itself just because a Markdown file was downloaded.
+The local AI agent and the extracted folder it can access are the required working parts of the system. The user chooses Codex or Claude Code, opens exactly this folder in it, creates a chat or task and says “start”: the agent loads its rules file by itself (`AGENTS.md` for Codex, `CLAUDE.md` for Claude Code) and follows `TODO_FOR_AI.md`. Without a working agent that has permission for this folder the system does not search, keep records or update statistics. The agent works inside the allowed folder, reflects progress in files and turns to the user when data is missing, a choice is needed or a new permission is required. It is not a system that gets access to Gmail or the computer by itself just because a Markdown file was downloaded.
 
-`TODO_FOR_AI.md` is the planned step-by-step working plan: environment setup and checks, the first questionnaire, configuring the chosen profile, search, package creation, queue, permitted Gmail actions, daily reconciliation and the monthly report. On the first run the agent reads the instructions first and shows or performs the next safe step. Until the concept is approved, the TODO itself is not created.
+`TODO_FOR_AI.md` is the step-by-step working plan: the first run (introduction, check of the agent's tools, consent, reading the materials, interview, confirmation of facts, the first search profile, mail), resuming in a later chat, and a checklist for every standard action. On the first run the agent leads the conversation itself: it says what it needs, asks one question at a time and performs the next safe step. It keeps its position in `workspace.json` (`stage`).
 
 ~~~text
 GitHub ZIP → extracted folder → open it locally in Codex / Claude Code
@@ -68,7 +68,7 @@ GitHub ZIP → extracted folder → open it locally in Codex / Claude Code
             README + AGENTS.md/CLAUDE.md + TODO_FOR_AI.md
                                             ↓
 AI agent ↔ allowed project folder (the single source of data)
-  ├─ profile and questionnaire → master Lebenslauf + confirmed sources
+  ├─ materials in Положите_сюда + interview → knowledge base (confirmed facts) → profiles
   ├─ search → verified companies/vacancies/routes → unique records
   ├─ documents and plan → CV/Anschreiben → preparation / permitted sending
   ├─ mail → replies/DSN → journal → daily and monthly report
@@ -83,27 +83,27 @@ AI agent ↔ allowed project folder (the single source of data)
 
 1. **The local AI agent** performs searching, source analysis, keeping data and journals, preparing documents and reports and the permitted mail actions. The whole process is visible in its chat; the user needs no separate system for everyday management.
 2. **The project folder** is the only place for working data. JSON holds projections, one JSONL journal per person holds all primary operational events, including the shared quota and the profile events. The agent itself writes and checks these records by the written procedure; no program is involved. The parts of the system, the journal rules, the standard actions and the single procedure for different agents are described in ARCHITECTURE.md; formats in DATA_CONTRACT.md.
-3. **Step-by-step instructions**: `README.md` for the human, `AGENTS.md` for Codex, `CLAUDE.md` for Claude Code and the planned `TODO_FOR_AI.md` with the sequence of actions and status marks. In every session the agent relies on these files and the existing content, and does not assume that the previous chat is available.
-4. **The profile / questionnaire** is the master source of facts inside the folder. The questionnaire can be an ordinary editable HTML form or a local page; its result must be saved to the project files and stay available to the agent. A web form is not the controlling core.
+3. **Step-by-step instructions**: `README.md` for the human, `AGENTS.md` for Codex, `CLAUDE.md` for Claude Code and `TODO_FOR_AI.md` with the sequence of actions. In every session the agent relies on these files and the existing content, and does not assume that the previous chat is available.
+4. **The profile and the knowledge base** are the master source of facts inside the folder. The knowledge base is one Markdown file per person, `База_знаний/Жизнеописание.md` (section 4.6, DATA_CONTRACT.md §3a). The agent writes it from the person's documents and from an interview held in the chat, by voice or in text; the questionnaire is that interview, not a form. The file stays readable and correctable by the person.
 5. **The mandatory statistics page.** The package contains the ready template `dashboard_template/index.html` with the sample data file `summary.js` next to it. For every profile the agent copies `index.html` **unchanged** into `dashboard/profiles/<profile_id>/` and writes only the data file `summary.js` beside it; it also updates the local menu `Локальные_данные/dashboard/index.html`. The page reads its data from `summary.js` through an ordinary script tag, so it needs no fetch of local files and no network requests; it writes no data and does not change the queue. It is a frontend for displaying, filtering and sorting. The base language is en; ru is selected explicitly and does not change the data.
 6. **Scheduling.** Daily or periodic actions are performed by a new run of a local Codex scheduled task, if this function is available and configured, or by a separate agent session following the instructions. The static page does not start the agent and does not update itself. No Windows service, web backend, Docker or server is needed. For scheduled local tasks the computer, the application and the folder must remain available; the exact conditions depend on the agent and its version.
 7. **Access.** Rights for the local folder, web search, Gmail OAuth / connector and Computer Use are configured separately and only for the needed scenario. Authorization and sending are not switched on automatically by extracting the ZIP.
 
-## 4. The person's profile: master Lebenslauf and questionnaire
+## 4. The person's profile: the knowledge base and the interview
 
 ### 4.1 Import and confirmation
 
-During the first setup the person extracts the package to a chosen place and opens this folder locally in the chosen agent. In the data subdirectory they can save existing CVs, diplomas, certificates, references, a portfolio and other materials, or fill in the local questionnaire if the package includes it. The agent uses only the provided working folder, extracts proposed facts into a draft and shows which file and place each fact comes from.
+During the first setup the person extracts the package and opens this folder locally in the chosen agent. The folder already contains three ready intake folders (section 4.6). The person may put existing CVs, diplomas, certificates, references and a portfolio into them beforehand, or leave them empty and let the agent conduct an interview. The agent uses only the provided working folder, writes the proposed facts into the knowledge base and shows which file and place each fact comes from.
 
 The AI does not treat extracted text as confirmed automatically. The user accepts, corrects or rejects every proposed entry. For a fact the following is stored: the value, the source, the date or period of validity, the confirmation status, the original language and the limits on use. A self-assessment stays a self-assessment; it must not be presented as a certificate or a verified qualification.
 
 ### 4.2 Questionnaire sections
 
-The questionnaire is a multi-step, saveable form with repeatable entries and an “Add” button. Required fields are kept to a minimum, the rest is optional, and the form explains why each may be useful.
+The questionnaire is an interview conducted by the agent in the chat, one topic at a time, in the order of the list below. Answers may be dictated by voice and may be long. Required answers are kept to a minimum; every topic can be skipped, and the agent says why a topic may be useful.
 
 - Contacts and location: name, address / search region, permitted disclosure of contacts.
 - Languages of the materials: the user chooses `cv_language`, `cover_letter_language`, `email_language` and `report_language` separately. The settings are not derived from each other and not detected automatically from the country or the vacancy; the language of one application can be overridden with the user's confirmation. If a language is not set, the user is asked before generation.
-- Report: an optional path to a template supplied by the user; the original stays unchanged, the result is saved as a separate file.
+- Report: an optional template supplied by the user in `3_Шаблон_отчёта`; the original stays unchanged, the result is saved as a separate file.
 - Goal: work, Ausbildung, internship / Praktikum, Probearbeit, temporary work; occupations and job titles; employment type, desired industries and exclusions.
 - Experience for each position: employer, country / city, role, dates, tasks, equipment / tools / systems, team and area of responsibility, measurable results, achievements, transitions between roles.
 - Education: school, vocational / higher education, specialty, periods of study and qualification; recognition of the diploma, if applicable.
@@ -116,7 +116,7 @@ The questionnaire is a multi-step, saveable form with repeatable entries and an 
 - Cover-letter questions: why this role, which tasks are interesting, what contribution the person wants to make, what they want to learn.
 - Files and references: the user decides which originals / contacts to keep and which of them may be included in a particular application.
 
-The form must have free-text fields, date fields, repeatable blocks, document upload and the possibility to skip a section. Storage is local with export to readable JSON; browser localStorage is not used as the only database.
+The interview accepts free text and long spoken answers, dates, repeated entries (one position after another) and skipping a topic. After every topic the agent saves the answers and the new facts, so that an interrupted chat loses nothing.
 
 ### 4.3 Safety of biographical data
 
@@ -124,7 +124,7 @@ By default the system does not collect religion, marital status, health / disabi
 
 Before anything goes to an external AI, the system shows which facts and documents will be passed. The preferred mode is to pass only the minimal set relevant to the vacancy, not the whole archive. Viewing, correction, export, deletion of the profile and withdrawal of mail access must be provided.
 
-“Local storage” does not mean offline processing: information that a cloud agent reads with a tool may reach its provider. Consent to this processing must be obtained before the first reading of personal originals, not after the text is extracted. Without such consent the agent can work with an anonymized example and the general rules. The questionnaire exports a file through an explicit save by the user; the browser has no hidden right to write into the folder. The exported file is checked by the agent first and does not automatically get the status of confirmed facts.
+“Local storage” does not mean offline processing: information that a cloud agent reads with a tool may reach its provider. Consent to this processing must be obtained before the first reading of personal originals, not after the text is extracted. Without such consent the agent can work with an anonymized example and the general rules. Everything that the agent writes from documents or from the interview first has the status `proposed`; only the person's confirmation makes a fact `confirmed`.
 
 ### 4.4 How the CV is built
 
@@ -132,11 +132,27 @@ The master profile stores an extended history, but the CV is a target projection
 
 By default the language and layout are chosen separately for each application. The size and content of the CV adapt to the country, the employer and the channel; the extended full questionnaire stays the internal base. A photo is optional. All versions get a date, a version number, the profile ID and a list of source facts.
 
-### 4.5 Basis for the questionnaire's content
+### 4.5 Basis for the content of the interview
 
-The questionnaire must be wider than a ready CV and built as an editable base of life and professional experience. Europass serves as one reference for the completeness of the master profile: education / training, experience, languages, digital skills, projects, achievements and other skills. The system stores the complete master biography locally and generates for output only the projection that is relevant to a specific vacancy and the language chosen by the user. Separate fields are proposed for tasks and results in each position, tools / technologies, evidence, the date a skill was last current, the desired direction, mobility and STAR examples; sensitive data is not collected by default.
+The knowledge base must be wider than a ready CV and is built as an editable base of life and professional experience. Europass serves as one reference for the completeness of the master profile: education / training, experience, languages, digital skills, projects, achievements and other skills. The system stores the complete master biography locally and generates for output only the projection that is relevant to a specific vacancy and the language chosen by the user. Separate questions cover tasks and results in each position, tools / technologies, evidence, the date a skill was last current, the desired direction, mobility and STAR examples; sensitive data is not collected by default.
 
 These recommendations are a reference, not a mandatory form. A photo and optional personal details are not required; they are included only at the user's choice and if a specific application justifies it.
+
+### 4.6 Where the person puts materials, and the knowledge base file
+
+The package contains a ready folder `Локальные_данные/Положите_сюда/` (“put here”) with three subfolders and a short README in each. It is the only place where the person has to put anything by hand:
+
+| Folder | What the person puts there |
+|---|---|
+| `1_Мои_документы` (my documents) | CVs of any version, diplomas, certificates, references, official letters, a portfolio, samples of own letters; PDF, DOCX, TXT, photos and scans; no sorting or renaming |
+| `2_Рассказ_о_себе` (my story) | The person's story in their own words: a transcript of a voice recording, notes, answers to the questions of `Вопросы_для_рассказа.md` (shipped in this folder); the agent also saves interviews here word for word as `Интервью_<date>.md` |
+| `3_Шаблон_отчёта` (report template) | Only if the person has their own report sample |
+
+The folders can be filled **before** the first run or left empty. The agent only reads them and never changes, moves, renames or deletes anything in them. For a second person who uses the same folder, a subfolder with the person's name is created in `Положите_сюда`, with the same three subfolders.
+
+**Preparing the story by voice.** The person can prepare the story in advance, in two ways: (a) outside the project, in any chat of Claude or ChatGPT with voice mode: use the questions of `Вопросы_для_рассказа.md`, talk, then ask the assistant to write the story down word for word, without adding anything, as a text file, and save it to `2_Рассказ_о_себе`; (b) inside the project: tell the agent that they want to speak about themselves, and the agent conducts the interview (4.2), saving every answer word for word. Both ways give the same result.
+
+**The knowledge base.** From both folders and the interview the agent writes `Локальные_данные/persons/<person_id>/База_знаний/Жизнеописание.md`: the person's whole life story as confirmed facts in a fixed format (DATA_CONTRACT.md §3a). The agent then shows the proposed facts section by section and the person confirms, corrects or rejects each of them. Applications and CVs use only confirmed facts. The file is in the person's language, is readable and correctable by hand, and is the single source for all search profiles of that person.
 
 ## 5. Geographic search and the shared database
 
@@ -179,10 +195,16 @@ The user downloads the GitHub ZIP, chooses a convenient place and extracts it. T
   docs\ru\                          # Russian edition of documents and pages
   assets\                           # shared styles, scripts and fonts of the pages
   dashboard_template\index.html    # statistics page (source for generation)
-  TODO_FOR_AI.md                    # will be added after approval
+  TODO_FOR_AI.md                    # the step-by-step playbook for the agent
   .gitignore                        # excludes the user's real data
   Локальные_данные\                  # stays only on the user's computer
+    workspace.json                    # stage of the first run, language, capability checks
+    Положите_сюда\                    # the ONLY place where the person puts things (the agent only reads it)
+      1_Мои_документы\                # CVs, diplomas, certificates, references
+      2_Рассказ_о_себе\               # the story: voice transcripts, notes, interviews, the questions
+      3_Шаблон_отчёта\                # optional report template
     persons\<person_id>\
+      База_знаний\Жизнеописание.md   # the knowledge base: the person's life story, confirmed facts
       journal\transactions.jsonl     # the person's single primary journal
       journal\writer.lock            # one local write lock
       state\quota.json               # derived counter by month
@@ -191,9 +213,6 @@ The user downloads the GitHub ZIP, chooses a convenient place and extracts it. T
       profile.json
       registry.json                   # companies, vacancies, applications and the queue
       runs\                           # resuming work from a new chat
-      source_documents\               # local originals only
-      templates\                      # optional user templates
-        report_template.<ext>
       2026\
         10_Октябрь\
           001_Компания_Город_Роль\
@@ -215,7 +234,7 @@ The user downloads the GitHub ZIP, chooses a convenient place and extracts it. T
     dashboard\profiles\<profile_id>\index.html  # snapshot of one profile
 ~~~
 
-The number starts at 001 in each month. The directory name does not replace the stable internal ID of the company / application. The profile's master profile lives in the profile root folder; the whole archive is not copied into each application. The user can put CVs / materials there or fill in the local questionnaire; both paths feed one master base. For current users a read-only import and a mapping table are proposed, but their old directories are not reorganized without confirmation. All personal data under `Локальные_данные/` is excluded from Git by default; publishing working files is forbidden.
+The number starts at 001 in each month. The directory name does not replace the stable internal ID of the company / application. The master base of facts is the person's knowledge base file (section 4.6); the whole archive is not copied into each application. The person puts CVs and materials into `Положите_сюда`; they and the interview feed the one knowledge base. For current users a read-only import and a mapping table are proposed, but their old directories are not reorganized without confirmation. All personal data under `Локальные_данные/` is excluded from Git by default; publishing working files is forbidden.
 
 The application directory is chosen by the month of preparation and is not moved when the plan changes. Reports group applications by the actual date of submission, regardless of the directory name. All paths in records are relative to the project root; after resolving, a path is checked to stay inside this root, including with junctions / symlinks. The end-to-end record structure and the Windows naming rules are in DATA_CONTRACT.md.
 
@@ -329,7 +348,7 @@ Before a GitHub release the author checks the actual coverage of files and the o
 
 ## 10. Installation and the role of the AI assistant
 
-The package is published as a GitHub archive and contains `README.md`, the step-by-step guide in two forms (`USER_GUIDE.md` and `overview_install.html`), the illustrated overview `PROJECT_OVERVIEW.html`, the specification, the rules for Codex (`AGENTS.md`) and Claude Code (`CLAUDE.md`) and, after the concept is approved, `TODO_FOR_AI.md`. The README leads the user to the guide, and the overview page also links to it. The guide is a mandatory part of every release: it takes the user from installing the agent and downloading the ZIP to the local project, folder permissions, the first chat, the questionnaire and languages, the separate Gmail connection, the queue, statistics, daily work and updating. `TODO_FOR_AI.md` describes the sequence of setup / operation and is the agent's first working instruction. Its items have the statuses “not started / in progress / done / user decision needed” and refer to the evidence of the result in the same folder.
+The package is published as a GitHub archive and contains `README.md`, the step-by-step guide in two forms (`USER_GUIDE.md` and `overview_install.html`), the illustrated overview `PROJECT_OVERVIEW.html`, the specification, the rules for Codex (`AGENTS.md`) and Claude Code (`CLAUDE.md`) and `TODO_FOR_AI.md`. The README leads the user to the guide, and the overview page also links to it. The guide is a mandatory part of every release: it takes the user from installing the agent and downloading the ZIP to the local project, folder permissions, the preparation of materials, the first chat, the interview and languages, the separate Gmail connection, the queue, statistics, daily work and updating. `TODO_FOR_AI.md` describes the sequence of setup / operation and is the agent's first working instruction. The agent keeps its position in `workspace.json` (`stage`) and in the journal.
 
 Public instructions must explicitly forbid using third-party code from the GitHub projects listed in section 14: they were looked at only as a market overview. They are not cloned, forked, transferred or adapted: no code, templates, UI, design, architecture or prompts. The system is developed independently by Serhii Khomenko. Any third-party library or dependency is first proposed to the author with its purpose, version and license; agreeing to it is not permission to borrow from the alternatives.
 
@@ -340,10 +359,10 @@ The step-by-step instruction for the user exists in two forms with the same cont
 The installation is divided into three parts in exactly this order:
 
 1. **The agent.** Install ChatGPT Desktop from the official page, sign in, choose Codex and make sure it is available. The agent comes first because the availability of Codex depends on the account and the organization: it is better to find this out before the rest is prepared.
-2. **The project folder.** Download the ZIP from the published repository and extract it into a separate folder; check that `README.md`, `USER_GUIDE.md`, `AI_BUILD_SPEC.md`, `AGENTS.md`, `CLAUDE.md`, `TODO_FOR_AI.md` and `dashboard_template` lie directly in it, not in a nested folder. The archive is just a set of files; it becomes useful when the agent opens it.
+2. **The project folder.** Download the ZIP from the published repository and extract it into a separate folder; check that `README.md`, `USER_GUIDE.md`, `AI_BUILD_SPEC.md`, `AGENTS.md`, `CLAUDE.md`, `TODO_FOR_AI.md`, `dashboard_template` and the folder `Локальные_данные\Положите_сюда` with its three subfolders lie directly in it, not in a nested folder. The archive is just a set of files; it becomes useful when the agent opens it.
 3. **Connection and the first start.** Create a local project or open the folder and make the extracted root the primary folder; create a chat inside the project in the local environment (Local); switch on `Ask for approval`; run the starting prompt in draft-only mode.
 
-After that the user adds the profile and the questionnaire (before a cloud agent reads them for the first time, the user consents to passing the chosen information), connects Gmail separately, prepares and checks the first queue, if necessary enables Computer Use, moves on to daily work and scheduling, opens the statistics and reports, makes a backup and updates the package.
+After that the user puts materials into the three folders `Положите_сюда` (this can be done even before step 1) or lets the agent interview them, and confirms the facts of the knowledge base (before a cloud agent reads anything for the first time, the user consents to passing the chosen information), connects Gmail separately, prepares and checks the first queue, if necessary enables Computer Use, moves on to daily work and scheduling, opens the statistics and reports, makes a backup and updates the package.
 
 The guide distinguishes a local project with a folder of the computer from an ordinary cloud ChatGPT Project: the name of a chat or a path written in a message does not give file access. If a release has not been published yet, the GitHub URL, the buttons and the package structure are not invented: the link is marked as awaiting release. Codex and Claude Code are alternative agents; permissions and mail connections are configured separately in them. Official links and interface items are checked before every release.
 
@@ -408,7 +427,7 @@ For every criterion the corresponding scenarios of ACCEPTANCE_TESTS.md are run a
 
 1. The name **HomenS.AI JobPilot** is fixed; what remains is to agree the stages, the project boundaries and the exact rule “we work only inside the extracted folder”.
 2. Agree the set of user instructions, the structure of the `Локальные_данные/` subdirectory, the profiles and the safe `.gitignore` values.
-3. Write the Markdown instruction files: `AGENTS.md`, `CLAUDE.md` and the step-by-step `TODO_FOR_AI.md` with a checklist for every standard action of ARCHITECTURE.md, leading the agent from checking the environment and questions to the user to the working stages. They are not created in the current version of the documentation.
+3. The Markdown instruction files `AGENTS.md`, `CLAUDE.md` and `TODO_FOR_AI.md` exist as a draft: try them in Codex and in Claude Code with a person who has prepared nothing, with a person who has filled the folders and with a voice interview, and correct what the agents misunderstand.
 4. Fix the file contract JSON/JSONL of DATA_CONTRACT.md for the master profile, the registry, the queue and the events. SQL, a server and scripts are not used.
 5. Check in Codex and in Claude Code the scenario: extract the ZIP → open exactly the local folder → a new chat → read the instructions → perform one safe item; record the differences of versions and permissions.
 6. Perform the acceptance scenarios by hand on synthetic data: search, source links / dates, routes, deduplication, package preparation, interrupted work and two chats at once. Then Gmail, only in a safe read mode.

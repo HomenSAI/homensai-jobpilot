@@ -2,7 +2,7 @@
 
 [English](USER_GUIDE.md) | [Русский](docs/ru/USER_GUIDE.md)
 
-**Draft 1.3 · 2026-10-07** · The same guide is available as a web page with a menu: [overview_install.html](overview_install.html).
+**Draft 1.4 · 2026-10-07** · The same guide is available as a web page with a menu: [overview_install.html](overview_install.html).
 **For:** Windows and ChatGPT Desktop with Codex. Claude Code is an alternative; its full step-by-step setup is not written yet.
 
 The setup takes about 30–40 minutes. Do the steps in order. Every step says what you should see on the screen, so you always know whether it worked. No Git, Python or other developer tools are needed on your computer.
@@ -19,9 +19,8 @@ First the agent, then the archive, then you connect the two. The agent comes fir
 | 4. Your data | Profile, Gmail (optional), the first queue | 7–9 |
 | 5. Daily work | Screen control (optional), daily checks, statistics and reports, updates | 10–13 |
 
-> **Package status.** This guide describes the finished release. The current folder holds design documents, not a ready-to-run product or a published release archive. Do not download an archive from a link you cannot verify. The repository is [HomenSAI/homensai-jobpilot](https://github.com/HomenSAI/homensai-jobpilot).
+> **Package status.** This guide describes the finished release. The current folder holds design documents and draft instructions for the agent (`AGENTS.md`, `CLAUDE.md`, `TODO_FOR_AI.md`) that have not yet been tried in practice. Do not download an archive from a link you cannot verify. The repository is [HomenSAI/homensai-jobpilot](https://github.com/HomenSAI/homensai-jobpilot).
 
-For the current documentation build, start with [README.md](README.md). It lists the files that really exist and gives a starting prompt that does not need the missing to-do file. The steps below apply to the complete working release.
 
 ## What you need
 
@@ -29,11 +28,25 @@ For the current documentation build, start with [README.md](README.md). It lists
 - ChatGPT Desktop with Codex available for your account.
 - A ZIP archive from the official HomenS.AI JobPilot repository.
 - A dedicated local folder for extraction and subsequent work.
-- Your original CV and, if available, evidence of your experience, education, and skills.
+- Your CV, diplomas and certificates in any format, if you have them (see “Prepare your materials” below) — or just your voice: you can tell the agent about yourself and it writes everything down.
 - Your chosen languages for application documents and reports.
 - A Gmail connection through a tool supported by your installed Codex version, if you want email tracking.
 
 Local file access requires a **local Codex project** opened on your computer. An ordinary cloud ChatGPT project does not by itself provide access to a folder on your computer.
+
+## Prepare your materials — you can do it first
+
+The project ZIP contains a ready folder `Локальные_данные\Положите_сюда` (“put here”) with three subfolders. It is the only place where you have to put anything by hand. Fill it right after step 2, or gather the files now and copy them later. If you prepare nothing, the agent asks you everything itself (step 7).
+
+| Folder | What to put there |
+|---|---|
+| `1_Мои_документы` (my documents) | CVs of any version, diplomas, certificates, references, official letters, a portfolio, samples of your own letters. PDF, DOCX, TXT, photos and scans. No sorting or renaming needed |
+| `2_Рассказ_о_себе` (my story) | Your story in your own words: a transcript of a voice recording, notes, answers to the questions in `Вопросы_для_рассказа.md` (it lies in this folder) |
+| `3_Шаблон_отчёта` (report template) | Only if you have your own report sample. Otherwise leave it empty |
+
+**Tell your story by voice.** (1) Open a chat with Claude or ChatGPT and switch on voice mode (the microphone icon). (2) Say: “I will tell you about myself for my CV. Ask me questions one topic at a time. At the end write down my story word for word, adding nothing, as a text file.” You can paste the questions from `Вопросы_для_рассказа.md`. (3) Talk as long as you want, in parts, on different days, in any order; if you do not remember something, say so. (4) Save the text file into `2_Рассказ_о_себе`. **Or prepare nothing:** at step 6 start the agent in your project folder and say that you want to tell about yourself, by voice or in text; it asks the questions one topic at a time, saves your answers word for word and writes your knowledge base from them.
+
+The agent only reads these folders; it never changes, moves or deletes your files. Everything stays on your computer and is not published (the folder `Локальные_данные` is excluded from Git). From your files and your story the agent writes your **knowledge base**: one file with your whole life story as facts (`Локальные_данные\persons\<your id>\База_знаний\Жизнеописание.md`). It shows you every fact for confirmation, and CVs and letters use only confirmed facts.
 
 ## Part 1 · The agent
 
@@ -60,7 +73,7 @@ If Codex does not appear in the interface, check whether the feature is availabl
 
 The extracted folder will hold both project instructions and local working data. Personal profiles, CVs, emails, OAuth tokens, and user statistics must not be published on GitHub.
 
-**You should see:** in the folder itself, not inside another folder: `README.md`, `USER_GUIDE.md`, `AI_BUILD_SPEC.md`, `AGENTS.md`, `CLAUDE.md`, `TODO_FOR_AI.md` and `dashboard_template`.
+**You should see:** in the folder itself, not inside another folder: `README.md`, `USER_GUIDE.md`, `AI_BUILD_SPEC.md`, `AGENTS.md`, `CLAUDE.md`, `TODO_FOR_AI.md`, `dashboard_template` and the folder `Локальные_данные\Положите_сюда` with three subfolders.
 
 ## Part 3 · Connect the agent to the folder and start
 
@@ -101,39 +114,34 @@ Before working with local files, check the project name and primary folder again
 
 **You should see:** “Ask for approval” (or the equivalent) in the permissions menu, and the project folder as the working folder.
 
-### 6. Perform the first safe startup
+### 6. Make the first safe start
 
-Paste this starting prompt into the new chat:
+Type this into the new chat (or simply “Start”):
 
 ```text
-Work only inside the open local HomenS.AI JobPilot folder.
-First confirm the actual working directory and list the files you find.
-Read README.md, USER_GUIDE.md, AGENTS.md, AI_BUILD_SPEC.md, and DATA_CONTRACT.md,
-then locate TODO_FOR_AI.md.
-Check that the package is complete and perform only the first safe plan item.
-Do nothing outside this folder; do not send CVs or modify email.
-If a required file is missing, do not create it on your own: explain what is missing
-and ask only the necessary questions. Start in draft-only mode.
+Start. Read AGENTS.md and TODO_FOR_AI.md and lead me through the first run.
 ```
 
-A published release must include `README.md`, `AGENTS.md`, and `TODO_FOR_AI.md`. If they are absent, stop: the current documents are not yet a complete operational package. The agent should show its plan, ask for missing information, and save confirmed settings in the project folder.
+The agent loads its rules by itself (Codex reads `AGENTS.md`, Claude Code reads `CLAUDE.md`). It introduces itself, confirms the working folder, checks its tools and then asks you, one question at a time: your name, your city, the language you prefer, and whether you agree that it reads your personal materials. Answer in your own words, by voice if your app has the microphone button.
 
-**You should see:** the agent names the correct folder, lists the files, says that it works in draft-only mode and proposes a plan.
+**You should see:** the agent names the correct folder, explains in a few lines what will happen, says that it works in draft-only mode and asks its first question.
+
+If the agent does not know what to do, or says that `AGENTS.md` or `TODO_FOR_AI.md` is missing: the folder is the wrong one or the archive is incomplete. Check steps 2 and 3. Do not ask the agent to invent the missing files.
 
 ## Part 4 · Your data, mail and the first queue
 
-### 7. Create your profile and add your information
+### 7. Tell the agent about yourself and confirm your facts
 
-1. Select or create a separate personal profile. Do not combine different people's data. For multiple search directions belonging to the same person, use the same `person_id`: the limit of 44 is shared, not renewed for each profile.
-2. Copy your original CV and selected supporting documents into `Локальные_данные\profiles\<profile_id>\source_documents\`, or complete the questionnaire if the release includes one. Before the cloud agent first reads these files, consent to sharing the selected information with its provider. Local storage does not mean offline processing. You can start with an anonymized example; the questionnaire is saved through an explicit export, not a hidden browser write.
-3. Ask the agent to extract facts and show them for review. Confirm, correct, or reject every uncertain item. The agent must not invent experience, dates, certificates, language proficiency, or achievements.
-4. Choose the language of the CV, cover letter/email text, and final report separately. A language must not be inferred automatically from your country, city, or interface language.
-5. If you have a report template, place it in the profile's local templates folder and give the agent its path. The original remains unchanged; the report is created as a separate copy and stays neutral. Without a template, the system will create a simple table in the selected language containing your surname, first name, and application outcomes.
-6. Specify your search goal, starting location, radius in kilometres, transport mode (car and/or public transport), acceptable journey time, preferred towns, schedule, and exceptions. The agent will show the selected time zone, weekdays, and verified regional holidays. For “every other day,” specify whether you mean calendar days or every second permitted working day. The values in `examples/settings.example.json` are examples, not your settings.
+1. If you have not done it yet, put your files into `Локальные_данные\Положите_сюда\1_Мои_документы` and your recorded story into `2_Рассказ_о_себе` (see “Prepare your materials” above), then say “ready”. If you prepared nothing, say that you want to tell about yourself, by voice or in text.
+2. **Before the agent reads your personal files it explains that a cloud agent may pass what it reads to its provider, and asks your consent.** “Stored locally” does not mean “processed offline”. You can say no and start with an anonymized example.
+3. The agent reads everything, or interviews you topic by topic: who you are, what you want, every job, education, certificates, languages, skills, projects, real situations, conditions, what not to show. It saves your answers after every topic, so nothing is lost if the chat stops.
+4. It then shows you the facts it wrote, section by section. For each fact say: *right*, *correct it* or *wrong*. The agent never invents experience, dates, certificates, language levels or achievements. A fact without a document stays valid but is marked “self-reported”.
+5. Choose the language of the CV, the cover letter / email text and the report separately. A language is never guessed from your country, city or interface language.
+6. Tell it your goal, starting place, radius in kilometres, transport (car and/or public transport), acceptable journey time, preferred towns, schedule and earliest start. For “every other day” say whether you mean calendar days or every second permitted working day. If you have a report template, put it into `3_Шаблон_отчёта`. Several search directions of one person share one limit of 44 per month.
 
-Do not put secrets, passwords, verification codes, or OAuth tokens in profile files. Check that `Локальные_данные/` is excluded from publication and synchronization with a public GitHub repository.
+Never put passwords, one-time codes or OAuth tokens into any file. Private notes stay marked as sensitive and never go into a CV without your explicit choice. Check that `Локальные_данные/` is excluded from publication.
 
-**You should see:** a list of confirmed facts with a source for each, and your settings repeated back to you for approval.
+**You should see:** the file `Локальные_данные\persons\<your id>\База_знаний\Жизнеописание.md` with your life story as facts, each marked `confirmed` or `self-reported`, and your search settings repeated back to you for approval. You can open and read the file in any text editor.
 
 ### 8. Connect Gmail separately if you need email tracking
 

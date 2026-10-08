@@ -1,6 +1,15 @@
 # HomenS.AI JobPilot — Serhii Khomenko — https://homensai.com/
 # Personal data and secrets must not enter a public repository.
-/Локальные_данные/
+# Personal data folder: everything inside is private and ignored by Git,
+# except the empty intake folders and their short instructions (so that the folders exist after "Download ZIP").
+/Локальные_данные/*
+!/Локальные_данные/Положите_сюда/
+/Локальные_данные/Положите_сюда/*
+!/Локальные_данные/Положите_сюда/README.md
+!/Локальные_данные/Положите_сюда/*/
+/Локальные_данные/Положите_сюда/*/*
+!/Локальные_данные/Положите_сюда/*/README.md
+!/Локальные_данные/Положите_сюда/2_Рассказ_о_себе/Вопросы_для_рассказа.md
 /local_data/
 .env
 .env.*

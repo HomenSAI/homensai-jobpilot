@@ -41,7 +41,7 @@
 <div class="eyebrow">План работ</div>
 <h1>Что есть, <span class="accent">что дальше</span></h1>
 <p class="lead">Эта страница отделяет готовое от того, что только запланировано, чтобы запланированное не приняли за уже работающее.</p>
-<div class="pills"><span class="pill">Версия 1.3</span><span class="pill">7 октября 2026</span></div>
+<div class="pills"><span class="pill">Версия 1.4</span><span class="pill">7 октября 2026</span></div>
 </div>
 
 <section id="now">
@@ -49,12 +49,13 @@
 <div class="grid2">
 <article class="panel teal"><h3>Готово</h3><ul>
 <li>Правила для агента: спецификация, архитектура, контракт данных и сценарии приёмки — на английском и русском.</li>
+<li>Файлы инструкций для агента в виде черновиков (AGENTS.md, CLAUDE.md, TODO_FOR_AI.md), готовые папки для ваших материалов и формат базы знаний.</li>
 <li>Этот иллюстрированный обзор и пошаговое руководство по установке.</li>
 <li>Страница статистики: годы, месяцы и дни, сортировка по дате и результату, фильтры. Работает на примерах данных.</li>
 <li>Нейтральный пример настроек и лицензия проекта.</li>
 </ul></article>
 <article class="panel blue"><h3>Ещё не сделано</h3><ul>
-<li>Файлы инструкций для агента: AGENTS.md, CLAUDE.md и TODO_FOR_AI.md.</li>
+<li>Проверка файлов инструкций для агента (AGENTS.md, CLAUDE.md, TODO_FOR_AI.md) на практике: на человеке, который ничего не подготовил, на человеке, который заполнил папки, и на голосовом интервью.</li>
 <li>Проверка подключения Gmail и его точной настройки.</li>
 <li>Прохождение сценариев приёмки вручную, на синтетических данных.</li>
 <li>Реальные данные на странице статистики (агент пишет её файл данных summary.js).</li>
@@ -63,8 +64,17 @@
 </div>
 </section>
 
+<section id="v14">
+<div class="sec-head"><div class="num">02 · Версия 1.4</div><h2>Что меняет версия 1.4</h2></div>
+<div class="rules">
+<article><h3>Агент начинает сам</h3><p>AGENTS.md, CLAUDE.md и TODO_FOR_AI.md входят в пакет. Вы открываете папку и говорите «Начинай»; агент представляется и задаёт по одному вопросу.</p></article>
+<article><h3>Готовые папки для ваших файлов</h3><p>Три папки в <code>Локальные_данные\Положите_сюда</code>: документы, ваш рассказ, шаблон отчёта. Класть в них можно до первого запуска или после.</p></article>
+<article><h3>База знаний вместо формы</h3><p>Всё ваше жизнеописание в виде подтверждённых фактов в одном читаемом файле, написанном по вашим файлам и по интервью голосом или текстом.</p></article>
+</div>
+</section>
+
 <section id="v13">
-<div class="sec-head"><div class="num">02 · Версия 1.3</div><h2>Что меняет версия 1.3</h2></div>
+<div class="sec-head"><div class="num">03 · Версия 1.3</div><h2>Что изменила версия 1.3</h2></div>
 <div class="rules">
 <article><h3>Программы нет</h3><p>Проект — только правила и файлы. Скрипты и локальные команды убраны из замысла: журнал и лимит агент ведёт, следуя записанному порядку действий.</p></article>
 <article><h3>Один журнал на человека</h3><p>Каждое выполненное действие — одна строка единого журнала, записанная под файлом-меткой writer.lock. Несколько профилей не ведут конкурирующих журналов. Всё остальное можно пересобрать из него.</p></article>
@@ -75,9 +85,9 @@
 </section>
 
 <section id="todo">
-<div class="sec-head"><div class="num">03 · Дальше</div><h2>Что ещё предстоит сделать</h2></div>
+<div class="sec-head"><div class="num">04 · Дальше</div><h2>Что ещё предстоит сделать</h2></div>
 <div class="panel"><ul>
-<li>Написать файлы инструкций AGENTS.md, CLAUDE.md и TODO_FOR_AI.md со списком проверок для каждого стандартного действия.</li>
+<li>Проверить файлы инструкций в Codex и в Claude Code и исправить то, что агенты поняли неверно.</li>
 <li>Первый полный пробный проход на синтетических данных, вручную в чате: профиль → цель → пакет → план → имитация ответа → отчёт и офлайн-HTML.</li>
 <li>Проверки прерванной работы и двух чатов, пишущих одновременно.</li>
 <li>Затем чтение Gmail и контролируемая отправка с проверкой доказательств. Каждый профиль выбирает режим: черновики, одобрение каждого письма или — с принятым ограничением — автоматическая очередь.</li>
@@ -92,7 +102,7 @@
 <footer class="site-footer"><div class="wrap">
 <p>© 2026 Serhii Khomenko / HomenS.AI · <a href="https://homensai.com/" rel="me noopener">homensai.com</a> · <a href="https://github.com/HomenSAI" rel="me noopener">GitHub</a> · <a href="https://www.linkedin.com/in/serhii-khomenko-homensai/" rel="me noopener">LinkedIn</a> · <a href="https://orcid.org/0009-0009-5371-9717" rel="me noopener">ORCID</a> · <a href="https://doi.org/10.5281/zenodo.23160031" rel="noopener">DOI</a> · <a href="mailto:info@homensai.com">info@homensai.com</a></p>
 <p>Документы: <a href="README.md">README</a> · <a href="USER_GUIDE.md">Руководство пользователя</a> · <a href="AI_BUILD_SPEC.md">Спецификация</a> · <a href="ARCHITECTURE.md">Архитектура</a> · <a href="DATA_CONTRACT.md">Контракт данных</a> · <a href="ACCEPTANCE_TESTS.md">Сценарии приёмки</a> · <a href="REVIEW.md">Обзор и статус</a></p>
-<p><small>Документация 1.3 · 7 октября 2026 · без личных профилей, резюме и учётных данных. Код: PolyForm Noncommercial 1.0.0 · документация: <a href="https://creativecommons.org/licenses/by-nc/4.0/">CC BY-NC 4.0</a>. Надпись «HomenS.A Inc.» на сайте автора — элемент оформления, а не заявление о юридическом лице.</small></p>
+<p><small>Документация 1.4 · 7 октября 2026 · без личных профилей, резюме и учётных данных. Код: PolyForm Noncommercial 1.0.0 · документация: <a href="https://creativecommons.org/licenses/by-nc/4.0/">CC BY-NC 4.0</a>. Надпись «HomenS.A Inc.» на сайте автора — элемент оформления, а не заявление о юридическом лице.</small></p>
 </div></footer>
 <a class="to-top" id="to-top" href="#" aria-label="Наверх страницы"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"/></svg>Наверх</a>
 </body></html>
