@@ -1,0 +1,36 @@
+# Creates a GitHub release when the version in the file VERSION is new.
+# Not part of the product: it only runs on GitHub's servers, never on the user's computer.
+# © 2026 Serhii Khomenko / HomenS.AI · https://homensai.com/ · PolyForm Noncommercial 1.0.0
+name: Release
+
+on:
+  push:
+    branches: [main]
+    paths: [VERSION]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Create the release if this version has none yet
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          v="$(tr -d '[:space:]' < VERSION)"
+          tag="v${v}"
+          if gh release view "$tag" > /dev/null 2>&1; then
+            echo "Release $tag already exists. Nothing to do."
+            exit 0
+          fi
+          # Release notes = the section of CHANGELOG.md that belongs to this version
+          awk -v v="$v" 'index($0, "## " v " ") == 1 { f = 1; next } /^## / { f = 0 } f' CHANGELOG.md > notes.md
+          if [ ! -s notes.md ]; then
+            echo "See CHANGELOG.md" > notes.md
+          fi
+          printf '\nFull history: https://github.com/%s/blob/main/CHANGELOG.md\n' "$GITHUB_REPOSITORY" >> notes.md
+          gh release create "$tag" --target "$GITHUB_SHA" --title "HomenS.AI JobPilot ${v}" --notes-file notes.md
