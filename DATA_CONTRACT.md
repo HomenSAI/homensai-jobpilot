@@ -83,6 +83,23 @@ Every fact is **one line** in this form:
 
 Rules: a fact is never deleted; a correction adds a new line and marks the old one `rejected`. Only `confirmed` facts with `use: cv` may be used in a CV or letter. The raw words of the person are kept separately and unchanged in `Положите_сюда/2_Рассказ_о_себе/` (for example `Интервью_<date>.md`). Each change of the file is recorded in the journal as `knowledge_base_updated` (file, section, fact ids).
 
+## 3b. `profile.json`: the settings of one search direction (the first setup)
+
+`profiles/<profile_id>/profile.json` is written by the agent at the end of the first setup (TODO_FOR_AI.md, A7) from the person's answers. Its structure is `examples/settings.example.json`; the example also lists the allowed values (`_allowed_values`). Nothing is asked twice: what the person says once is saved here.
+
+| Group | Fields | Where the value comes from |
+|---|---|---|
+| Identity | `person_id`, `profile_id`, `timezone` | ids chosen at the first run; the time zone is derived from the place where the person lives |
+| Languages | `languages.cv_language`, `cover_letter_language`, `email_language`, `report_language`; `localization.ui_language` | asked: four separate answers; the language of the conversation is the preferred language from A2 |
+| What is searched | `search.goal_types` (`job`, `ausbildung`, `internship`, `probearbeit`, `temporary_work`), `roles`, `industries`, `excluded`, `employment_type`, `earliest_start_date` | asked |
+| Where and how | `search.start_location` (the place where the person lives, used only for routes), `radius_km`, `transport_modes` (`car`, `train`, `bus_tram`, `bicycle`, `walk`: any combination), `max_travel_minutes`, `max_transfers`, `max_walk_minutes`, `evening_return_required`, `priority_cities` | asked |
+| Rhythm | `schedule.cadence` (`immediate`, `allowed_workdays`, `every_second_allowed_workday`), `local_send_time`, `holiday_region`, `excluded_dates`, `holidays_verified` | cadence and time asked; the holiday region is proposed from the place and verified with a source |
+| Safe defaults | `quota` (44 per person per month), `mail.mode` = `draft_only`, `subject_max_unicode_characters` = 50, `thank_you_enabled`, `period_question_enabled`, `replacement_auto_send_enabled` = false, `privacy.include_sensitive_facts` = false, `report.market_appendix_required` = true | not asked; the person changes them only later and on purpose |
+| Consents | `privacy.cloud_processing_consent_ref`, `mail.consent_ref` | the id of the journal line that records the consent (A2, A8) |
+| Report | `report.template_relative_path` | the file the person put into `Положите_сюда/3_Шаблон_отчёта/`, or null |
+
+The knowledge base (§3a) belongs to the person and is shared by all profiles of that person; `profile.json` holds only the settings of this search direction. A value that is not yet known stays `null` or an empty list; it is never filled with a guess.
+
 ## 4. Application state and outcome are separate dimensions
 
 ```text

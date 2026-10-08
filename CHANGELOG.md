@@ -6,6 +6,14 @@ The project version is in the file [VERSION](VERSION). The project is a document
 
 Rules: `MAJOR.MINOR.PATCH`. MAJOR changes when data formats or rules change so that old data no longer fits. MINOR is a new feature or a new part of the documentation. PATCH is a fix or a wording change without new capabilities. Every change to `main` adds a line here; the number is raised when a release is made. Each release gets a git tag `vX.Y.Z`.
 
+## 1.4.1 — 8 October 2026
+
+The first setup follows the order described by the author: the person's story first (by voice if nothing is written), then the documents, then the questions about the search.
+
+- `TODO_FOR_AI.md` Part A rewritten in that order: consent, story (the agent says where it belongs and offers to record it now), documents, analysis and the knowledge base, interview about the gaps, confirmation, the search setup, mail, finish. New stages `story_ready` and `documents_ready`.
+- The search setup is one table (what is asked, the options, where it is saved): kind of search, roles, where the person lives, radius, **means of travel (car, train, bus / tram, bicycle, on foot — any combination)**, limits of the journey, preferred towns, four languages, rhythm of sending. Nothing else is asked; the rest keeps safe defaults.
+- `profile.json` is defined: DATA_CONTRACT.md §3b and `examples/settings.example.json` (new fields `goal_types`, `industries`, `excluded`, `employment_type`, `earliest_start_date`, `_allowed_values`; readable ids). The HTML install and profile pages, the guide and the specification use the same wording. Acceptance scenarios FIRST-06…08.
+
 ## 1.4.0 — 7 October 2026
 
 The agent can now start by itself, and the person knows exactly where to put what.

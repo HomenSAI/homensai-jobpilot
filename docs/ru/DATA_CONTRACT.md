@@ -83,6 +83,23 @@
 
 Правила: факт никогда не удаляется; исправление добавляет новую строку, а старую помечает `rejected`. В CV и письмо можно брать только `confirmed` факты с `use: cv`. Дословные слова человека хранятся отдельно и без изменений в `Положите_сюда/2_Рассказ_о_себе/` (например, `Интервью_<дата>.md`). Каждое изменение файла записывается в журнал как `knowledge_base_updated` (файл, раздел, номера фактов).
 
+## 3b. `profile.json`: настройки одного направления поиска (первая настройка)
+
+`profiles/<profile_id>/profile.json` агент пишет в конце первой настройки (TODO_FOR_AI.md, A7) по ответам человека. Его структура — `examples/settings.example.json`; там же перечислены допустимые значения (`_allowed_values`). Ничего не спрашивается дважды: то, что человек сказал один раз, сохраняется здесь.
+
+| Группа | Поля | Откуда значение |
+|---|---|---|
+| Идентичность | `person_id`, `profile_id`, `timezone` | идентификаторы выбраны при первом запуске; часовой пояс выводится из места, где живёт человек |
+| Языки | `languages.cv_language`, `cover_letter_language`, `email_language`, `report_language`; `localization.ui_language` | спрашивается: четыре отдельных ответа; язык разговора — предпочитаемый язык из A2 |
+| Что ищем | `search.goal_types` (`job`, `ausbildung`, `internship`, `probearbeit`, `temporary_work`), `roles`, `industries`, `excluded`, `employment_type`, `earliest_start_date` | спрашивается |
+| Где и как | `search.start_location` (место, где живёт человек; используется только для маршрутов), `radius_km`, `transport_modes` (`car`, `train`, `bus_tram`, `bicycle`, `walk`: любая комбинация), `max_travel_minutes`, `max_transfers`, `max_walk_minutes`, `evening_return_required`, `priority_cities` | спрашивается |
+| Ритм | `schedule.cadence` (`immediate`, `allowed_workdays`, `every_second_allowed_workday`), `local_send_time`, `holiday_region`, `excluded_dates`, `holidays_verified` | ритм и время спрашиваются; регион праздников предлагается по месту и проверяется по источнику |
+| Безопасные значения по умолчанию | `quota` (44 на человека в месяц), `mail.mode` = `draft_only`, `subject_max_unicode_characters` = 50, `thank_you_enabled`, `period_question_enabled`, `replacement_auto_send_enabled` = false, `privacy.include_sensitive_facts` = false, `report.market_appendix_required` = true | не спрашиваются; человек меняет их только позже и осознанно |
+| Согласия | `privacy.cloud_processing_consent_ref`, `mail.consent_ref` | идентификатор строки журнала, где записано согласие (A2, A8) |
+| Отчёт | `report.template_relative_path` | файл, который человек положил в `Положите_сюда/3_Шаблон_отчёта/`, или null |
+
+База знаний (§3a) принадлежит человеку и общая для всех его профилей; в `profile.json` лежат только настройки этого направления поиска. Пока значение неизвестно, оно остаётся `null` или пустым списком; его никогда не заполняют догадкой.
+
 ## 4. Состояния заявки и результат — раздельные оси
 
 ```text

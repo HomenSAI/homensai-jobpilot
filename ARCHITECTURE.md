@@ -168,7 +168,7 @@ Because the agent's own mail tool is the only way to send, nothing separate exis
 
 Instruction files define the rules; the journal holds the state. The to-do list describes stages, but a checkbox in Markdown is not proof of sending or of quota use.
 
-**First run.** A folder without `workspace.json` is new. The agent then starts Part A of `TODO_FOR_AI.md` on its own: introduction, check of its tools, consent, reading the materials from `Положите_сюда` or an interview, confirmation of the facts in the knowledge base, the first search profile. Its position is kept in `workspace.json` as `stage` (`new`, `consent_given`, `materials_read`, `knowledge_base_draft`, `knowledge_base_confirmed`, `profile_created`, `ready`), so an interrupted first run continues where it stopped.
+**First run.** A folder without `workspace.json` is new. The agent then starts Part A of `TODO_FOR_AI.md` on its own: introduction, check of its tools, consent, the person's story (by voice if nothing is written), the person's documents, analysis and the knowledge base, confirmation of the facts, then the search setup (what is searched, where the person lives, radius, transport). Its position is kept in `workspace.json` as `stage` (`new`, `consent_given`, `story_ready`, `documents_ready`, `knowledge_base_draft`, `knowledge_base_confirmed`, `profile_created`, `ready`), so an interrupted first run continues where it stopped.
 
 When resuming, the agent:
 

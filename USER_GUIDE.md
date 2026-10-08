@@ -122,7 +122,7 @@ Type this into the new chat (or simply “Start”):
 Start. Read AGENTS.md and TODO_FOR_AI.md and lead me through the first run.
 ```
 
-The agent loads its rules by itself (Codex reads `AGENTS.md`, Claude Code reads `CLAUDE.md`). It introduces itself, confirms the working folder, checks its tools and then asks you, one question at a time: your name, your city, the language you prefer, and whether you agree that it reads your personal materials. Answer in your own words, by voice if your app has the microphone button.
+The agent loads its rules by itself (Codex reads `AGENTS.md`, Claude Code reads `CLAUDE.md`). It introduces itself, confirms the working folder, checks its tools and then asks you, one question at a time: your name and the language you prefer. Then it asks for your consent to read your personal materials and starts the first setup (step 7). Answer in your own words, by voice if your app has the microphone button.
 
 **You should see:** the agent names the correct folder, explains in a few lines what will happen, says that it works in draft-only mode and asks its first question.
 
@@ -130,18 +130,21 @@ If the agent does not know what to do, or says that `AGENTS.md` or `TODO_FOR_AI.
 
 ## Part 4 · Your data, mail and the first queue
 
-### 7. Tell the agent about yourself and confirm your facts
+### 7. The first setup: the agent asks, you answer
 
-1. If you have not done it yet, put your files into `Локальные_данные\Положите_сюда\1_Мои_документы` and your recorded story into `2_Рассказ_о_себе` (see “Prepare your materials” above), then say “ready”. If you prepared nothing, say that you want to tell about yourself, by voice or in text.
-2. **Before the agent reads your personal files it explains that a cloud agent may pass what it reads to its provider, and asks your consent.** “Stored locally” does not mean “processed offline”. You can say no and start with an anonymized example.
-3. The agent reads everything, or interviews you topic by topic: who you are, what you want, every job, education, certificates, languages, skills, projects, real situations, conditions, what not to show. It saves your answers after every topic, so nothing is lost if the chat stops.
-4. It then shows you the facts it wrote, section by section. For each fact say: *right*, *correct it* or *wrong*. The agent never invents experience, dates, certificates, language levels or achievements. A fact without a document stays valid but is marked “self-reported”.
-5. Choose the language of the CV, the cover letter / email text and the report separately. A language is never guessed from your country, city or interface language.
-6. Tell it your goal, starting place, radius in kilometres, transport (car and/or public transport), acceptable journey time, preferred towns, schedule and earliest start. For “every other day” say whether you mean calendar days or every second permitted working day. If you have a report template, put it into `3_Шаблон_отчёта`. Several search directions of one person share one limit of 44 per month.
+From here the agent leads. There is no form: it asks one question at a time and saves every answer to files. The order is always the same:
 
-Never put passwords, one-time codes or OAuth tokens into any file. Private notes stay marked as sensitive and never go into a CV without your explicit choice. Check that `Локальные_данные/` is excluded from publication.
+1. **Consent.** Before it reads anything personal, it explains that a cloud agent may pass what it reads to its provider, and asks your consent. “Stored locally” does not mean “processed offline”. You can say no and start with an anonymized example.
+2. **Your story.** It tells you where your story belongs: the folder `Локальные_данные\Положите_сюда\2_Рассказ_о_себе`. If you have none, it offers to prepare it right now, completely by voice: switch on the microphone and talk about your whole life. It does not interrupt and saves every word.
+3. **Your documents.** It asks whether you have a CV, diplomas, certificates, course records or references. Put all of them into `1_Мои_документы` (photos and scans are fine) and say “ready”. No documents? Say so, and you continue.
+4. **Analysis.** It reads everything and writes your knowledge base. Then it asks about what is missing, one topic at a time: certificates, courses, language levels, skills, real situations, the driving licence and a car.
+5. **Confirmation.** It shows the facts section by section. For each say: *right*, *correct it* or *wrong*. It never invents experience, dates, certificates or language levels. A fact without a document stays valid, marked “self-reported”.
+6. **The search.** It asks what we are looking for (job, Ausbildung, internship, Probearbeit, temporary work), which roles and industries, where you live, the radius in kilometres, how you get there (car, train, bus or tram, bicycle, on foot — any combination), how long the way may take, transfers, walking and the evening return, preferred towns, the languages of the CV, the letter, the email and the report (separately), how to spread the applications, and whether you have a report template (`3_Шаблон_отчёта`).
+7. **Saved.** It repeats all your answers; you say “right”. The first setup is finished, and from now on it works from these saved files.
 
-**You should see:** the file `Локальные_данные\persons\<your id>\База_знаний\Жизнеописание.md` with your life story as facts, each marked `confirmed` or `self-reported`, and your search settings repeated back to you for approval. You can open and read the file in any text editor.
+Never put passwords, one-time codes or OAuth tokens into any file. Private notes stay marked as sensitive and never go into a CV without your explicit choice. Check that `Локальные_данные/` is excluded from publication. Several search directions of one person share one limit of 44 submissions per month.
+
+**You should see:** the file `Локальные_данные\persons\<your id>\База_знаний\Жизнеописание.md` with your life story as facts, each marked `confirmed` or `self-reported`, and the file `Локальные_данные\profiles\<direction>\profile.json` with your search settings. You can open and read both in any text editor.
 
 ### 8. Connect Gmail separately if you need email tracking
 
