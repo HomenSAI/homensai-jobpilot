@@ -8,7 +8,7 @@ Author: Serhii Khomenko / HomenS.AI · https://homensai.com/ · documentation: C
 
 ## 1. File-based database and source of truth
 
-The first version uses UTF-8 JSON for configuration and records, and JSONL for events. No SQL, servers, scripts or external libraries. Every record has a `schema_version`; incompatible versions must not be rewritten automatically.
+The first version uses UTF-8 JSON for configuration and records, and JSONL for events. No SQL, servers, scripts or external libraries. Every record has a `schema_version` (the record format, now `1.2`); incompatible versions must not be rewritten automatically. `format_version` in `workspace.json` is the documentation line (now `1.4`), a different thing. `consent_id` in a consent event is the `event_id` of that event; `default_language` and `ui_language` both hold the language of the conversation; `holidays_verified` is true only when the holidays were checked with a source named in `holiday_source`.
 
 | Path relative to the root | Role |
 |---|---|
