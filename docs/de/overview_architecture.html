@@ -1,0 +1,118 @@
+<!doctype html>
+<!-- © 2026 Serhii Khomenko / HomenS.AI · https://homensai.com/ · https://github.com/HomenSAI · https://www.linkedin.com/in/serhii-khomenko-homensai/
+     Code and markup: PolyForm Noncommercial 1.0.0 — https://polyformproject.org/licenses/noncommercial/1.0.0
+     Documentation text: CC BY-NC 4.0 — https://creativecommons.org/licenses/by-nc/4.0/ -->
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Architektur und Daten | HomenS.AI JobPilot</title>
+<meta name="description" content="Wie Agent, schriftliche Regeln und Dateien zusammenpassen, und die Betriebsregeln.">
+<meta name="author" content="Serhii Khomenko">
+<meta name="theme-color" content="#edf1f4" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0f1720" media="(prefers-color-scheme: dark)">
+<script src="../../assets/theme.js"></script>
+<link rel="stylesheet" href="../../assets/site.css">
+<script src="../../assets/site.js" defer></script>
+</head>
+<body>
+<a class="skip-link" href="#main">Zum Inhalt springen</a>
+<header class="topbar"><div class="wrap">
+<a class="brand" href="PROJECT_OVERVIEW.html" aria-label="HomenS.AI JobPilot"><svg class="brand-mark" focusable="false" viewBox="0 0 100 100" aria-hidden="true"><path d="M50.0 13.0 L48.1 13.1 L46.1 13.2 L44.2 13.5 L42.3 13.8 L42.2 21.0 L40.7 21.5 L39.2 22.0 L37.8 22.6 L36.4 23.3 L31.5 18.0 L29.8 19.0 L28.3 20.1 L26.7 21.2 L25.2 22.5 L28.8 28.8 L27.7 29.9 L26.7 31.1 L25.7 32.4 L24.8 33.7 L18.0 31.5 L17.0 33.2 L16.2 35.0 L15.5 36.7 L14.8 38.6 L21.0 42.2 L20.7 43.8 L20.4 45.3 L20.2 46.9 L20.0 48.4 L13.0 50.0 L13.1 51.9 L13.2 53.9 L13.5 55.8 L13.8 57.7 L21.0 57.8 L21.5 59.3 L22.0 60.8 L22.6 62.2 L23.3 63.6 L18.0 68.5 L19.0 70.2 L20.1 71.7 L21.2 73.3 L22.5 74.8 L28.8 71.2 L29.9 72.3 L31.1 73.3 L32.4 74.3 L33.7 75.2 L31.5 82.0 L33.2 83.0 L35.0 83.8 L36.7 84.5 L38.6 85.2 L42.2 79.0 L43.8 79.3 L45.3 79.6 L46.9 79.8 L48.4 80.0 L50.0 87.0 Z" fill="#c9a24a"/><path d="M50 20 A30 30 0 0 1 50 80" fill="none" stroke="#2bb3c4" stroke-width="5"/><g fill="none" stroke="#2bb3c4" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M50 36 H64 L70 30"/><path d="M50 50 H72"/><path d="M50 64 H62 L68 70"/></g><g fill="#2bb3c4"><circle cx="71" cy="29" r="4"/><circle cx="74" cy="50" r="4"/><circle cx="69" cy="71" r="4"/></g><circle cx="50" cy="50" r="9" fill="currentColor"/><circle cx="50" cy="50" r="3.5" fill="#c9a24a"/></svg><span class="brand-word">HomenS<span class="ai">.AI</span> <span class="sub">JobPilot</span></span></a>
+<nav id="site-nav" class="nav-main" aria-label="Seiten des Projekts">
+<a class="nav-link" href="PROJECT_OVERVIEW.html"><i class="nav-dot" aria-hidden="true"></i>Überblick</a>
+<a class="nav-link" href="overview_install.html"><i class="nav-dot teal" aria-hidden="true"></i>Installation</a>
+<a class="nav-link" href="overview_profile.html"><i class="nav-dot gold" aria-hidden="true"></i>Profil</a>
+<a class="nav-link" href="overview_architecture.html" aria-current="page"><i class="nav-dot" aria-hidden="true"></i>Architektur</a>
+<a class="nav-link" href="overview_safety.html"><i class="nav-dot teal" aria-hidden="true"></i>Sicherheit</a>
+<a class="nav-link" href="overview_market.html"><i class="nav-dot gold" aria-hidden="true"></i>Markt</a>
+<a class="nav-link" href="overview_roadmap.html"><i class="nav-dot" aria-hidden="true"></i>Fahrplan</a>
+<a class="nav-link" href="../../dashboard_template/index.html?lang=de"><i class="nav-dot teal" aria-hidden="true"></i>Statistik</a>
+</nav>
+<div class="nav-tools">
+<a class="nav-link site-link" href="https://homensai.com/" rel="me noopener">homensai.com</a>
+<span class="langs" role="group" aria-label="Sprache"><a href="../../overview_architecture.html" lang="en" hreflang="en">EN</a><a href="../ru/overview_architecture.html" lang="ru" hreflang="ru">RU</a><a href="overview_architecture.html" lang="de" hreflang="de" class="on" aria-current="true">DE</a></span>
+<button class="icon-btn" id="theme-btn" type="button" aria-label="Hell- und Dunkelmodus umschalten" title="Hell- und Dunkelmodus umschalten"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M12 4v16"/><path d="M12 4a8 8 0 0 1 0 16z" fill="currentColor"/></svg></button>
+<button class="icon-btn menu-btn" id="menu-btn" type="button" aria-expanded="false" aria-controls="site-nav" aria-label="Menü" title="Menü"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+</div>
+</div></header>
+<main id="main" class="wrap">
+<div class="page-head">
+<div class="eyebrow">Architektur</div>
+<h1>Regeln und Dateien: <span class="accent">der Agent führt die Aufzeichnungen</span></h1>
+<p class="lead">Es gibt keine eigene Anwendung für die Stellensuche oder den E-Mail-Versand. Der KI-Agent folgt schriftlichen Regeln und pflegt lokale Dateien. Die Statistikseite verwendet HTML/CSS/JavaScript nur, um den vom Agenten geschriebenen Snapshot zu prüfen, zu sortieren, zu filtern und anzuzeigen. Ein Server, Docker oder eine SQL-Datenbank sind nicht nötig.</p>
+<div class="pills"><span class="pill">Architektur 1.5</span><span class="pill">UTF-8 JSON / JSONL</span><span class="pill">Kein SQL</span></div>
+</div>
+
+<section id="diagram">
+<div class="sec-head"><div class="num">01 · Teile</div><h2>Wie die Teile zusammenpassen</h2><p>Der Agent führt den Ablauf aus; die lokale Statistikansicht liest den Snapshot und zeigt ihn an. Sie führt keine E-Mail-Aktionen aus.</p></div>
+<div class="diagram" role="group" aria-label="Systemarchitektur">
+<div class="node"><strong>Nutzer und Agent-Chat</strong><span>Codex / Claude Code · Fragen, Recherche und Texte</span></div><div class="arrow" aria-hidden="true">↓</div>
+<div class="node"><strong>Schriftliche Regeln</strong><span>AGENTS.md, TODO_FOR_AI.md, die Spezifikation: eine Checkliste vor jeder Aktion</span></div><div class="arrow" aria-hidden="true">↓</div>
+<div class="split"><div class="node"><strong>Das Journal der Person</strong><span>Eine Zeile pro abgeschlossener Aktion; das Limit von 44 Bewerbungen wird daraus gezählt</span></div><div class="node alt"><strong>Gmail</strong><span>Die eigene, autorisierte Mailverbindung des Agenten: Lesen, Senden, Prüfen</span></div></div>
+<div class="arrow" aria-hidden="true">↓</div><div class="node"><strong>Unterlagen und lokale Statistik</strong><span>Datensätze, Warteschlange, DOCX/PDF und eine HTML-Seite für jedes Profil</span></div></div>
+<div class="notice"><p>Jede Person hat ein maßgebliches Journal, <code>persons/&lt;person_id&gt;/journal/transactions.jsonl</code>, und eine Markierungsdatei <code>writer.lock</code>, die nur existiert, solange ein Chat schreibt. Profil-Register, Warteschlange, <code>Status.txt</code> und Statistik lassen sich aus diesem Journal neu aufbauen. Mehrere Suchprofile teilen sich ein monatliches Limit, und ein neuer Chat kann die Arbeit fortsetzen, ohne eine Bewerbung doppelt zu senden.</p></div>
+<p style="margin-top:.9rem">Die Schutzmechanismen — das Limit von 44, niemals doppelt senden, nur ein Schreibender zur Zeit — sind Verfahren, die der Agent einhalten muss, keine technischen Sperren. Deshalb bereitet eine neue Einrichtung nur Entwürfe vor, und ein automatischer Versand setzt Ihre ausdrückliche Zustimmung zu dieser Einschränkung voraus. <a href="../../ARCHITECTURE.md">Detaillierte Architektur</a> · <a href="../../DATA_CONTRACT.md">Datenvertrag</a></p>
+</section>
+
+<section id="data">
+<div class="sec-head"><div class="num">02 · Daten</div><h2>Eine Datenbank, nach Monaten geordnet</h2><p>Organisationen, Standorte, Stellen, Bewerbungen und Antworten sind getrennte Datensätze mit stabilen Kennungen. Alles außer dem Journal ist eine Ansicht, die neu aufgebaut werden kann.</p></div>
+<pre class="tree">HomenSAI-JobPilot/
+  README.md · USER_GUIDE.md · AI_BUILD_SPEC.md
+  ARCHITECTURE.md · DATA_CONTRACT.md · ACCEPTANCE_TESTS.md
+  AGENTS.md · CLAUDE.md · TODO_FOR_AI.md   # instructions for the agent (drafts)
+  docs/ru/                          # Russian edition
+  assets/                           # shared page styles and fonts
+  dashboard_template/               # statistics page index.html + sample data summary.js
+  Локальные_данные/                 # private, never published
+    Положите_сюда/                  # THE place where you put things
+      1_Мои_документы/              # CVs, diplomas, certificates, references
+      2_Рассказ_о_себе/             # your story: voice transcripts, notes, interviews
+      3_Шаблон_отчёта/              # optional report template
+    workspace.json                  # stage of the first run, language, tool checks
+    persons/&lt;person_id&gt;/
+      База_знаний/Жизнеописание.md  # the knowledge base: your life story as facts
+      journal/transactions.jsonl
+      journal/writer.lock
+    profiles/&lt;profile_id&gt;/
+      profile.json · registry.json
+      runs/ · reports/
+      Resume/ · CoverLetter/  (your templates, Word)
+      Applications/2026/10_October/
+        001_Company_City_Role/
+          Company.md · Status.txt
+          Resume_v001.docx/.pdf · CoverLetter_v001.docx/.pdf
+          EmailText_&lt;lang&gt;.txt
+    dashboard/
+      index.html
+      profiles/&lt;profile_id&gt;/
+        summary.js · index.html</pre>
+<p style="margin-top:.6rem"><small>Dateien, die als „planned“ markiert sind, existieren noch nicht. Der Ordnername <code>Локальные_данные</code> ist ein fester technischer Pfad in allen Sprachfassungen. Dies ist die Zielstruktur, keine Liste fertiger Module.</small></p>
+</section>
+
+<section id="operation">
+<div class="sec-head"><div class="num">03 · Betrieb</div><h2>Betriebsregeln</h2></div>
+<div class="panel teal"><ul>
+<li>Die Hauptarbeit findet in einem lokalen Codex- oder Claude-Code-Chat statt. Die Aufgabenliste legt die Reihenfolge fest; der Nachweis, dass etwas erledigt wurde, steht im Journal.</li>
+<li>Die erste Einrichtung verwendet den Entwurfsmodus. Die Warteschlange wird im Ordner gespeichert und vom Agenten bearbeitet.</li>
+<li><strong>Höchstens 44 Bewerbungen mit Lebenslauf pro Person und Kalendermonat</strong>, über alle Profile und Kanäle. Eine wiederholte Bewerbung oder ein Ersatz nach einem Zustellfehler verbraucht einen Platz; eine spätere Rücksendung gibt ihn nicht zurück.</li>
+<li>Der Plan verteilt die Bewerbungen auf die erlaubten Werktage und stoppt die 45. Außerhalb des Systems gemachte Bewerbungen müssen ebenfalls erfasst werden; ein Saldo, der sich nicht prüfen lässt, gilt als nicht verfügbar.</li>
+<li>Berichte zeigen verbrauchte, reservierte und verbleibende Plätze. Ein vorbereiteter Ordner oder ein geplanter Termin ist kein Nachweis für den Versand.</li>
+<li>Einladungen, positive Antworten und Rückfragen entscheidet die Person selbst.</li>
+<li>Bestätigte Zustellfehler werden aufbewahrt. Standardmäßig wird höchstens ein passendes neues Unternehmen als Entwurf vorbereitet; ein automatischer Ersatz braucht eine gesonderte Erlaubnis für dieses Profil.</li>
+<li>Eine Frage nach den frühesten verfügbaren Praktikumsterminen ist nur nach den genehmigten Regeln des Profils erlaubt, und erst nachdem der ganze Thread gelesen und geprüft wurde, dass sie noch nicht gestellt wurde.</li>
+<li>Der Monatsbericht ist neutral, in der gewählten Sprache, folgt der Vorlage der Nutzerin bzw. des Nutzers, wenn eine gegeben ist, und enthält eine gesonderte Seite mit Marktempfehlungen.</li>
+<li>Gmail-Nachrichten werden nicht gelöscht oder archiviert, und Labels werden nicht geändert.</li>
+<li>Die statische HTML-Seite zeigt Daten und sortiert Zeilen. Persönliche Unterlagen und Zugangsdaten werden nie auf GitHub veröffentlicht.</li>
+</ul></div>
+</section>
+
+<div class="pager"><a href="overview_profile.html">← Profil</a><a href="overview_safety.html">Sicherheit →</a></div>
+</main>
+<footer class="site-footer"><div class="wrap">
+<p>© 2026 Serhii Khomenko / HomenS.AI · <a href="https://homensai.com/" rel="me noopener">homensai.com</a> · <a href="https://github.com/HomenSAI" rel="me noopener">GitHub</a> · <a href="https://www.linkedin.com/in/serhii-khomenko-homensai/" rel="me noopener">LinkedIn</a> · <a href="https://orcid.org/0009-0009-5371-9717" rel="me noopener">ORCID</a> · <a href="https://doi.org/10.5281/zenodo.23160031" rel="noopener">DOI</a> · <a href="mailto:info@homensai.com">info@homensai.com</a></p>
+<p>Dokumente: <a href="../../README.md">README</a> · <a href="../../USER_GUIDE.md">Benutzerhandbuch</a> · <a href="../../AI_BUILD_SPEC.md">Bauspezifikation</a> · <a href="../../ARCHITECTURE.md">Architektur</a> · <a href="../../DATA_CONTRACT.md">Datenvertrag</a> · <a href="../../ACCEPTANCE_TESTS.md">Abnahmeszenarien</a> · <a href="../../REVIEW.md">Prüfung und Status</a></p>
+<p><small>Dokumentation 1.5.1 · 9. Oktober 2026 · keine persönlichen Profile, Lebensläufe oder Zugangsdaten. Code: PolyForm Noncommercial 1.0.0 · Dokumentation: CC BY-NC 4.0 (LICENSE-DOCS). Die erforderliche Namensnennung steht in NOTICE.</small></p>
+</div></footer>
+<a class="to-top" id="to-top" href="#" aria-label="Nach oben"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"/></svg>Nach oben</a>
+</body></html>

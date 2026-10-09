@@ -1,0 +1,118 @@
+<!doctype html>
+<!-- © 2026 Serhii Khomenko / HomenS.AI · https://homensai.com/ · https://github.com/HomenSAI · https://www.linkedin.com/in/serhii-khomenko-homensai/
+     Code and markup: PolyForm Noncommercial 1.0.0 — https://polyformproject.org/licenses/noncommercial/1.0.0
+     Documentation text: CC BY-NC 4.0 — https://creativecommons.org/licenses/by-nc/4.0/ -->
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fahrplan | HomenS.AI JobPilot</title>
+<meta name="description" content="Was heute vorhanden ist und was noch zu tun bleibt.">
+<meta name="author" content="Serhii Khomenko">
+<meta name="theme-color" content="#edf1f4" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0f1720" media="(prefers-color-scheme: dark)">
+<script src="../../assets/theme.js"></script>
+<link rel="stylesheet" href="../../assets/site.css">
+<script src="../../assets/site.js" defer></script>
+</head>
+<body>
+<a class="skip-link" href="#main">Zum Inhalt springen</a>
+<header class="topbar"><div class="wrap">
+<a class="brand" href="PROJECT_OVERVIEW.html" aria-label="HomenS.AI JobPilot"><svg class="brand-mark" focusable="false" viewBox="0 0 100 100" aria-hidden="true"><path d="M50.0 13.0 L48.1 13.1 L46.1 13.2 L44.2 13.5 L42.3 13.8 L42.2 21.0 L40.7 21.5 L39.2 22.0 L37.8 22.6 L36.4 23.3 L31.5 18.0 L29.8 19.0 L28.3 20.1 L26.7 21.2 L25.2 22.5 L28.8 28.8 L27.7 29.9 L26.7 31.1 L25.7 32.4 L24.8 33.7 L18.0 31.5 L17.0 33.2 L16.2 35.0 L15.5 36.7 L14.8 38.6 L21.0 42.2 L20.7 43.8 L20.4 45.3 L20.2 46.9 L20.0 48.4 L13.0 50.0 L13.1 51.9 L13.2 53.9 L13.5 55.8 L13.8 57.7 L21.0 57.8 L21.5 59.3 L22.0 60.8 L22.6 62.2 L23.3 63.6 L18.0 68.5 L19.0 70.2 L20.1 71.7 L21.2 73.3 L22.5 74.8 L28.8 71.2 L29.9 72.3 L31.1 73.3 L32.4 74.3 L33.7 75.2 L31.5 82.0 L33.2 83.0 L35.0 83.8 L36.7 84.5 L38.6 85.2 L42.2 79.0 L43.8 79.3 L45.3 79.6 L46.9 79.8 L48.4 80.0 L50.0 87.0 Z" fill="#c9a24a"/><path d="M50 20 A30 30 0 0 1 50 80" fill="none" stroke="#2bb3c4" stroke-width="5"/><g fill="none" stroke="#2bb3c4" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M50 36 H64 L70 30"/><path d="M50 50 H72"/><path d="M50 64 H62 L68 70"/></g><g fill="#2bb3c4"><circle cx="71" cy="29" r="4"/><circle cx="74" cy="50" r="4"/><circle cx="69" cy="71" r="4"/></g><circle cx="50" cy="50" r="9" fill="currentColor"/><circle cx="50" cy="50" r="3.5" fill="#c9a24a"/></svg><span class="brand-word">HomenS<span class="ai">.AI</span> <span class="sub">JobPilot</span></span></a>
+<nav id="site-nav" class="nav-main" aria-label="Seiten des Projekts">
+<a class="nav-link" href="PROJECT_OVERVIEW.html"><i class="nav-dot" aria-hidden="true"></i>Überblick</a>
+<a class="nav-link" href="overview_install.html"><i class="nav-dot teal" aria-hidden="true"></i>Installation</a>
+<a class="nav-link" href="overview_profile.html"><i class="nav-dot gold" aria-hidden="true"></i>Profil</a>
+<a class="nav-link" href="overview_architecture.html"><i class="nav-dot" aria-hidden="true"></i>Architektur</a>
+<a class="nav-link" href="overview_safety.html"><i class="nav-dot teal" aria-hidden="true"></i>Sicherheit</a>
+<a class="nav-link" href="overview_market.html"><i class="nav-dot gold" aria-hidden="true"></i>Markt</a>
+<a class="nav-link" href="overview_roadmap.html" aria-current="page"><i class="nav-dot" aria-hidden="true"></i>Fahrplan</a>
+<a class="nav-link" href="../../dashboard_template/index.html?lang=de"><i class="nav-dot teal" aria-hidden="true"></i>Statistik</a>
+</nav>
+<div class="nav-tools">
+<a class="nav-link site-link" href="https://homensai.com/" rel="me noopener">homensai.com</a>
+<span class="langs" role="group" aria-label="Sprache"><a href="../../overview_roadmap.html" lang="en" hreflang="en">EN</a><a href="../ru/overview_roadmap.html" lang="ru" hreflang="ru">RU</a><a href="overview_roadmap.html" lang="de" hreflang="de" class="on" aria-current="true">DE</a></span>
+<button class="icon-btn" id="theme-btn" type="button" aria-label="Hell- und Dunkelmodus umschalten" title="Hell- und Dunkelmodus umschalten"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M12 4v16"/><path d="M12 4a8 8 0 0 1 0 16z" fill="currentColor"/></svg></button>
+<button class="icon-btn menu-btn" id="menu-btn" type="button" aria-expanded="false" aria-controls="site-nav" aria-label="Menü" title="Menü"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+</div>
+</div></header>
+<main id="main" class="wrap">
+<div class="page-head">
+<div class="eyebrow">Fahrplan</div>
+<h1>Was vorhanden ist, <span class="accent">was als Nächstes kommt</span></h1>
+<p class="lead">Diese Seite trennt, was fertig ist, von dem, was nur geplant ist, damit nichts Geplantes mit etwas verwechselt wird, das bereits funktioniert.</p>
+<div class="pills"><span class="pill">Version 1.5.1</span><span class="pill">9. Oktober 2026</span></div>
+</div>
+
+<section id="now">
+<div class="sec-head"><div class="num">01 · Heute</div><h2>Was vorhanden ist</h2></div>
+<div class="grid2">
+<article class="panel teal"><h3>Fertig</h3><ul>
+<li>Die Regeln für den Agenten: Spezifikation, Architektur, Datenvertrag und Abnahmeszenarien, auf Englisch und Russisch.</li>
+<li>Die Anweisungsdateien für den Agenten als Entwürfe (AGENTS.md, CLAUDE.md, TODO_FOR_AI.md), die fertigen Ordner für Ihre Unterlagen und das Format der Wissensbasis.</li>
+<li>Diese bebilderte Übersicht und die Schritt-für-Schritt-Anleitung zur Installation.</li>
+<li>Die Statistikseite: geprüfte Snapshots, historische Stichtage, leere Monate, Anzeige des gemeinsamen Kontingents und Sortierung nach Ergebnis. Ein lokaler VM-Regressionslauf meldet 18 gezielte Prüfungen als bestanden; das ist kein vollständiger Browser- oder Agententest.</li>
+<li>Betriebsanforderungen für die Monatsvorbereitung, die Terminierung in Gmail mit manuellem Ersatzweg, Archive, tägliche Prüfungen und Berichte, Bereitschaft und Berichtswesen; getrennte Lizenzhinweise für Code und Dokumentation.</li>
+</ul></article>
+<article class="panel blue"><h3>Noch nicht erledigt</h3><ul>
+<li>Die Anweisungsdateien für den Agenten (AGENTS.md, CLAUDE.md, TODO_FOR_AI.md) in der Praxis erproben: mit jemandem, der nichts vorbereitet hat, mit jemandem, der die Ordner gefüllt hat, und mit einem Sprachinterview.</li>
+<li>Eine Gmail-Verbindung und ihre genaue Einrichtung prüfen.</li>
+<li>Die Abnahmeszenarien von Hand auf synthetischen Daten durchführen.</li>
+<li>Vollständige Abnahme des Agenten-Ablaufs, von Gmail, Dokumentenrendering und Terminierung mit echten Nutzern.</li>
+<li>Automatisierte Freigabe- und Datenschutzprüfung sowie vollständige Einrichtungsprüfung in Claude Code.</li>
+</ul></article>
+</div>
+</section>
+
+<section id="v15">
+<div class="sec-head"><div class="num">02 · Version 1.5.0</div><h2>Was Version 1.5.0 ändert</h2></div>
+<div class="rules">
+<article><h3>Den Monat vorbereiten</h3><p>Am Anfang jedes Monats fragt der Agent einmal, ob er die Zielliste, passgenaue Lebensläufe und Anschreiben, E-Mail-Texte und einen bestätigten Monatsplan vorbereiten soll. Das Limit von 44 Lebensläufen bleibt über die Profile einer Person gemeinsam.</p></article>
+<article><h3>Gmail und Wiederherstellung</h3><p>Die Nutzerin bzw. der Nutzer wählt einen verfügbaren, zugelassenen Connector oder den integrierten Browser und meldet sich persönlich an. Eine Terminierung wird erst verbucht, nachdem die Nachricht in Gmail unter „Scheduled“ geprüft wurde. Der integrierte Browser kann Datei-Uploads nicht automatisieren; ein Connector kann es unter Umständen, das muss geprüft werden. Lokale Archive entstehen nach E-Mail-Vorgängen; verlorene Archive lösen einen rein lesenden Abgleich mit Gmail aus.</p></article>
+<article><h3>Tägliche Prüfungen und Berichte</h3><p>Die Standardprüfung läuft täglich um 16:00 Uhr Ortszeit, vorausgesetzt, eine echte Funktion für geplante Aufgaben ist vorhanden. Tägliche Berichte an die Nutzerin bzw. den Nutzer sind freiwillig (Opt-in). Monatliche DOCX/PDF-Berichte verwenden eine Vorlage der Nutzerin bzw. des Nutzers oder eine neutrale Tabelle, mit visueller Prüfung jeder Seite.</p></article>
+<article><h3>Statistik und Datenschutz</h3><p>Die Seite weist fehlerhafte oder doppelte Snapshots ab, bewahrt den Verlauf zum Monatsende, zeigt leere Monate, erfindet nie eine Summe des gemeinsamen Kontingents und sortiert Absagen von Arbeitgebern vor technischen Zustellfehlern. Die Veröffentlichung braucht weiterhin die vollständige Abnahme von Agent und Browser.</p></article>
+</div>
+</section>
+
+<section id="v14">
+<div class="sec-head"><div class="num">03 · Version 1.4</div><h2>Was Version 1.4 ändert</h2></div>
+<div class="rules">
+<article><h3>Der Agent startet von selbst</h3><p>AGENTS.md, CLAUDE.md und TODO_FOR_AI.md sind im Paket. Sie öffnen den Ordner und sagen „Start“; der Agent stellt sich vor und stellt jeweils eine Frage.</p></article>
+<article><h3>Fertige Ordner für Ihre Dateien</h3><p>Drei Ordner in <code>Локальные_данные\Положите_сюда</code>: Unterlagen, Ihre Geschichte, Berichtsvorlage. Sie legen dort vor oder nach dem ersten Start etwas ab.</p></article>
+<article><h3>Eine Wissensbasis statt eines Formulars</h3><p>Ihre ganze Lebensgeschichte als bestätigte Angaben in einer lesbaren Datei, geschrieben aus Ihren Dateien und aus einem Interview per Sprache oder Text.</p></article>
+</div>
+</section>
+
+<section id="v13">
+<div class="sec-head"><div class="num">04 · Version 1.3</div><h2>Was Version 1.3 geändert hat</h2></div>
+<div class="rules">
+<article><h3>Keine eigenständige Anwendung</h3><p>Der Ablauf von Suche und E-Mail wird vom KI-Agenten anhand schriftlicher Verfahren und lokaler Dateien ausgeführt. Die Statistikseite verwendet HTML/CSS/JavaScript nur, um den vom Agenten geschriebenen Snapshot zu prüfen, zu sortieren, zu filtern und anzuzeigen. Journal- und Kontingentsicherungen bleiben verfahrensbedingt.</p></article>
+<article><h3>Ein Journal pro Person</h3><p>Jede abgeschlossene Aktion ist eine Zeile in einem einzigen Journal, geschrieben unter der Markierungsdatei writer.lock. Mehrere Profile führen nie konkurrierende Journale. Alles Übrige lässt sich daraus neu aufbauen.</p></article>
+<article><h3>Ehrliche Schutzmechanismen</h3><p>Das Limit von 44 und „niemals doppelt senden“ sind Verfahren, keine technischen Sperren. Entwürfe und die Freigabe jeder Nachricht kommen zuerst; automatischer Versand ist standardmäßig ausgeschaltet.</p></article>
+</div>
+<p style="margin-top:1rem">Die früheren Regeln gelten weiterhin: Drei Antworten auf eine Bewerbung zählen als drei Ereignisse, aber als eine Bewerbung mit Antwort, und eine späte Antwort gehört zu dem Monat, in dem sie eingegangen ist. Berichte behalten ihre Fassungen. Die Abnahmeszenarien werden im Chat von Hand geprüft; dass es Szenarien gibt, heißt nicht, dass sie bestanden wurden.</p>
+<div class="links"><a href="../../ARCHITECTURE.md">Architektur</a><a href="../../AI_BUILD_SPEC.md">Bauspezifikation</a><a href="../../DATA_CONTRACT.md">Daten und Status</a><a href="../../ACCEPTANCE_TESTS.md">Abnahmeszenarien</a><a href="../../REVIEW.md">Prüfung und Status</a><a href="../../CHANGELOG.md">Änderungsprotokoll</a></div>
+</section>
+
+<section id="todo">
+<div class="sec-head"><div class="num">05 · Als Nächstes</div><h2>Was noch zu tun ist</h2></div>
+<div class="panel"><ul>
+<li>Die Anweisungsdateien in Codex und in Claude Code erproben und korrigieren, was die Agenten falsch verstehen.</li>
+<li>Ein erster vollständiger Test auf synthetischen Daten, von Hand in einem Chat: Profil → Ziel → Paket → Plan → simulierte Antwort → Bericht und Offline-HTML.</li>
+<li>Prüfungen unterbrochener Arbeit und von zwei gleichzeitig schreibenden Chats.</li>
+<li>Danach Gmail-Lesen und kontrollierter Versand mit Nachweisprüfungen. Jedes Profil wählt den Entwurfsmodus, die Freigabe jeder Nachricht oder — mit akzeptierter Einschränkung — eine automatische Warteschlange.</li>
+<li>Quellen für Stellen und Wege sowie deren Nutzungsbedingungen.</li>
+<li>Geplante Agentenläufe, wo verfügbar; die manuelle Wiederaufnahme muss für sich allein funktionieren.</li>
+<li>LICENSE-DOCS und NOTICE sowie Rechte- und Datenschutzprüfungen vor der Veröffentlichung.</li>
+</ul></div>
+</section>
+
+<div class="pager"><a href="overview_market.html">← Markt</a><span></span></div>
+</main>
+<footer class="site-footer"><div class="wrap">
+<p>© 2026 Serhii Khomenko / HomenS.AI · <a href="https://homensai.com/" rel="me noopener">homensai.com</a> · <a href="https://github.com/HomenSAI" rel="me noopener">GitHub</a> · <a href="https://www.linkedin.com/in/serhii-khomenko-homensai/" rel="me noopener">LinkedIn</a> · <a href="https://orcid.org/0009-0009-5371-9717" rel="me noopener">ORCID</a> · <a href="https://doi.org/10.5281/zenodo.23160031" rel="noopener">DOI</a> · <a href="mailto:info@homensai.com">info@homensai.com</a></p>
+<p>Dokumente: <a href="../../README.md">README</a> · <a href="../../USER_GUIDE.md">Benutzerhandbuch</a> · <a href="../../AI_BUILD_SPEC.md">Bauspezifikation</a> · <a href="../../ARCHITECTURE.md">Architektur</a> · <a href="../../DATA_CONTRACT.md">Datenvertrag</a> · <a href="../../ACCEPTANCE_TESTS.md">Abnahmeszenarien</a> · <a href="../../REVIEW.md">Prüfung und Status</a></p>
+<p><small>Dokumentation 1.5.1 · 9. Oktober 2026 · keine persönlichen Profile, Lebensläufe oder Zugangsdaten. Code: PolyForm Noncommercial 1.0.0 · Dokumentation: CC BY-NC 4.0 (LICENSE-DOCS). Die erforderliche Namensnennung steht in NOTICE.</small></p>
+</div></footer>
+<a class="to-top" id="to-top" href="#" aria-label="Nach oben"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"/></svg>Nach oben</a>
+</body></html>

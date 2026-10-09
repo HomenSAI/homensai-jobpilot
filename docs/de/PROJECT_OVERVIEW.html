@@ -1,0 +1,98 @@
+<!doctype html>
+<!-- © 2026 Serhii Khomenko / HomenS.AI · https://homensai.com/ · https://github.com/HomenSAI · https://www.linkedin.com/in/serhii-khomenko-homensai/
+     Code and markup: PolyForm Noncommercial 1.0.0 — https://polyformproject.org/licenses/noncommercial/1.0.0
+     Documentation text: CC BY-NC 4.0 — https://creativecommons.org/licenses/by-nc/4.0/ -->
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>HomenS.AI JobPilot | Stellensuche und Bewerbungsverwaltung</title>
+<meta name="description" content="HomenS.AI JobPilot: ein lokaler KI-Agent, der Stellen in Ihrer Nähe findet, passgenaue Bewerbungen vorbereitet und Antworten verfolgt.">
+<meta name="author" content="Serhii Khomenko">
+<meta name="theme-color" content="#edf1f4" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0f1720" media="(prefers-color-scheme: dark)">
+<script src="../../assets/theme.js"></script>
+<link rel="stylesheet" href="../../assets/site.css">
+<script src="../../assets/site.js" defer></script>
+</head>
+<body>
+<a class="skip-link" href="#main">Zum Inhalt springen</a>
+<header class="topbar"><div class="wrap">
+<a class="brand" href="PROJECT_OVERVIEW.html" aria-label="HomenS.AI JobPilot"><svg class="brand-mark" focusable="false" viewBox="0 0 100 100" aria-hidden="true"><path d="M50.0 13.0 L48.1 13.1 L46.1 13.2 L44.2 13.5 L42.3 13.8 L42.2 21.0 L40.7 21.5 L39.2 22.0 L37.8 22.6 L36.4 23.3 L31.5 18.0 L29.8 19.0 L28.3 20.1 L26.7 21.2 L25.2 22.5 L28.8 28.8 L27.7 29.9 L26.7 31.1 L25.7 32.4 L24.8 33.7 L18.0 31.5 L17.0 33.2 L16.2 35.0 L15.5 36.7 L14.8 38.6 L21.0 42.2 L20.7 43.8 L20.4 45.3 L20.2 46.9 L20.0 48.4 L13.0 50.0 L13.1 51.9 L13.2 53.9 L13.5 55.8 L13.8 57.7 L21.0 57.8 L21.5 59.3 L22.0 60.8 L22.6 62.2 L23.3 63.6 L18.0 68.5 L19.0 70.2 L20.1 71.7 L21.2 73.3 L22.5 74.8 L28.8 71.2 L29.9 72.3 L31.1 73.3 L32.4 74.3 L33.7 75.2 L31.5 82.0 L33.2 83.0 L35.0 83.8 L36.7 84.5 L38.6 85.2 L42.2 79.0 L43.8 79.3 L45.3 79.6 L46.9 79.8 L48.4 80.0 L50.0 87.0 Z" fill="#c9a24a"/><path d="M50 20 A30 30 0 0 1 50 80" fill="none" stroke="#2bb3c4" stroke-width="5"/><g fill="none" stroke="#2bb3c4" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M50 36 H64 L70 30"/><path d="M50 50 H72"/><path d="M50 64 H62 L68 70"/></g><g fill="#2bb3c4"><circle cx="71" cy="29" r="4"/><circle cx="74" cy="50" r="4"/><circle cx="69" cy="71" r="4"/></g><circle cx="50" cy="50" r="9" fill="currentColor"/><circle cx="50" cy="50" r="3.5" fill="#c9a24a"/></svg><span class="brand-word">HomenS<span class="ai">.AI</span> <span class="sub">JobPilot</span></span></a>
+<nav id="site-nav" class="nav-main" aria-label="Seiten des Projekts">
+<a class="nav-link" href="PROJECT_OVERVIEW.html" aria-current="page"><i class="nav-dot" aria-hidden="true"></i>Überblick</a>
+<a class="nav-link" href="overview_install.html"><i class="nav-dot teal" aria-hidden="true"></i>Installation</a>
+<a class="nav-link" href="overview_profile.html"><i class="nav-dot gold" aria-hidden="true"></i>Profil</a>
+<a class="nav-link" href="overview_architecture.html"><i class="nav-dot" aria-hidden="true"></i>Architektur</a>
+<a class="nav-link" href="overview_safety.html"><i class="nav-dot teal" aria-hidden="true"></i>Sicherheit</a>
+<a class="nav-link" href="overview_market.html"><i class="nav-dot gold" aria-hidden="true"></i>Markt</a>
+<a class="nav-link" href="overview_roadmap.html"><i class="nav-dot" aria-hidden="true"></i>Fahrplan</a>
+<a class="nav-link" href="../../dashboard_template/index.html?lang=de"><i class="nav-dot teal" aria-hidden="true"></i>Statistik</a>
+</nav>
+<div class="nav-tools">
+<a class="nav-link site-link" href="https://homensai.com/" rel="me noopener">homensai.com</a>
+<span class="langs" role="group" aria-label="Sprache"><a href="../../PROJECT_OVERVIEW.html" lang="en" hreflang="en">EN</a><a href="../ru/PROJECT_OVERVIEW.html" lang="ru" hreflang="ru">RU</a><a href="PROJECT_OVERVIEW.html" lang="de" hreflang="de" class="on" aria-current="true">DE</a></span>
+<button class="icon-btn" id="theme-btn" type="button" aria-label="Hell- und Dunkelmodus umschalten" title="Hell- und Dunkelmodus umschalten"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M12 4v16"/><path d="M12 4a8 8 0 0 1 0 16z" fill="currentColor"/></svg></button>
+<button class="icon-btn menu-btn" id="menu-btn" type="button" aria-expanded="false" aria-controls="site-nav" aria-label="Menü" title="Menü"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+</div>
+</div></header>
+<main id="main" class="wrap">
+<div class="page-head">
+<div class="eyebrow">Stellensuche · Verwaltung von Bewerbungen</div>
+<h1>HomenS.AI <span class="accent">JobPilot</span></h1>
+<p class="lead">Ein lokaler KI-Agent findet Unternehmen und Stellen in Ihrer Nähe, erstellt für jede Stelle einen passgenauen Lebenslauf und ein Anschreiben, verfolgt jede Antwort und erstellt einen Monatsbericht. Alle Arbeitsdaten liegen in einem einzigen Ordner auf Ihrem Computer.</p>
+<div class="pills"><span class="pill">Idee und Entwicklung: Serhii Khomenko</span><span class="pill">Codex oder Claude Code</span><span class="pill">JSON-Dateien, kein Server</span></div>
+</div>
+
+<section>
+<div class="notice warn"><p><strong>Aktuelle Phase: experimentelle Dokumentation und Arbeitsablauf des Agenten.</strong> Es gibt keine eigene Anwendung für die Stellensuche oder den E-Mail-Versand. Die Statistikansicht bildet die Ausnahme: Ihr HTML/CSS/JavaScript prüft, sortiert, filtert und zeigt einen vom Agenten geschriebenen Snapshot an; sie sucht nicht und verschickt keine E-Mails. Die vollständige Abnahme von Agent und Gmail ist noch nicht abgeschlossen. <a href="../../README.md">Was das Paket enthält</a>.</p></div>
+</section>
+
+<section id="how">
+<div class="sec-head"><div class="num">01 · Ablauf</div><h2>Der Weg einer Bewerbung</h2><p>Der Agent arbeitet den Ablauf in einem Chat ab. Alles, was verlässlich sein muss, wird im Projektordner gespeichert, nicht im Chat.</p></div>
+<ol class="steps">
+<li><strong>Ihre Geschichte</strong><span>Ihre Unterlagen und Ihre eigenen Worte, per Sprache oder Text, werden zu einer Wissensbasis. Jede Angabe bestätigen Sie.</span></li>
+<li><strong>Suche</strong><span>Unternehmen und Stellen im gewählten Umkreis. Nahe Orte kommen zuerst; die Wege werden geprüft.</span></li>
+<li><strong>Abgleich</strong><span>Die Anforderungen der Stelle werden mit der bestätigten Erfahrung verglichen.</span></li>
+<li><strong>Unterlagen</strong><span>Ein passgenauer Lebenslauf, ein Anschreiben und ein E-Mail-Text, als PDF visuell geprüft.</span></li>
+<li><strong>Zeitplan</strong><span>Sofort, an jedem Werktag oder an jedem zweiten Tag, mit Beachtung der Feiertage und des Monatslimits.</span></li>
+<li><strong>Gmail</strong><span>Eine autorisierte Verbindung, Prüfung von Empfänger und Anhängen, ganze Threads werden gelesen, bevor auf etwas geantwortet wird.</span></li>
+<li><strong>Verfolgung</strong><span>Antworten, Zustellfehler und Sendebelege, ohne Doppelungen.</span></li>
+<li><strong>Bericht</strong><span>Eine neutrale Zusammenfassung in der gewählten Sprache und eine gesonderte Seite mit Marktempfehlungen.</span></li>
+</ol>
+<p style="margin-top:1rem">Sie wählen den Umkreis und das Verkehrsmittel (Auto oder öffentlicher Nahverkehr). Fahrzeit, Umstiege, Fußweg und die Rückkehr am Abend werden alle bewertet. Eine weitere Stadt ändert Ihre Prioritäten nicht: Das Suchgebiet wächst Schritt für Schritt.</p>
+</section>
+
+<section id="pages">
+<div class="sec-head"><div class="num">02 · Inhalt</div><h2>Was auf den anderen Seiten steht</h2><p>Die Übersicht ist in kurze Seiten geteilt. Nutzen Sie das Menü oben, um zwischen ihnen zu wechseln.</p></div>
+<div class="grid3">
+<a class="card t" href="overview_install.html"><span class="tag">Installation</span><h3>Schritt-für-Schritt-Installation</h3><p>Der Agent, der Projektordner und die Berechtigungen, in der richtigen Reihenfolge, mit dem, was Sie nach jedem Schritt sehen sollten.</p><span class="go">Öffnen →</span></a>
+<a class="card g" href="overview_profile.html"><span class="tag">Profil</span><h3>Ihre Wissensbasis</h3><p>Wohin Sie Ihre Unterlagen legen, wie Sie dem Agenten von sich erzählen und wie Ihre Lebensgeschichte zu einem Lebenslauf wird.</p><span class="go">Öffnen →</span></a>
+<a class="card" href="overview_architecture.html"><span class="tag">Architektur</span><h3>Regeln, Dateien und Journal</h3><p>Wie Agent, schriftliche Regeln und Journal zusammenarbeiten, und die Betriebsregeln.</p><span class="go">Öffnen →</span></a>
+<a class="card t" href="overview_safety.html"><span class="tag">Sicherheit</span><h3>Datenschutz, Bedingungen und Lizenz</h3><p>Bestätigte Angaben, getrennte Berechtigungen, die Grenzen des Produkts und wie es weiterverwendet werden darf.</p><span class="go">Öffnen →</span></a>
+<a class="card g" href="overview_market.html"><span class="tag">Markt</span><h3>Ähnliche Projekte auf GitHub</h3><p>Was öffentliche Projekte bieten und worin sich dieses unterscheidet. Nur zur Orientierung.</p><span class="go">Öffnen →</span></a>
+<a class="card" href="../../dashboard_template/index.html?lang=de"><span class="tag">Statistik</span><h3>Die Statistikseite</h3><p>Jahre, Monate und Tage, sortierbar nach Datum und Ergebnis. Öffnet sich mit Beispieldaten.</p><span class="go">Öffnen →</span></a>
+</div>
+</section>
+
+<section id="rules">
+<div class="sec-head"><div class="num">03 · Grundsätze</div><h2>Regeln, die sich nicht ändern</h2></div>
+<div class="rules">
+<article><h3>Höchstens 44 pro Monat</h3><p>Höchstens 44 Bewerbungen mit Lebenslauf pro Person und Kalendermonat, über alle Profile und Chats gezählt. Die 45. wird gestoppt, bevor sie versendet wird.</p></article>
+<article><h3>Zuerst Entwürfe</h3><p>Eine neue Einrichtung bereitet nur Entwürfe vor. Der Versand wird für jedes Profil und jedes Gmail-Konto gesondert freigeschaltet.</p></article>
+<article><h3>Nur bestätigte Angaben</h3><p>Der Agent erfindet nie Erfahrung, Daten, Zeugnisse oder Sprachniveaus. Sie bestätigen jede Angabe.</p></article>
+<article><h3>Statistik nur zur Ansicht</h3><p>Die HTML-Seite zeigt einen Snapshot. Der Agent aktualisiert die Daten; die Seite kann keine Einträge ändern und Gmail nicht lesen.</p></article>
+<article><h3>E-Mails bleiben unberührt</h3><p>Keine Nachricht wird gelöscht, archiviert oder neu gekennzeichnet.</p></article>
+<article><h3>Keine Geheimnisse im Ordner</h3><p>Passwörter und Token werden nie in Projektdateien gespeichert oder auf GitHub veröffentlicht.</p></article>
+</div>
+</section>
+
+<div class="pager"><span></span><a href="overview_install.html">Installation →</a></div>
+</main>
+<footer class="site-footer"><div class="wrap">
+<p>© 2026 Serhii Khomenko / HomenS.AI · <a href="https://homensai.com/" rel="me noopener">homensai.com</a> · <a href="https://github.com/HomenSAI" rel="me noopener">GitHub</a> · <a href="https://www.linkedin.com/in/serhii-khomenko-homensai/" rel="me noopener">LinkedIn</a> · <a href="https://orcid.org/0009-0009-5371-9717" rel="me noopener">ORCID</a> · <a href="https://doi.org/10.5281/zenodo.23160031" rel="noopener">DOI</a> · <a href="mailto:info@homensai.com">info@homensai.com</a></p>
+<p>Dokumente: <a href="../../README.md">README</a> · <a href="../../USER_GUIDE.md">Benutzerhandbuch</a> · <a href="../../AI_BUILD_SPEC.md">Bauspezifikation</a> · <a href="../../ARCHITECTURE.md">Architektur</a> · <a href="../../DATA_CONTRACT.md">Datenvertrag</a> · <a href="../../ACCEPTANCE_TESTS.md">Abnahmeszenarien</a> · <a href="../../REVIEW.md">Prüfung und Status</a></p>
+<p><small>Dokumentation 1.5.1 · 9. Oktober 2026 · keine persönlichen Profile, Lebensläufe oder Zugangsdaten. Code: PolyForm Noncommercial 1.0.0 · Dokumentation: CC BY-NC 4.0 (LICENSE-DOCS). Die erforderliche Namensnennung steht in NOTICE.</small></p>
+</div></footer>
+<a class="to-top" id="to-top" href="#" aria-label="Nach oben"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"/></svg>Nach oben</a>
+</body></html>

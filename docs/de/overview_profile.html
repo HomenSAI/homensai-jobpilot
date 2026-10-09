@@ -1,0 +1,106 @@
+<!doctype html>
+<!-- © 2026 Serhii Khomenko / HomenS.AI · https://homensai.com/ · https://github.com/HomenSAI · https://www.linkedin.com/in/serhii-khomenko-homensai/
+     Code and markup: PolyForm Noncommercial 1.0.0 — https://polyformproject.org/licenses/noncommercial/1.0.0
+     Documentation text: CC BY-NC 4.0 — https://creativecommons.org/licenses/by-nc/4.0/ -->
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ihre Wissensbasis | HomenS.AI JobPilot</title>
+<meta name="description" content="Wohin Sie Ihre Unterlagen legen, wie Sie dem Agenten von sich erzählen und wie Ihre Lebensgeschichte zu einem passgenauen Lebenslauf wird.">
+<meta name="author" content="Serhii Khomenko">
+<meta name="theme-color" content="#edf1f4" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0f1720" media="(prefers-color-scheme: dark)">
+<script src="../../assets/theme.js"></script>
+<link rel="stylesheet" href="../../assets/site.css">
+<script src="../../assets/site.js" defer></script>
+</head>
+<body>
+<a class="skip-link" href="#main">Zum Inhalt springen</a>
+<header class="topbar"><div class="wrap">
+<a class="brand" href="PROJECT_OVERVIEW.html" aria-label="HomenS.AI JobPilot"><svg class="brand-mark" focusable="false" viewBox="0 0 100 100" aria-hidden="true"><path d="M50.0 13.0 L48.1 13.1 L46.1 13.2 L44.2 13.5 L42.3 13.8 L42.2 21.0 L40.7 21.5 L39.2 22.0 L37.8 22.6 L36.4 23.3 L31.5 18.0 L29.8 19.0 L28.3 20.1 L26.7 21.2 L25.2 22.5 L28.8 28.8 L27.7 29.9 L26.7 31.1 L25.7 32.4 L24.8 33.7 L18.0 31.5 L17.0 33.2 L16.2 35.0 L15.5 36.7 L14.8 38.6 L21.0 42.2 L20.7 43.8 L20.4 45.3 L20.2 46.9 L20.0 48.4 L13.0 50.0 L13.1 51.9 L13.2 53.9 L13.5 55.8 L13.8 57.7 L21.0 57.8 L21.5 59.3 L22.0 60.8 L22.6 62.2 L23.3 63.6 L18.0 68.5 L19.0 70.2 L20.1 71.7 L21.2 73.3 L22.5 74.8 L28.8 71.2 L29.9 72.3 L31.1 73.3 L32.4 74.3 L33.7 75.2 L31.5 82.0 L33.2 83.0 L35.0 83.8 L36.7 84.5 L38.6 85.2 L42.2 79.0 L43.8 79.3 L45.3 79.6 L46.9 79.8 L48.4 80.0 L50.0 87.0 Z" fill="#c9a24a"/><path d="M50 20 A30 30 0 0 1 50 80" fill="none" stroke="#2bb3c4" stroke-width="5"/><g fill="none" stroke="#2bb3c4" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M50 36 H64 L70 30"/><path d="M50 50 H72"/><path d="M50 64 H62 L68 70"/></g><g fill="#2bb3c4"><circle cx="71" cy="29" r="4"/><circle cx="74" cy="50" r="4"/><circle cx="69" cy="71" r="4"/></g><circle cx="50" cy="50" r="9" fill="currentColor"/><circle cx="50" cy="50" r="3.5" fill="#c9a24a"/></svg><span class="brand-word">HomenS<span class="ai">.AI</span> <span class="sub">JobPilot</span></span></a>
+<nav id="site-nav" class="nav-main" aria-label="Seiten des Projekts">
+<a class="nav-link" href="PROJECT_OVERVIEW.html"><i class="nav-dot" aria-hidden="true"></i>Überblick</a>
+<a class="nav-link" href="overview_install.html"><i class="nav-dot teal" aria-hidden="true"></i>Installation</a>
+<a class="nav-link" href="overview_profile.html" aria-current="page"><i class="nav-dot gold" aria-hidden="true"></i>Profil</a>
+<a class="nav-link" href="overview_architecture.html"><i class="nav-dot" aria-hidden="true"></i>Architektur</a>
+<a class="nav-link" href="overview_safety.html"><i class="nav-dot teal" aria-hidden="true"></i>Sicherheit</a>
+<a class="nav-link" href="overview_market.html"><i class="nav-dot gold" aria-hidden="true"></i>Markt</a>
+<a class="nav-link" href="overview_roadmap.html"><i class="nav-dot" aria-hidden="true"></i>Fahrplan</a>
+<a class="nav-link" href="../../dashboard_template/index.html?lang=de"><i class="nav-dot teal" aria-hidden="true"></i>Statistik</a>
+</nav>
+<div class="nav-tools">
+<a class="nav-link site-link" href="https://homensai.com/" rel="me noopener">homensai.com</a>
+<span class="langs" role="group" aria-label="Sprache"><a href="../../overview_profile.html" lang="en" hreflang="en">EN</a><a href="../ru/overview_profile.html" lang="ru" hreflang="ru">RU</a><a href="overview_profile.html" lang="de" hreflang="de" class="on" aria-current="true">DE</a></span>
+<button class="icon-btn" id="theme-btn" type="button" aria-label="Hell- und Dunkelmodus umschalten" title="Hell- und Dunkelmodus umschalten"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M12 4v16"/><path d="M12 4a8 8 0 0 1 0 16z" fill="currentColor"/></svg></button>
+<button class="icon-btn menu-btn" id="menu-btn" type="button" aria-expanded="false" aria-controls="site-nav" aria-label="Menü" title="Menü"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+</div>
+</div></header>
+<main id="main" class="wrap">
+<div class="page-head">
+<div class="eyebrow">Profil</div>
+<h1>Ihre <span class="accent">Lebensgeschichte</span> in einer Datei</h1>
+<p class="lead">Legen Sie Ihre Unterlagen in drei fertige Ordner, oder erzählen Sie dem Agenten einfach per Sprache von sich. Der Agent schreibt Ihre ganze Lebensgeschichte als Angaben in eine Datei, die Wissensbasis, und Sie bestätigen jede Angabe. Jede Bewerbung verwendet dann nur den passenden, bestätigten Teil.</p>
+<div class="pills"><span class="pill">Ordner sind im ZIP vorbereitet</span><span class="pill">Sprache oder Text</span><span class="pill">Angaben brauchen Ihre Bestätigung</span></div>
+</div>
+
+<section id="folders">
+<div class="sec-head"><div class="num">01 · Ordner</div><h2>Wohin Sie Ihre Unterlagen legen</h2><p>Den einzigen Ort, an dem Sie selbst etwas ablegen müssen, ist <code>Локальные_данные\Положите_сюда</code> („hier ablegen“). Er ist im Projektordner bereits vorhanden. Der Agent liest ihn nur und ändert nie Ihre Dateien.</p></div>
+<div class="table-scroll"><table class="cmp"><thead><tr><th>Ordner</th><th>Was dort hinein gehört</th></tr></thead><tbody>
+<tr><td><code>1_Мои_документы</code><br><small>meine Dokumente</small></td><td>Lebensläufe in beliebigen Fassungen, Diplome, Zeugnisse, Referenzen, amtliche Schreiben, ein Portfolio, Muster Ihrer Anschreiben. Beliebiges Format, kein Sortieren.</td></tr>
+<tr><td><code>2_Рассказ_о_себе</code><br><small>meine Geschichte</small></td><td>Ihre Geschichte in Ihren eigenen Worten: eine Abschrift einer Sprachaufnahme, Notizen, Antworten auf die vorbereiteten Fragen. Der Agent speichert hier auch Interviews, Wort für Wort.</td></tr>
+<tr><td><code>3_Шаблон_отчёта</code><br><small>Berichtsvorlage</small></td><td>Nur wenn Sie ein eigenes Muster für einen Bericht haben.</td></tr>
+</tbody></table></div>
+<p style="margin-top:.75rem">Sie können die Ordner vor dem ersten Start füllen oder leer lassen. Wie Sie sie vorbereiten, auch die Sprachaufnahme, steht hier: <a href="overview_install.html#prepare">Installation → Unterlagen vorbereiten</a>.</p>
+</section>
+
+<section id="voice">
+<div class="sec-head"><div class="num">02 · Interview</div><h2>Per Sprache oder Text erzählen</h2><p>Haben Sie nichts vorbereitet, interviewt Sie der Agent. Er fragt jeweils ein Thema, nimmt lange gesprochene Antworten an, speichert sie nach jedem Thema Wort für Wort und sagt Ihnen zurück, was er verstanden hat.</p></div>
+<div class="facts">
+<article><h3>Wer Sie sind</h3><small>Name, Ort, Sprachen, was Sie wollen, was Sie nicht wollen.</small></article>
+<article><h3>Jede Stelle</h3><small>Arbeitgeber, Ort, Funktion, Zeitraum, tägliche Aufgaben, Werkzeuge, Team, Ergebnisse.</small></article>
+<article><h3>Ausbildung und Zertifikate</h3><small>Schule, Ausbildung, Hochschule, Kurse, wer was wann ausgestellt hat.</small></article>
+<article><h3>Sprachen und Fähigkeiten</h3><small>Niveau beim Lesen, Schreiben und Sprechen; technische und Computerkenntnisse, wo und wann eingesetzt.</small></article>
+<article><h3>Projekte und konkrete Situationen</h3><small>Praktika, Ehrenamt, Projekte; drei bis fünf Geschichten: die Aufgabe, was Sie getan haben, das Ergebnis.</small></article>
+<article><h3>Bedingungen und Privatsphäre</h3><small>Umkreis, Verkehrsmittel, Arbeitszeiten, Starttermin; was einem Arbeitgeber niemals gezeigt werden darf.</small></article>
+</div>
+<p style="margin-top:.75rem"><small>Der Agent fragt nicht nach Gesundheit, Religion oder Familienstand. Erwähnen Sie solche Dinge selbst, werden sie als sensibel markiert und gehen ohne Ihre ausdrückliche Wahl nie in einen Lebenslauf.</small></p>
+</section>
+
+<section id="kb">
+<div class="sec-head"><div class="num">03 · Wissensbasis</div><h2>Eine Datei mit Ihrer ganzen Lebensgeschichte</h2><p>Aus Ihren Unterlagen und Ihrer Geschichte schreibt der Agent die Datei <code>Локальные_данные\persons\&lt;Ihre ID&gt;\База_знаний\Жизнеописание.md</code>. Sie ist in Ihrer Sprache verfasst, Sie können sie in jedem Texteditor öffnen und lesen und von Hand korrigieren.</p></div>
+<div class="grid2">
+<article class="panel blue"><h3>So sieht eine Angabe aus</h3><pre class="cmd" style="white-space:pre-wrap">- [F012] Mechanical engineer at Muster GmbH, Stuttgart, 2012–2016; commissioning of packaging lines | source: Zeugnis_Muster.pdf p.2 | status: confirmed 2026-10-07 | use: cv | sens: normal</pre><p>Eine Angabe pro Zeile, mit ihrer Quelle, ihrem Status (<code>proposed</code>, <code>confirmed</code> oder <code>rejected</code>), der Frage, ob sie in Bewerbungsunterlagen erscheinen darf (<code>use</code>), und ob sie sensibel ist (<code>sens</code>).</p></article>
+<article class="panel teal"><h3>Regeln</h3><ul><li>Der Agent schreibt jede Angabe zuerst als <code>proposed</code>; erst Ihre Bestätigung macht sie zu <code>confirmed</code>.</li><li>Eine Angabe wird nie gelöscht: Eine Korrektur fügt eine neue Zeile hinzu und markiert die alte als <code>rejected</code>.</li><li>Eine Angabe ohne Dokument bleibt gültig und ist als <code>self-reported</code> markiert.</li><li>Lebensläufe und Anschreiben verwenden nur bestätigte Angaben, die für Unterlagen freigegeben sind.</li><li>Ihre eigenen Worte bleiben unverändert in <code>2_Рассказ_о_себе</code>.</li></ul></article>
+</div>
+</section>
+
+<section id="search">
+<div class="sec-head"><div class="num">04 · Die Suche</div><h2>Was der Agent zur Suche fragt</h2><p>Nach Ihrer Geschichte und Ihren Unterlagen fragt der Agent, was wir suchen und wie. Eine Frage nach der anderen; die Antworten werden als <code>profile.json</code> gespeichert.</p></div>
+<div class="table-scroll"><table class="cmp"><thead><tr><th>Der Agent fragt</th><th>Sie wählen</th></tr></thead><tbody>
+<tr><td>Was suchen wir?</td><td>Job, Ausbildung, Praktikum, Probearbeit, Zeitarbeit — beliebige Kombination; welche Berufe und Branchen; was ausgeschlossen werden soll; Beschäftigungsart; frühester Starttermin</td></tr>
+<tr><td>Wo wohnen Sie?</td><td>Die Stadt, auf Wunsch Stadtteil oder Straße. Sie wird nur für die Planung der Wege verwendet</td></tr>
+<tr><td>Wie weit?</td><td>Der Suchumkreis in Kilometern</td></tr>
+<tr><td>Wie kommen Sie hin?</td><td>Auto · Zug · Bus oder Straßenbahn · Fahrrad · zu Fuß — beliebige Kombination</td></tr>
+<tr><td>Wie anstrengend darf der Weg sein?</td><td>Die längste Fahrzeit in Minuten, die Zahl der Umstiege, der Fußweg, ob die Rückkehr am Abend möglich sein muss</td></tr>
+<tr><td>Welche Orte zuerst?</td><td>Bevorzugte Städte in der Reihenfolge der Priorität</td></tr>
+<tr><td>Welche Sprachen?</td><td>Lebenslauf, Anschreiben, E-Mail-Text und Bericht — vier getrennte Antworten</td></tr>
+<tr><td>Wie senden?</td><td>Sofort · an jedem Werktag · an jedem zweiten Werktag; die Uhrzeit. Nichts wird ohne Ihre Erlaubnis gesendet</td></tr>
+</tbody></table></div>
+<p style="margin-top:.75rem"><small>Alles Übrige behält sichere Voreinstellungen: das Limit von 44 Bewerbungen pro Monat, nur Entwürfe, Betreff bis 50 Zeichen, eine Marktseite im Bericht.</small></p>
+</section>
+
+<section id="cv">
+<div class="sec-head"><div class="num">05 · Von der Datei zum Lebenslauf</div><h2>Ein kurzer Lebenslauf für jede Stelle</h2><p>Die Wissensbasis enthält die umfassende Dokumentation. Für jede Bewerbung schreibt der Agent einen knappen, gut lesbaren Lebenslauf und ein Anschreiben in der gewählten Sprache, nur aus bestätigten Angaben, und zeigt, aus welcher Angabe jede Aussage stammt. Sie sehen die Lücken und entscheiden, was zu klären ist. Ein Foto ist optional.</p></div>
+<div class="notice"><p><strong>Ein neutraler Bericht in der gewählten Sprache.</strong> Legen Sie eine Berichtsvorlage in <code>3_Шаблон_отчёта</code>, arbeitet der Agent mit einer Kopie und lässt das Original unverändert. Ohne Vorlage erstellt er eine Tabelle mit Nachname, Vorname, Zeitraum, Datum der Bewerbung, Unternehmen, Stelle, Kanal, Datum der Antwort und einem kurzen Ergebnis. Es werden keine institutionellen Felder und keine fremden Markenzeichen hinzugefügt. Eine fehlende Antwort wird in der Berichtssprache gekennzeichnet; eine tatsächliche Antwort wird durch ihren Grund oder ihre Entscheidung zusammengefasst, nicht dadurch, ob ein Dankeschreiben gesendet wurde.</p></div>
+</section>
+
+<div class="pager"><a href="overview_install.html">← Installation</a><a href="overview_architecture.html">Architektur →</a></div>
+</main>
+<footer class="site-footer"><div class="wrap">
+<p>© 2026 Serhii Khomenko / HomenS.AI · <a href="https://homensai.com/" rel="me noopener">homensai.com</a> · <a href="https://github.com/HomenSAI" rel="me noopener">GitHub</a> · <a href="https://www.linkedin.com/in/serhii-khomenko-homensai/" rel="me noopener">LinkedIn</a> · <a href="https://orcid.org/0009-0009-5371-9717" rel="me noopener">ORCID</a> · <a href="https://doi.org/10.5281/zenodo.23160031" rel="noopener">DOI</a> · <a href="mailto:info@homensai.com">info@homensai.com</a></p>
+<p>Dokumente: <a href="../../README.md">README</a> · <a href="../../USER_GUIDE.md">Benutzerhandbuch</a> · <a href="../../AI_BUILD_SPEC.md">Bauspezifikation</a> · <a href="../../ARCHITECTURE.md">Architektur</a> · <a href="../../DATA_CONTRACT.md">Datenvertrag</a> · <a href="../../ACCEPTANCE_TESTS.md">Abnahmeszenarien</a> · <a href="../../REVIEW.md">Prüfung und Status</a></p>
+<p><small>Dokumentation 1.5.1 · 9. Oktober 2026 · keine persönlichen Profile, Lebensläufe oder Zugangsdaten. Code: PolyForm Noncommercial 1.0.0 · Dokumentation: CC BY-NC 4.0 (LICENSE-DOCS). Die erforderliche Namensnennung steht in NOTICE.</small></p>
+</div></footer>
+<a class="to-top" id="to-top" href="#" aria-label="Nach oben"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"/></svg>Nach oben</a>
+</body></html>

@@ -393,7 +393,7 @@ The verification scenarios are in ACCEPTANCE_TESTS.md. Acceptance needs recorded
 
 English is the primary edition at the project root. The complete Russian edition lives in docs/ru; each page links to its counterpart. The same section structure, action names, examples and requirements apply to both. A wording difference is fixed in both editions against the user's requirement and the English base; it is not a second set of rules.
 
-The statistics page uses `en` by default and supports `ru`. The label dictionaries have identical keys and are embedded in the page, so switching languages needs no network and no server. A missing translation falls back to English. Date formatting changes only the display; sorting uses the original timestamps. Company names and recorded evidence are not rewritten when the interface language changes. CV, cover letter, email and report languages stay separately selected and are not limited to en/ru by the documentation interface.
+The statistics page uses `en` by default and supports `ru` and `de`. The label dictionaries have identical keys and are embedded in the page, so switching languages needs no network and no server. A missing translation falls back to English. Date formatting changes only the display; sorting uses the original timestamps. Company names and recorded evidence are not rewritten when the interface language changes. CV, cover letter, email and report languages stay separately selected and are not limited to en/ru by the documentation interface.
 
 ## 12. Local archives and recovery (R01)
 

@@ -1,0 +1,200 @@
+<!doctype html>
+<!-- © 2026 Serhii Khomenko / HomenS.AI · https://homensai.com/ · https://github.com/HomenSAI · https://www.linkedin.com/in/serhii-khomenko-homensai/
+     Code and markup: PolyForm Noncommercial 1.0.0 — https://polyformproject.org/licenses/noncommercial/1.0.0
+     Documentation text: CC BY-NC 4.0 — https://creativecommons.org/licenses/by-nc/4.0/ -->
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Installation | HomenS.AI JobPilot</title>
+<meta name="description" content="Schritt-für-Schritt-Installation: Agent, Projektordner und Berechtigungen in der richtigen Reihenfolge.">
+<meta name="author" content="Serhii Khomenko">
+<meta name="theme-color" content="#edf1f4" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0f1720" media="(prefers-color-scheme: dark)">
+<script src="../../assets/theme.js"></script>
+<link rel="stylesheet" href="../../assets/site.css">
+<script src="../../assets/site.js" defer></script>
+</head>
+<body>
+<a class="skip-link" href="#main">Zum Inhalt springen</a>
+<header class="topbar"><div class="wrap">
+<a class="brand" href="PROJECT_OVERVIEW.html" aria-label="HomenS.AI JobPilot"><svg class="brand-mark" focusable="false" viewBox="0 0 100 100" aria-hidden="true"><path d="M50.0 13.0 L48.1 13.1 L46.1 13.2 L44.2 13.5 L42.3 13.8 L42.2 21.0 L40.7 21.5 L39.2 22.0 L37.8 22.6 L36.4 23.3 L31.5 18.0 L29.8 19.0 L28.3 20.1 L26.7 21.2 L25.2 22.5 L28.8 28.8 L27.7 29.9 L26.7 31.1 L25.7 32.4 L24.8 33.7 L18.0 31.5 L17.0 33.2 L16.2 35.0 L15.5 36.7 L14.8 38.6 L21.0 42.2 L20.7 43.8 L20.4 45.3 L20.2 46.9 L20.0 48.4 L13.0 50.0 L13.1 51.9 L13.2 53.9 L13.5 55.8 L13.8 57.7 L21.0 57.8 L21.5 59.3 L22.0 60.8 L22.6 62.2 L23.3 63.6 L18.0 68.5 L19.0 70.2 L20.1 71.7 L21.2 73.3 L22.5 74.8 L28.8 71.2 L29.9 72.3 L31.1 73.3 L32.4 74.3 L33.7 75.2 L31.5 82.0 L33.2 83.0 L35.0 83.8 L36.7 84.5 L38.6 85.2 L42.2 79.0 L43.8 79.3 L45.3 79.6 L46.9 79.8 L48.4 80.0 L50.0 87.0 Z" fill="#c9a24a"/><path d="M50 20 A30 30 0 0 1 50 80" fill="none" stroke="#2bb3c4" stroke-width="5"/><g fill="none" stroke="#2bb3c4" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M50 36 H64 L70 30"/><path d="M50 50 H72"/><path d="M50 64 H62 L68 70"/></g><g fill="#2bb3c4"><circle cx="71" cy="29" r="4"/><circle cx="74" cy="50" r="4"/><circle cx="69" cy="71" r="4"/></g><circle cx="50" cy="50" r="9" fill="currentColor"/><circle cx="50" cy="50" r="3.5" fill="#c9a24a"/></svg><span class="brand-word">HomenS<span class="ai">.AI</span> <span class="sub">JobPilot</span></span></a>
+<nav id="site-nav" class="nav-main" aria-label="Seiten des Projekts">
+<a class="nav-link" href="PROJECT_OVERVIEW.html"><i class="nav-dot" aria-hidden="true"></i>Überblick</a>
+<a class="nav-link" href="overview_install.html" aria-current="page"><i class="nav-dot teal" aria-hidden="true"></i>Installation</a>
+<a class="nav-link" href="overview_profile.html"><i class="nav-dot gold" aria-hidden="true"></i>Profil</a>
+<a class="nav-link" href="overview_architecture.html"><i class="nav-dot" aria-hidden="true"></i>Architektur</a>
+<a class="nav-link" href="overview_safety.html"><i class="nav-dot teal" aria-hidden="true"></i>Sicherheit</a>
+<a class="nav-link" href="overview_market.html"><i class="nav-dot gold" aria-hidden="true"></i>Markt</a>
+<a class="nav-link" href="overview_roadmap.html"><i class="nav-dot" aria-hidden="true"></i>Fahrplan</a>
+<a class="nav-link" href="../../dashboard_template/index.html?lang=de"><i class="nav-dot teal" aria-hidden="true"></i>Statistik</a>
+</nav>
+<div class="nav-tools">
+<a class="nav-link site-link" href="https://homensai.com/" rel="me noopener">homensai.com</a>
+<span class="langs" role="group" aria-label="Sprache"><a href="../../overview_install.html" lang="en" hreflang="en">EN</a><a href="../ru/overview_install.html" lang="ru" hreflang="ru">RU</a><a href="overview_install.html" lang="de" hreflang="de" class="on" aria-current="true">DE</a></span>
+<button class="icon-btn" id="theme-btn" type="button" aria-label="Hell- und Dunkelmodus umschalten" title="Hell- und Dunkelmodus umschalten"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M12 4v16"/><path d="M12 4a8 8 0 0 1 0 16z" fill="currentColor"/></svg></button>
+<button class="icon-btn menu-btn" id="menu-btn" type="button" aria-expanded="false" aria-controls="site-nav" aria-label="Menü" title="Menü"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+</div>
+</div></header>
+<main id="main" class="wrap">
+<div class="page-head">
+<div class="eyebrow">Installation</div>
+<h1>Installation, <span class="accent">Schritt für Schritt</span></h1>
+<p class="lead">Die Einrichtung dauert etwa 30–40 Minuten. Führen Sie die Schritte in der Reihenfolge aus. Jeder Schritt sagt Ihnen, was Sie auf dem Bildschirm sehen sollten, damit Sie immer wissen, ob es geklappt hat. Auf Ihrem Computer werden weder Git, Python noch andere Entwicklerwerkzeuge benötigt.</p>
+<div class="pills"><span class="pill">Windows · ChatGPT Desktop · Codex</span><span class="pill">Claude Code ist eine Alternative</span><span class="pill">Ein Schritt pro Aktion</span></div>
+</div>
+
+<section id="order">
+<div class="sec-head"><div class="num">Reihenfolge</div><h2>Was zuerst kommt: der Agent oder das Archiv?</h2><p>Zuerst der Agent, dann das Archiv, dann verbinden Sie beides. Der Agent kommt zuerst, weil seine Verfügbarkeit von Ihrem Konto abhängt: Es ist besser, das jetzt herauszufinden, als nachdem Sie alles andere vorbereitet haben. Das Archiv ist nur ein Ordner mit Dateien; es wird nützlich, sobald der Agent es öffnet.</p></div>
+<div class="phases">
+<div class="phase"><b>Teil 1 · Agent</b>ChatGPT Desktop installieren, anmelden und sicherstellen, dass Codex verfügbar ist. <small>Schritt 1</small></div>
+<div class="phase"><b>Teil 2 · Projektordner</b>Das Projektarchiv im Browser von GitHub herunterladen und in einen Ordner entpacken. <small>Schritt 2</small></div>
+<div class="phase"><b>Teil 3 · Verbinden und starten</b>Den Ordner als lokales Projekt öffnen, Berechtigungen festlegen und den ersten sicheren Start ausführen. <small>Schritte 3–6</small></div>
+</div>
+<p style="margin-top:1rem">Ihre Unterlagen können Sie jederzeit sammeln, sogar vor Schritt 1 (siehe „Unterlagen vorbereiten“ weiter unten). In Schritt 7 erzählen Sie dem Agenten von sich, in Schritt 8 verbinden Sie die Post (optional), in Schritt 9 prüfen Sie die erste Warteschlange; die Schritte 10–13 sind optionale Funktionen und der tägliche Ablauf.</p>
+<div class="notice warn"><p><strong>Stand des Pakets.</strong> Dies ist ein experimenteller Dokumentations- und Agenten-Ablauf. Prüfungen der Statistikseite belegen nicht den vollständigen Gmail-/Agenten-Zyklus. Prüfen Sie Repository und Versionsnummer, bevor Sie herunterladen: <a href="https://github.com/HomenSAI/homensai-jobpilot">github.com/HomenSAI/homensai-jobpilot</a>.</p></div>
+</section>
+
+<section id="needs">
+<div class="sec-head"><div class="num">Vor dem Start</div><h2>Was Sie brauchen</h2></div>
+<div class="grid2">
+<article class="panel blue"><h3>Computer und Konten</h3><ul><li>Ein Windows-Computer mit Internetzugang.</li><li>ChatGPT Desktop und ein Konto mit verfügbarem Codex. Zugang und Nutzungsgrenzen von Codex hängen vom Tarif ab; prüfen Sie die aktuellen Bedingungen vor dem Kauf.</li><li>Ein separates Gmail-Konto für die Jobsuche wird empfohlen, aber nur, wenn Sie die Nachverfolgung per E-Mail möchten.</li></ul></article>
+<article class="panel teal"><h3>Ihre Unterlagen</h3><ul><li>Ihr Lebenslauf, Diplome und Zeugnisse in beliebigem Format, falls vorhanden — siehe „Unterlagen vorbereiten“ weiter unten.</li><li>Oder nur Ihre Stimme: Sie können dem Agenten von sich erzählen, und er schreibt alles auf.</li><li>Die Sprachen für Bewerbungsunterlagen und Berichte.</li><li>Ein eigener Ordner für das Projekt, zum Beispiel <code>Documents\HomenSAI-JobPilot</code>.</li></ul></article>
+</div>
+<p style="margin-top:.75rem">Für die Arbeit mit lokalen Dateien brauchen Sie ein <strong>lokales Codex-Projekt</strong>, das auf Ihrem Computer geöffnet ist. Ein gewöhnliches Cloud-Projekt in ChatGPT gewährt keinen Zugriff auf einen Ordner auf Ihrem Computer.</p>
+</section>
+
+<section id="prepare">
+<div class="sec-head"><div class="num">Vorbereiten</div><h2>Unterlagen vorbereiten — das können Sie zuerst tun</h2><p>Das Projekt-ZIP enthält einen fertigen Ordner <code>Локальные_данные\Положите_сюда</code> („hier ablegen“) mit drei Unterordnern. Nur dorthin müssen Sie selbst etwas legen. Füllen Sie ihn direkt nach Schritt 2 oder sammeln Sie die Dateien schon jetzt und kopieren sie später. Bereiten Sie nichts vor, fragt Sie der Agent alles selbst (Schritt 7).</p></div>
+<div class="table-scroll"><table class="cmp"><thead><tr><th>Ordner</th><th>Was dort hinein gehört</th></tr></thead><tbody>
+<tr><td><code>1_Мои_документы</code><br><small>meine Dokumente</small></td><td>Lebensläufe in beliebigen Fassungen, Diplome, Zeugnisse, Referenzen, amtliche Schreiben, ein Portfolio, Muster Ihrer eigenen Anschreiben. PDF, DOCX, TXT, Fotos und Scans. Kein Sortieren und kein Umbenennen nötig.</td></tr>
+<tr><td><code>2_Рассказ_о_себе</code><br><small>meine Geschichte</small></td><td>Ihre Geschichte in Ihren eigenen Worten: eine Abschrift einer Sprachaufnahme, Notizen, Antworten auf die Fragen in <code>Вопросы_для_рассказа.md</code> (die Datei liegt in diesem Ordner).</td></tr>
+<tr><td><code>3_Шаблон_отчёта</code><br><small>Berichtsvorlage</small></td><td>Nur wenn Sie ein eigenes Muster für einen Bericht haben. Sonst leer lassen.</td></tr>
+</tbody></table></div>
+<div class="grid2" style="margin-top:1rem">
+<article class="panel blue"><h3>Erzählen Sie Ihre Geschichte per Sprache</h3><ol><li>Öffnen Sie einen Chat mit Claude oder ChatGPT und schalten Sie den Sprachmodus ein (das Mikrofon-Symbol).</li><li>Sagen Sie: „Ich erzähle dir von mir für meinen Lebenslauf. Stell mir Fragen, jeweils nur zu einem Thema. Schreib am Ende meine Geschichte Wort für Wort auf, ohne etwas hinzuzufügen, als Textdatei.“ Sie können die Fragen aus <code>Вопросы_для_рассказа.md</code> einfügen.</li><li>Sprechen Sie so lange Sie möchten, in Teilen, an verschiedenen Tagen, in beliebiger Reihenfolge. Wenn Sie sich an etwas nicht erinnern, sagen Sie es.</li><li>Speichern Sie die Textdatei im Ordner <code>2_Рассказ_о_себе</code>.</li></ol></article>
+<article class="panel teal"><h3>Oder lassen Sie sich vom Agenten fragen</h3><p>Bereiten Sie nichts vor. Starten Sie bei Schritt 6 den Agenten in Ihrem Projektordner und sagen Sie, dass Sie von sich erzählen möchten, per Sprache oder Text. Er stellt die Fragen jeweils zu einem Thema, speichert Ihre Antworten Wort für Wort im Ordner <code>2_Рассказ_о_себе</code> und erstellt daraus Ihre Wissensbasis.</p></article>
+</div>
+<div class="notice"><p>Der Agent liest diese Ordner nur; er ändert, verschiebt oder löscht Ihre Dateien nie. Alles bleibt auf Ihrem Computer und wird nicht veröffentlicht (der Ordner <code>Локальные_данные</code> ist von Git ausgeschlossen). Aus Ihren Dateien und Ihrer Geschichte schreibt der Agent Ihre <strong>Wissensbasis</strong>: eine Datei mit Ihrer ganzen Lebensgeschichte als Angaben (<code>Локальные_данные\persons\&lt;Ihre ID&gt;\База_знаний\Жизнеописание.md</code>). Er zeigt Ihnen jede Angabe zur Bestätigung, und Lebensläufe und Anschreiben verwenden nur bestätigte Angaben.</p></div>
+</section>
+
+<section id="p1">
+<div class="sec-head"><div class="num">Teil 1</div><h2>Der Agent</h2></div>
+<ol class="guide">
+<li><h3>ChatGPT Desktop installieren und anmelden</h3>
+<ol><li>Öffnen Sie die <a href="https://chatgpt.com/download/">offizielle Download-Seite von ChatGPT</a>.</li><li>Laden Sie die Windows-Version herunter, installieren und starten Sie sie und melden Sie sich an.</li><li>Wählen Sie im Modus-Auswahlfeld <strong>Codex</strong>. Wählen Sie nicht ein Cloud-Projekt von ChatGPT oder „Work“: Dieser Ablauf braucht einen geöffneten lokalen Ordner.</li></ol>
+<p class="see"><b>Sie sollten sehen:</b> das Hauptfenster mit Ihrem Kontonamen und einem Modus-Auswahlfeld, das Codex enthält.</p>
+<p class="stuck"><b>Wenn Codex fehlt:</b> prüfen Sie, ob es für Ihr Konto und Ihre Organisation verfügbar ist. Installieren Sie keine inoffiziellen Versionen. Siehe die <a href="https://learn.chatgpt.com/docs/quickstart">Kurzanleitung</a> von OpenAI.</p></li>
+</ol>
+</section>
+
+<section id="p2">
+<div class="sec-head"><div class="num">Teil 2</div><h2>Der Projektordner</h2></div>
+<ol class="guide" style="counter-reset: g 1">
+<li><h3>Projektarchiv herunterladen und entpacken</h3>
+<ol><li>Öffnen Sie das Projekt-Repository auf GitHub (<a href="https://github.com/HomenSAI/homensai-jobpilot">github.com/HomenSAI/homensai-jobpilot</a>) im Browser.</li><li>Wählen Sie <strong>Code → Download ZIP</strong>.</li><li>Legen Sie im Explorer einen Ordner an, zum Beispiel <code>Documents\HomenSAI-JobPilot</code>.</li><li>Entpacken Sie das ZIP in diesen Ordner.</li><li>Entpacken Sie nicht in einen Systemordner von Windows.</li></ol>
+<p class="see"><b>Sie sollten sehen:</b> im Ordner direkt (nicht in einem weiteren Ordner): <code>README.md</code>, <code>USER_GUIDE.md</code>, <code>AI_BUILD_SPEC.md</code>, <code>AGENTS.md</code>, <code>CLAUDE.md</code>, <code>TODO_FOR_AI.md</code>, <code>dashboard_template</code> und den Ordner <code>Локальные_данные\Положите_сюда</code> mit drei Unterordnern.</p>
+<p class="stuck"><b>Wenn die Dateien eine Ebene tiefer liegen:</b> Sie haben in einen zusätzlichen Unterordner entpackt. Verschieben Sie den Inhalt nach oben oder wählen Sie in Schritt 3 den inneren Ordner.</p>
+<p>Der Ordner enthält sowohl die Projektanweisungen als auch Ihre lokalen Arbeitsdaten. Persönliche Profile, Lebensläufe, E-Mails, OAuth-Token und Statistiken dürfen niemals auf GitHub veröffentlicht werden.</p></li>
+</ol>
+</section>
+
+<section id="p3">
+<div class="sec-head"><div class="num">Teil 3</div><h2>Den Agenten mit dem Ordner verbinden und starten</h2></div>
+<ol class="guide" style="counter-reset: g 2">
+<li><h3>Ein lokales Projekt anlegen und den Ordner wählen</h3>
+<ol><li>Öffnen Sie <strong>Projects</strong> in Codex.</li><li>Wählen Sie <strong>Add local project</strong> oder <strong>Open folder</strong> (die genaue Bezeichnung hängt von der Version ab).</li><li>Wählen Sie den vollständigen Pfad des entpackten Ordners, zum Beispiel <code>C:\Users\IhrName\Documents\HomenSAI-JobPilot</code>.</li><li>Gibt es bereits ein Projekt: dessen Menü → <strong>Edit project → Add folder</strong>, Ordner wählen und <strong>Make primary</strong> wählen.</li><li>Benennen Sie das Projekt, zum Beispiel <strong>Jobsuche</strong>.</li></ol>
+<p class="see"><b>Sie sollten sehen:</b> das Projekt in der Liste, und als Hauptordner den, der <code>README.md</code> enthält — nicht eine einzelne Datei und nicht einen übergeordneten Ordner mit fremden Daten.</p>
+<p class="stuck"><b>Wichtig:</b> Der Satz „arbeite im Pfad …“ im Chat reicht nicht. Der Ordner muss als lokaler Ordner des Projekts geöffnet oder angehängt werden. Siehe <a href="https://learn.chatgpt.com/docs/projects">lokale Projekte</a>.</p></li>
+<li><h3>Einen Einrichtungs-Chat anlegen</h3>
+<ol><li>Öffnen Sie Ihr neues lokales Projekt und wählen Sie darin <strong>New chat</strong> (neuer Chat).</li><li>Prüfen Sie, dass <strong>Codex</strong> und die lokale Umgebung (<strong>Local / This computer</strong>) gewählt sind, nicht Cloud oder Worktree.</li><li>Benennen Sie den Chat, zum Beispiel <strong>Erste Einrichtung JobPilot</strong>.</li></ol>
+<p class="see"><b>Sie sollten sehen:</b> einen Chat im Projekt mit „Local“ neben dem Eingabefeld.</p>
+<p>Sie können für Einrichtung, Suche, tägliche Prüfungen und Monatsberichte getrennte Chats verwenden. Die Dateien und das Journal des Projekts halten den Stand zwischen den Chats; verlassen Sie sich nicht auf den Verlauf eines einzelnen Gesprächs.</p></li>
+<li><h3>Die Berechtigungen festlegen</h3>
+<ol><li>Öffnen Sie das Berechtigungsmenü unter dem Nachrichtenfeld und wählen Sie <strong>Ask for approval</strong> (Genehmigung anfordern). Der Agent kann dann im aktuellen Ordner arbeiten und fragt vorher bei allem Weiteren nach.</li><li>Fehlt die Einstellung, schauen Sie unter <strong>Settings → General → Permissions</strong> (Einstellungen → Allgemein → Berechtigungen).</li><li>Wählen Sie <strong>nicht</strong> Full access (Vollzugriff), starten Sie ChatGPT Desktop nicht als Administrator und geben Sie keinen Zugriff auf das ganze Laufwerk.</li><li>Verlangt Codex Zugriff außerhalb des Ordners, überlegen Sie zuerst, ob er wirklich nötig ist. Erteilen Sie nur eine enge, einmalige Berechtigung.</li><li>Websuche, Dateien, E-Mail und Bildschirmsteuerung sind getrennte Berechtigungen. Die Erlaubnis für eine erlaubt nicht die anderen.</li></ol>
+<p class="see"><b>Sie sollten sehen:</b> „Ask for approval“ (oder das Entsprechende) im Berechtigungsmenü und den Projektordner als Arbeitsordner.</p>
+<p>Offizielle Erläuterungen: <a href="https://learn.chatgpt.com/docs/permission-modes">Berechtigungsmodi</a>, <a href="https://learn.chatgpt.com/docs/sandboxing">Sandboxing</a>.</p></li>
+<li><h3>Den ersten sicheren Start durchführen</h3>
+<p>Geben Sie dies in den neuen Chat ein (oder einfach „Start“):</p>
+<pre class="cmd">Start. Read AGENTS.md and TODO_FOR_AI.md and lead me through the first run.</pre>
+<p>Der Agent lädt seine Regeln selbst (Codex liest AGENTS.md, Claude Code liest CLAUDE.md). Er stellt sich vor, bestätigt den Arbeitsordner, prüft seine Werkzeuge und fragt Sie dann, jeweils eine Frage: Ihren Namen und die Sprache, die Sie bevorzugen. Danach bittet er um Ihre Zustimmung, Ihre persönlichen Unterlagen zu lesen, und beginnt die erste Einrichtung (Schritt 7). Antworten Sie mit eigenen Worten, per Sprache, wenn Ihre App eine Mikrofontaste hat.</p>
+<p class="see"><b>Sie sollten sehen:</b> Der Agent nennt den richtigen Ordner, erklärt in wenigen Zeilen, was passieren wird, sagt, dass er im Entwurfsmodus arbeitet, und stellt seine erste Frage.</p>
+<p class="stuck"><b>Wenn der Agent nicht weiß, was er tun soll, oder sagt, AGENTS.md oder TODO_FOR_AI.md fehle:</b> Der Ordner ist falsch oder das Archiv unvollständig. Prüfen Sie die Schritte 2 und 3. Bitten Sie den Agenten nicht, fehlende Dateien zu erfinden.</p></li>
+</ol>
+</section>
+
+<section id="p4">
+<div class="sec-head"><div class="num">Teil 4</div><h2>Ihre Daten, die Post und die erste Warteschlange</h2></div>
+<ol class="guide" style="counter-reset: g 6">
+<li><h3>Die erste Einrichtung: der Agent fragt, Sie antworten</h3>
+<p>Ab hier führt der Agent. Es gibt kein Formular: Er stellt eine Frage nach der anderen und speichert jede Antwort in Dateien. Die Reihenfolge ist immer dieselbe:</p>
+<ol><li><strong>Zustimmung.</strong> Bevor er etwas Persönliches liest, erklärt er, dass ein Cloud-Agent das Gelesene an seinen Anbieter weitergeben kann, und bittet um Ihre Zustimmung. „Lokal gespeichert“ heißt nicht „offline verarbeitet“. Sie können Nein sagen und mit einem anonymisierten Beispiel beginnen.</li>
+<li><strong>Ihre Geschichte.</strong> Er sagt Ihnen, wohin Ihre Geschichte gehört: in den Ordner <code>Локальные_данные\Положите_сюда\2_Рассказ_о_себе</code>. Haben Sie keine, bietet er an, sie sofort vorzubereiten, komplett per Sprache: Mikrofon einschalten und über Ihr ganzes Leben sprechen. Er unterbricht nicht und speichert jedes Wort.</li>
+<li><strong>Ihre Unterlagen.</strong> Er fragt, ob Sie einen Lebenslauf, Diplome, Zeugnisse, Kursnachweise oder Referenzen haben. Legen Sie alles in <code>1_Мои_документы</code> (Fotos und Scans sind in Ordnung) und sagen Sie „fertig“. Keine Unterlagen? Sagen Sie es, und Sie machen weiter.</li>
+<li><strong>Analyse.</strong> Er liest alles und schreibt Ihre Wissensbasis. Danach fragt er nach dem, was fehlt, jeweils zu einem Thema: Zertifikate, Kurse, Sprachniveaus, Fähigkeiten, konkrete Situationen, Führerschein und Auto.</li>
+<li><strong>Bestätigung.</strong> Er zeigt die Angaben Abschnitt für Abschnitt. Sagen Sie zu jeder: <em>richtig</em>, <em>korrigieren</em> oder <em>falsch</em>. Er erfindet nie Erfahrung, Daten, Zeugnisse oder Sprachniveaus. Eine Angabe ohne Dokument bleibt gültig und ist als „Selbstangabe“ markiert.</li>
+<li><strong>Die Suche.</strong> Er fragt, was wir suchen (Job, Ausbildung, Praktikum, Probearbeit, Zeitarbeit), welche Berufe und Branchen, wo Sie wohnen, den Umkreis in Kilometern, wie Sie hinkommen (Auto, Zug, Bus oder Straßenbahn, Fahrrad, zu Fuß — beliebige Kombination), wie lange der Weg dauern darf, Umstiege, Fußweg und die Rückkehr am Abend, bevorzugte Städte, die Sprachen von Lebenslauf, Anschreiben, E-Mail und Bericht (jeweils getrennt), wie die Bewerbungen verteilt werden sollen und ob Sie eine Berichtsvorlage haben (<code>3_Шаблон_отчёта</code>).</li>
+<li><strong>Gespeichert.</strong> Er wiederholt alle Ihre Antworten; Sie sagen „richtig“. Die erste Einrichtung ist abgeschlossen, und ab jetzt arbeitet er mit diesen gespeicherten Dateien.</li></ol>
+<p class="see"><b>Sie sollten sehen:</b> die Datei <code>Локальные_данные\persons\&lt;Ihre ID&gt;\База_знаний\Жизнеописание.md</code> mit Ihrer Lebensgeschichte als Angaben, jede mit <code>confirmed</code> oder <code>self-reported</code> markiert, und die Datei <code>Локальные_данные\profiles\&lt;Suchrichtung&gt;\profile.json</code> mit Ihren Sucheinstellungen. Beide können Sie in jedem Texteditor öffnen und lesen.</p>
+<p class="stuck"><b>Niemals</b> Passwörter, Einmalcodes oder OAuth-Token in eine Datei schreiben. Private Notizen bleiben als sensibel markiert und gehen ohne Ihre ausdrückliche Wahl nie in einen Lebenslauf. Prüfen Sie, dass <code>Локальные_данные/</code> von der Veröffentlichung ausgeschlossen ist. Mehrere Suchrichtungen einer Person teilen sich ein Limit von 44 Bewerbungen pro Monat.</p></li>
+<li><h3>Gmail über einen zugelassenen Connector oder den integrierten Browser verbinden</h3>
+<ol><li>Fragen Sie den Agenten, welche Gmail-Optionen in Ihrer Codex-Installation verfügbar sind. Wählen Sie einen vorhandenen, offiziell zugelassenen Connector oder den integrierten Browser; fügen Sie keinen beliebigen Server hinzu.</li><li>Bei einem Connector folgen Sie seinem offiziellen Anmeldeverfahren. Für den Browser bitten Sie Codex, https://mail.google.com zu öffnen, und sagen Sie ihm, dass er noch nicht lesen oder senden soll; melden Sie sich dann selbst an und prüfen Sie die Gmail-Adresse des Profils.</li><li>Beim Browser öffnen Sie <strong>Settings → Browser → Agent permissions</strong>. Ist Computer Use nötig, aktivieren Sie es über <strong>Codex → Plugins → Computer Use</strong> und erlauben Sie nur den Browser. Beim Connector prüfen Sie das Konto und die getrennten Lese- und Sendeberechtigungen.</li><li>Beginnen Sie mit reinen Lesetests. Senden und Terminieren brauchen eine eigene Freigabe. Erlauben Sie niemals das Löschen, das Archivieren in Gmail, das Verschieben von Nachrichten oder das Ändern von Labels.</li></ol>
+<p class="see"><b>Sie sollten sehen:</b> genau die Gmail-Adresse, die Sie vorgesehen haben. Die Browser-Sitzung kann ablaufen; sie ist kein im Projekt gespeichertes Token.</p>
+<p class="stuck"><b>Anhänge:</b> Der integrierte Browser kann Datei-Uploads nicht automatisieren; ein zugelassener Connector kann das unter Umständen, das ist zu prüfen. Wenn nicht, hängen Sie Lebenslauf und Anschreiben selbst an und prüfen Sie sie in Gmail. Funktioniert keiner der Wege, verwenden Sie EMAIL_TO_SEND.txt und den Explorer. Siehe <a href="https://help.openai.com/en/articles/20001277-using-the-built-in-browser-in-the-chatgpt-desktop-app">integrierter Browser</a> und <a href="https://learn.chatgpt.com/docs/computer-use">Computer Use</a>.</p></li>
+<li><h3>Die erste Warteschlange vorbereiten und prüfen</h3>
+<ol><li>Bitten Sie den Agenten, Unternehmen und Stellen in Ihrem Umkreis zu suchen und Quellen, Kontakte, Anforderungen und Prüfdaten zu sammeln.</li><li>Prüfen Sie die Einträge, Dubletten, Adressen und ob die Stellen noch offen sind. Prüfen Sie die tatsächlichen Wege für Ihr Verkehrsmittel.</li><li>Bitten Sie um ein passgenaues Unterlagenpaket in der gewählten Sprache und prüfen Sie dann jedes Datum, jede Angabe, jeden Empfänger und jeden Anhang.</li><li>Prüfen Sie die Warteschlange und bestätigen Sie Termine und Abstände. Aktivieren Sie keinen Massenversand.</li><li>Das System erlaubt höchstens 44 Bewerbungen mit Lebenslauf pro Person und Kalendermonat. Lässt sich das verbleibende Kontingent nicht prüfen, muss der Agent anhalten.</li><li>Verwenden Sie den Entwurfsmodus, bevor Sie etwas senden. Versand ist erst erlaubt, wenn das Profil eingerichtet und die konkrete Nachricht geprüft ist.</li></ol>
+<p class="see"><b>Sie sollten sehen:</b> Entwürfe in den Monatsordnern und eine Warteschlange mit genauen Terminen und einem Zähler für die verbleibenden Plätze.</p>
+<p>Meldet der Agent „Sendeergebnis unbekannt“, bitten Sie ihn nicht einfach, erneut zu senden: Vergleichen Sie zuerst mit dem Ordner SENT (Gesendet) bzw. mit der Bestätigung im Portal. Ein geänderter Anhang oder Empfänger braucht eine neue Prüfung. Das Standardlimit für den Betreff beträgt 50 Zeichen einschließlich Leerzeichen; das ist eine Regel des Produkts, keine Grenze des E-Mail-Dienstes.</p></li>
+</ol>
+</section>
+
+<section id="p5">
+<div class="sec-head"><div class="num">Teil 5</div><h2>Optionale Funktionen und tägliche Arbeit</h2></div>
+<ol class="guide" style="counter-reset: g 9">
+<li><h3>Bildschirmsteuerung nur bei Bedarf einschalten</h3>
+<p>Suche und Dateiverwaltung brauchen normalerweise keine Mausteuerung. Wenn eine Aufgabe wirklich einen Browser oder ein anderes Fenster braucht:</p>
+<ol><li>Öffnen Sie in ChatGPT Desktop <strong>Codex → Plugins → Computer Use</strong> und installieren oder aktivieren Sie es, falls Ihre Version das hat.</li><li>Öffnen Sie <strong>Settings → Computer Use</strong> und erlauben Sie nur die Anwendung, die Sie brauchen.</li><li>Unter Windows halten Sie das gesteuerte Fenster auf dem aktiven Desktop sichtbar.</li><li>Genehmigen Sie nur Aktionen, die Sie verstehen. Computer Use ersetzt weder OAuth, den Ordnerzugriff noch die Zustimmung zum Versand.</li></ol>
+<p>Siehe <a href="https://learn.chatgpt.com/docs/computer-use">Computer Use</a>. Der Grundablauf braucht es nicht.</p></li>
+<li><h3>Tägliche Arbeit und Terminierung</h3>
+<p>Für eine manuelle Prüfung öffnen Sie das lokale Projekt, starten einen Chat <strong>Daily check</strong> (tägliche Prüfung) und bitten den Agenten, die Regeln zu lesen und den nächsten sicheren Planpunkt zu erledigen. Standardmäßig findet die Prüfung jeden Tag um 16:00 Uhr in Ihrer Zeitzone statt. Am Anfang eines neuen Monats fragt der Agent einmal, ob er die Pakete und den Versand für diesen Monat vorbereiten soll.</p>
+<p>Sie können ChatGPT Desktop/Codex bitten, eine wiederkehrende Aufgabe für dasselbe lokale Projekt anzulegen. Prüfen Sie, dass sie unter Scheduled (geplant) erscheint, und sehen Sie sich das erste Ergebnis an. Für lokale Dateien muss der Computer eingeschaltet bleiben, ChatGPT Desktop laufen und der Ordner verfügbar sein. Unter Windows braucht Computer Use ein sichtbares Browserfenster und kann den Vordergrund übernehmen. Ist eine wiederkehrende Aufgabe oder der Browserzugriff nicht verfügbar, führen Sie die Prüfung manuell aus. Siehe <a href="https://learn.chatgpt.com/docs/automations">Geplante Aufgaben</a>.</p>
+<p>Nachgeholte Bewerbungen werden nicht als Sammelversand verschickt. Gmail-Nachrichten im Status „Scheduled“ können unabhängig vom Agenten weiterhin versendet werden.</p></li>
+<li><h3>Ihre Statistik öffnen und einen Bericht erstellen</h3>
+<ol><li>Öffnen Sie nach einer Prüfung <code>Локальные_данные\dashboard\index.html</code>, das lokale Profilmenü. Jedes Profil hat Links zu Statistik und Bereitschaft. Ein Server ist nicht nötig.</li><li>Die Statistik zeigt Jahre, Monate und Tage, mit Sortierung nach Datum und Ergebnis sowie Filtern. Die Bereitschaftsseite zeigt geprüfte Einrichtungspunkte, eine Anzeige von 0–100 % und private Links zu Ihren Dokumenten. Beide sind nur lesbar; der Agent aktualisiert sie.</li><li>Am Ende des Zeitraums bitten Sie den Agenten um DOCX- und PDF-Dateien in der gewählten Sprache und Vorlage. Ohne eigene Vorlage verwendet er die neutrale Monatstabelle. Der Agent muss das DOCX rendern, jede Seite prüfen und das passende PDF exportieren.</li><li>Prüfen Sie Ihren Namen, den Berichtszeitraum, die Zeilen und den kurzen Grund jeder Antwort. Bewerbungen ohne Antwort stehen im Bericht als „keine Antwort erhalten“ in der Berichtssprache.</li><li>Der Bericht wird lokal gespeichert. Die tägliche E-Mail-Zustellung an Sie ist eine optionale, gesondert freigegebene Einstellung; Berichte gehen ohne gesonderte Anweisung nicht an Arbeitgeber oder Behörden.</li></ol>
+<p>Die Statistik unterscheidet die Zahl der Antwortnachrichten von der Zahl der Bewerbungen, die eine Antwort erhalten haben. Eine Antwort auf eine ältere Bewerbung zählt in dem Monat, in dem sie eingegangen ist. Eine Absage ohne Begründung lautet „Grund nicht angegeben“. Eine eigene PDF-Seite enthält eine Marktempfehlung mit Datum, Umkreis, Verkehrsmittel, geprüften Quellen und Abdeckung; nicht verfügbare Schätzungen sind entsprechend markiert.</p></li>
+<li><h3>Das Paket aktualisieren und Ihre Daten sichern</h3>
+<p>Kopieren Sie vor dem Aktualisieren <code>Локальные_данные/</code> in einen eigenen Sicherungsordner. Laden Sie das neue ZIP in einen neuen Ordner herunter, vergleichen Sie Versionen und Anweisungen, und bitten Sie den Agenten, nur bestätigte Einstellungen zu übernehmen. Entpacken Sie ein Update nie über Ihren persönlichen Daten und veröffentlichen Sie nie <code>Локальные_данные/</code>.</p></li>
+</ol>
+</section>
+
+<section id="limits">
+<div class="sec-head"><div class="num">Umfang</div><h2>Was nicht umgesetzt ist</h2><p>JobPilot ist eine experimentelle Sammlung von Prompts und schriftlichen Verfahren für einen externen KI-Agenten, keine eigenständige Anwendung für die Stellensuche oder den E-Mail-Versand.</p></div>
+<div class="rules">
+<article><h3>Workflow-Code</h3><p>Suche, Dokumentenerstellung, Gmail-Verarbeitung, Terminierung, Archivierung und Berichte sind Anweisungen, keine garantierten Software-Mechanismen. Es gibt keinen SMTP-Dienst, keinen Hintergrund-Versender, keinen Datenbankserver und keine harte technische Sperre für das Monatskontingent.</p></article>
+<article><h3>Ausnahme Statistikseite</h3><p>Die lokale Statistikansicht enthält HTML/CSS/JavaScript, um einen vom Agenten vorbereiteten Snapshot anzuzeigen, zu sortieren und zu filtern. Sie sucht, versendet oder terminiert keine E-Mails und ändert keine Dateien.</p></article>
+<article><h3>Ihre Entscheidung und Verantwortung</h3><p>Sie entscheiden, ob Sie den experimentellen Ablauf nutzen. Prüfen und genehmigen Sie jede externe Aktion. Prompts sind bearbeitbarer Text: Sie sind dafür verantwortlich, Änderungen und die daraus entstehenden Nachrichten und Dokumente zu prüfen. Prüfen Sie den Abschluss in Gmail und in den lokalen Dateien. Das Paket garantiert weder korrekte Recherche, Zustellung, Antworten noch eine Anstellung; der vollständige Zyklus ist nicht mit jedem Agenten und jedem Konto getestet.</p></article>
+</div>
+</section>
+
+<section id="help">
+<div class="sec-head"><div class="num">Hilfe</div><h2>Wenn etwas nicht funktioniert</h2></div>
+<div class="rules">
+<article><h3>Der Agent sieht die Dateien nicht</h3><p>Prüfen Sie, dass ein lokales Projekt geöffnet ist und sein Hauptordner das entpackte Stammverzeichnis ist. Ein Pfad in einer Nachricht reicht nicht.</p></article>
+<article><h3>Der Agent kann kein Ergebnis speichern</h3><p>Prüfen Sie den Berechtigungsmodus und den Zugriff auf den Projektordner. Öffnen Sie nicht den Zugriff auf das ganze Laufwerk.</p></article>
+<article><h3>Gmail oder Anhänge sind nicht verfügbar</h3><p>Bei einem Connector prüfen Sie Verfügbarkeit, vorgesehenes Konto und Lese- und Sendeberechtigungen; beim Browser prüfen Sie die Berechtigungen für Browser und Computer Use. Funktioniert keiner der Wege, verwenden Sie EMAIL_TO_SEND.txt und das manuelle Ersatzverfahren. Fügen Sie keine Zugangsdaten in den Chat ein. Prüfen Sie Scheduled oder SENT, bevor Sie etwas als erledigt markieren.</p></article>
+<article><h3>Eine Regel- oder Vorlagendatei fehlt</h3><p>Das Archiv ist möglicherweise unvollständig oder noch ein Entwurfsstand. Bitten Sie den Agenten nicht, Dateien zu erfinden.</p></article>
+<article><h3>Die Statistik öffnet sich nicht</h3><p>Prüfen Sie, ob der Agent <code>dashboard/profiles/&lt;profile_id&gt;/index.html</code> erzeugt hat; die saubere Vorlage enthält nur Beispieldaten.</p></article>
+</div>
+<div class="links"><a href="https://chatgpt.com/download/">ChatGPT Desktop</a><a href="https://learn.chatgpt.com/docs/quickstart">Kurzanleitung</a><a href="https://learn.chatgpt.com/docs/projects">Projekte</a><a href="https://learn.chatgpt.com/docs/permission-modes">Berechtigungsmodi</a><a href="https://learn.chatgpt.com/docs/sandboxing">Sandboxing</a><a href="https://learn.chatgpt.com/docs/extend/mcp">MCP und OAuth</a><a href="https://learn.chatgpt.com/docs/computer-use">Computer Use</a><a href="https://learn.chatgpt.com/docs/automations">Geplante Aufgaben</a><a href="https://learn.chatgpt.com/docs/environments/modes">Lokal / Worktree / Cloud</a><a href="https://code.claude.com/docs/en/getting-started">Claude Code</a><a href="https://developers.google.com/workspace/gmail/api/auth/scopes">Gmail-OAuth-Bereiche</a></div>
+<p><small>Menünamen und Funktionen können sich ändern; Links und Bildschirme werden vor jeder Veröffentlichung gegen die aktuelle Dokumentation von OpenAI geprüft. Claude Code kann anstelle von Codex verwendet werden, seine vollständige Schritt-für-Schritt-Einrichtung ist aber noch nicht geschrieben. Dieselben Schritte stehen auch als Markdown im <a href="../../USER_GUIDE.md">Benutzerhandbuch</a>.</small></p>
+</section>
+
+<div class="pager"><a href="PROJECT_OVERVIEW.html">← Überblick</a><a href="overview_profile.html">Profil →</a></div>
+</main>
+<footer class="site-footer"><div class="wrap">
+<p>© 2026 Serhii Khomenko / HomenS.AI · <a href="https://homensai.com/" rel="me noopener">homensai.com</a> · <a href="https://github.com/HomenSAI" rel="me noopener">GitHub</a> · <a href="https://www.linkedin.com/in/serhii-khomenko-homensai/" rel="me noopener">LinkedIn</a> · <a href="https://orcid.org/0009-0009-5371-9717" rel="me noopener">ORCID</a> · <a href="https://doi.org/10.5281/zenodo.23160031" rel="noopener">DOI</a> · <a href="mailto:info@homensai.com">info@homensai.com</a></p>
+<p>Dokumente: <a href="../../README.md">README</a> · <a href="../../USER_GUIDE.md">Benutzerhandbuch</a> · <a href="../../AI_BUILD_SPEC.md">Bauspezifikation</a> · <a href="../../ARCHITECTURE.md">Architektur</a> · <a href="../../DATA_CONTRACT.md">Datenvertrag</a> · <a href="../../ACCEPTANCE_TESTS.md">Abnahmeszenarien</a> · <a href="../../REVIEW.md">Prüfung und Status</a></p>
+<p><small>Dokumentation 1.5.1 · 9. Oktober 2026 · keine persönlichen Profile, Lebensläufe oder Zugangsdaten. Code: PolyForm Noncommercial 1.0.0 · Dokumentation: CC BY-NC 4.0 (LICENSE-DOCS). Die erforderliche Namensnennung steht in NOTICE.</small></p>
+</div></footer>
+<a class="to-top" id="to-top" href="#" aria-label="Nach oben"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"/></svg>Nach oben</a>
+</body></html>
