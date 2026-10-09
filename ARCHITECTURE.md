@@ -97,7 +97,7 @@ Instruction files (Markdown, not code; drafts that have not yet been tried in pr
       readiness.html                # the readiness page of this profile
 ```
 
-The `Локальные_данные` directory name is a shared technical path in both language versions.
+The `Локальные_данные` directory name is a shared technical path in both language versions. The dashboard has one path only, `Локальные_данные/dashboard/`, next to `persons/` and `profiles/`. Profile ids are unique across the workspace, so the pages of several persons do not collide.
 
 Every journal line carries person_id and, where applicable, its profile; the shared quota has person scope. Before acting, the agent checks that the profile belongs to the person and the account. Isolation prevents routing mistakes in the rules; a different profile_id does not itself create an operating-system access boundary for the same computer user.
 
@@ -129,11 +129,16 @@ Rules for the agent:
 5. **One writer at a time.** Before writing a journal line, the agent takes `writer.lock` by exclusive creation, as described in section 4b. If the file belongs to another run, the agent stops and asks the user whether that chat is still working; it removes a foreign lock only after the checks in 4b. When the work is done, it deletes its own lock. The lock protects only if every chat follows this protocol and the environment provides exclusive creation; otherwise the user must keep one chat working at a time.
 6. A quota or send decision always rereads the journal; a summary from an earlier part of the chat is never trusted.
 7. **Count with the system's own tool, not by eye.** The slots used or reserved in a month are read from the journal by text search for the month fields of the quota events (formulas in DATA_CONTRACT.md §3c; commands in §4a below). The agent shows the number and how it was found. It compares the result with `quota.json`; if they differ or the file is missing, the journal is right and `quota.json` is rebuilt (`examples/quota.example.json`). The same applies to checksums of files. No script is added to the package for this.
-8. **Writing a line.** If the journal does not exist, the first line has `sequence` 1. The agent adds the line with its own file tool (if the tool cannot append, it rewrites the file with all earlier lines byte-identical and checks that the line count grew by exactly the new lines and the old lines are unchanged) and reads the end back to check that the new line is whole and valid JSON. The lock file has a fixed format (DATA_CONTRACT.md §3c). A check that no lock exists, followed by a separate creation, is not enough by itself (4b).
+8. **Writing a line (one append method).** If the journal does not exist, the first line has `sequence` 1. Only the following method is used. JSON is not joined by hand, text is not written with shell redirection, and an anchored Edit call is not used to append.
+   1. Under the writer lock, read the whole journal. Note its line count and its last line (`sequence` n; n is 0 for a new journal). Check that the new `action_id` is not in the journal (rule 2).
+   2. Build the new line in the key order of DATA_CONTRACT.md §3c with `sequence` n+1. Check that it is one JSON object on one line and that every identifier is a UUID in the UUID form. A failed check stops writing (step 5).
+   3. Write the whole file with the file tool, from the text read in step 1: the same lines, then exactly one new line with its line break at the end.
+   4. Read back the last two lines. The line count must have grown by exactly one; the new last line has `sequence` n+1 and the line before it has `sequence` n; both parse as JSON; and the line before the new one is byte-identical to the last line read in step 1.
+   5. A failed check stops writing. The file is kept as it is, no view is updated, no external action is taken, the lock is kept and the person is told (rule 4). The lock file has a fixed format (DATA_CONTRACT.md §3c). A check that no lock exists, followed by a separate creation, is not enough by itself (4b).
 
 ### 4a. Commands the agent may use
 
-The agent uses only commands that the person's operating system already has, typed inline in the chat; nothing is saved into the package as a script. Allowed uses: the current time, a new UUID, a file checksum, a text search with counting, a JSON validity check, a time-zone conversion for the current moment, a directory listing, creating folders, and copying or deleting the agent's own temporary files. JSON files are edited with the file tool, never with `sed` or similar. Windows (PowerShell) forms; the agent uses the equivalent on macOS or Linux:
+The agent uses only commands that the person's operating system already has, typed inline in the chat; nothing is saved into the package as a script. Allowed uses: the current time, a new UUID, a file checksum, a text search with counting, a JSON validity check, a time-zone conversion for the current moment, a directory listing, creating folders, copying the approved files into an outbox folder (with a checksum read-back of each copy), creating DOCX and PDF files with the document tool named below, and copying or deleting the agent's own temporary files. Three exceptions are named: the exclusive creation of `writer.lock`, the copy into `outbox/` and the document tool. JSON files and all other text files (Status.txt, Company.md, run notes, EMAIL_TO_SEND.txt) are written with the file tool, never with shell redirection, heredocs, `sed` or similar. Python is not an operating tool of the agent. Windows (PowerShell) forms; the agent uses the equivalent on macOS or Linux:
 
 | Need | PowerShell |
 |---|---|
@@ -144,8 +149,12 @@ The agent uses only commands that the person's operating system already has, typ
 | Count events of a month | `(Select-String -Path <journal> -Pattern '"consumed_month"\s*:\s*"2026-10"' -AllMatches \| ForEach-Object { $_.Matches.Count } \| Measure-Object -Sum).Sum` (empty result means 0) |
 | Check that every journal line is valid JSON | `Get-Content <journal> \| ForEach-Object { $_ \| ConvertFrom-Json } \| Out-Null` (an error names the bad line) |
 | Last journal line | `Get-Content <journal> -Tail 1` |
+| Last two journal lines (read-back of an append, rule 8 of section 4) | `Get-Content <journal> -Tail 2` |
+| Exclusive creation of `writer.lock` (fails if the file exists) | `[System.IO.File]::Open('<lock>', 'CreateNew', 'Write', 'None').Close()`; the one JSON line is then written into this empty file with the file tool and read back. On macOS or Linux: `set -C` (noclobber) before the creation |
+| Copy into `outbox/<send_attempt_id>/` | `Copy-Item -LiteralPath <source> -Destination <outbox folder>`, then the checksum row above for every copy |
+| DOCX and PDF creation (document tool) | The platform's document tool when the installation has one; otherwise LibreOffice in headless mode: `soffice --headless --convert-to pdf --outdir <folder> <file.docx>` for the PDF of an approved DOCX |
 
-Time-zone conversion of an old moment is not needed: months are written into the events when they happen. Text files are written with the agent's own file tool, not with shell redirection. These forms have not yet been tried on a real Windows machine; the first trial is part of the acceptance checks.
+Time-zone conversion of an old moment is not needed: months are written into the events when they happen. Text files are written with the agent's own file tool, not with shell redirection; the lock creation above is the only exception. These forms have not yet been tried on a real Windows machine; the first trial is part of the acceptance checks.
 
 Document packages are first prepared in a temporary folder and checked. They are then saved as a new, numbered version folder (`v001`, `v002`), and only then registered in the journal with file names, sizes and, where the system's own tools can provide it, a checksum. A package that was accepted is never changed in place: a change creates a new version and returns the application to review.
 
@@ -226,7 +235,7 @@ The order below is the external action order of DATA_CONTRACT.md §5 and TODO_FO
 
 1. **Immutable package.** Create the `outbox/<send_attempt_id>/` copy of the exact files and a manifest with the SHA256 of every attachment, the recipient and the source of its address, the sending account, the subject, the body, the transport (`agent_local_run`, `gmail_scheduled` or `manual_by_person`; never two for one package) and the slot with its time zone. Read the copy back and check it against the approved package.
 2. **Consent bound to the manifest.** The approval (`package_approved`, or the approved plan with its consent) carries the manifest SHA256. Every component in step 1 must still match it. A changed component makes the earlier consent void for the new version, which needs a new approval (`approval_revoked`, `PACKAGE_CHANGED`). Then the send check runs.
-3. **Reservation and durable intent.** Under the writer lock (4b), the chat rereads quota and history, then writes one journal line with `quota_reserved` and `send_started` (with the transport). The line must be saved before step 4. The lock is then released.
+3. **Reservation and durable intent (hard gate).** Under the writer lock (4b), the chat rereads quota and history, then writes one journal line with `quota_reserved` and `send_started`. The line carries the intent, the transport, the `send_attempt_id` and the manifest SHA-256 (and the other fields of DATA_CONTRACT.md §3c). The chat reads it back under rule 8 of section 4, and then releases the lock. Immediately before step 4 it reads the last line of the journal once more: it must be this intent line, with the same `send_attempt_id` and manifest SHA-256 as the approval. **Gate:** if the write or its read-back fails, the chat stops before the lock is released, makes no external call, records nothing else and keeps the lock. If only the last-line check fails, the chat makes no external call, and the open intent is handled under 4b.
 4. **One external call.** Exactly one, by the chat that wrote the intent. No retry in the same chat and no "second copy to be safe". Each `attempt_id` has one executor; a repeated run finds the existing attempt and reconciles it.
 5. **Reconciliation.** Search SENT or Scheduled for the exact message (account, package, recipient, slot). Found: go to step 6. Proven absent: `failed_before_send` and `quota_released` in one line. Otherwise `send_uncertain`: the reservation stays, no new external call is made, and the person decides after a check.
 6. **Record the fact.** `sent_verified` and `quota_consumed` in one line, or `gmail_scheduled_verified` for a schedule (which is not a sent event). Then update the views (6b) and create the local archive (section 12).
@@ -237,14 +246,14 @@ Views and reports can be rebuilt later. Losing the HTML page or `registry.json` 
 
 - `cv_submission` (uses a slot): the same application attempt cannot be repeated. A CV sent earlier to the employer does not block a permitted follow-up.
 - `thank_you`: unique by account + incoming `gmail_message_id` + `thank_you`. A first thank-you after a sent CV is allowed; a second one for the same incoming message is not.
-- `period_question`: unique by account + `thread_id` + `period_question`.
+- A period question is not a separate kind: it is an `ordinary_reply` (event `ordinary_reply_sent`), sent only after the person approves that message; it is unique by account + incoming Gmail Message-ID, and one period question is asked per thread (`thread_id`). `thank_you_sent` is the only automatic follow-up.
 - `ordinary_reply`: a reply without a CV; it uses no slot and is checked against the same thread history before it is written.
 
 An open or uncertain attempt blocks a retry of the same key and blocks all new sends for that person until it is resolved. An uncertain outcome never opens a path to a duplicate.
 
 The external call and the local record cannot be made atomic. If the chat stops after `send_started`, nobody can know whether the mail service was called. Consent withdrawn before `send_started` blocks the send; after a recorded start the send may already be under way and must be reconciled, not promised cancelled. Not finding the message in SENT during an incomplete check does not prove that it was not sent.
 
-De-duplication of thank-you messages uses: account_id + incoming gmail_message_id + intent (thank_you). The single question about the period uses: account_id + thread_id + intent (period_question). These keys are checked in the same journal line that starts the action, so that two chats cannot answer the same message twice.
+De-duplication of thank-you messages uses: account_id + incoming gmail_message_id + intent (thank_you). The single question about the period uses: account_id + thread_id + intent (ordinary_reply). These keys are checked in the same journal line that starts the action, so that two chats cannot answer the same message twice.
 
 ### 6a. Gmail Scheduled through the agent's browser (R03)
 
@@ -336,16 +345,16 @@ When resuming, the agent:
 
 A context limit or an interrupted chat does not change the state: unfinished operations stay in the journal. Before every external action the agent rereads the relevant status. Session summaries are helpers, never the source of truth.
 
-The mail position is moved forward only after a whole processed page is saved. Reading a page again is safe because messages are matched by `(account_id, gmail_message_id)`. If the mail tool cannot continue from a position, the agent rescans a bounded, overlapping period and says explicitly that coverage is incomplete. An incomplete scan can never support “no new replies”. A failure for one profile does not mark other profiles as checked.
+The mail scan is a loop: read a page, save its messages, ask for the next page with the next token, and repeat until the tool returns no next token (null). Only then is the scan complete (TODO_FOR_AI.md, Part B, step 5). The mail position is moved forward only after a whole processed page is saved. Reading a page again is safe because messages are matched by `(account_id, gmail_message_id)`. If the mail tool cannot continue from a position, the agent rescans a bounded, overlapping period and says explicitly that coverage is incomplete. An incomplete scan can never support “no new replies”. A failure for one profile does not mark other profiles as checked.
 
 ### 8a. Sending cadence (R02)
 
-- **Cycles.** `schedule.cadence` is `immediate` (one message per permitted day), `allowed_workdays`, `every_second_allowed_workday`, `every_n_calendar_days`, `every_n_allowed_workdays` (a different count from calendar days, so the choice is confirmed with the person) or `selected_weekdays` (DATA_CONTRACT.md §13.1). `max_per_run` is one or two messages per run. With two messages, the run has either two local times or one time plus an interval (`inter_message_delay_minutes`). Each message is a separate operation with its own package, slot and key.
+- **Cycles.** `schedule.cadence` is `immediate` (one message per permitted day), `allowed_workdays`, `every_second_allowed_workday`, `every_n_calendar_days`, `every_n_allowed_workdays` (a different count from calendar days, so the choice is confirmed with the person) or `selected_weekdays` (DATA_CONTRACT.md §13.1). With `approval_per_message` the cadence is `on_request`: there are no fixed slots, and each send happens at the moment the person answers the send card. `max_per_run` is one or two messages per run in the scheduled cadences. With two messages, the run has either two local times or one time plus an interval (`inter_message_delay_minutes`). In every mode the number of CV submissions in one local day is capped by `max_per_day` (DATA_CONTRACT.md §13.2; default 2, an open decision for the owner). Each message is a separate operation with its own package, slot and key.
 - **Calendar.** Before any external action the agent shows the exact slot calendar for the month: date, local time, weekday, the quota month and the excluded dates. It uses the person's time zone, the holiday calendar of the chosen region from a verified source ("not checked" is never read as "no holidays") and the dates the person excludes.
 - **Daylight saving.** A local time that is missing or repeated on a clock change is not guessed. `dst_rule` is `ask` by default; `earlier`, `later` or `next_valid` apply only if the person chose one in advance and it is written into the profile.
 - **Transport.** Each message has exactly one transport: `agent_local_run` (a local agent run at the set time), `gmail_scheduled` (Gmail Schedule send, section 6a) or `manual_by_person`. The same package is never sent by two transports.
-- **Missed runs.** A missed run creates no catch-up batch. Overdue slots are listed, and the person agrees new slots (`plan_changed`).
-- **Quota.** Reservations are taken in the month of the actual send and count across all profiles of the person. A plan that crosses a month boundary moves its reservation only after the change in Scheduled is verified. At 44 used or reserved, no new CV is planned.
+- **Missed runs.** A missed run creates no catch-up batch. Overdue slots are recorded as `slot_missed` (DATA_CONTRACT.md §3c) and listed, and the person agrees new slots (`plan_changed`). The reservation of a missed slot stays until the new plan or a cancellation; nothing is sent later for that slot.
+- **Quota.** Reservations are taken in the month of the actual send and count across all profiles of the person. A plan that crosses a month boundary moves its reservation only after the change in Scheduled is verified. At 44 used or reserved, no new CV is planned. The person cannot override the monthly limit in chat; any new plan, and any change of the calendar, needs a new approval (DATA_CONTRACT.md §5 and §14).
 
 ### 8b. Monthly preparation and reminder (R04)
 
@@ -360,7 +369,7 @@ The mail position is moved forward only after a whole processed page is saved. R
 - **Each run.**
   1. Check access to the allowed folder and to the selected mail account. Without access, record a failed check, do not write "no changes", and change no unknown status.
   2. Reconcile Scheduled and SENT with the plan. A send counts only with evidence; the reservation and the quota follow the journal.
-  3. Read new replies and delivery notices on every page and for every month, read whole threads and match them with their applications.
+  3. Read new replies and delivery notices on every page (the next-token loop of section 8, until no next token) and for every month, read whole threads and match them with their applications.
   4. Skip duplicates by stable message IDs. Record the original send date, the reply date, the sender, the link to the application, the evidence and a short reason.
   5. Take only permitted reactions. A thank-you or a period question happens only with consent and without repetition. Invitations, positive answers, questions and document requests go to the person. A delivery error is recorded apart from a rejection.
   6. Update the journal, the statistics and the report data. A reply to an old application counts in the month it was received; earlier cut-offs are not rewritten.
@@ -399,7 +408,7 @@ The statistics page uses `en` by default and supports `ru` and `de`. The label d
 
 The rules are in DATA_CONTRACT.md §11 (names, manifest, integrity failure, restore, loss of all archives). This section gives the procedure.
 
-**When.** After each completed operation: a verified Scheduled item (`gmail_scheduled_verified`), a verified send or permitted follow-up (`sent_verified`, `thank_you_sent`, `period_question_sent`), a processed incoming message and its status change, a verified reschedule or cancellation, and a recorded uncertain outcome (`send_uncertain` or `schedule_uncertain`, which stays uncertain). The operation's fact is written first, the views are brought to one `source_revision`, and only then the archive is made. Each archive is keyed by its `operation_id`: reading an already processed message again, or rebuilding the statistics, creates no second archive. A batch archive lists every operation it contains and its result.
+**When.** After each completed operation: a verified Scheduled item (`gmail_scheduled_verified`), a verified send or permitted follow-up (`sent_verified`, `thank_you_sent`, `ordinary_reply_sent`), a processed incoming message and its status change, a verified reschedule or cancellation, and a recorded uncertain outcome (`send_uncertain` or `schedule_uncertain`, which stays uncertain). The operation's fact is written first, the views are brought to one `source_revision`, and only then the archive is made. Each archive is keyed by its `operation_id`: reading an already processed message again, or rebuilding the statistics, creates no second archive. A batch archive lists every operation it contains and its result.
 
 **Where and what.** Inside the person's private folder, never in the public package. Archives are folders, not compressed files, and a finished archive is never overwritten:
 
@@ -433,7 +442,7 @@ Not stored: passwords, OAuth tokens, cookies, browser sessions, one-time codes, 
 
 A full disk, a denied access or a compression failure records `backup_failed`. The archive may be created again; a message is never sent again. Working data is not deleted to make room.
 
-**Integrity failure.** If an archive is missing or damaged, a hash differs, or the journal cannot be read in full, the agent records `ARCHIVE_INTEGRITY_FAILED` and suspends sending and scheduling for that person: no new `cv_submission`, `thank_you`, `period_question`, `ordinary_reply` or Gmail scheduling, until the restore or the recovery below is complete.
+**Integrity failure.** If an archive is missing or damaged, a hash differs, or the journal cannot be read in full, the agent records `ARCHIVE_INTEGRITY_FAILED` and suspends sending and scheduling for that person: no new `cv_submission`, `thank_you`, `ordinary_reply` or Gmail scheduling, until the restore or the recovery below is complete.
 
 **Retention.** The person chooses: keep everything, the last N archives, a period, or another explicit rule. Until a choice is recorded, nothing is deleted automatically. Before any deletion the agent shows the consequences and keeps every version and link that the journal or another manifest needs. Deleting an archive never changes Gmail and never releases consumed or reserved quota.
 
