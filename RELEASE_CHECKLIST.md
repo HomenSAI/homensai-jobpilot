@@ -19,7 +19,7 @@ This is a manual pre-release control. The current GitHub workflow creates a rele
 - [ ] Confirm `VERSION` and both changelogs match the scope. A VERSION change on main triggers the existing release workflow.
 - [ ] Verify local links and inspect updated HTML in a browser. For Word/PDF output, separately render and visually inspect every page before saying it passed.
 
-## Release status for 1.5.0
+## Release status for 1.5.1
 
 - Statistics page regression checks: 18/18 passed in an isolated JavaScript VM against synthetic data.
 - Full browser visual check: not run.

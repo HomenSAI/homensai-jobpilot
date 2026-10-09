@@ -2,7 +2,7 @@
 
 [English](AI_BUILD_SPEC.md) | [Русский](docs/ru/AI_BUILD_SPEC.md)
 
-**Project specification for Codex / Claude Code — 1.5.0, 9 October 2026**
+**Project specification for Codex / Claude Code — 1.5.1, 9 October 2026**
 
 **Status:** project specification and experimental agent workflow. There is no separate job-search or mail-sending application. The statistics view is the exception: HTML/CSS/JavaScript validates, sorts, filters and displays the agent-written snapshot. It does not perform searches, send mail or modify records. This is not a claim that the complete agent workflow has passed acceptance, nor permission to connect email or send applications. The instructions remain experimental and require user review.
 

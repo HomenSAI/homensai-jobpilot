@@ -211,7 +211,7 @@ The journal grows by a few lines a day, which plain files handle easily. No inde
 
 ## 10. Format changes and the first release boundary
 
-The documentation version is 1.5.0; settings, workspace and statistics snapshots use `schema_version` 1.3 and workspace `format_version` 1.5. The append-only journal keeps its 1.2 line layout; the added event names are additive. Existing user folders are never overwritten. A migration first makes a separate copy and a report, preserves old IDs and records, then asks the user to approve any changes. Public examples contain synthetic data only.
+The documentation version is 1.5.1; settings, workspace and statistics snapshots use `schema_version` 1.3 and workspace `format_version` 1.5. The append-only journal keeps its 1.2 line layout; the added event names are additive. Existing user folders are never overwritten. A migration first makes a separate copy and a report, preserves old IDs and records, then asks the user to approve any changes. Public examples contain synthetic data only.
 
 The first trial is a full pass on synthetic data, done by hand in a chat: profile → one target → registered package → plan → simulated reply → neutral report and offline HTML. Reading Gmail and controlled sending are added separately. The checks for interrupted work and for two chats at once come before any scheduled sending. Automatic search never implies a complete or guaranteed view of the market.
 

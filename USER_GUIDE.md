@@ -2,7 +2,7 @@
 
 [English](USER_GUIDE.md) | [Русский](docs/ru/USER_GUIDE.md)
 
-**Version 1.5.0 · 2026-10-09** · The same guide is available as a web page with a menu: [overview_install.html](overview_install.html).
+**Version 1.5.1 · 2026-10-09** · The same guide is available as a web page with a menu: [overview_install.html](overview_install.html).
 **For:** Windows and ChatGPT Desktop with Codex. Claude Code is an alternative; its full step-by-step setup is not written yet.
 
 The setup takes about 30–40 minutes. Do the steps in order. Every step says what you should see on the screen, so you always know whether it worked. No Git, Python or other developer tools are needed on your computer.
@@ -241,7 +241,7 @@ There is no independent SMTP service, background mail daemon, database server, h
 
 - **The agent cannot see the files:** check that a local project is open and its primary folder is the extracted project root. Providing a path in a message is not enough.
 - **The agent cannot save a result:** check the selected permissions mode and access to the project root; do not enable access to the entire drive.
-- **Gmail will not connect:** stop and check the availability and permissions of the official connector. Do not paste credentials into the chat.
+- **Gmail will not connect:** check whether the approved connector is available and signed into the intended account, or whether the built-in Browser/Computer Use permissions are enabled. If neither route works, use the manual fallback. Do not paste credentials into the chat.
 - **The browser cannot attach a file or verify Scheduled:** use the approved `EMAIL_TO_SEND.txt`, create the message yourself and attach the listed documents; do not mark it sent until it is verified in SENT.
 - **The TODO, rules, or dashboard template is missing:** the archive may be incomplete or still a conceptual build. Do not ask the agent to invent missing files.
 - **Statistics will not open:** check that the agent generated your `dashboard/profiles/<profile_id>/index.html`; the clean template does not contain your data.

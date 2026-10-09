@@ -2,7 +2,7 @@
 
 [English](REVIEW.md) | [Русский](docs/ru/REVIEW.md)
 
-9 October 2026 · Version 1.5.0 · Author of the idea and developer: Serhii Khomenko / HomenS.AI · [homensai.com](https://homensai.com/) · CC BY-NC 4.0
+9 October 2026 · Version 1.5.1 · Author of the idea and developer: Serhii Khomenko / HomenS.AI · [homensai.com](https://homensai.com/) · CC BY-NC 4.0
 
 ## Where the project stands
 
@@ -54,7 +54,7 @@ The `.gitignore`, example settings and statistics template can be inspected loca
 
 ## Checks performed
 
-On 9 October 2026: the local statistics-page VM regression set passed 18/18 targeted checks; `node --check` passed for `summary.js`; the three JSON examples and every JSONL example line parsed; local links/assets in 16 HTML files and local links in 24 Markdown files were checked with zero errors (the readiness template's intentional `{{...}}` link placeholders were excluded). This is not full browser, AI-agent, Gmail, scheduled-send or document-rendering acceptance. No external account or API was connected.
+On 9 October 2026: the local statistics-page VM regression set passed 18/18 targeted checks; `node --check` passed for `summary.js`; the three JSON examples and every JSONL example line parsed; local links/assets in 16 HTML files and local links in 23 Markdown files were checked with zero errors (the readiness template's intentional `{{...}}` link placeholders were excluded). This is not full browser, AI-agent, Gmail, scheduled-send or document-rendering acceptance. No external account or API was connected.
 
 ---
 
