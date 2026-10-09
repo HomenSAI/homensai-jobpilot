@@ -1,4 +1,4 @@
-# Creates a GitHub release when the version in the file VERSION is new.
+# Keeps VERSION equal to the newest version in CHANGELOG.md and creates the GitHub release.
 # Not part of the product: it only runs on GitHub's servers, never on the user's computer.
 # © 2026 Serhii Khomenko / HomenS.AI · https://homensai.com/ · PolyForm Noncommercial 1.0.0
 name: Release
@@ -6,7 +6,7 @@ name: Release
 on:
   push:
     branches: [main]
-    paths: [VERSION]
+    paths: [CHANGELOG.md, VERSION]
   workflow_dispatch:
 
 permissions:
@@ -17,20 +17,42 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: main
+      - name: Read the version from the newest CHANGELOG section
+        run: |
+          v="$(grep -m1 -E '^## [0-9]+\.[0-9]+\.[0-9]+ ' CHANGELOG.md | awk '{print $2}')"
+          if ! echo "$v" | grep -Eq '^[0-9]+\.[0-9]+\.[0-9]+$'; then
+            echo "CHANGELOG.md has no version section X.Y.Z at the top." >&2
+            exit 1
+          fi
+          echo "$v" > VERSION_NEW
+          echo "VERSION=$v" >> "$GITHUB_ENV"
+      - name: Write VERSION and commit it when it changed
+        run: |
+          mv VERSION_NEW VERSION
+          if git diff --quiet -- VERSION; then
+            echo "VERSION is already ${VERSION}."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add VERSION
+          git commit -m "Version ${VERSION} (written from CHANGELOG.md)"
+          git push origin HEAD:main
       - name: Create the release if this version has none yet
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          v="$(tr -d '[:space:]' < VERSION)"
-          tag="v${v}"
+          tag="v${VERSION}"
           if gh release view "$tag" > /dev/null 2>&1; then
             echo "Release $tag already exists. Nothing to do."
             exit 0
           fi
           # Release notes = the section of CHANGELOG.md that belongs to this version
-          awk -v v="$v" 'index($0, "## " v " ") == 1 { f = 1; next } /^## / { f = 0 } f' CHANGELOG.md > notes.md
+          awk -v v="$VERSION" 'index($0, "## " v " ") == 1 { f = 1; next } /^## / { f = 0 } f' CHANGELOG.md > notes.md
           if [ ! -s notes.md ]; then
             echo "See CHANGELOG.md" > notes.md
           fi
           printf '\nFull history: https://github.com/%s/blob/main/CHANGELOG.md\n' "$GITHUB_REPOSITORY" >> notes.md
-          gh release create "$tag" --target "$GITHUB_SHA" --title "HomenS.AI JobPilot ${v}" --notes-file notes.md
+          gh release create "$tag" --target "$(git rev-parse HEAD)" --title "HomenS.AI JobPilot ${VERSION}" --notes-file notes.md

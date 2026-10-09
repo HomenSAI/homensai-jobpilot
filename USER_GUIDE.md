@@ -56,6 +56,12 @@ The project ZIP contains a ready folder `Локальные_данные\Пол�
 | `2_Рассказ_о_себе` (my story) | Your story in your own words: a transcript of a voice recording, notes, answers to the questions in `Вопросы_для_рассказа.md` (it lies in this folder) |
 | `3_Шаблон_отчёта` (report template) | Only if you have your own report sample. Otherwise leave it empty |
 
+Two more folders, next to `Положите_сюда`, hold your **templates**:
+- `Локальные_данные\Resume` — your resume. Put a Word (.docx) or PDF file here. A PDF is converted by the agent into a Word file saved in the same folder. No file yet? The agent creates a neutral resume during the first setup.
+- `Локальные_данные\CoverLetter` — your cover letter, in the same design as the resume. The same rules apply.
+
+Every application the agent prepares gets its own folder, `Локальные_данные\Applications\<year>\<NN_Month>\<NNN_Company_City_Role>`, with the company data, the resume and letter, the e-mail text and a status file (`Status.txt`) that records each step: prepared, sent, waiting, rejected, invited.
+
 **Tell your story by voice.** (1) Open a chat with Claude or ChatGPT and switch on voice mode (the microphone icon). (2) Say: “I will tell you about myself for my CV. Ask me questions one topic at a time. At the end write down my story word for word, adding nothing, as a text file.” You can paste the questions from `Вопросы_для_рассказа.md`. (3) Talk as long as you want, in parts, on different days, in any order; if you do not remember something, say so. (4) Save the text file into `2_Рассказ_о_себе`. **Or prepare nothing:** at step 6 start the agent in your project folder and say that you want to tell about yourself, by voice or in text; it asks the questions one topic at a time, saves your answers word for word and writes your knowledge base from them.
 
 The agent only reads these folders; it never changes, moves or deletes your files. Everything stays on your computer and is not published (the folder `Локальные_данные` is excluded from Git). From your files and your story the agent writes your **knowledge base**: one file with your whole life story as facts (`Локальные_данные\persons\<your id>\База_знаний\Жизнеописание.md`). It shows you every fact for confirmation, and CVs and letters use only confirmed facts.

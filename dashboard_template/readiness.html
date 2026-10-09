@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="en">
+<!-- The agent sets lang to the person's interface language (en, ru or de). Every label exists in all three languages; only the chosen one is shown. -->
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -26,13 +27,16 @@ table{border-collapse:collapse;width:100%;margin-top:12px}th,td{border:1px solid
 .small{color:var(--muted);font-size:.92rem}footer{border-top:1px solid var(--line);color:var(--muted);font-size:.9rem;margin-top:36px}
 @media(max-width:700px){.toprow{grid-template-columns:1fr}header{align-items:flex-start;flex-direction:column}th,td{padding:7px}}
 @media print{body{background:#fff;color:#14212e}.card,.linkcard{break-inside:avoid}a{color:#14212e}}
+.l-ru,.l-de{display:none}
+html[lang="ru"] .l-en,html[lang="ru"] .l-de,html[lang="de"] .l-en,html[lang="de"] .l-ru{display:none}
+html[lang="ru"] .l-ru,html[lang="de"] .l-de{display:inline}
 </style>
 </head>
 <body>
-<header><strong>HomenS.AI JobPilot</strong><span><a href="{{STATISTICS_HREF}}">Open statistics</a> · <a href="{{OVERVIEW_HREF}}">Project guide</a></span></header>
+<header><strong>HomenS.AI JobPilot</strong><span><a href="{{STATISTICS_HREF}}"><span class="l-en">Open statistics</span><span class="l-ru">Открыть статистику</span><span class="l-de">Statistik öffnen</span></a> · <a href="{{OVERVIEW_HREF}}"><span class="l-en">Project guide</span><span class="l-ru">Руководство</span><span class="l-de">Anleitung</span></a></span></header>
 <main>
 <section class="card">
-<h1>Your setup readiness</h1>
+<h1><span class="l-en">Your setup readiness</span><span class="l-ru">Готовность настройки</span><span class="l-de">Ihre Bereitschaft der Einrichtung</span></h1>
 <div class="toprow">
 <div class="gauge status-{{STATUS_COLOR}}">
 <svg viewBox="0 0 200 120" role="meter" aria-label="Setup readiness {{READY_PERCENT}} percent" aria-valuemin="0" aria-valuemax="100" aria-valuenow="{{READY_PERCENT}}">
@@ -52,28 +56,28 @@ table{border-collapse:collapse;width:100%;margin-top:12px}th,td{border:1px solid
 <strong>{{STATUS_SUMMARY}}</strong>
 </div>
 <p>{{STATUS_EXPLANATION}}</p>
-<p class="small">Progress is calculated only from applicable, verified setup requirements. A green status means the selected setup checklist is complete; it does not prove that an unavailable or untested external tool works.</p>
+<p class="small"><span class="l-en">Progress is calculated only from applicable, verified setup requirements. A green status means the selected setup checklist is complete; it does not prove that an unavailable or untested external tool works.</span><span class="l-ru">Прогресс считается только по применимым и проверенным требованиям настройки. Зелёный статус означает, что выбранный список настройки выполнен; он не доказывает, что недоступный или непроверенный внешний инструмент работает.</span><span class="l-de">Der Fortschritt wird nur aus anwendbaren, geprüften Einrichtungsanforderungen berechnet. Ein grüner Status bedeutet, dass die gewählte Checkliste erledigt ist; er belegt nicht, dass ein nicht verfügbares oder ungeprüftes externes Werkzeug funktioniert.</span></p>
 </div>
 </div>
 </section>
 <section class="card">
-<h2>System readiness</h2>
+<h2><span class="l-en">System readiness</span><span class="l-ru">Готовность системы</span><span class="l-de">Bereitschaft des Systems</span></h2>
 <table>
-<thead><tr><th>Step</th><th>Status</th><th>What remains</th><th>Evidence checked</th></tr></thead>
+<thead><tr><th><span class="l-en">Step</span><span class="l-ru">Шаг</span><span class="l-de">Schritt</span></th><th><span class="l-en">Status</span><span class="l-ru">Статус</span><span class="l-de">Status</span></th><th><span class="l-en">What remains</span><span class="l-ru">Что осталось</span><span class="l-de">Was noch fehlt</span></th><th><span class="l-en">Evidence checked</span><span class="l-ru">Что проверено</span><span class="l-de">Geprüfte Nachweise</span></th></tr></thead>
 <tbody>{{SYSTEM_READINESS_ROWS}}</tbody>
 </table>
 </section>
 <section class="card">
-<h2>Your profile and documents</h2>
-<p class="small">Each link opens a private file in this person's permitted local workspace. Missing files are listed as missing, never linked to a substitute.</p>
+<h2><span class="l-en">Your profile and documents</span><span class="l-ru">Ваш профиль и документы</span><span class="l-de">Ihr Profil und Ihre Unterlagen</span></h2>
+<p class="small"><span class="l-en">Each link opens a private file in this person's permitted local workspace. Missing files are listed as missing, never linked to a substitute.</span><span class="l-ru">Каждая ссылка открывает личный файл в разрешённой рабочей папке этого человека. Отсутствующие файлы показываются как отсутствующие, а не заменяются другими.</span><span class="l-de">Jeder Link öffnet eine private Datei im zugelassenen lokalen Arbeitsordner dieser Person. Fehlende Dateien werden als fehlend angezeigt und nie durch andere ersetzt.</span></p>
 <div class="links">{{PROFILE_DOCUMENT_LINKS}}</div>
 </section>
 <section class="card">
-<h2>Next recommended action</h2>
+<h2><span class="l-en">Next recommended action</span><span class="l-ru">Следующее рекомендуемое действие</span><span class="l-de">Nächste empfohlene Aktion</span></h2>
 <p>{{NEXT_ACTION}}</p>
-<p class="small">This page is a static local view maintained by the AI agent. It does not read or modify your files on its own.</p>
+<p class="small"><span class="l-en">This page is a static local view maintained by the AI agent. It does not read or modify your files on its own.</span><span class="l-ru">Эта страница — статичный локальный вид, который ведёт ИИ-агент. Сама по себе она не читает и не меняет ваши файлы.</span><span class="l-de">Diese Seite ist eine statische lokale Ansicht, die der KI-Agent pflegt. Sie liest und ändert Ihre Dateien nicht von selbst.</span></p>
 </section>
 </main>
-<footer>Idea author and developer: Serhii Khomenko · <a href="https://homensai.com/">homensai.com</a> · <a href="https://github.com/HomenSAI/homensai-jobpilot">HomenS.AI JobPilot</a> · CC BY-NC 4.0</footer>
+<footer><span class="l-en">Idea author and developer</span><span class="l-ru">Автор идеи и разработчик</span><span class="l-de">Ideengeber und Entwickler</span>: Serhii Khomenko · <a href="https://homensai.com/">homensai.com</a> · <a href="https://github.com/HomenSAI/homensai-jobpilot">HomenS.AI JobPilot</a> · CC BY-NC 4.0</footer>
 </body>
 </html>

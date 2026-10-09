@@ -21,14 +21,13 @@ The first version uses UTF-8 JSON for configuration and records, and JSONL for e
 | `Локальные_данные/persons/<person_id>/state/quota.json` | Rebuildable projection of consumed and reserved slots (`examples/quota.example.json`); missing or different from the journal means “rebuild” |
 | `Локальные_данные/profiles/<profile_id>/profile.json` | Projection of confirmed objectives, facts, account, languages, and consent |
 | `Локальные_данные/profiles/<profile_id>/registry.json` | Rebuildable projection of companies, vacancies, applications, and the queue |
-| Application directories: `firm.json`, `vacancy.json`, `schedule.json` | Readable projections of linked records; not independent sources of status |
-| Application directories: `inf.txt` | Append-only, human-readable journal with event_id; existing text must not be rewritten |
-| `profiles/<profile_id>/reports/<YYYY-MM>/` | Reports, manifests, and revisions for this profile only |
-| `dashboard/profiles/<profile_id>/summary.js` and `index.html` | The data file of the selected profile and an unchanged copy of the page template; dashboard/index.html is the local menu |
+| Application folders `Applications/<YYYY>/<MM_Month>/<NNN_…>/`: `Company.md` | Company data from public sources with the source and the check date; a correction is recorded in the journal (`company_updated`) |
+| Application folders: `Status.txt` | Append-only, human-readable status history: one line per action with the time in the person's time zone and the `event_id`; existing lines are never rewritten |
+| `Локальные_данные/Resume/`, `CoverLetter/` | The person's resume and cover letter templates (Word; a PDF is converted to Word here); the originals are never changed, versions are new files |
 
-New events are first durably recorded in the journal, then projections are updated. The line format, the event names and the counting rules are in §3c. (Exception: a file that the agent creates as a whole, such as `profile.json`, a package or `summary.js`, is written and checked first, and its event is recorded right after, because the journal records completed actions.) Changing a projection without an event is prohibited. Correcting a fact or classification requires a new event with `supersedes_event_id`, not an edit to the past. Rebuilding a projection must not duplicate inf.txt lines: check event_id and the mail dedup_key.
+New events are first durably recorded in the journal, then projections are updated. The line format, the event names and the counting rules are in §3c. (Exception: a file that the agent creates as a whole, such as `profile.json`, a package or `summary.js`, is written and checked first, and its event is recorded right after, because the journal records completed actions.) Changing a projection without an event is prohibited. Correcting a fact or classification requires a new event with `supersedes_event_id`, not an edit to the past. Rebuilding a projection must not duplicate Status.txt lines: check event_id and the mail dedup_key.
 
-A failure between writing a journal line and updating registry/inf.txt is resolved by rebuilding the views from the journal. Quota and application changes belong to one primary journal line, not to two independent journals. Each complete line is one completed action containing `sequence`, `action_id`, `events` and a short `result`. The write and check order is defined in ARCHITECTURE.md §4. Artifacts are saved as immutable versions first, then registered in the journal by reference (file names, sizes and, where available, a checksum).
+A failure between writing a journal line and updating registry/Status.txt is resolved by rebuilding the views from the journal. Quota and application changes belong to one primary journal line, not to two independent journals. Each complete line is one completed action containing `sequence`, `action_id`, `events` and a short `result`. The write and check order is defined in ARCHITECTURE.md §4. Artifacts are saved as immutable versions first, then registered in the journal by reference (file names, sizes and, where available, a checksum).
 
 ## 2. Identifiers, paths, and time
 
@@ -138,6 +137,8 @@ The knowledge base (§3a) belongs to the person and is shared by all profiles of
 | `backup_created` / `backup_failed` | **snapshot_id** or **operation_id**, **source_revision**, **manifest**, evidence | a local archive is verified or an archive attempt fails |
 | `restore_started` / `restore_completed` | **restore_id**, **source_snapshot_ids**, **result**, **missing_items** | recovery runs in a separate copy with external actions disabled |
 | `report_built` / `daily_report_sent` | **profile_id**, **period**, **revision**, **files**, recipient and message id for a verified email | a report is created or a permitted user report is found in SENT |
+| `status_recorded` | **application_id**, **status** (a code of §4), **status_at**, **source** (`mailbox` or `person_reported`), gmail_message_id (or null); for `meeting_invited` also **meeting_type** and meeting_at | the status of an application changes: after a read reply or a reply the person reports; one line in `Status.txt` follows |
+| `company_updated` | **application_id**, **field**, **source**, **checked_at** | a data field in `Company.md` is added or corrected |
 
 Month fields are the **local month of the person** (`person.json`, `timezone`) at `occurred_at` of the event, written as `YYYY-MM` by the agent when it writes the line. This is what makes counting simple and independent of time-zone conversions.
 
@@ -180,6 +181,28 @@ Separate dimensions:
 - Actions: thank_you_sent, period_question_sent, and other follow-ups are not application outcomes.
 
 A new substantive message may change the outcome. Previous responses remain in the history; reports must retain second and third responses. A rejection without an explanation is described as “reason not provided”; unclear meaning must not be classified as positive.
+
+### Statuses shown to the person
+
+Every application has exactly one current status. The codes are stored in English; the statistics page shows the label in the chosen language (en, ru or de), so no language is mixed inside one page or one file.
+
+| Code | Meaning | Group in the statistics |
+|---|---|---|
+| `prepared` | the package is ready, not yet approved or planned | not sent |
+| `scheduled` | approved and planned for a date (`planned_at`) | not sent |
+| `not_sent` | sending did not happen; the reason is in `Status.txt` | not sent |
+| `sent_waiting` | sent, no reply yet; the days without reply are counted from `sent_at` to the snapshot time | waiting |
+| `email_not_found` | the address does not exist (a permanent bounce) | address error |
+| `documents_requested` | the employer asked for a CV, certificates or other documents | successful |
+| `meeting_invited` | an interview was offered; `meeting_type` is `in_person`, `video` or `phone`; `meeting_at` if known | successful |
+| `rejected_vacancy_unavailable` | the employer says the vacancy is no longer available | rejected |
+| `rejected_cv_mismatch` | the employer says the CV does not fit the vacancy | rejected |
+| `rejected_qualification_mismatch` | the employer says the qualifications do not fit | rejected |
+| `rejected_no_reason` | a rejection without a stated reason; the agent never guesses one | rejected |
+
+- `thank_you_sent_at` is set when a thank-you was sent to an employer who answered (also after a rejection). The thank-you does not change the status.
+- Percentages use every sent application (all groups except “not sent”) as the base.
+- A status changes only after the agent has read the whole thread and recorded `status_recorded`. A message whose meaning is unclear keeps the status and goes to the person as `needs_user`.
 
 ## 5. The 44-submission quota and send recovery
 
@@ -243,17 +266,18 @@ The market section is a separate PDF page and a corresponding DOCX section: occu
 
 ## 9. Static HTML contract
 
-`dashboard/profiles/<profile_id>/summary.js` (the text `window.JP_DATA = ` followed by one JSON object) contains `schema_version`, `snapshot_id` (`<profile_id>-s<N>`), `source_revision` (N: the journal `sequence` at which the numbers were counted), `generated_at`, `last_mail_check_at` (from the last `mail_checked` event, or null), `timezone`, `profile_id`, `default_language` (`en` or `ru`), `history_start_month`, the person's shared quota (`limit`, `used` and `reserved` by month) and table rows. `used` and `reserved` are calculated from the person's full journal, not the rows of one displayed profile; include zero-valued months throughout the reporting period. If either common total is missing, malformed or stale, the page displays it as unavailable. It never estimates quota from visible application rows. Every row contains only permitted statistical fields; no message bodies, home address, original CVs or secrets.
+`dashboard/profiles/<profile_id>/summary.js` holds the text `window.JP_DATA = ` followed by one JSON object (schema_version `1.4`):
 
-The statistics page (`dashboard_template/index.html`) reads `applications` (id, company, city, role, channel, `sent_at`, `outcome`, optional `bounce_at`/`bounce_note`) and `responses` (id, `application_id`, `received_at`, `kind`, note). Automatic acknowledgements and out-of-office replies are not in `responses`. Before calculating or rendering, validate the root object, required arrays, date values, time zone, unique IDs, references and quota maps. Invalid snapshots show a localized diagnostic and no partial counters.
+- `snapshot_id` (`<profile_id>-s<N>`), `source_revision` (the journal `sequence` at which the numbers were counted), `generated_at` (UTC), `timezone`, `profile_id`, `default_language` (`en`, `ru` or `de`), `last_mail_check_at` (or null), and `demo` (`true` only for the synthetic sample).
+- `quota`: `limit` (44), and `used` and `reserved` per month `YYYY-MM` for the whole person, all profiles together.
+- `minutes_per_application`: the estimate of minutes that one application would take by hand in Word: `cv_adapting`, `cover_letter`, `email_text`, `attachments_and_sending`, `date_and_text_checks`, `reply_tracking`. The values come from the person's settings.
+- `applications`: `id`, `company`, `city`, `role`, `channel` (`email`, `web_form`, `portal` or `other`), `planned_at`, `sent_at`, `status` (a code of §4), `status_at`, `meeting_type`, `meeting_at`, `thank_you_sent_at`, `note` (the text as recorded; it is never translated). Unknown values are `null` and are shown as a dash.
 
-The month selector covers every month from `history_start_month` through the snapshot month, even when a month has zero events; validated planned/reserved months may be shown separately. Historical month-end totals use the cutoff at the end of that month. A later reply must not revise an earlier month's outcome or waiting count. Reply events count by received date; successful/rejected application totals use the latest substantive outcome by the period cutoff among applications with replies in that period. Waiting counts applications sent in the period with no substantive reply and no confirmed permanent delivery failure by that cutoff. Delivery errors are separate from employer rejections. Result sorting keeps technical delivery errors after employer results, not above them.
+The page reads only this file and shows: the shares of successful, waiting, rejected and address-error applications; the reasons for rejection; the monthly limit; the time saved (sent applications × minutes per application, labelled as an estimate with its assumptions); the years, months and days as nested blocks; sorting by date or by result; filters by year, month, result group and text; the days without reply, counted from `sent_at` to `generated_at`; and a freshness marker that warns when the snapshot is two or more days old. The page has three interface languages (en, ru, de), makes no network request, reads no mail and writes nothing.
 
-Unknown company, city, role or channel are `null`; the page shows a dash. The local menu `dashboard/index.html` has separate Statistics and Readiness links per profile. Pages for different profiles do not mix data. One calculation from a fixed journal `source_revision` feeds HTML, DOCX and PDF.
+The agent writes the file as a whole (a temporary file, a read-back check, then replacement). The page file itself is an unchanged copy of the template. An invalid file shows the reason in a message instead of a half-filled page.
 
-`summary.js` contains the same `snapshot_id` and `source_revision` as the reports of that snapshot. Include `history_start_month` and complete `quota.used`/`quota.reserved` totals for every month in the snapshot's coverage, including zeros. The agent writes the file as a whole (temporary file, parse/read-back validation, then replacement); the page file `index.html` is a copy of the template and is not edited. The page validates types, dates, time zone, IDs, references and quota maps. If a required field is missing or malformed, it shows a diagnostic and no partial counters. A missing shared quota total is unavailable, never inferred from visible profile entries. If `summary.js` is missing or damaged, the page says so. An old file cannot know about a later failed check: it can show only its last update and an age-based warning. Do not promise that it will detect a missed check without an agent run.
-
-Display values from vacancies/messages using textContent, not innerHTML. When embedding JSON in a script block, escape `<`, `>`, and `&` (in particular `</script>`); do not use eval. Allow links only with a validated protocol and path root. Make no network requests; external sources open only after an explicit user click. Sorting compares ISO/epoch dates, not DD.MM.YYYY strings. The page groups rows by year, month and day in the snapshot's time zone, sorts by date or by result (successful first; unsuccessful employer outcomes first, delivery errors last), and filters by year, month, result and text. Provide keyboard support, element labels, table headers, empty-state month totals, printing, and a freshness marker.
+The sample in the repository is synthetic. The button “Clear sample data” removes it for the browser in use only; it is shown only when `demo` is `true`. A real snapshot has `demo: false` and is never cleared by the page.
 
 ## 10. Readiness boundary
 

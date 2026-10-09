@@ -6,6 +6,17 @@ The project version is in the file [VERSION](VERSION). The project is an AI-agen
 
 Rules: `MAJOR.MINOR.PATCH`. MAJOR changes when data formats or rules change so that old data no longer fits. MINOR is a new feature or a new part of the documentation. PATCH is a fix or a wording change without new capabilities. Every change to `main` adds a line here; the number is raised when a release is made. Each release gets a git tag `vX.Y.Z`.
 
+## 1.6.0 — 9 October 2026
+
+The application work has one folder structure, and the statistics page shows results as shares and time saved. No real data was in use yet, so no migration is needed.
+
+- **Application folders:** `Applications/<year>/<NN_Month>/<NNN_Company_City_Role>/` with `Company.md` (company data with sources and check dates), the resume and the cover letter as Word and PDF, the e-mail text and `Status.txt` (the history of each application). Months are two-digit numbers with the English month name (`10_October`).
+- **Templates:** `Resume/` and `CoverLetter/` hold the person's own Word or PDF samples. A PDF is converted into Word by the agent and the PDF stays unchanged. Without a template, a neutral one is created during the first setup.
+- **Statuses:** prepared, scheduled, not sent, waiting for a reply (with the days since sending), address does not exist, documents requested, meeting invited (in person, video or phone), and rejection in four kinds (vacancy unavailable, CV does not match, qualifications do not match, no reason given). A thank-you to an employer who answered is recorded separately. New journal events `status_recorded` and `company_updated`.
+- **Statistics page:** shares of successful, waiting, rejected and address-error applications; reasons for rejection; monthly limit; time saved (an estimate, with its assumptions shown); days without reply; sorting and filters; three interface languages (English, Russian, German); a button that clears the sample data. The `summary.js` schema is now 1.4.
+- **Readiness page** and **reports** are available in English, Russian and German.
+- **Versions are automatic:** `VERSION` is no longer edited by hand. The release workflow takes the version from the newest section of `CHANGELOG.md`, writes `VERSION` and creates the GitHub release.
+
 ## 1.5.1 — 9 October 2026
 
 Documentation-only consistency fix after 1.5.0: Gmail troubleshooting now covers both the approved connector and the built-in browser, with the manual fallback if neither is available. No workflow code or behavior changed.

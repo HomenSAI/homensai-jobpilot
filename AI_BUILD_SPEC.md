@@ -50,7 +50,7 @@ The key principle of the profile: the system keeps the person's complete confirm
 The working folders of several users already contain useful but unequal practices:
 
 - month directories and numbered employer folders;
-- **firma.json** and **inf.txt** cards, email texts, planned dates and Gmail information;
+- **Company.md** and **Status.txt** in each application folder, email texts, planned dates and Gmail information;
 - different sets of documents and file names: Anschreiben, Lebenslauf/CV, PDF/DOCX, sending details;
 - separate prompts with different rules, personal data, Gmail and permissions.
 
@@ -213,29 +213,28 @@ The user downloads the GitHub ZIP, chooses a convenient place and extracts it. T
       journal\writer.lock            # one local write lock
       state\quota.json               # derived counter by month
       outbox\                        # immutable packages of send attempts
+    Resume\                           # resume template: your Word file, or a PDF converted to Word here
+    CoverLetter\                      # cover letter template, same design as the resume
     profiles\<profile_id>\
       profile.json
-      registry.json                   # companies, vacancies, applications and the queue
-      runs\                           # resuming work from a new chat
+      registry.json                   # targets, applications and the queue (projection)
+      runs\                           # work sessions, resuming from a new chat
+      reports\                        # reports of this profile (English, Russian or German)
+    Applications\                     # all application work, one tree for all years
       2026\
-        10_Октябрь\
-          001_Компания_Город_Роль\
-            firm.json
-            vacancy.json
-            sources.md
-            CV_<role>_<language>_v001.docx
-            CV_<role>_<language>_v001.pdf
-            CoverLetter_<language>_v001.docx
-            CoverLetter_<language>_v001.pdf
-            EmailText_<language>.txt
-            schedule.json
-            inf.txt                     # new events only at the end
-            qa-check.json
-      reports\                        # reports of this profile only
-      logs\                           # technical records of this profile only
+        10_October\
+          001_Muster-Maschinenbau_Stuttgart_Maintenance-technician\
+            Company.md                # company data from public sources, with source and check date
+            Resume_v001.docx
+            Resume_v001.pdf
+            CoverLetter_v001.docx
+            CoverLetter_v001.pdf
+            EmailText_de.txt
+            Status.txt                # append-only history of this application
     dashboard\index.html             # menu of local profiles
     dashboard\profiles\<profile_id>\summary.js
     dashboard\profiles\<profile_id>\index.html  # snapshot of one profile
+    dashboard\profiles\<profile_id>\readiness.html  # readiness page of one profile
 ~~~
 
 The number starts at 001 in each month. The directory name does not replace the stable internal ID of the company / application. The master base of facts is the person's knowledge base file (section 4.6); the whole archive is not copied into each application. The person puts CVs and materials into `Положите_сюда`; they and the interview feed the one knowledge base. For current users a read-only import and a mapping table are proposed, but their old directories are not reorganized without confirmation. All personal data under `Локальные_данные/` is excluded from Git by default; publishing working files is forbidden.
@@ -282,7 +281,7 @@ Permissions from an old archive are not enabled automatically and are not publis
 
 ### 7.4 Automatic replies to employers
 
-Automatic replies must be enabled or disabled per profile. Even when an automatic reply policy is permitted, only the verified thank-you scenario for a new substantive message is used; the whole thread is read first and it is checked that no thank-you has already been sent after this reply. A positive reply, an invitation, a question, a request for documents, unknown data and an ambiguous meaning require a decision of the user. After sending, the message is reconciled in SENT and only new facts / IDs are added to the end of inf.txt.
+Automatic replies must be enabled or disabled per profile. Even when an automatic reply policy is permitted, only the verified thank-you scenario for a new substantive message is used; the whole thread is read first and it is checked that no thank-you has already been sent after this reply. A positive reply, an invitation, a question, a request for documents, unknown data and an ambiguous meaning require a decision of the user. After sending, the message is reconciled in SENT and only new facts / IDs are added to the end of Status.txt.
 
 ### 7.5 Clarifying an internship and follow-ups
 

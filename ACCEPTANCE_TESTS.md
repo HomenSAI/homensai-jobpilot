@@ -39,7 +39,7 @@ For each scenario record: ID, the version of the documents and the agent used, t
 | CAL-02 | A missed run and a daylight-saving transition | No catch-up batch is sent; missed items become overdue; ambiguous time is resolved explicitly |
 | CRASH-01 | Failure after reservation but before sending | The next run reconciles operation_id; it neither consumes nor releases a slot based on an assumption |
 | CRASH-02 | The service accepts an email but the call's response is lost | State is send_uncertain; SENT reconciliation produces exactly one confirmed record; no repeat send call occurs |
-| CRASH-03 | The chat stops after the single journal line with reservation + send_started but before the views are updated | The reservation and application are restored from that one line; inf.txt entries are not duplicated |
+| CRASH-03 | The chat stops after the single journal line with reservation + send_started but before the views are updated | The reservation and application are restored from that one line; Status.txt entries are not duplicated |
 | CRASH-04 | A truncated last journal line and a leftover writer.lock | The original is preserved and sends stop; the lock is not removed solely because of its age; the user is asked |
 | MONTH-01 | An uncertain send in the month's final minute | All new sends for the person remain blocked pending reconciliation; time and month are not guessed |
 
@@ -108,6 +108,22 @@ Additional checks for architecture 1.3–1.4 (rules and files):
 3. Read-only email: selected account, complete threads, MAIL and REPORT using synthetic fixtures/a controlled account.
 4. Sending: CONSENT, SUBJECT, QUOTA, CAL, CRASH, and MONTH. Do not enable the automatic queue until these pass in your own environment.
 5. Release: RESTORE, RELEASE, licenses/attribution, and current instructions for supported agents. Report passed stages separately; do not claim the whole product is ready based on one check.
+
+
+### Application folders, templates, statuses and statistics (version 1.6)
+
+| ID | Conditions and action | Expected result |
+|---|---|---|
+| RES-01 | A PDF resume is placed in `Resume/` | The agent creates a Word document in the same folder; the PDF is unchanged (size, date and checksum) |
+| RES-02 | `Resume/` and `CoverLetter/` are empty during the first setup | The agent creates a neutral template in each folder, in the person's language, one page, the same header and fonts |
+| APP-01 | A package is prepared for a company | `Applications/<year>/<NN_Month>/<NNN_…>/` holds `Company.md` with sources, the resume and the letter as Word and PDF, `EmailText_<lang>.txt` and `Status.txt` with `prepared`; a second version adds `v002` files and leaves `v001` unchanged |
+| APP-02 | An employer writes only that the position is filled | The status is `rejected_no_reason`; the agent does not invent a reason; a thank-you is a draft if enabled |
+| APP-03 | An address bounces permanently | The status is `email_not_found`; no automatic resend; the person is asked for a new address with its source |
+| STAT-01 | The statistics page with the sample (36 records) | The shares add up to the base of sent applications; days without reply equal the time from sending to the snapshot; the three languages show the same numbers |
+| STAT-02 | The button “Clear sample data” | The sample records and the quota disappear in this browser and stay cleared after a reload; a real snapshot (`demo: false`) has no button |
+| STAT-03 | `summary.js` with an unknown status | The page shows the reason instead of a half-filled table |
+| LANG-01 | `readiness.html` with `lang="de"` | Only the German labels are shown; no English or Russian text remains |
+| REL-01 | A section `## 1.6.1` is added to `CHANGELOG.md` on `main` | The release workflow writes `VERSION` = 1.6.1 itself and creates the release `v1.6.1` |
 
 ---
 

@@ -10,7 +10,7 @@ An AI agent can follow the local, prompt-based workflow to research jobs, prepar
 
 ## What this repository contains
 
-Project documentation **version 1.5.1**, agent instructions, an illustrated overview and a local statistics page. The project has no separate job-search or mail-sending application: an AI agent follows the written procedures and maintains local files. The statistics view is the exception: it uses HTML, CSS and JavaScript to display an agent-prepared snapshot, sort and filter entries. It does not search, send mail, change files or call a mail API. The agent instructions remain experimental and require user review; the repository does not itself connect accounts or grant permission to send.
+Project documentation **version 1.6.0**, agent instructions, an illustrated overview and a local statistics page. The project has no separate job-search or mail-sending application: an AI agent follows the written procedures and maintains local files. The statistics view is the exception: it uses HTML, CSS and JavaScript to display an agent-prepared snapshot, sort and filter entries. It does not search, send mail, change files or call a mail API. The agent instructions remain experimental and require user review; the repository does not itself connect accounts or grant permission to send.
 
 English is the primary language and lives at the repository root; the complete Russian edition is in `docs/ru`. Both editions share the same rules, data formats and technical identifiers. The languages of the CV, cover letter, email and report are chosen separately from the interface language.
 
@@ -23,6 +23,7 @@ English is the primary language and lives at the repository root; the complete R
 | [dashboard_template/index.html](dashboard_template/index.html) | The statistics page: years, months and days, sorting by date and result. The data is in `summary.js` next to it (sample data here) |
 | [dashboard_template/readiness.html](dashboard_template/readiness.html) | Static template for the agent-maintained setup/profile readiness page; it contains no script |
 | [AGENTS.md](AGENTS.md), [CLAUDE.md](CLAUDE.md), [TODO_FOR_AI.md](TODO_FOR_AI.md) | **Instructions for the AI agent.** The agent loads them by itself when the folder is opened, then leads the person through the first run (introduction, consent, the person's story, documents, the knowledge base, then the search setup: what, where, radius, transport) |
+| [Локальные_данные/Resume](Локальные_данные/Resume/README.md), [CoverLetter](Локальные_данные/CoverLetter/README.md) | Templates of the resume and the cover letter (Word; a PDF is converted to Word in the same folder) |
 | [Локальные_данные/Положите_сюда](Локальные_данные/Положите_сюда/README.md) | The three ready folders where the person puts documents, a story about themselves and a report template |
 | [AI_BUILD_SPEC.md](AI_BUILD_SPEC.md) | The rules and requirements for the AI agent |
 | [ARCHITECTURE.md](ARCHITECTURE.md) | The parts of the system, the person's journal, standard actions and resuming in a new chat |

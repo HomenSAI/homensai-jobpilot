@@ -22,7 +22,7 @@ flowchart TD
     U[User] --> A[Chat with the agent: Codex or Claude Code]
     A --> R[Rules: AGENTS.md, TODO_FOR_AI.md, AI_BUILD_SPEC, DATA_CONTRACT]
     A --> J[Person journal: one line per completed action]
-    J --> P[Views: records, queue, inf.txt, quota.json]
+    J --> P[Views: records, queue, Status.txt, quota.json]
     A --> M[Gmail through the agent's own authorized connection]
     M --> A
     J --> B[Report and statistics: numbers copied from the journal]
@@ -43,7 +43,7 @@ The HTML page does not give commands to anyone; data is updated only when the ag
 | Discovery | Records research results as targets: duplicates, freshness, radius, route verification | `registry.json` |
 | Documents | Builds the package from requirements and confirmed facts: versions, fact references, visual check status | application folder |
 | Planning | Spreads packages over permitted workdays, reserves slots, reschedules, marks overdue entries | `registry.json`, journal |
-| Mail | Reads whole threads, checks proof of sending, handles delivery notices and replies | journal, `inf.txt` |
+| Mail | Reads whole threads, checks proof of sending, handles delivery notices and replies | journal, `Status.txt` |
 | Reporting | Counts for a fixed journal position and period; produces DOCX/PDF/HTML with the same numbers; adds the market appendix | `reports/`, `dashboard/` |
 | Capability check | Tests each tool it has (see section 7) and records the result | `workspace.json` |
 
@@ -69,18 +69,30 @@ Instruction files (Markdown, not code; drafts that have not yet been tried in pr
     state/person.json               # person and profile-list view
     state/quota.json                # monthly counters, rebuilt from the journal
     outbox/<attempt_id>/            # prepared send package, never edited
+  Resume/                              # resume template: your Word file, or a PDF converted to Word here
+  CoverLetter/                         # cover letter template, same design as the resume
   profiles/<profile_id>/
     profile.json                    # current confirmed configuration
-    registry.json                   # companies, vacancies, applications, queue
-    versions/                       # profile/document versions
+    registry.json                   # targets, applications and the queue (projection)
     runs/                           # work sessions: plans, results, questions
-    reports/<YYYY-MM>/              # report revisions and manifests
-    <YYYY>/<MM_Month>/<NNN_Company_City_Role>/
+    reports/<YYYY-MM>/              # report revisions and manifests (in English, Russian or German)
+  Applications/                       # ALL application work of the person, one tree for all years
+    2026/                           # year
+      10_October/                   # two-digit month number + English month name
+        001_Muster-Maschinenbau_Stuttgart_Maintenance-technician/   # number, company, city, role
+          Company.md                # company data from public sources, each with source and check date
+          Resume_v001.docx          # versions are new files: Resume_v002.docx, ...
+          Resume_v001.pdf
+          CoverLetter_v001.docx
+          CoverLetter_v001.pdf
+          EmailText_de.txt          # the e-mail text in the chosen language
+          Status.txt                # append-only history of this application
   dashboard/
-    index.html                      # local entry page linking to profiles
+    index.html                      # local menu: statistics and readiness per profile
     profiles/<profile_id>/
-      summary.js                  # this profile plus the person's shared quota
+      summary.js                    # the data of this profile plus the person's shared quota
       index.html                    # an unchanged copy of dashboard_template/index.html
+      readiness.html                # the readiness page of this profile
 ```
 
 The `Локальные_данные` directory name is a shared technical path in both language versions.
@@ -99,7 +111,7 @@ Rules for the agent:
 
 1. **Append only.** An old line is never edited or deleted. A correction is a new line that names the earlier event it replaces (`supersedes_event_id`).
 2. **Before writing:** read the last line, take the next `sequence`, and check that this `action_id` is not already in the journal. If it is, report the earlier result and do nothing else. This protects against an interrupted chat that is started again.
-3. **Write the whole line at once**, then update the views (registry, queue, `inf.txt`, `quota.json`, statistics). If the chat stops between the two, the next chat rebuilds the views from the journal.
+3. **Write the whole line at once**, then update the views (registry, queue, `Status.txt`, `quota.json`, statistics). If the chat stops between the two, the next chat rebuilds the views from the journal.
 4. **A damaged or half-written last line** is not repaired silently. The agent stops, keeps the file as it is, tells the user and recovers from the last complete line and the mail evidence.
 5. **One writer at a time.** Before writing, the agent creates `writer.lock` containing the run id and the time. If the file already exists and is not its own, it stops and asks the user whether another chat is still working; it removes the lock only after the user confirms that no other chat is active. When the work is done, it deletes its own lock. This is a convention: it protects only if every chat follows it, which is why the user is asked to keep one chat working at a time.
 6. A quota or send decision always rereads the journal; a summary from an earlier part of the chat is never trusted.
@@ -141,7 +153,7 @@ Instead of programmed commands, the agent performs named actions. Each action is
 | Send | One authorized send and a recorded outcome |
 | Read / classify mail | Stored observations / a confirmed classification |
 | Reconcile mail | Comparison with proof, without sending again |
-| Rebuild views | Records, `inf.txt`, queue and `quota.json` rebuilt from the journal |
+| Rebuild views | Records, `Status.txt`, queue and `quota.json` rebuilt from the journal |
 | Build report / statistics | Report files and the statistics page with the same numbers |
 | Backup / restore check | A consistent copy and a check in a separate folder |
 

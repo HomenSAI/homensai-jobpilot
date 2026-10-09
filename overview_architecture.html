@@ -51,7 +51,7 @@
 <div class="node"><strong>Written rules</strong><span>AGENTS.md, TODO_FOR_AI.md, the specification: a checklist before every action</span></div><div class="arrow" aria-hidden="true">↓</div>
 <div class="split"><div class="node"><strong>The person's journal</strong><span>One line per completed action; the 44-submission limit is counted from it</span></div><div class="node alt"><strong>Gmail</strong><span>The agent's own authorized mail connection: reading, sending, verification</span></div></div>
 <div class="arrow" aria-hidden="true">↓</div><div class="node"><strong>Documents and local statistics</strong><span>Records, queue, DOCX/PDF and an HTML page for each profile</span></div></div>
-<div class="notice"><p>Each person has one authoritative journal, <code>persons/&lt;person_id&gt;/journal/transactions.jsonl</code>, and a marker file <code>writer.lock</code> that exists only while one chat is writing. Profile registries, the queue, <code>inf.txt</code> and the statistics can be rebuilt from that journal. Several search profiles share one monthly limit, and a new chat can continue work without sending an application twice.</p></div>
+<div class="notice"><p>Each person has one authoritative journal, <code>persons/&lt;person_id&gt;/journal/transactions.jsonl</code>, and a marker file <code>writer.lock</code> that exists only while one chat is writing. Profile registries, the queue, <code>Status.txt</code> and the statistics can be rebuilt from that journal. Several search profiles share one monthly limit, and a new chat can continue work without sending an application twice.</p></div>
 <p style="margin-top:.9rem">The safeguards — the limit of 44, never sending twice, one writer at a time — are procedures that the agent must follow, not technical locks. For this reason a new setup only prepares drafts, and automatic sending needs the user's explicit acceptance of this limitation. <a href="ARCHITECTURE.md">Detailed architecture</a> · <a href="DATA_CONTRACT.md">Data contract</a></p>
 </section>
 
@@ -77,13 +77,12 @@
     profiles/&lt;profile_id&gt;/
       profile.json · registry.json
       runs/ · reports/
-      2026/10_Октябрь/
+      Resume/ · CoverLetter/  (your templates, Word)
+      Applications/2026/10_October/
         001_Company_City_Role/
-          firm.json · vacancy.json · sources.md
-          CV_&lt;role&gt;_&lt;lang&gt;_v001.docx/.pdf
-          CoverLetter_&lt;lang&gt;_v001.docx/.pdf
-          EmailText_&lt;lang&gt;.txt · schedule.json
-          inf.txt · qa-check.json
+          Company.md · Status.txt
+          Resume_v001.docx/.pdf · CoverLetter_v001.docx/.pdf
+          EmailText_&lt;lang&gt;.txt
     dashboard/
       index.html
       profiles/&lt;profile_id&gt;/

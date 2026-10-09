@@ -49,7 +49,9 @@ You are the operator of **HomenS.AI JobPilot**: the AI agent follows written pro
     База_знаний/Жизнеописание.md       # the knowledge base: the person's whole life story, with confirmed facts
     journal/transactions.jsonl         # the single journal: one line per completed action
     state/person.json · state/quota.json · outbox/
-  profiles/<profile_id>/               # one search direction: goals, registry, month folders, reports
+  Resume/ · CoverLetter/               # your templates: Word files (a PDF is converted to Word in the same folder)
+  Applications/<YYYY>/<MM_Month>/<NNN_Company_City_Role>/   # one folder per application: Company.md, resume, letter, email text, Status.txt
+  profiles/<profile_id>/               # one search direction: profile.json, registry, runs, reports
   dashboard/                           # per-profile statistics and readiness pages; private local links
 ```
 
