@@ -20,7 +20,7 @@ The first version uses UTF-8 JSON for configuration and records, and JSONL for e
 | `Локальные_данные/persons/<person_id>/journal/writer.lock` | Lock file of one person's journal: exists only while one chat writes; acquisition and release in §5 |
 | `Локальные_данные/persons/<person_id>/outbox/<send_attempt_id>/` | Immutable copy of the exact package and manifest used by one send attempt (§5) |
 | `Локальные_данные/persons/<person_id>/archives/<archive_id>/` | Local archive snapshots (§11); they never change Gmail |
-| `Локальные_данные/persons/<person_id>/state/quota.json` | Rebuildable view of the person's shared quota (limit, used, reserved, claimed, cutoff); a view of the journal, never a second source (§5) |
+| `Локальные_данные/persons/<person_id>/state/quota.json` | Rebuildable view of the person's shared quota (limit, used, reserved, unverified, remaining, source_revision, cutoff); a view of the journal, never a second source (§5) |
 | `Локальные_данные/profiles/<profile_id>/profile.json` | Projection of confirmed objectives, search settings, languages, accounts and consents |
 | `Локальные_данные/profiles/<profile_id>/registry.json` | Rebuildable projection of targets (companies, branches, vacancies), applications, plan slots and the queue |
 | `Локальные_данные/profiles/<profile_id>/plans/<plan_id>/plan_v<N>.json` | Immutable monthly plan versions with their slots and SHA-256 (§14) |
@@ -74,7 +74,7 @@ Every identifier has one type. The contract uses these types everywhere (example
 | `recipient` | e-mail address | As written in the verified source (§16) |
 | status and outcome codes, `intent`, `transport`, `classification`, `reason` codes | English enumerations | Stored in English in every language (§3c, §4) |
 
-**Migration of identifiers.** Existing identifiers are never renumbered or rewritten. A record that carries an identifier of another type (for example the readable `a-0001` and `s-0001` used in `examples/journal.example.jsonl` for brevity) is accepted only through a migration on a copy: a written mapping from the old value to a new UUID, kept in the record as `legacy_id`, a report, and the person's approval (§6). Until that migration, such records are read as legacy and are never mixed with new records.
+**Migration of identifiers.** Existing identifiers are never renumbered or rewritten. A record that carries an identifier of another type (for example the readable `a-0001` and `s-0001` of an earlier draft of the example) is accepted only through a migration on a copy: a written mapping from the old value to a new UUID, kept in the record as `legacy_id`, a report, and the person's approval (§6). Until that migration, such records are read as legacy and are never mixed with new records.
 
 ## 3. Minimum record fields
 
@@ -143,7 +143,7 @@ The knowledge base (§3a) belongs to the person and is shared by all profiles of
 
 ## 3c. The journal: line format, event types, counting
 
-**A journal line** is one JSON object on one line, written compactly (no spaces after `:` and `,`), keys in this order: `schema_version`, `sequence`, `action_id`, `person_id`, `recorded_at`, `events`, `result`. Each event has `event_id`, `type`, `occurred_at` and the fields of its type. `action_id`, `event_id`, `operation_id` and `send_attempt_id` are UUIDs; `person_id` and `profile_id` are readable slugs (§2). The first line of a new journal has `sequence` 1. `examples/journal.example.jsonl` shows the line layout; its short ids are illustrations, and in a real journal every application and attempt id is a UUID (§2). `examples/quota.example.json` shows the quota view and `examples/workspace.example.json` the workspace file.
+**A journal line** is one JSON object on one line, written compactly (no spaces after `:` and `,`), keys in this order: `schema_version`, `sequence`, `action_id`, `person_id`, `recorded_at`, `events`, `result`. Each event has `event_id`, `type`, `occurred_at` and the fields of its type. `action_id`, `event_id`, `operation_id` and `send_attempt_id` are UUIDs; `person_id` and `profile_id` are readable slugs (§2). The first line of a new journal has `sequence` 1. `examples/journal.example.jsonl` shows the line layout with synthetic UUIDs; in a real journal every application and attempt id is a UUID (§2). `examples/quota.example.json` shows the quota view and `examples/workspace.example.json` the workspace file.
 
 **Event types.** Only these names are used; fields in bold are mandatory.
 
@@ -188,12 +188,15 @@ The knowledge base (§3a) belongs to the person and is shared by all profiles of
 | `report_built` / `daily_report_sent` | **profile_id**, **period**, **revision**, **cutoff**, **source_revision**, **files**; recipient and message id for a verified e-mail | a report is created, or a permitted report to the person is found in SENT |
 | `status_recorded` | **application_id**, **status** (a code of §4), **status_at**, **source** (`mailbox` or `person_reported`), gmail_message_id (or null); for `meeting_invited` also **meeting_type** and meeting_at | the status changes after a read reply or a reply the person reports; one line in `Status.txt` follows |
 
+**Names that are not event types.** The states of §12.2 (for example `scheduling_started` and `local_planned`), intents and repeat keys (§4), transports (§12.1), the reason values of `quota_released` and `approval_revoked`, the `incomplete_reason` codes (§15.3) and the stage values of the first run (`TODO_FOR_AI.md`) are not event types and are never written as `type`.
+
 **Month fields** are the **local month of the person** (`person.json`, `timezone`) at the `occurred_at` of the event, written as `YYYY-MM` by the agent when it writes the line. For a mail event this is the month of receipt. This is what makes counting simple and independent of time-zone conversions.
 
 **Counting.** The agent never counts by eye and never converts months of old lines. Counts cover the whole person's journal, all profiles together.
-- used(M) = number of `quota_consumed` events with `"consumed_month":"M"`, minus the number of `quota_corrected` events with `"correction_month":"M"`. Claimed submissions are included (conservatively) and are also shown separately as claimed (§5).
+- used(M) = number of `quota_consumed` events with `"consumed_month":"M"` and `"evidence_status":"verified"`, plus claimed submissions later confirmed by `evidence_attached`, minus the `quota_corrected` events with `"correction_month":"M"` for such submissions.
+- unverified(M) = number of `quota_consumed` events with `"consumed_month":"M"` and `"evidence_status":"claimed"` that are not yet confirmed (§5). A `quota_corrected` for a withdrawn claimed submission lowers this number instead. A claimed submission counts as taken, but never twice (§5).
 - reserved(M) = number of `"reserved_month":"M"` (in `quota_reserved` and in the new month of `reservation_moved`) minus the number of closing events with `"reservation_closed_month":"M"` (`quota_consumed`, `quota_released`, `reservation_moved`).
-- remaining(M) = limit − used(M) − reserved(M). It can be negative; a negative value means the limit is exceeded (§5).
+- remaining(M) = limit − used(M) − reserved(M) − unverified(M). It can be negative; a negative value means the limit is exceeded (§5).
 
 `reservation_closed_month` is the month in which the reservation was recorded; `consumed_month` is the actual month of the submission. A message sent in a later month than its slot therefore closes the reservation of the slot's month and consumes a slot in the sending month.
 
@@ -202,6 +205,8 @@ These counts are read with the system's own text search (ARCHITECTURE.md §4a), 
 **Which actions write a line.** Every action that changes a personal file or contacts the outside writes one line (the events above), including company and vacancy registration, route checks, plan changes, Gmail scheduling, archives and reports. Read-only actions (resume, inspect, a send check that ends "allowed", a read of mail with nothing new) write no event. The daily check always writes its `mail_checked` line (§15), whether or not anything is new, because the check itself is a fact that must be recorded. A refused send writes `send_blocked`. A person's statement that something happened outside (for example "the employer rejected me") is recorded as `mail_received` with `source` = `person_reported`: the agent asks which application it concerns (it shows the candidates; it never links by similarity of names), when the message arrived, and whether the person can show it; `occurred_at` is the date the person names; the message is matched with the mailbox at the next scan.
 
 **Reason codes** of a refused send: `ACCOUNT_MISMATCH`, `APPROVAL_MISSING` (no `package_approved` event for this version), `PACKAGE_CHANGED`, `CONSENT_BINDING_MISMATCH`, `DATE_MISMATCH`, `MODE_DRAFT_ONLY`, `MODE_NOT_ALLOWED`, `CONSENT_MISSING`, `RECIPIENT_UNSOURCED`, `RECIPIENT_MISMATCH`, `SUBJECT_TOO_LONG`, `QUOTA_EXHAUSTED`, `QUOTA_UNCONFIRMED`, `DAILY_LIMIT`, `CALENDAR_NOT_ALLOWED`, `DUPLICATE_KEY`, `TRANSPORT_CONFLICT`, `SLOT_MISSED`, `SEND_UNCERTAIN` (also for a send that was started and has no result), `RESERVATION_UNCONFIRMED`, `LOCK_HELD`, `JOURNAL_DAMAGED`, `INTEGRITY_CONFLICT`, `ARCHIVE_INTEGRITY_FAILED`, `RECOVERY_MODE`, `ACTIVE_PERSON_MISMATCH`, `CAPABILITY_MISSING`. The codes added in this revision are `CONSENT_BINDING_MISMATCH`, `DATE_MISMATCH`, `QUOTA_UNCONFIRMED`, `DUPLICATE_KEY`, `TRANSPORT_CONFLICT`, `SLOT_MISSED`, `RESERVATION_UNCONFIRMED`, `INTEGRITY_CONFLICT`, `ARCHIVE_INTEGRITY_FAILED`, `RECOVERY_MODE` and `ACTIVE_PERSON_MISMATCH`.
+
+**Incomplete-check reasons** (`mail_checked.incomplete_reason`, §15.3): `ACCOUNT_UNAVAILABLE`, `SESSION_EXPIRED`, `PAGINATION_INCOMPLETE`, `TOOL_UNAVAILABLE`, `CHECK_MISSED`, `PROCESSING_FAILED`.
 
 **The lock file.** `journal/writer.lock` holds one JSON line: `{"lock_id":"<UUID>","run_id":"<UUID>","owner":"<short label of the chat>","person_id":"<person_id>","created_at":"<UTC time>"}`. Acquisition, ownership, release and recovery are in §5. The agent writes its `run_id` into the first line of its run record (§18), so that after a restart it recognizes its own lock. While a `send_started` has no result, no new send is allowed for that person, by any chat.
 
@@ -232,7 +237,7 @@ Replay reads the journal line by line in `sequence` order and applies the events
 - follow-ups are keyed by the intent and dedup key of §4;
 - quota events are keyed by `event_id`, `send_attempt_id` and `dedup_key`; replaying the same `event_id` with the same content is ignored, and the same `event_id` with different content is `INTEGRITY_CONFLICT`;
 - responses and counts are derived from events, so re-reading a message or rebuilding a view changes no number;
-- a new snapshot or report gets a new revision; it never overwrites an old one.
+- a new report gets a new revision and never overwrites an old one; `summary.js` holds the current snapshot only, and each written snapshot is identified by its `statistics_updated` line (§9.6).
 
 **Reservations and moves** replay in event order: a reservation exists from `quota_reserved`, changes month only by `reservation_moved`, and ends with `quota_consumed` or with `quota_released`. Nothing ends because of elapsed time.
 
@@ -258,7 +263,7 @@ discovered → drafting → ready_for_review → approved → scheduled
 
 Separate dimensions:
 
-- Delivery: `unknown / permanent_bounce / temporary_failure` — SENT does not mean delivered.
+- Delivery: `unknown / permanent_bounce / temporary_failure` — SENT does not mean delivered. In the snapshot a permanent bounce is the status `email_not_found`, and a delivery notice is a `dsn` response (§9.4).
 - Outcome: `no_response / rejected / positive / needs_user / ambiguous`.
 - Incoming event: `substantive_response`, `auto_ack`, `delivery_notice`, `advertisement`, `unlinked` (see "Incoming mail: classification" below).
 - Actions: `thank_you_sent`, `period_question_sent`, and other follow-ups are not application outcomes.
@@ -274,7 +279,7 @@ Every application has exactly one current status. The codes are stored in Englis
 | `prepared` | the package is ready, not yet approved or planned | `not_sent` |
 | `scheduled` | approved and planned for a date (`planned_at`) | `not_sent` |
 | `not_sent` | sending did not happen; the reason is in `Status.txt` | `not_sent` |
-| `sent_waiting` | sent, no reply received yet (display label "no reply received", the outcome `no_response`); the days without reply are counted from `sent_at` to the snapshot time | `waiting` |
+| `sent_waiting` | sent, no reply received yet (page label "Sent, waiting for a reply"; the outcome `no_response`); the days without reply are counted from `sent_at` to the snapshot's `generated_at` | `waiting` |
 | `email_not_found` | the address does not exist (a permanent bounce) | `address_error` |
 | `documents_requested` | the employer asked for a CV, certificates or other documents | `successful` |
 | `meeting_invited` | an interview was offered; `meeting_type` is `in_person`, `video` or `phone`; `meeting_at` if known | `successful` |
@@ -321,17 +326,24 @@ A message with unclear meaning gets outcome `ambiguous` and `needs_user`; the st
 
 ### Groups, sorting and filters (F14)
 
-Employer outcomes and technical delivery errors are separate groups, both for counting and for sorting:
+Employer outcomes and technical delivery errors are separate groups, both for counting and for sorting. The codes are the contract's names; the page shows the label in brackets.
 
-- `rejected` — the four `rejected_*` codes. Employer rejections only.
-- `address_error` — `email_not_found`, a permanent bounce. A technical delivery error, not an employer decision.
-- `waiting` — `sent_waiting`, the "no reply received" state.
-- `successful` — `documents_requested` and `meeting_invited`.
-- `not_sent` — `prepared`, `scheduled` and `not_sent`.
+- `rejected` (Rejected): the four `rejected_*` codes. Employer rejections only.
+- `address_error` (Delivery error): `email_not_found`, a permanent bounce. A technical delivery error, not an employer decision.
+- `waiting` (Waiting): `sent_waiting`, "no reply received".
+- `successful` (Successful): `documents_requested` and `meeting_invited`.
+- `not_sent` (Not sent yet): `prepared`, `scheduled` and `not_sent`.
 
-A temporary delivery failure is not a status. It is the delivery value `temporary_failure`, shown with a separate filter "delivery errors", which selects `address_error` and every temporary failure.
+The snapshot has no group field: the page takes the group from `status` (§9.4). A temporary delivery failure is not a status and is not an application field in snapshot 1.4. It is a delivery notice (a `dsn` response, §9.4), counted as a message (§8). The "Delivery error" filter selects the `address_error` group only.
 
-Sorting uses one fixed category order: `rejected` (rank 1), `address_error` (rank 2), `waiting` (rank 3), `successful` (rank 4) and `not_sent` (rank 5). "Unsuccessful first" is ascending rank; "successful first" is descending rank over the four sent groups; `not_sent` is always last. Within a category, sort by `sent_at` (or `planned_at` for `not_sent`) ascending, then by `id`.
+Sorting. The page offers these modes:
+- "Date: newest first" (the default) and "Date: oldest first", by date only. The date is `sent_at`; an application without `sent_at` uses `status_at`, then `planned_at`.
+- "Result: successful first": the groups in the order `successful`, `waiting`, `address_error`, `rejected`, `not_sent` (descending rank; `not_sent` is last).
+- "Result: rejected first": the groups in the order `rejected`, `address_error`, `waiting`, `successful`, `not_sent` (ascending rank; `not_sent` is last).
+
+In both result modes each group is a block, and inside a block the newest date comes first. The fixed ranks are: `rejected` 1, `address_error` 2, `waiting` 3, `successful` 4, `not_sent` 5. No other sort key is used.
+
+Filters: year, month, the result group (All, Successful, Waiting, Delivery error, Rejected, Not sent yet), and a text search over company, city, role and note.
 
 Sorting and filtering act only on the view. They never change the journal, the statuses or any file hash. A delivery notice never increases the count of rejections. Acceptance tests are in ACCEPTANCE_TESTS.md.
 
@@ -348,7 +360,7 @@ Submissions that the person made outside JobPilot, or from another account, are 
 - **Confirmed or not.** The quota is confirmed only when the rebuild is complete: every counter is present and is a valid integer, no `send_started` lacks a result, no `claimed` submission is unresolved in the month, and every account and page of the reconciliation was covered. Otherwise the view reads "quota not confirmed" (`QUOTA_UNCONFIRMED`) and shows neither a remaining number nor a free slot.
 - **Zero and missing.** An explicit 0 comes from a complete rebuild; a missing counter is `null`. Negative, string or contradictory values are rejected.
 - **Limit.** The limit comes from the person's settings and is never replaced by a default. Limit changes are allowed only downwards.
-- **Over the limit.** If confirmed used + reserved is greater than the limit, the view shows "limit exceeded by N". Recorded submissions are never cut to 44 and never removed to make a statistic look right. No new `cv_submission` is allowed (`QUOTA_EXHAUSTED`).
+- **Over the limit.** If confirmed used + reserved + unverified is greater than the limit, the view shows "limit exceeded by N". Recorded submissions are never cut to 44 and never removed to make a statistic look right. No new `cv_submission` is allowed (`QUOTA_EXHAUSTED`).
 - **Reservations** of plans and of Gmail Scheduled messages stay active and reduce availability.
 - **Source of the send check.** The send check reads the journal and its quota view, never the statistics page.
 
@@ -356,7 +368,7 @@ Submissions that the person made outside JobPilot, or from another account, are 
 - `source` is `person_reported`, or `sent_verified` when JobPilot itself verified it;
 - `account_id` is any account of the same person; `occurred_at` is the actual time (the time the person names, or the SENT time);
 - `application_id` is set when the submission can be matched to an application with certainty; otherwise it is null (an unlinked external submission);
-- `evidence_status` is `verified` when a SENT record or another proof is found, and `claimed` when only the person states it. A claimed submission counts conservatively in `used` and is listed as requiring reconciliation; it is never shown as free.
+- `evidence_status` is `verified` when a SENT record or another proof is found, and `claimed` when only the person states it. A claimed submission counts as taken in `unverified` (§9.2) until it is checked; it is listed as requiring reconciliation and is never shown as free.
 - Import is idempotent. Before writing, the agent searches the journal for the same `dedup_key` (`account_id` + `gmail_message_id` when known; otherwise the reference of the person's statement + date + recipient domain). A repeated import, or a later discovery of the same message, writes no second consumption. If new evidence arrives, `evidence_attached` is written; it does not count.
 - A claimed submission that is proven not to have happened is withdrawn with `quota_corrected`.
 
@@ -416,7 +428,7 @@ Expanding the radius is an explicit, recorded change to the user's criteria, not
 
 Every monthly figure is computed for a month M in the person's time zone, from events, at a stated cutoff.
 
-- **Cutoff.** Each projection states its `cutoff` (UTC instant) and its `source_revision` (the journal `sequence` it was counted from). Only events with `occurred_at` at or before the cutoff are counted.
+- **Cutoff.** Each projection states its `cutoff` (UTC instant; in a snapshot this is `generated_at`, §9.1) and its `source_revision` (the journal `sequence` it was counted from). Only events with `occurred_at` at or before the cutoff are counted.
 - **History by event date.** The outcome of an application in month M is taken from its substantive events up to the end of M (in the person's time zone) and up to the cutoff. A later event does not change an earlier month. Example: a rejection in July stays a rejection in the July view after an invitation in September; the September event is visible in September only.
 - **Current status is separate.** The current status of an application is the latest `status_recorded` at the cutoff. It is shown in its own column with the label "current status at <cutoff>". It is never used for a past month.
 - **Units.** Every table and every figure states its unit. Messages (events) and applications are never added together.
@@ -424,18 +436,18 @@ Every monthly figure is computed for a month M in the person's time zone, from e
 
 Counts for month M:
 
-- `sent_count` — unit: CV submissions. Submissions with `intent` `cv_submission` and `quota_applies` true, whose `actual_sent_at` falls in M. Folders and plans are not submissions. Claimed external submissions are shown separately as `claimed_count`.
-- `response_event_count` — unit: messages. New `substantive_response` messages received in M, including responses to applications sent in earlier months. Each message counts once (§2, §8 "Duplicates and conflicts").
-- `responded_application_count` — unit: applications. Distinct `application_id` values among those response events. Three different substantive messages about one application give `response_event_count` = 3 and `responded_application_count` = 1; re-reading them changes nothing.
-- `prior_month_response_event_count` — unit: messages. The part of `response_event_count` whose application was sent before M.
-- `auto_ack_count` and `delivery_notice_count` — unit: messages. Reported separately; they are not included in any response count.
-- `rejected_application_count`, `positive_application_count`, `needs_user_application_count`, `ambiguous_application_count` — unit: applications with at least one substantive response in M. The outcome of each application is its latest substantive outcome up to the end of M. A transition from "rejection" to "invitation" is not counted as two final statuses; both events remain visible.
-- Rejection reasons — unit: applications. Each rejected application counts once, under its `rejected_*` code (`rejected_no_reason` for a rejection without a stated reason). Messages are never counted as reasons.
-- `waiting_application_count` — unit: applications sent in M with no substantive response up to the cutoff and no confirmed permanent delivery failure. The historical backlog of earlier months is shown separately.
-- `delivery_error_application_count` — unit: applications with a new confirmed permanent bounce in M. Shown separately; it is never a rejection. Temporary failures are counted as messages in `temporary_failure_count`.
-- `quota_used`, `quota_reserved`, `quota_remaining` — unit: CV slots, for the whole person (§5). If the quota is not confirmed, the three values are shown as "quota not confirmed", never as zero or as a free number.
+- `sent_count`: unit: applications (CV submissions). The applications whose `sent_at` falls in M (§9.4). In the journal these are the `cv_submission` submissions with `quota_applies` true and `actual_sent_at` in M. Folders, plans and follow-ups are not counted.
+- `response_event_count`: unit: messages. `substantive` responses (§9.4) received in M, including responses to applications sent in earlier months. Each message counts once.
+- `responded_application_count`: unit: applications. The distinct `application_id` values among those responses. Three different substantive messages about one application give `response_event_count` = 3 and `responded_application_count` = 1; re-reading them changes nothing.
+- `prior_month_response_event_count`: unit: messages. The part of `response_event_count` whose application was sent before M.
+- `auto_ack_count` and `dsn_count`: unit: messages. The `auto_ack` and `dsn` responses (§9.4) are reported separately. They are never responses and never rejections. A temporary delivery failure is a `dsn` message.
+- `positive_application_count`, `rejected_application_count` and `open_application_count`: unit: applications with at least one substantive response in M, classified by their state at the end of M (from `history`). Positive: the state is one of the successful codes. Rejected: one of the four `rejected_*` codes. Open: neither, which includes `needs_user` and `ambiguous`. A change from rejection to invitation is not counted as two final statuses; both events remain visible in the history.
+- Rejection reasons: unit: applications. Each rejected application counts once, under its `rejected_*` code at the end of M (`rejected_no_reason` for a rejection without a stated reason). Messages are never counted as reasons.
+- `waiting_at_cutoff`: unit: applications. Sent in M, with no substantive response up to the end of M and a state at the end of M other than `email_not_found`. The backlog of earlier months is shown separately.
+- `new_delivery_error_count`: unit: applications. Applications whose history enters `email_not_found` in M. Shown separately and never counted as rejections.
+- `quota` of M (`used`, `reserved`, `unverified`, remaining): unit: CV slots of the whole person (§9.2). If a count is missing, the figure reads "quota not confirmed", never zero or a free number.
 
-**Duplicates and conflicts (F08).** A message is identified by (`account_id`, `gmail_message_id`), and by `rfc_message_id` after the merge rule of §2. A repeated identical record is counted once. Two records with the same identifier and different content are an integrity conflict (`INTEGRITY_CONFLICT`): the projection shows the conflict and marks the affected count as not confirmed; it neither counts the message twice nor hides it.
+**Duplicates and conflicts (F08).** A message is identified by (`account_id`, `gmail_message_id`), and by `rfc_message_id` after the merge rule of §2. A repeated identical record is counted once. Two records with the same identifier and different content are an integrity conflict (`INTEGRITY_CONFLICT`): the agent resolves it in the journal first (§3d), and the page refuses a snapshot with a duplicate `applications[].id` or `responses[].id` (§9.6). It never counts a message twice and never hides it.
 
 **Responses to old applications.** A new response to an application sent in an earlier month belongs to the month in which it was received, and it is counted there once. The application keeps its real `sent_at`. Regenerating a month saves a new revision; it is not a new response event.
 
@@ -449,25 +461,122 @@ The market section is a separate PDF page and a corresponding DOCX section: occu
 
 The calendar of a report is built independently of the events. It runs from `history_start_month` (the local month of the `person_created` event) to the selected report month, and it also includes the future months of committed plans and reservations (the latest `reserved_month`). Only the calendar of the views is built this way; no month is created by a guess.
 
-A month with no events shows zero in every figure and the reason "No events were recorded in the selected period." (en), "За выбранный период событий не было." (ru) or "Im gewählten Zeitraum wurden keine Ereignisse erfasst." (de). A month with no new submissions but with responses to older applications is not empty: it shows those responses. No fictitious application is added to any table.
+A month with no events shows zero in every figure and the reason "No events were recorded for the selected period." (en), "За выбранный период событий не было." (ru) or "Im gewählten Zeitraum gab es keine Ereignisse." (de). A month with no new submissions but with responses to older applications is not empty: it shows those responses. No fictitious application is added to any table.
 
 ## 9. Static HTML contract
 
-`dashboard/profiles/<profile_id>/summary.js` holds the text `window.JP_DATA = ` followed by one JSON object (`schema_version` `1.4`). The page validates the whole object before showing any number (F02). A snapshot written under this contract has these fields:
+`dashboard/profiles/<profile_id>/summary.js` holds the text `window.JP_DATA = ` followed by one JSON object. Its `schema_version` must be exactly `"1.4"`; the page refuses any other value and does not interpret it. The page validates the whole object before it shows any number. Times are ISO 8601 with a zone (`Z` or an offset); months are `YYYY-MM` in the person's time zone. The page only displays the snapshot: it makes no network request, reads no mail, sends nothing and changes no record. The agent writes the snapshot as described in 9.6.
 
-- `schema_version`, `snapshot_id` (`<profile_id>-s<N>`), `source_revision` (the journal `sequence` at which the numbers were counted), `cutoff` (UTC), `generated_at` (UTC), `timezone` (a valid IANA name), `profile_id`, `person_id`, `default_language` (`en`, `ru` or `de`), `last_mail_check_at` (UTC, or null), `last_mail_check_complete` (true or false), `history_start_month`, and `demo` (`true` only for the synthetic sample).
-- `quota`: `limit` (an integer, from the person's settings); and, for each month `YYYY-MM`, `used`, `reserved` and `claimed` (integers, or null when not confirmed) and `confirmed` (true or false). The quota is for the whole person, all profiles together.
-- `minutes_per_application`: the estimate of minutes that one application would take by hand in Word: `cv_adapting`, `cover_letter`, `email_text`, `attachments_and_sending`, `date_and_text_checks`, `reply_tracking`. The values come from the person's settings.
-- `applications`: `id` (a UUID), `company`, `city`, `role`, `channel` (`email`, `web_form`, `portal` or `other`), `intent`, `planned_at`, `sent_at`, `status` (a code of §4), `group` (must equal the group of the status in §4), `status_at`, `delivery` (`unknown`, `permanent_bounce` or `temporary_failure`), `meeting_type`, `meeting_at`, `thank_you_sent_at`, `note` (the text as recorded; it is never translated). Unknown values are `null` and are shown as a dash.
-- `responses`: `id` (the `gmail_message_id`, or the `event_id` of a message reported by the person), `application_id` (must exist in `applications`), `profile_id` (must equal the snapshot's profile), `received_at` (UTC), `month` (`YYYY-MM`, local), `classification` and `outcome` (§4).
+### 9.1 Top level
 
-**Validation (F02).** The page accepts the object only when all of these hold: the `schema_version` is one the page supports (an unknown version is not interpreted automatically); every required field is present and has the right type; numbers are non-negative integers (strings are rejected); dates are valid ISO 8601 values; `timezone` is a valid IANA name; enumerations match §4; identifiers are unique; every response refers to an existing application of the same profile and person; every `group` matches its status. A file that is missing, cannot be loaded, has a syntax error, or whose validator did not load shows an independent error message with no numbers. The error carries only a safe diagnostic reference (the `snapshot_id`, the `source_revision` and an error code), never names, companies or e-mail addresses. A snapshot that fails validation is not repaired by the page; the agent rebuilds it from the verified journal (§6, §3d).
+| Field | Type | Required | Rule |
+|---|---|---|---|
+| `schema_version` | string | yes | exactly `"1.4"` |
+| `snapshot_id` | string | yes | non-empty; `<profile_id>-s<N>` (§2), `N` grows with each written snapshot |
+| `person_id` | string | yes | the person; a `responses` item that repeats it must match |
+| `profile_id` | string | yes | the profile; a `responses` item that repeats it must match |
+| `source_revision` | integer ≥ 0 | yes | the journal `sequence` the numbers were counted at |
+| `generated_at` | ISO time | yes | the cutoff of the snapshot (§8); no counted event may be later |
+| `timezone` | IANA zone | yes | an invalid zone is refused |
+| `demo` | boolean | yes | `true` only for the synthetic sample |
+| `default_language` | `en`, `ru` or `de` | no | the start language of the page (9.5) |
+| `last_mail_check_at` | ISO time or null | no | time of the last complete mail check (§15.3, §16.3); validated, but not shown by snapshot 1.4 |
+| `history_start_month` | `YYYY-MM` | yes | first month of the calendar (§8); not later than the snapshot month |
+| `quota` | object | yes | 9.2 |
+| `minutes_per_application` | object | yes | 9.3 |
+| `applications` | array | yes | 9.4 |
+| `responses` | array | no | absent means `[]`; 9.4 |
 
-The page shows: the shares of successful, waiting, rejected and address-error applications; the reasons for rejection; the quota for the person (with "not confirmed" where applicable); the time saved (sent applications × minutes per application, labelled as an estimate with its assumptions); the years, months and days as nested blocks; sorting and filters as defined in §4; the days without reply, counted from `sent_at` to `generated_at`; and a freshness marker that warns when the snapshot is two or more days old, or when the last mail check is stale or incomplete (§16). The page has three interface languages (en, ru, de), makes no network request, reads no mail and writes nothing.
+### 9.2 Quota
 
-The agent writes the file as a whole (a temporary file, a read-back check, then replacement). The page file itself is an unchanged copy of the template. An invalid file shows the reason in a message instead of a half-filled page.
+The quota belongs to the whole person (all profiles and accounts together). Every profile snapshot of one person shows the same quota; the page adds nothing across profiles.
 
-The sample in the repository is synthetic. The button "Clear sample data" removes it for the browser in use only; it is shown only when `demo` is `true`. A real snapshot has `demo: false` and is never cleared by the page.
+| Field | Type | Rule |
+|---|---|---|
+| `limit` | integer ≥ 0 | required; the configured limit as set (0 and 10 are shown as given, never replaced by 44) |
+| `used` | map `YYYY-MM` → integer ≥ 0 | optional; verified CV submissions of the month (§3c) |
+| `reserved` | map `YYYY-MM` → integer ≥ 0 | optional; reserved slots (plans, scheduled messages, open sends) |
+| `unverified` | map `YYYY-MM` → integer ≥ 0 | optional; claimed submissions not yet checked, counted as taken; absent = 0 |
+| `manual_unknown` | `true` or integer ≥ 0 | optional; a note that submissions made by hand outside JobPilot are not counted |
+
+- A month missing from `used` or `reserved` means "not confirmed" and is shown as such; it is never zero. An explicit `0` is zero.
+- remaining(M) = `limit` − `used`(M) − `reserved`(M) − `unverified`(M); the page shows it as "free". If `used`(M) is greater than `limit`, or the remaining value is below zero, the page shows "limit exceeded by N" with the true number. Recorded submissions are never removed to fit the limit (§5).
+- Refused: negative, fractional, string or non-map values; and a `used` value for M lower than the number of this snapshot's applications with `sent_at` in M (`QUOTA-conflict`).
+
+### 9.3 Minutes per application
+
+`minutes_per_application` has six keys, each a number ≥ 0, from the person's settings: `cv_adapting`, `cover_letter`, `email_text`, `attachments_and_sending`, `date_and_text_checks`, `reply_tracking`. The time-saved figure is the number of applications outside the "Not sent yet" group multiplied by the sum of the six values. It is an estimate; the page shows the assumptions.
+
+### 9.4 Applications and responses
+
+`applications[]` holds one record per application.
+
+| Field | Type | Rule |
+|---|---|---|
+| `id` | string | required, non-empty, unique in the snapshot; the `application_id` (§2). A duplicate is refused |
+| `company`, `city`, `role`, `note` | text or null | `note` is shown as recorded and is never translated |
+| `channel` | `email`, `web_form`, `portal`, `other` or null | |
+| `status` | code of §4 | the current status |
+| `sent_at` | ISO time or null | the actual original send time. Required for every status except `prepared`, `scheduled` and `not_sent` (otherwise refused). Not later than `generated_at`. The application's month is the month of `sent_at` |
+| `planned_at` | ISO time or null | planned slot (§14); not a sent date |
+| `status_at` | ISO time or null | date of the current status |
+| `meeting_type` | `in_person`, `video`, `phone` or null | |
+| `meeting_at` | ISO time or null | |
+| `thank_you_sent_at` | ISO time or null | does not change the status (§4) |
+| `history` | array of `{status, at}` | required; a sent application has at least one entry; an unsent one may have none |
+
+The snapshot has no `group` and no `delivery` field. The page takes the group from `status` (§4). A permanent bounce is the status `email_not_found`. A temporary failure is not a status; it appears only as a `dsn` response.
+
+**History rules**
+- Each entry has `status` (a code of §4) and `at` (ISO time, not later than `generated_at`).
+- Entries are in non-decreasing `at` order. For a sent application, no entry is before `sent_at`.
+- If the history is not empty, its last `status` equals the application's `status`.
+- The agent adds an entry each time the status changes (`status_recorded`, §3c), starting with the status at sending.
+- The result of an application in month M is the status of its last history entry whose month is at or before M. The cutoff of M is the end of M, or `generated_at` for the current month. Example: rejected in July and `meeting_invited` in September: July shows Rejected, September shows Invited, and `status` is the current status.
+
+**`responses[]`** holds one record per incoming message.
+
+| Field | Type | Rule |
+|---|---|---|
+| `id` | string | required, non-empty, unique; the `gmail_message_id`, or the `event_id` of a message the person reported (§3c). A message is recorded once |
+| `application_id` | string | must be an `id` in `applications`; otherwise refused |
+| `received_at` | ISO time | not before the application's `sent_at` (the application must have one); not later than `generated_at` |
+| `kind` | `substantive`, `auto_ack` or `dsn` | `substantive`: a content answer (§4). `auto_ack`: automatic acknowledgement or out-of-office reply. `dsn`: delivery notice |
+| `profile_id`, `person_id` | string, optional | if present, must equal the snapshot's values |
+
+The counts built from these records are in §8.
+
+### 9.5 What the page shows
+
+- Validation first. If the object breaks any rule of 9.6, the page shows an error with its reference code and no figures.
+- Shares of sent applications (every application except the "Not sent yet" group): successful, waiting, rejected and delivery error; rejection reasons by current status.
+- Quota by month: free, "limit exceeded by N", or "quota not confirmed" for a month with a missing count. No free number is shown for an unconfirmed month.
+- Time saved: an estimate with its assumptions (9.3).
+- Years, months and days as nested blocks, with a month table of the counts in §8. A month with no events shows "No events were recorded for the selected period."
+- Days without reply, counted from `sent_at` to `generated_at` (for `sent_waiting`).
+- Sorting and filters, on the view only, as in §4.
+- Freshness: a warning when the snapshot is two or more days old (from `generated_at` to the time the page is opened). Snapshot 1.4 does not display `last_mail_check_at`, so the mail freshness of §16.3 is not yet visible on this page.
+- Language: `en`, `ru` or `de`, taken from the `lang` URL parameter, otherwise from `default_language`, otherwise `en`. Names and notes are never translated.
+- Sample: when `demo` is `true`, a notice with a "Clear sample data" button is shown; the button clears the sample in this browser only. The page never clears a real snapshot (`demo` `false`).
+- Browser storage: only the theme and the sample-cleared flag. The page writes no file and makes no network request.
+
+### 9.6 Validation and the agent's write procedure
+
+Reference codes are shown as "Reference: <code>". Messages name a field or an item number, never a person, company, address or message text.
+
+- `FILE-missing` (the script did not load), `FILE-syntax` (syntax error in the script), `FILE-empty` (no data assigned), `DATA` (`window.JP_DATA` is not an object), `INTERNAL` (an unexpected error during validation).
+- `SCHEMA` (`schema_version` is not `1.4`); `FIELD-<name>` (a required top-level field is missing or has the wrong type, or `history_start_month` is later than the snapshot month); `FIELD-timezone` (not a valid IANA zone).
+- `QUOTA-limit`, `QUOTA-used`, `QUOTA-reserved`, `QUOTA-unverified`, `QUOTA-manual` (a quota value is refused); `QUOTA-conflict` (`used` for a month is lower than its submissions).
+- `MINUTES-<key>` (a minutes value is missing, not a number, or negative).
+- `APP#<n>-<check>` and `RESP#<n>-<check>`: item n fails a check, such as a missing or duplicate `id`, an unknown `status`, `channel` or `meeting_type`, an invalid date, a missing or future `sent_at`, a broken history, an unknown `application_id`, a mismatched profile or person, a `received_at` before `sent_at`, or an unknown `kind`.
+
+**The agent's write procedure**
+1. Count from one complete journal rebuild at one `source_revision` (§3d). A quota value is written for a month only when the journal confirms it (§5); otherwise that month is left out.
+2. Build the object of 9.1 to 9.4. `generated_at` is the cutoff; `snapshot_id` is `<profile_id>-s<N>` with the next `N`.
+3. Write the whole object to a temporary file next to `summary.js`, read it back and check every rule of this section. If a check fails, keep the previous file, do not record `statistics_updated`, and rebuild the snapshot from the journal (§6).
+4. Replace `summary.js` with the checked file.
+5. Record `statistics_updated` (`profile_id`, `snapshot_id`, `source_revision`, `cutoff`, `file`) in the journal, then create the archive (§11). `summary.js` holds only the current snapshot; each written snapshot is identified by its `statistics_updated` line.
+6. `dashboard/profiles/<profile_id>/index.html` is an unchanged copy of `dashboard_template/index.html`. It is copied next to `summary.js` when the profile's statistics are first written and is never edited.
 
 ## 10. Readiness boundary
 

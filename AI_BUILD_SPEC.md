@@ -260,7 +260,7 @@ SUBJECT: [approved subject, 50 characters or fewer]
 PACKAGE VERSION: [application id, package version, manifest SHA256]
 PLANNED SLOT: [date, local time, time zone]
 ATTACHMENTS: [exact file names and local paths: CV PDF, cover letter PDF, or the agreed merged PDF]
-STATUS: [prepared | needs_reconciliation | a confirmed status]
+STATUS: [prepared | send_uncertain | a confirmed status]
 
 === BODY: COPY ONLY THIS BLOCK ===
 [the approved text in the vacancy's language, including the signature]

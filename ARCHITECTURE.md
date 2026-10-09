@@ -70,7 +70,7 @@ Instruction files (Markdown, not code; drafts that have not yet been tried in pr
     journal/writer.lock              # exists only while one chat is writing
     state/person.json               # person and profile-list view
     state/quota.json                # monthly counters, rebuilt from the journal
-    outbox/<attempt_id>/            # prepared send package, never edited
+    outbox/<send_attempt_id>/            # prepared send package, never edited
   Resume/                              # resume template: your Word file, or a PDF converted to Word here
   CoverLetter/                         # cover letter template, same design as the resume
   profiles/<profile_id>/
@@ -244,7 +244,7 @@ An open or uncertain attempt blocks a retry of the same key and blocks all new s
 
 The external call and the local record cannot be made atomic. If the chat stops after `send_started`, nobody can know whether the mail service was called. Consent withdrawn before `send_started` blocks the send; after a recorded start the send may already be under way and must be reconciled, not promised cancelled. Not finding the message in SENT during an incomplete check does not prove that it was not sent.
 
-De-duplication of thank-you messages uses: account_id + incoming gmail_message_id + action_type. The single question about the period uses: account_id + thread_id + action_type. These keys are checked in the same journal line that starts the action, so that two chats cannot answer the same message twice.
+De-duplication of thank-you messages uses: account_id + incoming gmail_message_id + intent (thank_you). The single question about the period uses: account_id + thread_id + intent (period_question). These keys are checked in the same journal line that starts the action, so that two chats cannot answer the same message twice.
 
 ### 6a. Gmail Scheduled through the agent's browser (R03)
 
@@ -383,7 +383,7 @@ The journal grows by a few lines a day, which plain files handle easily. No inde
 
 ## 10. Format changes and the first release boundary
 
-The documentation version is 1.5.1; settings, workspace and statistics snapshots use `schema_version` 1.3 and workspace `format_version` 1.5. The append-only journal keeps its 1.2 line layout; the added event names are additive. Existing user folders are never overwritten. A migration first makes a separate copy and a report, preserves old IDs and records, then asks the user to approve any changes. Public examples contain synthetic data only.
+The documentation version is 1.5.1; settings, workspace and statistics snapshots use `schema_version` 1.4 for statistics snapshots and 1.3 for settings and workspace, and workspace `format_version` 1.5. The append-only journal keeps its 1.2 line layout; the added event names are additive. Existing user folders are never overwritten. A migration first makes a separate copy and a report, preserves old IDs and records, then asks the user to approve any changes. Public examples contain synthetic data only.
 
 The first trial is a full pass on synthetic data, done by hand in a chat: profile → one target → registered package → plan → simulated reply → neutral report and offline HTML. Reading Gmail and controlled sending are added separately. The checks for interrupted work and for two chats at once come before any scheduled sending. Automatic search never implies a complete or guaranteed view of the market.
 
