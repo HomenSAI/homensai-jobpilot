@@ -1,10 +1,10 @@
-# HomenS.AI JobPilot — acceptance scenarios 1.4
+# HomenS.AI JobPilot — acceptance scenarios 1.5
 
 [English](ACCEPTANCE_TESTS.md) | [Русский](docs/ru/ACCEPTANCE_TESTS.md)
 
 Author: Serhii Khomenko / HomenS.AI · https://homensai.com/ · CC BY-NC 4.0.
 
-**These are checks to be carried out, not results of completed tests.** There is no program to test: each scenario is performed **by hand, in a chat with the agent, on synthetic data**, and the agent's behaviour and the resulting files are judged against the expected result. Until a scenario is performed its status is “not run”. Never send test applications to real employers.
+**These are checks to be carried out, not results of completed tests.** There is no standalone job-search or mail-sending application. Agent scenarios are performed **by hand, in a chat with the agent, on synthetic data**, and its behaviour and resulting files are judged against the expected result. The statistics page contains HTML/CSS/JavaScript and is tested separately in a VM and a browser. Until a scenario is performed its status is “not run”. Never send test applications to real employers.
 
 For each scenario record: ID, the version of the documents and the agent used, the starting conditions, the actual result, PASS/FAIL/NOT RUN, paths to the evidence (journal lines, files, screenshots) and the limitations observed. The record is kept in a Markdown log in the user's data folder. Reading the documentation is not a substitute for testing the mail connection. A pass shows that this agent followed the rules this time; it is not a guarantee for later runs.
 
@@ -80,6 +80,9 @@ Additional checks for architecture 1.3–1.4 (rules and files):
 | ADAPTER-01 | The agent's mail tool cannot confirm SENT | Capabilities are reported accurately; scheduled automatic sending is not declared ready |
 | L10N-01 | Switch documentation or UI between en/ru | Rules, IDs, and counters match; CV/report languages do not change |
 | PROJECTION-01 | Build the PDF and the statistics page from the same journal position | The final business counters are identical |
+| MAIL-08 | The installed agent offers an approved connector, the built-in browser, both, or neither | The user chooses only an available approved route; actual read/thread/send/Scheduled/attachment capabilities are checked; an unavailable route is not claimed as connected; manual fallback is offered |
+| MAIL-09 | A chosen mail route cannot upload attachments | The agent stops before scheduling, prepares `EMAIL_TO_SEND.txt`, asks the user to attach the reviewed files manually and requires visible verification in Gmail Scheduled/SENT |
+| SCOPE-01 | The user edits a prompt or asks whether a written safeguard is technically enforced | The agent identifies the editable instruction boundary, explains that workflow safeguards are procedural (except the statistics view), and asks the user to review/approve the changed text and action |
 
 ### First run and the knowledge base (version 1.4)
 

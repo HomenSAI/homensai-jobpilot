@@ -2,15 +2,17 @@
 
 [English](REVIEW.md) | [Русский](docs/ru/REVIEW.md)
 
-7 October 2026 · Author of the idea and developer: Serhii Khomenko / HomenS.AI · [homensai.com](https://homensai.com/) · CC BY-NC 4.0
+9 October 2026 · Version 1.5.1 · Author of the idea and developer: Serhii Khomenko / HomenS.AI · [homensai.com](https://homensai.com/) · CC BY-NC 4.0
 
 ## Where the project stands
 
-**Finished:** the specification, architecture, data contract and acceptance scenarios (English and Russian); draft instructions for the agent (`AGENTS.md`, `CLAUDE.md`, `TODO_FOR_AI.md`); the ready folders for the person's materials and the knowledge base format; the illustrated overview with a menu and the step-by-step installation page; the statistics page with years, months and days, sorting by date and result, and filters (it works with sample data); a neutral settings example; the license.
+**In this release:** bilingual operating procedures; updated README, author story and separate code/documentation license notices; expanded journal and schedule contracts; and fixes to the statistics snapshot validation, historical counters, empty-month selector, shared quota display and result ordering.
 
-**Not done yet:** trying the instruction files in practice (Codex and Claude Code, with a person who prepared nothing, who filled the folders, and with a voice interview); checking a Gmail connection; performing the acceptance scenarios by hand; real data in the statistics page.
+**Verified in this work copy:** 18 targeted statistics-page VM checks passed, including malformed snapshots, duplicate response IDs, late replies, empty-month selection, missing shared quota totals and technical-error sorting. This is not a full browser test or an agent/Gmail acceptance cycle.
 
-There is **no program code** and none is planned: the AI agent follows the written rules and keeps plain files. Version 1.2 added ARCHITECTURE.md, the bilingual layout (English at the root, Russian in `docs/ru`) and one journal per person for quota and application events. Version 1.3 removed the local commands, scripts and modules from the design: the journal, the limit and recovery are procedures that the agent follows, and the documents say openly that they are not technical locks. Version 1.4 added the instruction files that let the agent start by itself, the ready folders for the person's materials, the knowledge base (one file with the person's life story as confirmed facts) and the interview by voice or text instead of a form, and aligned the AI files with the HTML pages and the guide.
+**Not done yet:** full manual acceptance of the agent workflow; real Codex or Claude Code onboarding; real Gmail scheduled-send and reply processing; DOCX rendering through Word/LibreOffice; the automated GitHub release/privacy gate. Gmail, employers and external AI APIs were not connected.
+
+The workflow deliberately has no separate job-search or mail-sending application. The statistics view contains HTML/CSS/JavaScript for validating, sorting, filtering and displaying the agent-written snapshot. The safeguards for consent, quota and external mail remain procedures rather than technical locks. Versions 1.2–1.4 established the bilingual architecture, person-scoped journal and agent playbook; version 1.5 expands the monthly workflow, Gmail reconciliation, local archives, reporting, attribution files and statistics validation.
 
 The review covered AI_BUILD_SPEC.md, the HTML overview and the user guide. Personal archives, Gmail and existing applications were not touched. Code from the reviewed GitHub alternatives was not used. The review checks the consistency of the project; it is not an audit of external services or of the labour market.
 
@@ -21,7 +23,7 @@ The review covered AI_BUILD_SPEC.md, the HTML overview and the user guide. Perso
 | No entry README; the start required files that did not exist | README lists the files that really exist and separates the documentation build from the future release |
 | The database format was left open | JSON/JSONL without SQL; DATA_CONTRACT defines identifiers, paths, the authoritative records and the projections |
 | The specification shared reports and logs, while the HTML kept them inside profiles | Reports and logs belong to a profile; the quota belongs to the person |
-| “Atomic quota” had no mechanism | Because there is no program, a written procedure: a single-writer marker file, a reservation line before the call, action identifiers and recovery; the documents state openly that this is procedural, not a technical lock |
+| “Atomic quota” has no independent execution engine | The project documents a single-writer marker, reservation, action IDs and recovery; these remain procedural protections, not technical locks |
 | An uncertain send could trigger a duplicate | `send_uncertain` keeps the reservation and requires reconciliation with evidence instead of a blind retry |
 | Reply, delivery and thank-you could collapse into one status | Submission, delivery, outcome and follow-up actions have separate states |
 | “Replies” could mean messages or applications | Separate counters for reply events and for applications with a reply, including late replies |
@@ -39,20 +41,20 @@ The review covered AI_BUILD_SPEC.md, the HTML overview and the user guide. Perso
 
 The product name is **HomenS.AI JobPilot** and the repository is `homensai-jobpilot` ([HomenSAI/homensai-jobpilot](https://github.com/HomenSAI/homensai-jobpilot)). Authorship and visual identity (the same as homensai.com and HomenS.AI Core) are kept. The agent and the folder are required; Docker is not used; the HTML page only displays; the limit is 44 submissions per person per month. Nearby targets come first, CVs and letters are personalized, languages are independent, reports are neutral, mail actions need their own consent, and code from reviewed alternatives is not reused.
 
-## Remaining stages (none of them is a working feature yet)
+## Work not yet verified or not implemented
 
-- Trying `AGENTS.md`, `CLAUDE.md` and `TODO_FOR_AI.md` in practice and correcting what the agents misunderstand.
-- The document templates (CV, cover letter) as instructions for the agent.
-- Choice and verification of a specific Gmail connection and its exact setup parameters.
-- A complete step-by-step setup for Claude Code; the installation guide currently details Codex on Windows.
-- Performing the acceptance scenarios by hand: mail recovery, the shared limit, interrupted work, two chats at once.
-- LICENSE-DOCS, NOTICE and a rights check of all release files.
+- The workflow instructions have not been fully accepted with a real Codex or Claude Code user. The package remains experimental; scenarios are still to be run in chat with synthetic data.
+- Gmail connector and built-in-browser capabilities must be checked separately on the user's installed account, including whole-thread reading, Gmail Scheduled, attachments, SENT proof, and interrupted-session recovery. No real Gmail account was connected for this review.
+- DOCX/PDF creation and page-by-page rendering in Word or LibreOffice have not been exercised end-to-end by the agent.
+- A complete step-by-step setup for Claude Code is not written; the detailed installation guide is for Codex on Windows.
+- The automated GitHub release workflow and any fail-closed privacy gate still need an authorized post-publication verification. The manual release checklist is present; it is not a technical enforcement mechanism.
+- The shared 44-per-person monthly quota, approvals, Gmail operations, scheduling, archives and report delivery are procedures, not hard locks or guaranteed background services.
 
-The `.gitignore`, the JSON example and the statistics template are usable now, but they do not show that the system works. Test scenarios are not marked PASS without a recorded hand check and evidence.
+The `.gitignore`, example settings and statistics template can be inspected locally, but they do not prove the agent workflow works. Agent scenarios are not marked PASS without a recorded manual check and evidence.
 
 ## Checks performed
 
-On 7 October 2026 the Markdown links, the HTML pages and the JSON example were checked with local tools (HTML and JSON parsers, a headless browser): links between documents resolve, there are no duplicate HTML identifiers, the pages load no remote resources, and the example settings are valid JSON with the expected defaults (`draft_only`, limit 44, subject limit 50, required market page, weekends excluded, holidays unverified, no mail account or consent). The statistics page was opened in a browser at desktop and phone width: sorting, filters, both languages, the light and dark themes and the “Top” button work, and the page makes no network requests. These checks cover document structure and the statistics page. Remote URLs and the future product functionality were not tested.
+On 9 October 2026: the local statistics-page VM regression set passed 18/18 targeted checks; `node --check` passed for `summary.js`; the three JSON examples and every JSONL example line parsed; local links/assets in 16 HTML files and local links in 23 Markdown files were checked with zero errors (the readiness template's intentional `{{...}}` link placeholders were excluded). This is not full browser, AI-agent, Gmail, scheduled-send or document-rendering acceptance. No external account or API was connected.
 
 ---
 

@@ -40,12 +40,12 @@
 <div class="page-head">
 <div class="eyebrow">Architecture</div>
 <h1>Rules and files: <span class="accent">the agent keeps the records</span></h1>
-<p class="lead">There is no program. The AI agent follows the written rules, records every completed action in a journal file and keeps the other files up to date. No server, Docker or scripts are needed.</p>
-<div class="pills"><span class="pill">Architecture 1.4</span><span class="pill">UTF-8 JSON / JSONL</span><span class="pill">No SQL</span></div>
+<p class="lead">There is no separate job-search or mail-sending application. The AI agent follows written rules and maintains local files. The statistics page uses HTML/CSS/JavaScript only to validate, sort, filter and display the agent-written snapshot. No server, Docker or SQL database is needed.</p>
+<div class="pills"><span class="pill">Architecture 1.5</span><span class="pill">UTF-8 JSON / JSONL</span><span class="pill">No SQL</span></div>
 </div>
 
 <section id="diagram">
-<div class="sec-head"><div class="num">01 · Parts</div><h2>How the parts fit together</h2><p>There is no program code in the picture: every box is either the agent following a rule or a plain file.</p></div>
+<div class="sec-head"><div class="num">01 · Parts</div><h2>How the parts fit together</h2><p>The agent performs the workflow; the local statistics view reads and displays the snapshot. It does not perform mail actions.</p></div>
 <div class="diagram" role="group" aria-label="System architecture">
 <div class="node"><strong>User and agent chat</strong><span>Codex / Claude Code · questions, research and writing</span></div><div class="arrow" aria-hidden="true">↓</div>
 <div class="node"><strong>Written rules</strong><span>AGENTS.md, TODO_FOR_AI.md, the specification: a checklist before every action</span></div><div class="arrow" aria-hidden="true">↓</div>
@@ -113,7 +113,7 @@
 <footer class="site-footer"><div class="wrap">
 <p>© 2026 Serhii Khomenko / HomenS.AI · <a href="https://homensai.com/" rel="me noopener">homensai.com</a> · <a href="https://github.com/HomenSAI" rel="me noopener">GitHub</a> · <a href="https://www.linkedin.com/in/serhii-khomenko-homensai/" rel="me noopener">LinkedIn</a> · <a href="https://orcid.org/0009-0009-5371-9717" rel="me noopener">ORCID</a> · <a href="https://doi.org/10.5281/zenodo.23160031" rel="noopener">DOI</a> · <a href="mailto:info@homensai.com">info@homensai.com</a></p>
 <p>Documents: <a href="README.md">README</a> · <a href="USER_GUIDE.md">User guide</a> · <a href="AI_BUILD_SPEC.md">Build specification</a> · <a href="ARCHITECTURE.md">Architecture</a> · <a href="DATA_CONTRACT.md">Data contract</a> · <a href="ACCEPTANCE_TESTS.md">Acceptance scenarios</a> · <a href="REVIEW.md">Review and status</a></p>
-<p><small>Documentation 1.4 · 7 October 2026 · no personal profiles, CVs or credentials. Code: PolyForm Noncommercial 1.0.0 · documentation: <a href="https://creativecommons.org/licenses/by-nc/4.0/">CC BY-NC 4.0</a>. The “HomenS.A Inc.” wordmark on the author’s site is a design element, not a statement about a legal entity.</small></p>
+<p><small>Documentation 1.5.1 · 9 October 2026 · no personal profiles, CVs or credentials. Code: PolyForm Noncommercial 1.0.0 · documentation: CC BY-NC 4.0 (LICENSE-DOCS). See NOTICE for required attribution.</small></p>
 </div></footer>
 <a class="to-top" id="to-top" href="#" aria-label="Back to top"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"/></svg>Top</a>
 </body></html>

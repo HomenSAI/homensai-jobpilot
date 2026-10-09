@@ -2,9 +2,24 @@
 
 [English](CHANGELOG.md) | [Русский](docs/ru/CHANGELOG.md)
 
-The project version is in the file [VERSION](VERSION). The project is a documentation package that an AI agent follows; there is no separate program, so this is the version of the package (documents, examples and the statistics page).
+The project version is in the file [VERSION](VERSION). The project is an AI-agent workflow package, not a standalone job-search or mail-sending application. Its local statistics view contains HTML/CSS/JavaScript for displaying and sorting a snapshot.
 
 Rules: `MAJOR.MINOR.PATCH`. MAJOR changes when data formats or rules change so that old data no longer fits. MINOR is a new feature or a new part of the documentation. PATCH is a fix or a wording change without new capabilities. Every change to `main` adds a line here; the number is raised when a release is made. Each release gets a git tag `vX.Y.Z`.
+
+## 1.5.1 — 9 October 2026
+
+Documentation-only consistency fix after 1.5.0: Gmail troubleshooting now covers both the approved connector and the built-in browser, with the manual fallback if neither is available. No workflow code or behavior changed.
+
+## 1.5.0 — 9 October 2026
+
+The bilingual operating workflow and its limits are consolidated for monthly job-search use.
+
+- Added explicit user procedures for monthly preparation, email-first target selection, per-vacancy CV/cover letter/email packages, a shared 44-submission monthly limit, cadence choices, daily 16:00 checks, Gmail Scheduled verification, local archives/recovery, daily reports and readiness tracking.
+- Gmail access now supports either an existing approved connector or the built-in browser, selected only after checking actual capabilities; manual copy/paste remains the fallback. No arbitrary connector/server or stored credentials are introduced.
+- Added a static readiness-page template and clarified that the monthly quota, approvals, scheduling, sending and archives are procedural rather than technically enforced.
+- Added a user-facing “not implemented” section: no standalone search/sending application, SMTP service, background sender, database server or universal scheduler. The statistics view is the only HTML/CSS/JavaScript code exception and is limited to displaying, sorting and filtering an agent-prepared snapshot.
+- Updated the data contract, agent playbooks, English/Russian user guides, overview pages, example settings, attribution and separate code/documentation license notices.
+- Statistics-page checks cover malformed/duplicate data, historical cutoffs, empty months, missing shared quota totals and technical-error ordering. The local VM suite reports 18 targeted checks passing; full browser, AI-agent, Gmail and document-rendering acceptance remains unverified.
 
 ## 1.4.2 — 8 October 2026
 

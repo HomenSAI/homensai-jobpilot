@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>HomenS.AI JobPilot | Setup readiness</title>
+<style>
+:root{color-scheme:light dark;--bg:#edf1f4;--panel:#f9fbfc;--ink:#14212e;--muted:#44525f;--line:#d9e0e6;--blue:#1e4f8a;--teal:#147283;--red:#b3261e;--amber:#9a5b00;--green:#1f7a46}
+@media(prefers-color-scheme:dark){:root{--bg:#111922;--panel:#1a2632;--ink:#eef4f7;--muted:#b6c1c9;--line:#33424e}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 "Segoe UI",Arial,sans-serif}
+header,main,footer{max-width:1100px;margin:auto;padding:20px}
+header{display:flex;justify-content:space-between;gap:16px;align-items:center;border-bottom:1px solid var(--line)}
+a{color:var(--blue);overflow-wrap:anywhere}main{padding-top:30px}.card{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:22px;margin:18px 0}
+.toprow{display:grid;grid-template-columns:minmax(240px,360px) 1fr;gap:24px;align-items:center}
+.gauge{width:min(100%,340px);margin:auto;text-align:center}.gauge svg{width:100%;height:auto;overflow:visible}
+.gauge-track{fill:none;stroke:var(--line);stroke-width:15;stroke-linecap:round}
+.gauge-zone{fill:none;stroke-width:15;stroke-linecap:butt}
+.gauge-progress{fill:none;stroke:var(--status-color);stroke-width:11;stroke-linecap:round;stroke-dasharray:{{GAUGE_DASH}} 100}
+.needle{stroke:var(--ink);stroke-width:3;stroke-linecap:round}
+.hub{fill:var(--ink)}.percent{font-size:25px;font-weight:700;fill:var(--ink)}
+.traffic{display:flex;gap:10px;align-items:center;margin:12px 0}.light{width:18px;height:18px;border-radius:50%;background:var(--line);display:inline-block}.light.red.active{background:var(--red)}.light.yellow.active{background:#d39c12}.light.green.active{background:var(--green)}
+.status-red{--status-color:var(--red)}.status-yellow{--status-color:var(--amber)}.status-green{--status-color:var(--green)}
+table{border-collapse:collapse;width:100%;margin-top:12px}th,td{border:1px solid var(--line);padding:10px;text-align:left;vertical-align:top}th{background:var(--line)}
+.badge{font-weight:700}.done{color:var(--green)}.pending{color:var(--amber)}.blocked{color:var(--red)}
+.links{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:10px}.linkcard{border:1px solid var(--line);border-radius:10px;padding:12px;background:var(--panel)}
+.small{color:var(--muted);font-size:.92rem}footer{border-top:1px solid var(--line);color:var(--muted);font-size:.9rem;margin-top:36px}
+@media(max-width:700px){.toprow{grid-template-columns:1fr}header{align-items:flex-start;flex-direction:column}th,td{padding:7px}}
+@media print{body{background:#fff;color:#14212e}.card,.linkcard{break-inside:avoid}a{color:#14212e}}
+</style>
+</head>
+<body>
+<header><strong>HomenS.AI JobPilot</strong><span><a href="{{STATISTICS_HREF}}">Open statistics</a> · <a href="{{OVERVIEW_HREF}}">Project guide</a></span></header>
+<main>
+<section class="card">
+<h1>Your setup readiness</h1>
+<div class="toprow">
+<div class="gauge status-{{STATUS_COLOR}}">
+<svg viewBox="0 0 200 120" role="meter" aria-label="Setup readiness {{READY_PERCENT}} percent" aria-valuemin="0" aria-valuemax="100" aria-valuenow="{{READY_PERCENT}}">
+<path class="gauge-track" pathLength="100" d="M20 100 A80 80 0 0 1 180 100"/>
+<path class="gauge-zone" pathLength="100" stroke="#b3261e" stroke-dasharray="40 60" d="M20 100 A80 80 0 0 1 180 100"/>
+<path class="gauge-zone" pathLength="100" stroke="#d39c12" stroke-dasharray="35 65" stroke-dashoffset="-40" d="M20 100 A80 80 0 0 1 180 100"/>
+<path class="gauge-zone" pathLength="100" stroke="#1f7a46" stroke-dasharray="25 75" stroke-dashoffset="-75" d="M20 100 A80 80 0 0 1 180 100"/>
+<path class="gauge-progress" pathLength="100" d="M20 100 A80 80 0 0 1 180 100"/>
+<g transform="translate(100 100) rotate({{NEEDLE_DEGREES}})"><line class="needle" x1="0" y1="0" x2="0" y2="-61"/></g>
+<circle class="hub" cx="100" cy="100" r="6"/><text class="percent" x="100" y="84" text-anchor="middle">{{READY_PERCENT}}%</text>
+</svg>
+</div>
+<div>
+<h2>{{STATUS_TITLE}}</h2>
+<div class="traffic" aria-label="Setup status: {{STATUS_TITLE}}">
+<span class="light red {{RED_ACTIVE}}" aria-hidden="true"></span><span class="light yellow {{YELLOW_ACTIVE}}" aria-hidden="true"></span><span class="light green {{GREEN_ACTIVE}}" aria-hidden="true"></span>
+<strong>{{STATUS_SUMMARY}}</strong>
+</div>
+<p>{{STATUS_EXPLANATION}}</p>
+<p class="small">Progress is calculated only from applicable, verified setup requirements. A green status means the selected setup checklist is complete; it does not prove that an unavailable or untested external tool works.</p>
+</div>
+</div>
+</section>
+<section class="card">
+<h2>System readiness</h2>
+<table>
+<thead><tr><th>Step</th><th>Status</th><th>What remains</th><th>Evidence checked</th></tr></thead>
+<tbody>{{SYSTEM_READINESS_ROWS}}</tbody>
+</table>
+</section>
+<section class="card">
+<h2>Your profile and documents</h2>
+<p class="small">Each link opens a private file in this person's permitted local workspace. Missing files are listed as missing, never linked to a substitute.</p>
+<div class="links">{{PROFILE_DOCUMENT_LINKS}}</div>
+</section>
+<section class="card">
+<h2>Next recommended action</h2>
+<p>{{NEXT_ACTION}}</p>
+<p class="small">This page is a static local view maintained by the AI agent. It does not read or modify your files on its own.</p>
+</section>
+</main>
+<footer>Idea author and developer: Serhii Khomenko · <a href="https://homensai.com/">homensai.com</a> · <a href="https://github.com/HomenSAI/homensai-jobpilot">HomenS.AI JobPilot</a> · CC BY-NC 4.0</footer>
+</body>
+</html>

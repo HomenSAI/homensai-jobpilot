@@ -40,12 +40,12 @@
 <div class="page-head">
 <div class="eyebrow">Архитектура</div>
 <h1>Правила и файлы: <span class="accent">записи ведёт агент</span></h1>
-<p class="lead">Программы нет. ИИ-агент следует записанным правилам, фиксирует каждое выполненное действие в файле журнала и поддерживает остальные файлы. Сервер, Docker и скрипты не нужны.</p>
-<div class="pills"><span class="pill">Архитектура 1.4</span><span class="pill">UTF-8 JSON / JSONL</span><span class="pill">Без SQL</span></div>
+<p class="lead">Отдельного приложения для поиска работы и отправки почты нет. ИИ-агент следует правилам и ведёт локальные файлы. Страница статистики использует HTML/CSS/JavaScript только для проверки, сортировки, фильтрации и показа снимка, записанного агентом. Сервер, Docker и SQL-база не нужны.</p>
+<div class="pills"><span class="pill">Архитектура 1.5</span><span class="pill">UTF-8 JSON / JSONL</span><span class="pill">Без SQL</span></div>
 </div>
 
 <section id="diagram">
-<div class="sec-head"><div class="num">01 · Части</div><h2>Как устроены части вместе</h2><p>На схеме нет программного кода: каждый блок — либо агент, следующий правилу, либо обычный файл.</p></div>
+<div class="sec-head"><div class="num">01 · Части</div><h2>Как устроены части вместе</h2><p>Рабочий процесс выполняет агент, локальная страница статистики читает и показывает снимок. Она не выполняет почтовых действий.</p></div>
 <div class="diagram" role="group" aria-label="Архитектура системы">
 <div class="node"><strong>Пользователь и чат с агентом</strong><span>Codex / Claude Code · вопросы, исследование и тексты</span></div><div class="arrow" aria-hidden="true">↓</div>
 <div class="node"><strong>Записанные правила</strong><span>AGENTS.md, TODO_FOR_AI.md, спецификация: список проверок перед каждым действием</span></div><div class="arrow" aria-hidden="true">↓</div>
@@ -113,7 +113,7 @@
 <footer class="site-footer"><div class="wrap">
 <p>© 2026 Serhii Khomenko / HomenS.AI · <a href="https://homensai.com/" rel="me noopener">homensai.com</a> · <a href="https://github.com/HomenSAI" rel="me noopener">GitHub</a> · <a href="https://www.linkedin.com/in/serhii-khomenko-homensai/" rel="me noopener">LinkedIn</a> · <a href="https://orcid.org/0009-0009-5371-9717" rel="me noopener">ORCID</a> · <a href="https://doi.org/10.5281/zenodo.23160031" rel="noopener">DOI</a> · <a href="mailto:info@homensai.com">info@homensai.com</a></p>
 <p>Документы: <a href="README.md">README</a> · <a href="USER_GUIDE.md">Руководство пользователя</a> · <a href="AI_BUILD_SPEC.md">Спецификация</a> · <a href="ARCHITECTURE.md">Архитектура</a> · <a href="DATA_CONTRACT.md">Контракт данных</a> · <a href="ACCEPTANCE_TESTS.md">Сценарии приёмки</a> · <a href="REVIEW.md">Обзор и статус</a></p>
-<p><small>Документация 1.4 · 7 октября 2026 · без личных профилей, резюме и учётных данных. Код: PolyForm Noncommercial 1.0.0 · документация: <a href="https://creativecommons.org/licenses/by-nc/4.0/">CC BY-NC 4.0</a>. Надпись «HomenS.A Inc.» на сайте автора — элемент оформления, а не заявление о юридическом лице.</small></p>
+<p><small>Документация 1.5.1 · 09.10.2026 · без личных профилей, резюме и учётных данных. Код: PolyForm Noncommercial 1.0.0 · документация: CC BY-NC 4.0 (LICENSE-DOCS). Обязательные реквизиты автора — в NOTICE.</small></p>
 </div></footer>
 <a class="to-top" id="to-top" href="#" aria-label="Наверх страницы"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"/></svg>Наверх</a>
 </body></html>
