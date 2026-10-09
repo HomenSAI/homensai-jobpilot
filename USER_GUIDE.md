@@ -2,7 +2,7 @@
 
 [English](USER_GUIDE.md) | [Русский](docs/ru/USER_GUIDE.md)
 
-**Draft 1.4 · 2026-10-07** · The same guide is available as a web page with a menu: [overview_install.html](overview_install.html).
+**Version 1.5.0 · 2026-10-09** · The same guide is available as a web page with a menu: [overview_install.html](overview_install.html).
 **For:** Windows and ChatGPT Desktop with Codex. Claude Code is an alternative; its full step-by-step setup is not written yet.
 
 The setup takes about 30–40 minutes. Do the steps in order. Every step says what you should see on the screen, so you always know whether it worked. No Git, Python or other developer tools are needed on your computer.
@@ -11,21 +11,31 @@ The setup takes about 30–40 minutes. Do the steps in order. Every step says wh
 
 First the agent, then the archive, then you connect the two. The agent comes first because its availability depends on your account: it is better to find out now than after you have prepared everything else. The archive is only a folder of files; it becomes useful when the agent opens it.
 
-| Part | What you do | Steps |
-|---|---|---|
-| 1. The agent | Install ChatGPT Desktop, sign in, make sure Codex is available | 1 |
-| 2. The project folder | Download the project archive from GitHub in your browser and extract it | 2 |
-| 3. Connect and start | Open the folder as a local project, set permissions, make the first safe start | 3–6 |
-| 4. Your data | Profile, Gmail (optional), the first queue | 7–9 |
-| 5. Daily work | Screen control (optional), daily checks, statistics and reports, updates | 10–13 |
+| Step | What to do | How to do it | Why |
+|---|---|---|---|
+| 1 | Set up the AI agent | Install ChatGPT Desktop, sign in and verify that your current plan gives access to Codex; check current terms and price on the official site | The agent carries out the written workflow |
+| 2 | Download the project | Download the current ZIP from the official HomenSAI repository/release page and extract it into a new local folder | The project instructions and templates need a stable folder |
+| 3 | Open the local project | In Codex, create/open a local project and select the extracted root folder | A chat with only a pasted path cannot read or update the folder |
+| 4 | Start setup | Create a setup chat (for example, “Job Search”) and ask the agent to read the project instructions | The agent will explain the next steps and ask for missing choices |
+| 5 | Allow only the project folder | Grant the necessary folder access; keep unrelated folders and broad computer permissions disabled | The agent should work only in the intended workspace |
+| 6 | Add your personal information | Copy documents into the named folders, or give the agent one selected document and use the document-review prompt; confirm facts before they enter your profile | The CV and letter must rely on facts you have checked |
+| 7 | Set your search and languages | Choose role, location, radius, transport, travel limits and the language of the CV, cover letter, email and report | The agent needs your actual search boundaries |
+| 8 | Consider a dedicated Gmail | The author recommends a separate job-search account, for example `first.last.job@gmail.com`; this is optional | It keeps job correspondence separate from personal mail |
+| 9 | Connect Gmail, if wanted | Choose an existing approved connector or the built-in browser, sign in yourself, confirm the active address and test reading access before separately enabling sending | The agent must use the intended account; login alone is not consent to send |
+| 10 | Prepare the monthly plan | At the beginning of each month, answer whether to prepare the month's search, packages and schedule | Searching and preparing ahead prevents last-minute work |
+| 11 | Review every package | Read the recipient, subject (maximum 50 characters), email text, CV, cover letter and attachments; explicitly approve the exact package and slot | Your approval applies only to the reviewed version |
+| 12 | Choose scheduled or manual mail | Verify each approved message in Gmail Scheduled; if the browser cannot attach files, use `EMAIL_TO_SEND.txt` and attach them yourself | A prepared local plan is not proof that Gmail saved a scheduled email |
+| 13 | Enable daily monitoring | Default check: every day at 16:00 in your time zone; confirm that the installed agent really registered the recurring task | New replies and delivery notices need regular review |
+| 14 | Configure report delivery | Optionally approve a daily snapshot to your address or the same connected Gmail; choose report language and content | You can check progress while away from the computer |
+| 15 | Check readiness and keep backups | Open the local readiness and statistics pages; after mail operations, verify that a private archive was created | You can see missing setup items and recover local history |
 
-> **Package status.** This guide describes the finished release. The current folder holds design documents and draft instructions for the agent (`AGENTS.md`, `CLAUDE.md`, `TODO_FOR_AI.md`) that have not yet been tried in practice. Do not download an archive from a link you cannot verify. The repository is [HomenSAI/homensai-jobpilot](https://github.com/HomenSAI/homensai-jobpilot).
+> **Package status.** This is an experimental documentation-and-agent workflow. Statistics-page checks do not prove the complete Gmail/agent cycle. Verify the repository and release version before downloading: [HomenSAI/homensai-jobpilot](https://github.com/HomenSAI/homensai-jobpilot).
 
 
 ## What you need
 
 - A Windows computer with internet access.
-- ChatGPT Desktop with Codex available for your account.
+- ChatGPT Desktop with Codex available. The project recommends a paid ChatGPT plan for regular use, but access and usage limits change; check the official plan information before purchase. As checked on 9 October 2026, Codex is included on ChatGPT Free/Go as well, with plan-dependent limits; Plus is listed at $20/month in the US.
 - A ZIP archive from the official HomenS.AI JobPilot repository.
 - A dedicated local folder for extraction and subsequent work.
 - Your CV, diplomas and certificates in any format, if you have them (see “Prepare your materials” below) — or just your voice: you can tell the agent about yourself and it writes everything down.
@@ -33,6 +43,8 @@ First the agent, then the archive, then you connect the two. The agent comes fir
 - A Gmail connection through a tool supported by your installed Codex version, if you want email tracking.
 
 Local file access requires a **local Codex project** opened on your computer. An ordinary cloud ChatGPT project does not by itself provide access to a folder on your computer.
+
+Current official information: [Using Codex with your ChatGPT plan](https://help.openai.com/en/articles/11369540-using-codex-with-your-chatgpt-plan) · [ChatGPT Plus](https://help.openai.com/en/articles/6950777-what-is-chatgpt-free-plan). API usage is billed separately. Recheck these pages because availability, limits and prices can change.
 
 ## Prepare your materials — you can do it first
 
@@ -146,18 +158,18 @@ Never put passwords, one-time codes or OAuth tokens into any file. Private notes
 
 **You should see:** the file `Локальные_данные\persons\<your id>\База_знаний\Жизнеописание.md` with your life story as facts, each marked `confirmed` or `self-reported`, and the file `Локальные_данные\profiles\<direction>\profile.json` with your search settings. You can open and read both in any text editor.
 
-### 8. Connect Gmail separately if you need email tracking
+### 8. Connect Gmail through an approved connector or the built-in browser
 
-1. First check that the published release specifies the exact name and address of the approved Gmail tool/server and its required permissions. Do not guess a URL or add an arbitrary server.
-2. If the release uses an MCP server, open **Settings → MCP servers → Add server** in ChatGPT Desktop, enter only the parameters specified in the release, and save. If it uses a connected app, open the relevant Apps/Connectors page.
-3. Choose **Authenticate/Connect**, use the official OAuth screen, and check the Gmail address before confirming.
-4. Start with email reading/search. Enable sending separately only if needed. Do not authorize deletion, archiving, or label changes. The default sending mode remains `draft_only`.
-5. If the system asks you to enter a password, one-time code, or token into a chat, file, or repository, refuse and stop setup.
-6. If the requested permissions are broader than those described in the project rules, do not approve them; ask for an explanation of the limitation.
+1. Ask the agent to list the mail options actually available in your Codex installation. Choose an existing official, approved Gmail connector or the built-in Browser; do not add an arbitrary server.
+2. For a connector, follow its official sign-in flow. For Browser, ask: “Open https://mail.google.com in the built-in browser. Do not read or send anything yet; I will sign in myself.” Sign in to the Gmail account you chose for job search and complete Google verification yourself.
+3. Click the Gmail profile icon and check the exact email address. Tell the agent which profile should use it.
+4. For Browser, open **Settings → Browser → Agent permissions** and review access for mail.google.com. If your Codex version requires Computer Use, open **Codex → Plugins → Computer Use**, install/enable it if offered, and allow only the browser you need. Verify current menu names in the official [built-in browser](https://help.openai.com/en/articles/20001277-using-the-built-in-browser-in-the-chatgpt-desktop-app) and [Computer Use](https://learn.chatgpt.com/docs/computer-use) instructions. For a connector, verify the account and separate read/send permissions.
+5. Start with reading only. Sending and Gmail Schedule send need separate approval. Do not allow deleting, Gmail-archiving, moving messages or changing labels.
+6. The built-in browser cannot automate file uploads. A connector may support them, but verify this for your account. If not, attach the approved files yourself, check the visible attachment list and verify the final message in Gmail Scheduled or SENT. Never treat a click as proof.
 
-Local folder access and Gmail access are configured separately. If the required connector or its official parameters have not been published, the email integration is not ready for setup: do not substitute an arbitrary server. See Codex's official section on [MCP and connecting OAuth tools](https://learn.chatgpt.com/docs/extend/mcp).
+If neither approved connector nor Browser can complete an action, use the manual fallback: open Gmail in a browser you choose, open File Explorer to the application's folder, then copy the recipient, subject and body from the package's `EMAIL_TO_SEND.txt` and attach the listed CV and cover letter. The agent does not store Gmail tokens or passwords in the project. Browser sessions can expire, so the account must be checked again when access is lost.
 
-**You should see:** the exact Gmail address you intended, and only the permissions you approved.
+**You should see:** the Gmail address you intended in the profile menu. The agent starts in read-only/draft mode until you separately approve a specific package and schedule.
 
 ### 9. Prepare and review your first queue
 
@@ -189,21 +201,21 @@ The current official procedure is described under [Computer Use](https://learn.c
 
 ### 11. Daily work and scheduling
 
-For a manual check, open the local project, create a **Daily check** chat, and ask the agent to read the rules and perform the current safe plan item. The agent will update the file database and journal, then generate or refresh the statistics.
+For a manual check, open the local project, create a **Daily check** chat, and ask the agent to read the rules and perform the current safe plan item. Default check time is 16:00 local time. The agent updates the files and journal, then refreshes statistics and readiness. At the beginning of a new month it asks once whether to prepare that month's plan.
 
 If your application supports scheduled tasks for a local project, verify a manual run first, then ask Codex to create a recurring task with the required time and time zone. Review its text and first result. For local files, the computer must be on, the application running, and the folder accessible. If scheduling is unavailable or unreliable, run the check manually. Current limitations are described in [Scheduled tasks](https://learn.chatgpt.com/docs/automations).
 
 The task must use the same primary folder and journal, not a separate copy or new worktree without local data. Missed submissions are recorded separately and rescheduled; they are not automatically sent in a catch-up batch when the computer starts.
 
-**You should see:** after a check, updated files and journal and a refreshed statistics page.
+**You should see:** after a check, an updated journal, a last-check timestamp and refreshed statistics/readiness pages. If the recurring task is unavailable, the agent says that the check must be started manually.
 
 ### 12. Open your statistics and generate a report
 
-1. After a check, open the generated `Локальные_данные\dashboard\profiles\<profile_id>\index.html` by double-clicking it or using your browser. The root `Локальные_данные\dashboard\index.html` is the profile selection menu. No server is needed.
+1. After a check, open `Локальные_данные\dashboard\index.html`, the local profile menu. Each profile links to its Statistics page and Readiness page. No server is needed.
 2. The page shows years, months and days. Sort by date or by result (successful or unsuccessful first), filter by outcome and search by company or role. The page is read-only; the agent updates the underlying data.
-3. At the end of the reporting period, ask the agent to prepare DOCX/PDF files in the selected language and template, if provided.
+3. At the end of the reporting period, ask the agent to prepare DOCX/PDF files in the selected language and template, if provided. Without your own template, a neutral monthly table is used. The DOCX must be rendered and every page inspected before the matching PDF is exported.
 4. Check your surname, first name, reporting period, application rows, and the date and brief substance of each reply. Applications without a reply must use the appropriate translation of “no response received.”
-5. The report is saved locally and is not automatically emailed.
+5. The report is saved locally and is not emailed to an employer or authority without a separate instruction. Daily email delivery to you is a separate opt-in setting.
 
 Statistics distinguish the number of response messages from the number of applications that received a response. A reply to an older application is counted in the month it was actually received. If it arrives after a report has been generated but in the same month, the agent will prepare a new revision for that month. If no rejection reason is given, the report says “reason not specified.”
 
@@ -213,15 +225,24 @@ A separate PDF page contains a market recommendation with its date, search radiu
 
 ### 13. Update the package and back up your data
 
-Before updating, copy `Локальные_данные/` to a separate backup folder. Download the new ZIP into a new folder, compare versions and instructions, then ask the agent to migrate only confirmed user settings. Do not extract an update over personal data or publish `Локальные_данные/`.
+After each confirmed send/scheduling or incoming-mail processing, the agent creates a private versioned archive. Before updating, make a separate backup of `Локальные_данные/`. Download the new ZIP into a new folder and never publish personal data. If local archives are lost, pause new external actions and ask the agent to reconcile Gmail history; Gmail cannot restore unsent local-only documents.
 
 **You should see:** a backup folder with a copy of `Локальные_данные/` made before the update.
+
+## What is not implemented — and what remains your responsibility
+
+HomenS.AI JobPilot is not a standalone job-search application, mail server, or autonomous sending service. Its search, document preparation, email handling, scheduling, archiving and reporting workflows are described as prepared prompts, checklists and written instructions for an AI agent. They are not guaranteed software mechanisms, and this package does not itself connect Gmail or an AI service. The only program code in the package is the local statistics view: HTML/CSS/JavaScript that displays an agent-prepared snapshot and provides sorting/filtering. It does not search for jobs, send or schedule messages, or change files.
+
+The AI agent is an external service whose behavior, capabilities, permissions, availability and results can change. The instructions have not been proven to work end-to-end on every supported agent or account. You decide whether to use this experimental workflow. Before any external action, check the facts, employer, address, recipient, subject, email text, CV, cover letter, attachments and timing yourself. A prompt is editable text: if you change it, you are responsible for reviewing the new wording and its effect. The agent can make mistakes; it cannot guarantee accurate vacancy information, delivery, a reply or employment. Do not treat a described step as completed until you have verified its result in the relevant account or file.
+
+There is no independent SMTP service, background mail daemon, database server, hard technical 44-message lock, or universal scheduler in this package. Gmail Scheduled, a Codex recurring task, local archive creation and report delivery only work if the selected agent/account supports them and the user verifies them. If a feature is unavailable, use the stated manual fallback or leave it disabled; never assume it ran.
 
 ## Troubleshooting
 
 - **The agent cannot see the files:** check that a local project is open and its primary folder is the extracted project root. Providing a path in a message is not enough.
 - **The agent cannot save a result:** check the selected permissions mode and access to the project root; do not enable access to the entire drive.
 - **Gmail will not connect:** stop and check the availability and permissions of the official connector. Do not paste credentials into the chat.
+- **The browser cannot attach a file or verify Scheduled:** use the approved `EMAIL_TO_SEND.txt`, create the message yourself and attach the listed documents; do not mark it sent until it is verified in SENT.
 - **The TODO, rules, or dashboard template is missing:** the archive may be incomplete or still a conceptual build. Do not ask the agent to invent missing files.
 - **Statistics will not open:** check that the agent generated your `dashboard/profiles/<profile_id>/index.html`; the clean template does not contain your data.
 

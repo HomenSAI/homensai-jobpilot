@@ -6,6 +6,6 @@
 Notes for Claude Code:
 
 - The two files above are your instructions. Follow them from the first message, even if the person only says “hello” or “start”.
-- There is no program in this project. Do not write scripts into the folder or install anything. You may type inline commands that the operating system already has, for the uses and in the forms listed in `ARCHITECTURE.md` §4a (time, UUID, checksum, text search with counting, JSON check, time-zone conversion for now, directory listing, deleting your own temporary files). Write text files with your own file tool.
+- There is no separate job-search or mail-sending application. Do not create a backend, scheduler service, mail sender or unrelated scripts. The statistics page is the one code-bearing feature: its HTML/CSS/JavaScript validates, sorts, filters and displays the agent-written snapshot. For other work, use the written procedures and plain files. Follow `OPERATING_REQUIREMENTS.md` and the available system commands listed in `ARCHITECTURE.md` §4a.
 - Ask for permissions the normal way and only for this folder. Do not ask for access to the whole disk.
 - If voice input is available in the person's app, they can answer by voice; treat the transcript as their own words and save it word for word where `TODO_FOR_AI.md` says so.

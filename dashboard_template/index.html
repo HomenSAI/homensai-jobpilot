@@ -184,8 +184,48 @@ td.time { font-family:var(--mono); white-space:nowrap; color:var(--muted); } td 
 (function () {
   "use strict";
   var DATA = window.JP_DATA;
-  if (!DATA || !DATA.generated_at) {
-    document.getElementById("out").textContent = "summary.js not found or not valid next to this page · не найден или повреждён файл summary.js рядом со страницей";
+  function isRecord(value) { return !!value && typeof value === "object" && !Array.isArray(value); }
+  function validDate(value) { return typeof value === "string" && value.length > 0 && Number.isFinite(Date.parse(value)); }
+  function validMonthKey(value) { return typeof value === "string" && /^\d{4}-(0[1-9]|1[0-2])$/.test(value); }
+  function validCount(value) { return Number.isInteger(value) && value >= 0; }
+  function snapshotError(data) {
+    if (!isRecord(data)) return "Snapshot is missing or is not an object.";
+    if (!validDate(data.generated_at)) return "generated_at must be a valid date.";
+    if (typeof data.timezone !== "string" || !data.timezone) return "timezone is missing.";
+    try { new Intl.DateTimeFormat("en", { timeZone: data.timezone }).format(new Date(data.generated_at)); }
+    catch (_) { return "timezone is not recognized."; }
+    if (!Array.isArray(data.applications) || !Array.isArray(data.responses)) return "applications and responses must be arrays.";
+    var appIds = Object.create(null), responseIds = Object.create(null), i, a, r;
+    for (i = 0; i < data.applications.length; i++) {
+      a = data.applications[i];
+      if (!isRecord(a) || typeof a.id !== "string" || !a.id || appIds[a.id]) return "applications contain a missing or duplicate id.";
+      if (!validDate(a.sent_at)) return "an application has an invalid sent_at date.";
+      if (a.bounce_at !== undefined && a.bounce_at !== null && !validDate(a.bounce_at)) return "an application has an invalid bounce_at date.";
+      if (["company", "city", "role", "channel"].some(function (key) { return a[key] !== null && typeof a[key] !== "string"; })) return "an application has a non-text display field.";
+      if (["no_response", "positive", "rejected", "needs_user", "delivery_error"].indexOf(a.outcome) < 0) return "an application has an unknown outcome.";
+      appIds[a.id] = true;
+    }
+    for (i = 0; i < data.responses.length; i++) {
+      r = data.responses[i];
+      if (!isRecord(r) || typeof r.id !== "string" || !r.id || responseIds[r.id]) return "responses contain a missing or duplicate id.";
+      if (typeof r.application_id !== "string" || !appIds[r.application_id]) return "a response references an unknown application.";
+      if (!validDate(r.received_at)) return "a response has an invalid received_at date.";
+      if (["positive", "rejected", "needs_user", "ambiguous"].indexOf(r.kind) < 0) return "a response has an unknown kind.";
+      responseIds[r.id] = true;
+    }
+    if (data.quota !== undefined && !isRecord(data.quota)) return "quota must be an object when supplied.";
+    if (data.quota && data.quota.limit !== undefined && !validCount(data.quota.limit)) return "quota.limit must be a non-negative integer.";
+    if (data.quota && data.quota.used !== undefined && !isRecord(data.quota.used)) return "quota.used must be an object when supplied.";
+    if (data.quota && data.quota.reserved !== undefined && !isRecord(data.quota.reserved)) return "quota.reserved must be an object when supplied.";
+    if (data.quota && ["used", "reserved"].some(function (name) {
+      return data.quota[name] && Object.keys(data.quota[name]).some(function (key) { return !validMonthKey(key) || !validCount(data.quota[name][key]); });
+    })) return "quota month totals must use YYYY-MM keys and non-negative integers.";
+    if (data.history_start_month !== undefined && !validMonthKey(data.history_start_month)) return "history_start_month must use YYYY-MM.";
+    return "";
+  }
+  var invalidSnapshot = snapshotError(DATA);
+  if (invalidSnapshot) {
+    document.getElementById("out").textContent = "Statistics unavailable · " + invalidSnapshot + " / Статистика недоступна · " + invalidSnapshot;
     return;
   }
 
@@ -212,6 +252,7 @@ td.time { font-family:var(--mono); white-space:nowrap; color:var(--muted); } td 
       h3: "A delivery error is shown separately: it is not a rejection by the employer. A sent application that later bounced still used one slot of the monthly limit.",
       h4: "Three replies to one application are three reply events but one application with a reply. Automatic acknowledgements and delivery notices are not counted as replies.",
       h5: "The limit is shared by all profiles of one person. “Reserved” slots are planned but not yet sent.",
+      quota_unknown: "The shared total is unavailable in this snapshot. The agent must rebuild it from the person's full journal; this page will not estimate it from visible rows.",
       license: "Statistics page template · code: PolyForm Noncommercial 1.0.0 · no network requests, nothing is saved or sent from this page.",
       nav_overview: "Overview", nav_install: "Install", nav_profile: "Profile", nav_arch: "Architecture", nav_safety: "Safety", nav_market: "Market", nav_roadmap: "Roadmap", nav_stats: "Statistics"
     },
@@ -236,6 +277,7 @@ td.time { font-family:var(--mono); white-space:nowrap; color:var(--muted); } td 
       h3: "Ошибка доставки показана отдельно: это не отказ работодателя. Отправленная заявка, которая потом не дошла, всё равно заняла один слот месячного лимита.",
       h4: "Три ответа на одну заявку — это три события-ответа, но одна заявка с ответом. Автоответы и уведомления о доставке ответами не считаются.",
       h5: "Лимит общий для всех профилей одного человека. «Зарезервировано» — запланированные, но ещё не отправленные слоты.",
+      quota_unknown: "Общий итог в снимке отсутствует. Агент должен восстановить его по полному журналу человека; страница не будет оценивать квоту по видимым строкам.",
       license: "Шаблон страницы статистики · код: PolyForm Noncommercial 1.0.0 · без сетевых запросов, эта страница ничего не сохраняет и не отправляет.",
       nav_overview: "Обзор", nav_install: "Установка", nav_profile: "Профиль", nav_arch: "Архитектура", nav_safety: "Безопасность", nav_market: "Рынок", nav_roadmap: "План работ", nav_stats: "Статистика"
     }
@@ -246,7 +288,8 @@ td.time { font-family:var(--mono); white-space:nowrap; color:var(--muted); } td 
   var lang = params.get("lang") === "ru" || params.get("lang") === "en" ? params.get("lang") : (DATA.default_language === "ru" ? "ru" : "en");
   var tz = DATA.timezone || "UTC";
   var state = { year: "all", month: "all", sort: "date_desc", result: "all", q: "" };
-  var RANK = { positive: 0, needs_user: 1, pending: 2, rejected: 3, delivery_error: 4 };
+  var RANK_GOOD = { positive: 0, needs_user: 1, pending: 2, rejected: 3, delivery_error: 4 };
+  var RANK_BAD = { rejected: 0, pending: 1, needs_user: 2, positive: 3, delivery_error: 4 };
   var BADGE = { positive: "ok", rejected: "bad", pending: "wait", needs_user: "warn", delivery_error: "err" };
 
   function t(k) { return T[lang][k] || T.en[k] || k; }
@@ -277,22 +320,39 @@ td.time { font-family:var(--mono); white-space:nowrap; color:var(--muted); } td 
   });
 
   /* ---------- Statistics (definitions follow DATA_CONTRACT §8) ---------- */
-  function statsFor(list) {
+  function monthEndKey(mkey) { var p = mkey.split("-"), last = new Date(Date.UTC(+p[0], +p[1], 0)).getUTCDate(); return mkey + "-" + pad(last); }
+  function hasReplyBy(applicationId, cutoffKey) {
+    return entries.some(function (e) { return e.kind === "reply" && e.app.id === applicationId && e.p.key <= cutoffKey; });
+  }
+  function hasBounceBy(applicationId, cutoffKey) {
+    return entries.some(function (e) { return e.kind === "bounce" && e.app.id === applicationId && e.p.key <= cutoffKey; });
+  }
+  function latestOutcomeBy(applicationId, cutoffKey) {
+    var replies = entries.filter(function (e) { return e.kind === "reply" && e.app.id === applicationId && e.p.key <= cutoffKey; });
+    replies.sort(function (a, b) { return a.p.ts - b.p.ts; });
+    return replies.length ? replies[replies.length - 1].result : null;
+  }
+  function statsFor(list, cutoffKey) {
+    cutoffKey = cutoffKey || parts(DATA.generated_at).key;
     var s = { sent: 0, replies: 0, respApps: {}, pos: {}, rej: {}, wait: 0, err: {}, old: 0 };
     list.forEach(function (e) {
-      if (e.kind === "sent") { s.sent++; if (e.app.outcome === "no_response") s.wait++; }
+      if (e.kind === "sent") { s.sent++; if (!hasReplyBy(e.app.id, cutoffKey) && !hasBounceBy(e.app.id, cutoffKey)) s.wait++; }
       else if (e.kind === "reply") {
         s.replies++; s.respApps[e.app.id] = 1;
         if (e.sentp && e.sentp.mkey !== e.p.mkey) s.old++;
-        if (e.app.outcome === "positive") s.pos[e.app.id] = 1; else if (e.app.outcome === "rejected") s.rej[e.app.id] = 1;
       } else if (e.kind === "bounce") s.err[e.app.id] = 1;
+    });
+    Object.keys(s.respApps).forEach(function (id) {
+      var outcome = latestOutcomeBy(id, cutoffKey);
+      if (outcome === "positive") s.pos[id] = 1; else if (outcome === "rejected") s.rej[id] = 1;
     });
     return { sent: s.sent, replies: s.replies, respApps: Object.keys(s.respApps).length, pos: Object.keys(s.pos).length, rej: Object.keys(s.rej).length, wait: s.wait, err: Object.keys(s.err).length, old: s.old };
   }
-  var limit = (DATA.quota && DATA.quota.limit) || 44;
-  var reservedBy = (DATA.quota && DATA.quota.reserved) || {};
-  var usedOverride = (DATA.quota && DATA.quota.used) || {};
-  function usedIn(mkey) { if (usedOverride[mkey] !== undefined) return usedOverride[mkey]; return entries.filter(function (e) { return e.kind === "sent" && e.p.mkey === mkey; }).length; }
+  var limit = DATA.quota && validCount(DATA.quota.limit) ? DATA.quota.limit : 44;
+  var reservedBy = DATA.quota && isRecord(DATA.quota.reserved) ? DATA.quota.reserved : {};
+  var usedOverride = DATA.quota && isRecord(DATA.quota.used) ? DATA.quota.used : {};
+  function usedIn(mkey) { return validCount(usedOverride[mkey]) ? usedOverride[mkey] : null; }
+  function reservedIn(mkey) { return validCount(reservedBy[mkey]) ? reservedBy[mkey] : null; }
   var nowKey = parts(DATA.generated_at).mkey;
 
   /* ---------- Controls ---------- */
@@ -300,6 +360,23 @@ td.time { font-family:var(--mono); white-space:nowrap; color:var(--muted); } td 
       inpQ = document.getElementById("f-search"), chipBox = document.getElementById("f-result");
   var years = [], monthsByYear = {};
   entries.forEach(function (e) { if (years.indexOf(e.p.y) < 0) years.push(e.p.y); (monthsByYear[e.p.y] = monthsByYear[e.p.y] || {})[e.p.mkey] = 1; });
+  function addMonthKey(key) {
+    if (!validMonthKey(key)) return;
+    var year = +key.slice(0, 4);
+    (monthsByYear[year] = monthsByYear[year] || {})[key] = 1;
+    if (years.indexOf(year) < 0) years.push(year);
+  }
+  addMonthKey(nowKey);
+  Object.keys(usedOverride).forEach(addMonthKey); Object.keys(reservedBy).forEach(addMonthKey);
+  var firstKnownMonth = validMonthKey(DATA.history_start_month) ? DATA.history_start_month : nowKey;
+  entries.forEach(function (e) { if (e.p.mkey < firstKnownMonth) firstKnownMonth = e.p.mkey; });
+  if (firstKnownMonth <= nowKey) {
+    var cursor = firstKnownMonth.split("-").map(Number), stop = nowKey.split("-").map(Number);
+    while (cursor[0] < stop[0] || (cursor[0] === stop[0] && cursor[1] <= stop[1])) {
+      addMonthKey(cursor[0] + "-" + pad(cursor[1]));
+      cursor[1]++; if (cursor[1] === 13) { cursor[1] = 1; cursor[0]++; }
+    }
+  }
   years.sort(function (a, b) { return b - a; });
 
   function fillSelect(sel, items, current) {
@@ -346,7 +423,8 @@ td.time { font-family:var(--mono); white-space:nowrap; color:var(--muted); } td 
   function rowCmp(sort) {
     return function (a, b) {
       if (sort === "res_good" || sort === "res_bad") {
-        var d = (RANK[a.result] - RANK[b.result]) * (sort === "res_good" ? 1 : -1); if (d) return d;
+        var ranks = sort === "res_good" ? RANK_GOOD : RANK_BAD;
+        var d = (ranks[a.result] === undefined ? 5 : ranks[a.result]) - (ranks[b.result] === undefined ? 5 : ranks[b.result]); if (d) return d;
       }
       if (sort === "date_asc") return a.p.ts - b.p.ts;
       return b.p.ts - a.p.ts;
@@ -357,12 +435,29 @@ td.time { font-family:var(--mono); white-space:nowrap; color:var(--muted); } td 
     list.forEach(function (e) { var y = (Y[e.p.y] = Y[e.p.y] || {}); var m = (y[e.p.mkey] = y[e.p.mkey] || {}); (m[e.p.key] = m[e.p.key] || []).push(e); });
     return Y;
   }
+  function appendEmptyMonth(out, mkey) {
+    var block = el("section", "month");
+    block.appendChild(el("h3", "", monthLabel(mkey)));
+    var stats = el("div", "mstats");
+    ["c_sent", "c_replies", "c_resp_apps", "c_pos", "c_rej", "c_wait", "c_err", "c_old"].forEach(function (key) { stats.appendChild(mstat(0, t(key))); });
+    var used = usedIn(mkey), reserved = reservedIn(mkey);
+    var quotaKnown = used !== null && reserved !== null;
+    stats.appendChild(mstat(quotaKnown ? used + " / " + reserved + " / " + Math.max(0, limit - used - reserved) : "— / — / —", t("q_used") + " / " + t("q_reserved") + " / " + t("q_left")));
+    block.appendChild(stats);
+    if (!quotaKnown) block.appendChild(el("p", "empty", t("quota_unknown")));
+    block.appendChild(el("p", "empty", t("none")));
+    out.appendChild(block);
+  }
 
   function render() {
     var out = document.getElementById("out"); out.textContent = "";
     var list = visible();
     document.getElementById("count").textContent = t("showing").replace("{a}", list.length).replace("{b}", entries.length);
-    if (!list.length) { out.appendChild(el("div", "empty", t("none"))); return; }
+    if (!list.length) {
+      if (state.month !== "all") appendEmptyMonth(out, state.month);
+      else out.appendChild(el("div", "empty", t("none")));
+      return;
+    }
     var asc = state.sort === "date_asc";
     var Y = group(list);
     var ykeys = Object.keys(Y).map(Number).sort(function (a, b) { return asc ? a - b : b - a; });
@@ -370,28 +465,33 @@ td.time { font-family:var(--mono); white-space:nowrap; color:var(--muted); } td 
     ykeys.forEach(function (y) {
       var yd = el("details", "year"); yd.open = true;
       var ys = el("summary"); ys.appendChild(el("h2", "", String(y)));
-      var yst = statsFor(entries.filter(function (e) { return e.p.y === y; }));
+      var yearCutoff = y === parts(DATA.generated_at).y ? parts(DATA.generated_at).key : y + "-12-31";
+      var yst = statsFor(entries.filter(function (e) { return e.p.y === y; }), yearCutoff);
       ys.appendChild(el("span", "sum", yst.sent + " " + t("day_sent") + " · " + yst.replies + " " + t("day_replies") + " · " + yst.pos + " " + t("c_pos").toLowerCase()));
       yd.appendChild(ys);
       var mkeys = Object.keys(Y[y]).sort(); if (!asc) mkeys.reverse();
       mkeys.forEach(function (mk) {
         var md = el("details", "month"); md.open = first; first = false; md.dataset.mk = mk;
         var ms = el("summary"); ms.appendChild(el("h3", "", monthLabel(mk)));
-        var all = entries.filter(function (e) { return e.p.mkey === mk; }); var st = statsFor(all);
-        var used = usedIn(mk), res = reservedBy[mk] || 0;
-        ms.appendChild(el("span", "sum", st.sent + " " + t("day_sent") + " · " + st.replies + " " + t("day_replies") + " · " + t("q_used").toLowerCase() + " " + used + "/" + limit));
+        var all = entries.filter(function (e) { return e.p.mkey === mk; });
+        var cutoffKey = mk === nowKey ? parts(DATA.generated_at).key : monthEndKey(mk);
+        var st = statsFor(all, cutoffKey);
+        var used = usedIn(mk), res = reservedIn(mk), quotaKnown = used !== null && res !== null;
+        var quotaText = quotaKnown ? used + "/" + limit : "—/" + limit;
+        ms.appendChild(el("span", "sum", st.sent + " " + t("day_sent") + " · " + st.replies + " " + t("day_replies") + " · " + t("q_used").toLowerCase() + " " + quotaText));
         md.appendChild(ms);
         var stats = el("div", "mstats");
         stats.appendChild(mstat(st.sent, t("c_sent"))); stats.appendChild(mstat(st.replies, t("c_replies"))); stats.appendChild(mstat(st.respApps, t("c_resp_apps")));
         stats.appendChild(mstat(st.pos, t("c_pos"))); stats.appendChild(mstat(st.rej, t("c_rej"))); stats.appendChild(mstat(st.wait, t("c_wait")));
         stats.appendChild(mstat(st.err, t("c_err"))); stats.appendChild(mstat(st.old, t("c_old")));
-        stats.appendChild(mstat(used + " / " + res + " / " + Math.max(0, limit - used - res), t("q_used") + " / " + t("q_reserved") + " / " + t("q_left")));
+        stats.appendChild(mstat(quotaKnown ? used + " / " + res + " / " + Math.max(0, limit - used - res) : "— / — / —", t("q_used") + " / " + t("q_reserved") + " / " + t("q_left")));
         md.appendChild(stats);
+        if (!quotaKnown) md.appendChild(el("p", "empty", t("quota_unknown")));
         var dkeys = Object.keys(Y[y][mk]).sort(); if (!asc) dkeys.reverse();
         dkeys.forEach(function (dk) {
           var rows = Y[y][mk][dk].slice().sort(rowCmp(state.sort));
           var day = el("div", "day"); var h = el("h4", "", dayLabel(dk));
-          var ds = statsFor(rows); var bits = [];
+          var ds = statsFor(rows, dk); var bits = [];
           if (ds.sent) bits.push(ds.sent + " " + t("day_sent")); if (ds.replies) bits.push(ds.replies + " " + t("day_replies")); if (ds.err) bits.push(ds.err + " " + t("day_errors"));
           h.appendChild(el("small", "", bits.join(" · "))); day.appendChild(h);
           var wrap = el("div", "tscroll"), tb = el("table"), th = el("thead"), hr = el("tr");
@@ -437,9 +537,15 @@ td.time { font-family:var(--mono); white-space:nowrap; color:var(--muted); } td 
     else meta.appendChild(el("span", "pill ok", t("fresh")));
     document.getElementById("demo-note").hidden = !DATA.demo;
     // quota of the snapshot month
-    var used = usedIn(nowKey), res = reservedBy[nowKey] || 0, left = Math.max(0, limit - used - res);
-    var bar = document.getElementById("quota-bar"); bar.children[0].style.width = (used / limit * 100) + "%"; bar.children[1].style.width = (res / limit * 100) + "%";
-    var txt = monthLabel(nowKey) + " — " + t("q_used") + ": " + used + " · " + t("q_reserved") + ": " + res + " · " + t("q_left") + ": " + left + " (" + limit + ")";
+    var used = usedIn(nowKey), res = reservedIn(nowKey), bar = document.getElementById("quota-bar"), txt;
+    if (used === null || res === null) {
+      bar.children[0].style.width = "0%"; bar.children[1].style.width = "0%";
+      txt = monthLabel(nowKey) + " — " + t("quota_unknown") + " (" + limit + ")";
+    } else {
+      var left = Math.max(0, limit - used - res);
+      bar.children[0].style.width = (used / Math.max(1, limit) * 100) + "%"; bar.children[1].style.width = (res / Math.max(1, limit) * 100) + "%";
+      txt = monthLabel(nowKey) + " — " + t("q_used") + ": " + used + " · " + t("q_reserved") + ": " + res + " · " + t("q_left") + ": " + left + " (" + limit + ")";
+    }
     document.getElementById("quota-text").textContent = txt; bar.setAttribute("aria-label", txt);
     // project navigation, only for the sample inside the repository
     var nav = document.getElementById("demo-nav");

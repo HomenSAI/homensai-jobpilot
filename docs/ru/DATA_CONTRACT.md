@@ -1,8 +1,8 @@
-# HomenS.AI JobPilot — контракт данных 1.4
+# HomenS.AI JobPilot — контракт данных 1.5
 
 [English](../../DATA_CONTRACT.md) | [Русский](DATA_CONTRACT.md)
 
-Контракт на файлы и порядок действий, которым следует ИИ-агент. **Программы нет: ничто из описанного здесь технически не принуждается.** Агент соблюдает контракт, а пользователь проверяет это сценариями приёмки. Дополняет AI_BUILD_SPEC.md; части системы описаны в [ARCHITECTURE.md](ARCHITECTURE.md). Не является разрешением отправлять письма.
+Контракт на файлы и порядок действий, которым следует ИИ-агент. Отдельного приложения для поиска/отправки нет; процедуры журнала, квоты, согласий и почты не обеспечиваются независимым движком. Страница статистики содержит код только для проверки и показа снимка и не выполняет описанные здесь действия. Агент соблюдает контракт, пользователь проверяет его сценариями приёмки. Документ дополняет AI_BUILD_SPEC.md; части системы описаны в [ARCHITECTURE.md](ARCHITECTURE.md) и [OPERATING_REQUIREMENTS.md](OPERATING_REQUIREMENTS.md). Не является разрешением отправлять письма.
 
 Автор: Serhii Khomenko / HomenS.AI · https://homensai.com/ · документация: CC BY-NC 4.0.
 
@@ -24,7 +24,7 @@
 | Каталоги заявок: `firm.json`, `vacancy.json`, `schedule.json` | Читаемые проекции связанных записей; не независимые источники статуса |
 | Каталоги заявок: `inf.txt` | Добавляемый человекочитаемый журнал с event_id; старый текст не переписывается |
 | `profiles/<profile_id>/reports/<YYYY-MM>/` | Отчеты, manifest и ревизии только этого профиля |
-| `dashboard/profiles/<profile_id>/summary.js` и `index.html` | Файл данных выбранного профиля и неизменённая копия шаблона страницы; dashboard/index.html — локальное меню |
+| `dashboard/profiles/<profile_id>/summary.js`, `index.html`, `readiness.html` | Снимок статистики, неизменённая копия шаблона и приватная статическая страница готовности; dashboard/index.html — локальное меню с двумя ссылками на профиль |
 
 Новые события сначала надежно записываются в журнал, затем обновляются проекции. Изменение проекции без события запрещено. Коррекция факта/классификации — новое событие с `supersedes_event_id`, а не исправление прошлого. Повторная проекция не дублирует строки inf.txt: проверять event_id и почтовой dedup_key.
 
@@ -93,12 +93,57 @@
 | Языки | `languages.cv_language`, `cover_letter_language`, `email_language`, `report_language`; `localization.ui_language` | спрашивается: четыре отдельных ответа; язык разговора — предпочитаемый язык из A2 |
 | Что ищем | `search.goal_types` (`job`, `ausbildung`, `internship`, `probearbeit`, `temporary_work`), `roles`, `industries`, `excluded`, `employment_type`, `earliest_start_date` | спрашивается |
 | Где и как | `search.start_location` (место, где живёт человек; используется только для маршрутов), `radius_km`, `transport_modes` (`car`, `train`, `bus_tram`, `bicycle`, `walk`: любая комбинация), `max_travel_minutes`, `max_transfers`, `max_walk_minutes`, `evening_return_required`, `priority_cities` | спрашивается |
-| Ритм | `schedule.cadence` (`immediate`, `allowed_workdays`, `every_second_allowed_workday`), `local_send_time`, `holiday_region`, `excluded_dates`, `holidays_verified` | ритм и время спрашиваются; регион праздников предлагается по месту и проверяется по источнику |
-| Безопасные значения по умолчанию | `quota` (44 на человека в месяц), `mail.mode` = `draft_only`, `subject_max_unicode_characters` = 50, `thank_you_enabled`, `period_question_enabled`, `replacement_auto_send_enabled` = false, `privacy.include_sensitive_facts` = false, `report.market_appendix_required` = true | не спрашиваются; человек меняет их только позже и осознанно |
+| Ритм | `schedule.prepare_month_at_start`, `schedule.cadence` (`immediate`, `allowed_workdays`, `every_second_allowed_workday`, `every_n_calendar_days`, `every_n_allowed_workdays`, `selected_weekdays`), `interval_days`, ISO-дни недели, `local_send_times`, `max_per_run`, `inter_message_delay_minutes`, `daily_check_time`, `holiday_region`, `excluded_dates`, `holidays_verified`, `missed_send_policy` | спрашиваются ритм, размер запуска, интервал и время; ежедневная проверка по умолчанию — 16:00 местного времени; регион праздников предлагается по месту и проверяется по источнику |
+| Почта | `mail.connection_mode` (`approved_connector`, `built_in_browser` или `manual_fallback`; null, пока способ не выбран), account_id, `mail.mode`, правила благодарности/вопроса о сроке/замены | пользователь выбирает доступный способ; секреты и токены браузера не хранятся в проекте |
+| Безопасные значения по умолчанию | `quota` (44 на человека в месяц), `mail.mode` = `draft_only`, `subject_max_unicode_characters` = 50, `thank_you_enabled` = false, `period_question_enabled` = false, `replacement_auto_send_enabled` = false, `privacy.include_sensitive_facts` = false, `report.market_appendix_required` = true, `report.daily_email_enabled` = false | не спрашиваются; человек меняет их только позже и осознанно |
 | Согласия | `privacy.cloud_processing_consent_ref`, `mail.consent_ref` | идентификатор строки журнала, где записано согласие (A2, A8) |
-| Отчёт | `report.template_relative_path` | файл, который человек положил в `Положите_сюда/3_Шаблон_отчёта/`, или null |
+| Отчёт | `report.template_relative_path`, `report.daily_email_to` | путь к шаблону или null; адрес ежедневной доставки задаётся только с отдельным согласием |
 
 База знаний (§3a) принадлежит человеку и общая для всех его профилей; в `profile.json` лежат только настройки этого направления поиска. Пока значение неизвестно, оно остаётся `null` или пустым списком; его никогда не заполняют догадкой.
+
++## 3c. Журнал: формат строки, типы событий и подсчёт
+
+**Строка журнала** — один JSON-объект на строку. Ключи верхнего уровня идут в порядке: `schema_version`, `sequence`, `action_id`, `person_id`, `recorded_at`, `events`, `result`. У каждого события есть `event_id`, `type`, `occurred_at` и поля его типа. `action_id` и `event_id` — UUID; `person_id`, `profile_id`, `application_id`, `target_id`, `plan_id` и `send_attempt_id` — постоянные читаемые ID из §2. Первый номер строки нового журнала — sequence 1. Пример отправки: `examples/journal.example.jsonl`.
+
+**Каталог событий.** Использовать только эти имена; жирным выделены обязательные поля.
+
+| Тип | Поля | Когда записывается |
+|---|---|---|
+| `person_created` | **display_name**, **timezone** (может быть null до настройки поиска) | создана папка человека |
+| `consent_granted` / `consent_revoked` | **consent_id**, **scope** (`cloud_processing`, `mail_reading`, `mail_sending_profile`, `send_once`), profile_id, account_id, package_manifest_sha256 для разового согласия, text_shown | пользователь дал или отозвал согласие |
+| `story_saved` | **file** | сохранён рассказ |
+| `documents_listed` | **count**, **files** | просмотрена папка документов; пустая папка даёт count 0 |
+| `knowledge_base_updated` | **file**, **section**, **fact_ids**, **sha256** | после изменения базы знаний |
+| `profile_created` / `profile_changed` | **profile_id**, **file**, changed_fields | сохранён профиль поиска |
+| `target_registered` / `target_changed` | **profile_id**, **target_id**, **file**, **source_revision**, changed_fields | добавлена или изменена карточка фирмы/вакансии |
+| `route_checked` | **profile_id**, **target_id**, **checked_at**, **mode** (car/public_transport), result, source_url или `route_unverified` | маршрут проверен либо честно оставлен неподтверждённым |
+| `package_registered` | **application_id**, **package_version**, **relative_path**, **manifest** (имя/размер/SHA-256), **recipient**, **recipient_source**, **channel**, **subject** | сохранён полный пакет конкретной заявки |
+| `package_approved` | **application_id**, **package_version**, **manifest_sha256**, **mode**, consent_id | пользователь одобрил именно эту версию пакета |
+| `approval_revoked` | **application_id**, **reason** | пакет изменился после одобрения и вернулся на проверку |
+| `plan_committed` / `plan_changed` / `plan_cancelled` | **profile_id**, **plan_id**, **plan_version**, **file**, changed_fields, affected_attempt_ids | утверждён, изменён или отменён месячный план; соответствующие резервы меняются в том же действии |
+| `quota_reserved` | **application_id**, **send_attempt_id**, **reserved_month** | выделен слот (вместе с send_started или при утверждении расписания) |
+| `send_started` | **application_id**, **send_attempt_id**, **account_id**, **recipient**, **quota_applies**, outbox | непосредственно перед единственным внешним вызовом |
+| `sent_verified` | **application_id**, **send_attempt_id**, **gmail_message_id**, **thread_id**, **recipient**, company, city, role, channel | отправка найдена в Gmail «Отправленные» |
+| `gmail_scheduled_verified` | **application_id**, **send_attempt_id**, **account_id**, **recipient**, **scheduled_at**, **time_zone**, **subject**, locator/remote id, manifest_sha256 | точное письмо найдено в Gmail «Запланированные»; это ещё не отправка |
+| `schedule_changed` / `schedule_cancelled` / `schedule_uncertain` | **application_id**, **send_attempt_id**, **evidence**, prior_slot, new_slot | подтверждён перенос/отмена или остался неопределённый исход |
+| `failed_before_send` / `send_uncertain` | **application_id**, **send_attempt_id**, **evidence** | доказана неподанная заявка / исход неизвестен |
+| `quota_consumed` | **application_id**, **send_attempt_id**, **consumed_month**, reservation_closed_month | вместе с sent_verified; ручная подача отмечается source=person_reported |
+| `quota_released` | **application_id**, **send_attempt_id**, **released_month**, reservation_closed_month | вместе с failed_before_send |
+| `send_blocked` | **application_id**, **reason_codes** | пользователь запросил отправку, но проверка её заблокировала |
+| `mail_received` | **gmail_message_id** (null только для person_reported), rfc_message_id, thread_id, **classification**, linked_application_id/null, outcome, delivery, source, snippet до 200 знаков | прочитано новое письмо |
+| `mail_checked` | **coverage** (complete/incomplete), **position** | сохранено покрытие проверки всех страниц |
+| `thank_you_sent` / `period_question_sent` | поля send_started + sent_verified, **reply_to_gmail_message_id** | подтверждено follow-up письмо; резюме слот не расходует |
+| `replacement_prepared` | **application_id**, **replaces_application_id**, **replacement_chain_id** | подготовлена одна замена после подтверждённого постоянного bounce |
+| `statistics_updated` | **profile_id**, **snapshot_id**, **source_revision**, **file** | создан и проверен summary.js |
+| `backup_created` / `backup_failed` | **snapshot_id** или **operation_id**, **source_revision**, **manifest**, evidence | локальный архив проверен либо зафиксирован сбой |
+| `restore_started` / `restore_completed` | **restore_id**, **source_snapshot_ids**, **result**, **missing_items** | восстановление выполнено в отдельной копии без внешних действий |
+| `report_built` / `daily_report_sent` | **profile_id**, **period**, **revision**, **files**, recipient/message id для подтверждённого письма | отчёт построен либо письмо пользователю найдено в SENT |
+
+Все поля месяца используют местное время человека из person.json и записываются как YYYY-MM. `scheduled` не является `sent_verified`. Входящие ответы и DSN учитываются по времени получения и не меняют исходную дату заявки.
+
+**Подсчёт квоты:** used(M) — число событий quota_consumed с consumed_month=M; reserved(M) — резервы reserved_month=M минус закрытые события quota_consumed/quota_released; remaining(M) = limit − used − reserved. Не считать по строкам одного профиля. При неполном журнале/аккаунте или неизвестном исходе квота считается неподтверждённой, а не нулевой.
+
+**Повтор действия:** action_id возвращает прежний результат, если запрос совпадает; при изменении состояния агент сначала перечитывает журнал. Email deduplication: один event per account_id + Gmail Message-ID. Thank-you: account_id + входящий Gmail Message-ID + action type. Вопрос о сроке: account_id + thread_id + action type.
 
 ## 4. Состояния заявки и результат — раздельные оси
 
@@ -128,7 +173,7 @@ discovered → drafting → ready_for_review → approved → scheduled
 
 ## 5. Квота 44 и восстановление отправки
 
-Лимит относится к управляемому процессу JobPilot, не является ограничением самого Gmail. Все управляемые подачи проходят одну и ту же записанную проверку перед отправкой и резерв слота; отправка в обход них не входит в разрешённый сценарий. Поскольку программы нет, технический запрет невозможен: лимит соблюдается тем, что агент следует этому порядку. Поэтому полностью автоматическая отправка по умолчанию выключена и включается только для профиля, пользователь которого принял это ограничение, после того как сценарии отправки из ACCEPTANCE_TESTS.md проверены в среде этого пользователя. Отправки вручную или из независимой копии можно учесть только при внесении или сверке пользователем; система не обещает видеть неизвестные ей действия.
+Лимит относится к управляемому процессу JobPilot, не является ограничением самого Gmail. Все управляемые подачи проходят одну и ту же записанную проверку перед отправкой и резерв слота; отправка в обход них не входит в разрешённый сценарий. Отдельного движка квоты и почтовых действий нет, поэтому лимит соблюдается процедурно агентом. Статистическая страница может обнаружить отсутствующий общий итог и показать квоту как недоступную; запрещено вычислять её по строкам только отображаемого профиля. Автоматическая отправка по умолчанию выключена и включается только после проверки сценариев в среде пользователя. Отправки вручную или из независимой копии можно учесть только при внесении или сверке пользователем; система не обещает видеть неизвестные ей действия.
 
 Файловый контракт предполагает **одного писателя на человека в каждый момент**. Все изменения его профилей и квоты записываются под одним `journal/writer.lock`. Перед записью агент создаёт файл с run_id и временем; если файл уже есть и он не его, агент останавливается и спрашивает пользователя, работает ли ещё другой чат. Блокировка охватывает только короткий момент записи; поиск, формирование документов и внешние вызовы выполняются после её снятия. Второй чат при существующей блокировке отправку не начинает. Блокировка не удаляется только из-за возраста: сначала пользователь подтверждает, что её владелец больше не работает, а незавершённые операции сверяются. Блокировка — соглашение и защищает, только если ему следует каждый чат.
 
@@ -159,7 +204,7 @@ discovered → drafting → ready_for_review → approved → scheduled
 
 ## 7. Календарь и поиск
 
-Настройки хранят `timezone`, local_send_time, cadence, excluded_weekdays, holiday_region/excluded_dates, report_cutoff_time. Праздники проверяются для выбранной страны/региона и года с источником; пустой список означает «еще не проверено», а не «праздников нет».
+Настройки хранят `timezone`, cadence и интервал (если выбран), разрешённые дни недели, `local_send_times`, `max_per_run`, `inter_message_delay_minutes`, исключённые даты/дни, регион праздников, язык отчёта и время среза отчёта. Ежедневная проверка почты по умолчанию назначается на 16:00 местного времени. Праздники проверяются для выбранной страны/региона и года с источником; пустой список означает «ещё не проверено», а не «праздников нет».
 
 Для равномерного распределения N заявок по D разрешенным дням: базово floor(N/D) на день, остаток разнести по месяцу с минимальной разницей между дневными количествами. При N>D несколько подач в один день допускаются только отдельными персонализированными операциями; точные времена показать пользователю, не выполнять одну массовую рассылку. Плановые резервы учитываются в месячной доступности. Пропущенные дни не нагонять без принятого нового плана.
 
@@ -186,13 +231,17 @@ discovered → drafting → ready_for_review → approved → scheduled
 
 ## 9. Контракт статического HTML
 
-`dashboard/profiles/<profile_id>/summary.js` (текст `window.JP_DATA = ` и один объект JSON) содержит schema_version, source_revision, generated_at, last_mail_check_at, timezone, profile_id, person quota и строки таблиц. Для каждой строки только разрешенные статистические поля; без тел писем, домашнего адреса, исходных CV и секретов. Страница статистики (`dashboard_template/index.html`) читает два списка: `applications` (id, company, city, role, channel, `sent_at`, `outcome`, необязательный `bounce_at`) и `responses` (id, `application_id`, `received_at`, `kind`, note), а также `quota` (лимит, резервы по месяцам). Значения `outcome` и `kind`: `positive`, `rejected`, `no_response`, `needs_user`, `delivery_error`. Страница показывает их как «успешно», «неуспешно», «ожидание», «нужно ваше решение» и «ошибка доставки». Страницы разных профилей не смешивают данные; dashboard/index.html — локальное меню ссылок. Один расчет reporting из зафиксированной sequence питает HTML, DOCX и PDF.
+`dashboard/profiles/<profile_id>/summary.js` (текст `window.JP_DATA = ` и один объект JSON) содержит `schema_version`, `snapshot_id`, `source_revision`, `generated_at`, `last_mail_check_at`, `timezone`, `profile_id`, `history_start_month`, общую квоту человека и строки таблиц. Квота содержит `limit`, `used` и `reserved` — проверенные totals человека по месяцам, включая нулевые месяцы в покрываемом периоде. Если общий `used` отсутствует или невалиден, страница показывает «недоступно», а не оценивает его по строкам профиля. Для строк передаются только разрешённые поля; не передавать тела писем, домашний адрес, оригиналы CV или секреты. Страница (`dashboard_template/index.html`) читает `applications` (id, company, city, role, channel, `sent_at`, `outcome`, необязательные `bounce_at`/`bounce_note`) и `responses` (id, `application_id`, `received_at`, `kind`, note). Не включать автоответы и DSN в `responses`.
+
+Перед расчётом статистическая страница проверяет типы корневого объекта, обязательные массивы, даты, часовой пояс, уникальность ID и связи response→application. При проблеме показывает понятную диагностику без частичных или выдуманных чисел. Календарь месяцев строится от `history_start_month` до месяца снимка и включает месяцы без событий; планы/резервы могут добавить будущие месяцы. Итоги исторического месяца считаются на конец этого месяца: поздние ответы не переписывают старую историю. Успех/отказ среди заявок с ответами — последнее содержательное состояние на конец выбранного месяца; ожидание — отправки месяца без ответа и постоянной недоставки на дату среза. Доставка отображается отдельно от отказа. Ошибка общей квоты показывается как неизвестная, а не как ноль. Страницы профилей не смешиваются; `dashboard/index.html` — локальное меню со ссылками на статистику и готовность. Один расчёт из зафиксированной `source_revision` питает HTML, DOCX и PDF.
 
 `summary.js` содержит те же `snapshot_id` и `source_revision`, что и отчёты этого снимка. Агент записывает файл целиком (временный файл, проверка, что он читается как корректный, затем замена); файл страницы `index.html` — копия шаблона, его не правят. Если `summary.js` нет или он повреждён, страница сообщает об этом. Старый файл не знает о более поздней неудачной проверке: он может показать только последнее обновление и предупреждение по возрасту. Не обещать, что он определит пропущенную проверку без запуска агента.
 
 Значения из вакансий/писем выводятся через textContent, не innerHTML. При встраивании JSON в script блок экранировать `<`, `>` и `&` (в частности `</script>`); не использовать eval. Ссылки разрешать только по проверенному протоколу и корню пути. Не выполнять сетевых запросов; внешние источники открываются только по явному клику пользователя. Сортировка сравнивает даты ISO/epoch, не строки DD.MM.YYYY. Страница группирует строки по году, месяцу и дню в часовом поясе снимка, сортирует по дате или по результату (сначала успешные или сначала неуспешные) и фильтрует по году, месяцу, результату и тексту. Предусмотреть клавиатуру, подписи элементов, заголовки таблиц, пустые состояния, печать и маркер актуальности.
 
 ## 10. Граница готовности
+
+Страницу готовности агент формирует как статический просмотр подтверждённого состояния настройки. Отдельно показывать готовность системы и готовность документов конкретного человека/профиля. Для каждого пункта хранить применимость, статус, время проверки, следующий шаг и безопасную относительную ссылку. Процент рассчитывать только по применимым обязательным пунктам; наличие пути не означает завершение. Страница только для просмотра, не содержит сами личные документы и не отправляет почту/не редактирует журнал. Проверять, что ссылки остаются внутри разрешённой папки человека. Локальные ссылки недоступны извне с телефона; в почтовый отчёт отправлять только согласованный снимок, не выдавать локальный путь за удалённую ссылку.
 
 Этот контракт описывает файлы и порядок действий; он не является технической защитой блокировок, журнала, квоты или Gmail. Перед реальной отправкой нужно вручную пройти сценарии ACCEPTANCE_TESTS.md на синтетических данных, отдельно подтвердить почтовый инструмент и проверить восстановление. Правило, которому следует только агент, описывается как порядок действий, а не как техническая защита.
 

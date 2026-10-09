@@ -1,14 +1,14 @@
-# HomenS.AI JobPilot — Architecture 1.4
+# HomenS.AI JobPilot — Architecture 1.5
 
 [English](ARCHITECTURE.md) | [Русский](docs/ru/ARCHITECTURE.md)
 
-7 October 2026 · Author of the idea and developer: Serhii Khomenko / HomenS.AI · https://homensai.com/ · Documentation: CC BY-NC 4.0.
+9 October 2026 · Author of the idea and developer: Serhii Khomenko / HomenS.AI · https://homensai.com/ · Documentation: CC BY-NC 4.0.
 
-Status: design. The system has **no program code**. It consists of rules written in documents and an AI agent that follows them and keeps plain files. This document supplements AI_BUILD_SPEC.md and DATA_CONTRACT.md. Servers, Docker, SQL and scripts are not used.
+Status: design and operating specification. The workflow has no separate job-search or mail-sending application; it consists of an AI agent, written procedures and local files. The statistics view contains HTML/CSS/JavaScript that validates, sorts, filters and displays a snapshot written by the agent. It does not perform research, send mail or modify the journal. This document supplements AI_BUILD_SPEC.md, DATA_CONTRACT.md and OPERATING_REQUIREMENTS.md. Servers, Docker and SQL are not used.
 
 ## 1. Core decision: rules and files
 
-The system consists of three things: an **AI agent** (Codex or Claude Code), **written rules** and a **data folder**. The agent researches, interprets information, writes text and talks to the user. It also keeps the records: it follows the rules (`AGENTS.md`, `CLAUDE.md`, `TODO_FOR_AI.md`, this document and DATA_CONTRACT.md), writes JSON, JSONL and Markdown files, and updates the statistics page by replacing its data block. Every file is plain text that a person can open and read.
+The system consists of an **AI agent** (Codex or Claude Code), **written rules**, a **data folder** and a local statistics view. The agent researches, interprets information, writes documents and talks to the user. It follows `AGENTS.md`, `CLAUDE.md`, `TODO_FOR_AI.md`, `OPERATING_REQUIREMENTS.md`, this document and DATA_CONTRACT.md; it maintains JSON, JSONL, Markdown and approved document files. The statistics view reads the agent's data snapshot and only presents it. Every record remains a readable file.
 
 **What follows from this.** The safeguards of the system — the limit of 44 submissions, “never send twice”, “one writer at a time”, “nothing is sent without permission” — are *procedures that the agent must follow*, not technical locks. Nothing in the system can physically stop an agent that ignores a rule. For this reason:
 
@@ -211,7 +211,7 @@ The journal grows by a few lines a day, which plain files handle easily. No inde
 
 ## 10. Format changes and the first release boundary
 
-The documentation version is 1.4; `schema_version` in the examples stays 1.2 because the file formats did not change. Older 1.1 data is not migrated automatically: a migration first makes a copy and a report, matches overlapping records of the two old journals by operation_id and then writes the single journal. Originals stay available. No real JobPilot data exists at present, so this revision changes only documents and examples.
+The documentation version is 1.5.0; settings, workspace and statistics snapshots use `schema_version` 1.3 and workspace `format_version` 1.5. The append-only journal keeps its 1.2 line layout; the added event names are additive. Existing user folders are never overwritten. A migration first makes a separate copy and a report, preserves old IDs and records, then asks the user to approve any changes. Public examples contain synthetic data only.
 
 The first trial is a full pass on synthetic data, done by hand in a chat: profile → one target → registered package → plan → simulated reply → neutral report and offline HTML. Reading Gmail and controlled sending are added separately. The checks for interrupted work and for two chats at once come before any scheduled sending. Automatic search never implies a complete or guaranteed view of the market.
 

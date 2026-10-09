@@ -1,18 +1,44 @@
 /* HomenS.AI JobPilot — sample data for the statistics page (SYNTHETIC: invented companies).
-   A real profile gets its own summary.js, written by the agent. (c) 2026 Serhii Khomenko / HomenS.AI, https://homensai.com/ */
+   A real profile gets its own summary.js, written by the agent.
+   Code: PolyForm Noncommercial 1.0.0. Documentation: CC BY-NC 4.0.
+   © 2026 Serhii Khomenko / HomenS.AI · https://homensai.com/ */
 window.JP_DATA = {
- "schema_version": "1.2",
+ "schema_version": "1.3",
  "snapshot_id": "sample-0001",
  "source_revision": 128,
  "generated_at": "2026-10-07T18:00:00Z",
  "last_mail_check_at": "2026-10-07T17:42:00Z",
  "timezone": "Europe/Berlin",
+ "history_start_month": "2025-12",
  "profile_id": "sample-profile",
  "demo": true,
  "default_language": "en",
  "quota": {
   "limit": 44,
+  "used": {
+   "2025-12": 5,
+   "2026-01": 0,
+   "2026-02": 0,
+   "2026-03": 0,
+   "2026-04": 0,
+   "2026-05": 0,
+   "2026-06": 0,
+   "2026-07": 0,
+   "2026-08": 15,
+   "2026-09": 22,
+   "2026-10": 9
+  },
   "reserved": {
+   "2025-12": 0,
+   "2026-01": 0,
+   "2026-02": 0,
+   "2026-03": 0,
+   "2026-04": 0,
+   "2026-05": 0,
+   "2026-06": 0,
+   "2026-07": 0,
+   "2026-08": 0,
+   "2026-09": 0,
    "2026-10": 4
   }
  },
