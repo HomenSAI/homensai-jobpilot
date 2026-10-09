@@ -1,32 +1,75 @@
 <!doctype html>
+<!-- © 2026 Serhii Khomenko / HomenS.AI · https://homensai.com/ · CC BY-NC 4.0 (documentation), PolyForm Noncommercial 1.0.0 (code).
+     Readiness page template. Static and read-only: no script, no network request, no mail, no journal writes.
+     The AI agent sets <html lang> to the person's interface language (en, ru or de) and fills the double-brace placeholders listed below from its verified
+     setup-state file. Every visible label exists in en, ru and de; the page shows only the chosen language (spans with classes l-en, l-ru, l-de).
+     Placeholders (see the agent notes for the value rules):
+       {{READY_LABEL}}  "42%" or "—" (not determined)          {{READY_PERCENT}}  whole number 0-100 (floor, never rounded up), or 0
+       {{NEEDLE_DEGREES}}  -90 + 1.8 x READY_PERCENT (-90 when not determined)   {{GAUGE_DASH}}  same number as READY_PERCENT
+       {{STATUS_COLOR}}  red | yellow | green (one value; it drives the gauge colour, the lights and the status text)
+       {{DONE_COUNT}} / {{REQUIRED_COUNT}}  verified required applicable steps / all required applicable steps
+       {{WARNING_EN}} {{WARNING_RU}} {{WARNING_DE}}  optional warning text (delete the whole <p class="warn-box"> element when there is none)
+       {{LAST_CHECK_AT}}  time of the last successful check, {{UPDATED_AT}}  time this page was written (plain text with the zone)
+       {{SYSTEM_READINESS_ROWS}}  <tr> rows of the system block         {{PROFILE_DOCUMENT_ROWS}}  <tr> rows of the profile block
+       {{NEXT_ACTION_EN}} {{NEXT_ACTION_RU}} {{NEXT_ACTION_DE}}  the next recommended action in three languages
+       {{STATISTICS_HREF}} {{OVERVIEW_HREF}}  relative links to the statistics page and the project guide -->
 <html lang="en">
-<!-- The agent sets lang to the person's interface language (en, ru or de). Every label exists in all three languages; only the chosen one is shown. -->
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>HomenS.AI JobPilot | Setup readiness</title>
 <style>
-:root{color-scheme:light dark;--bg:#edf1f4;--panel:#f9fbfc;--ink:#14212e;--muted:#44525f;--line:#d9e0e6;--blue:#1e4f8a;--teal:#147283;--red:#b3261e;--amber:#9a5b00;--green:#1f7a46}
-@media(prefers-color-scheme:dark){:root{--bg:#111922;--panel:#1a2632;--ink:#eef4f7;--muted:#b6c1c9;--line:#33424e}}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 "Segoe UI",Arial,sans-serif}
+:root{color-scheme:light dark;--bg:#edf1f4;--panel:#f9fbfc;--ink:#14212e;--muted:#44525f;--line:#d9e0e6;--blue:#1e4f8a;--teal:#147283;--red:#b3261e;--orange:#d9622b;--amber:#d39c12;--warn:#9a5b00;--green:#1f7a46;--ok:#1f7a46}
+@media(prefers-color-scheme:dark){:root{--bg:#111922;--panel:#1a2632;--ink:#eef4f7;--muted:#b6c1c9;--line:#33424e;--blue:#6f9fd8;--red:#f08a83;--orange:#f0a070;--amber:#e6bd4a;--warn:#e0a548;--green:#5fc388;--ok:#5fc388}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 "Segoe UI",Arial,sans-serif;overflow-x:hidden}
 header,main,footer{max-width:1100px;margin:auto;padding:20px}
-header{display:flex;justify-content:space-between;gap:16px;align-items:center;border-bottom:1px solid var(--line)}
-a{color:var(--blue);overflow-wrap:anywhere}main{padding-top:30px}.card{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:22px;margin:18px 0}
+header{display:flex;justify-content:space-between;gap:16px;align-items:center;border-bottom:1px solid var(--line);flex-wrap:wrap}
+a{color:var(--blue);overflow-wrap:anywhere}
+main{padding-top:30px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:22px;margin:18px 0}
+h1{font-size:1.6rem;margin:0 0 .4rem}h2{font-size:1.25rem;margin:0 0 .5rem}
+.small{color:var(--muted);font-size:.92rem}
 .toprow{display:grid;grid-template-columns:minmax(240px,360px) 1fr;gap:24px;align-items:center}
-.gauge{width:min(100%,340px);margin:auto;text-align:center}.gauge svg{width:100%;height:auto;overflow:visible}
+.gauge{width:min(100%,340px);margin:auto;text-align:center}
+.gauge svg{width:100%;height:auto;overflow:visible}
 .gauge-track{fill:none;stroke:var(--line);stroke-width:15;stroke-linecap:round}
 .gauge-zone{fill:none;stroke-width:15;stroke-linecap:butt}
-.gauge-progress{fill:none;stroke:var(--status-color);stroke-width:11;stroke-linecap:round;stroke-dasharray:{{GAUGE_DASH}} 100}
+.gauge-progress{fill:none;stroke:var(--status-color);stroke-width:11;stroke-linecap:round}
+.needle-g{transform-origin:100px 100px;transition:transform .9s ease-out}
 .needle{stroke:var(--ink);stroke-width:3;stroke-linecap:round}
-.hub{fill:var(--ink)}.percent{font-size:25px;font-weight:700;fill:var(--ink)}
-.traffic{display:flex;gap:10px;align-items:center;margin:12px 0}.light{width:18px;height:18px;border-radius:50%;background:var(--line);display:inline-block}.light.red.active{background:var(--red)}.light.yellow.active{background:#d39c12}.light.green.active{background:var(--green)}
+.hub{fill:var(--ink)}
+.percent{font-size:26px;font-weight:700;fill:var(--ink)}
+.gauge-caption{margin:.3rem 0 0;font-weight:600;color:var(--ink)}
 .status-red{--status-color:var(--red)}.status-yellow{--status-color:var(--amber)}.status-green{--status-color:var(--green)}
-table{border-collapse:collapse;width:100%;margin-top:12px}th,td{border:1px solid var(--line);padding:10px;text-align:left;vertical-align:top}th{background:var(--line)}
-.badge{font-weight:700}.done{color:var(--green)}.pending{color:var(--amber)}.blocked{color:var(--red)}
-.links{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:10px}.linkcard{border:1px solid var(--line);border-radius:10px;padding:12px;background:var(--panel)}
-.small{color:var(--muted);font-size:.92rem}footer{border-top:1px solid var(--line);color:var(--muted);font-size:.9rem;margin-top:36px}
-@media(max-width:700px){.toprow{grid-template-columns:1fr}header{align-items:flex-start;flex-direction:column}th,td{padding:7px}}
-@media print{body{background:#fff;color:#14212e}.card,.linkcard{break-inside:avoid}a{color:#14212e}}
+.traffic{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:12px 0}
+.lights{display:inline-flex;gap:6px;padding:6px;border:1px solid var(--line);border-radius:999px;background:var(--bg)}
+.light{width:18px;height:18px;border-radius:50%;background:var(--line);display:inline-block}
+.status-red .light.red{background:var(--red)}.status-yellow .light.yellow{background:var(--amber)}.status-green .light.green{background:var(--green)}
+.s-red,.s-yellow,.s-green{display:none;font-weight:700}
+.status-red .s-red,.status-yellow .s-yellow,.status-green .s-green{display:inline}
+.s-red{color:var(--red)}.s-yellow{color:var(--warn)}.s-green{color:var(--green)}
+.expl{display:none}.status-red .expl-red,.status-yellow .expl-yellow,.status-green .expl-green{display:block}
+.warn-box{border-left:4px solid var(--warn);padding:.5rem .9rem;background:var(--bg);border-radius:0 10px 10px 0;margin:.8rem 0}
+.done-msg{display:none;border-left:4px solid var(--green);padding:.5rem .9rem;background:var(--bg);border-radius:0 10px 10px 0;margin:.8rem 0}
+.status-green .done-msg{display:block}
+.modes{list-style:none;padding:0;margin:.5rem 0}
+.modes li{color:var(--muted);margin:.2rem 0}
+.modes li[aria-current="true"]{color:var(--ink);font-weight:700}
+.modes li[aria-current="true"]::after{content:"  ✓"}
+table{border-collapse:collapse;width:100%;margin-top:12px}
+th,td{border:1px solid var(--line);padding:10px;text-align:left;vertical-align:top}
+th{background:var(--line)}
+.st{white-space:nowrap;font-weight:700}
+.st.done{color:var(--ok)}.st.todo{color:var(--red)}.st.attn{color:var(--warn)}.st.na{color:var(--muted);font-weight:400}
+.missing{color:var(--muted);font-style:italic}
+.links-col a{display:inline-block;margin:2px 0}
+.nextbox{border:2px solid var(--blue);border-radius:12px;padding:14px 16px;margin-top:10px}
+.table-wrap{overflow-x:auto}
+footer{border-top:1px solid var(--line);color:var(--muted);font-size:.9rem;margin-top:36px}
+@media(max-width:700px){.toprow{grid-template-columns:1fr}header{align-items:flex-start;flex-direction:column}th,td{padding:7px}main{padding-top:18px}}
+@media(prefers-reduced-motion:reduce){.needle-g{transition:none}}
+@media print{body{background:#fff;color:#14212e}.card{break-inside:avoid}a{color:#14212e}}
 .l-ru,.l-de{display:none}
 html[lang="ru"] .l-en,html[lang="ru"] .l-de,html[lang="de"] .l-en,html[lang="de"] .l-ru{display:none}
 html[lang="ru"] .l-ru,html[lang="de"] .l-de{display:inline}
@@ -35,46 +78,71 @@ html[lang="ru"] .l-ru,html[lang="de"] .l-de{display:inline}
 <body>
 <header><strong>HomenS.AI JobPilot</strong><span><a href="{{STATISTICS_HREF}}"><span class="l-en">Open statistics</span><span class="l-ru">Открыть статистику</span><span class="l-de">Statistik öffnen</span></a> · <a href="{{OVERVIEW_HREF}}"><span class="l-en">Project guide</span><span class="l-ru">Руководство</span><span class="l-de">Anleitung</span></a></span></header>
 <main>
-<section class="card">
-<h1><span class="l-en">Your setup readiness</span><span class="l-ru">Готовность настройки</span><span class="l-de">Ihre Bereitschaft der Einrichtung</span></h1>
+
+<section class="card status-{{STATUS_COLOR}}" id="system-readiness" aria-labelledby="sys-h">
+<h1 id="sys-h"><span class="l-en">Your system readiness</span><span class="l-ru">Готовность вашей системы</span><span class="l-de">Bereitschaft Ihres Systems</span></h1>
 <div class="toprow">
-<div class="gauge status-{{STATUS_COLOR}}">
-<svg viewBox="0 0 200 120" role="meter" aria-label="Setup readiness {{READY_PERCENT}} percent" aria-valuemin="0" aria-valuemax="100" aria-valuenow="{{READY_PERCENT}}">
-<path class="gauge-track" pathLength="100" d="M20 100 A80 80 0 0 1 180 100"/>
-<path class="gauge-zone" pathLength="100" stroke="#b3261e" stroke-dasharray="40 60" d="M20 100 A80 80 0 0 1 180 100"/>
-<path class="gauge-zone" pathLength="100" stroke="#d39c12" stroke-dasharray="35 65" stroke-dashoffset="-40" d="M20 100 A80 80 0 0 1 180 100"/>
+<div class="gauge">
+<svg viewBox="0 0 200 134" aria-hidden="true" focusable="false">
+<path class="gauge-zone" pathLength="100" stroke="#b3261e" stroke-dasharray="25 75" stroke-dashoffset="0" d="M20 100 A80 80 0 0 1 180 100"/>
+<path class="gauge-zone" pathLength="100" stroke="#d9622b" stroke-dasharray="25 75" stroke-dashoffset="-25" d="M20 100 A80 80 0 0 1 180 100"/>
+<path class="gauge-zone" pathLength="100" stroke="#d39c12" stroke-dasharray="25 75" stroke-dashoffset="-50" d="M20 100 A80 80 0 0 1 180 100"/>
 <path class="gauge-zone" pathLength="100" stroke="#1f7a46" stroke-dasharray="25 75" stroke-dashoffset="-75" d="M20 100 A80 80 0 0 1 180 100"/>
-<path class="gauge-progress" pathLength="100" d="M20 100 A80 80 0 0 1 180 100"/>
-<g transform="translate(100 100) rotate({{NEEDLE_DEGREES}})"><line class="needle" x1="0" y1="0" x2="0" y2="-61"/></g>
-<circle class="hub" cx="100" cy="100" r="6"/><text class="percent" x="100" y="84" text-anchor="middle">{{READY_PERCENT}}%</text>
+<path class="gauge-progress" pathLength="100" stroke-dasharray="{{GAUGE_DASH}} 100" d="M20 100 A80 80 0 0 1 180 100"/>
+<g class="needle-g" style="transform:rotate({{NEEDLE_DEGREES}}deg)"><line class="needle" x1="100" y1="100" x2="100" y2="39"/></g>
+<circle class="hub" cx="100" cy="100" r="6"/>
+<text class="percent" x="100" y="128" text-anchor="middle">{{READY_LABEL}}</text>
 </svg>
+<p class="gauge-caption" role="status"><span class="l-en">{{READY_PERCENT}}% ready · {{DONE_COUNT}} of {{REQUIRED_COUNT}} required steps verified</span><span class="l-ru">Готовность {{READY_PERCENT}}% · {{DONE_COUNT}} из {{REQUIRED_COUNT}} обязательных этапов проверено</span><span class="l-de">{{READY_PERCENT}}% bereit · {{DONE_COUNT}} von {{REQUIRED_COUNT}} Pflichtschritten geprüft</span></p>
 </div>
 <div>
-<h2>{{STATUS_TITLE}}</h2>
-<div class="traffic" aria-label="Setup status: {{STATUS_TITLE}}">
-<span class="light red {{RED_ACTIVE}}" aria-hidden="true"></span><span class="light yellow {{YELLOW_ACTIVE}}" aria-hidden="true"></span><span class="light green {{GREEN_ACTIVE}}" aria-hidden="true"></span>
-<strong>{{STATUS_SUMMARY}}</strong>
+<div class="traffic">
+<span class="lights" aria-hidden="true"><span class="light red"></span><span class="light yellow"></span><span class="light green"></span></span>
+<span class="s-red"><span class="l-en">Not ready to work</span><span class="l-ru">Не готова к работе</span><span class="l-de">Noch nicht arbeitsbereit</span></span>
+<span class="s-yellow"><span class="l-en">Setup in progress</span><span class="l-ru">Настройка в процессе</span><span class="l-de">Einrichtung läuft</span></span>
+<span class="s-green"><span class="l-en">Ready to work</span><span class="l-ru">Готова к работе</span><span class="l-de">Arbeitsbereit</span></span>
 </div>
-<p>{{STATUS_EXPLANATION}}</p>
-<p class="small"><span class="l-en">Progress is calculated only from applicable, verified setup requirements. A green status means the selected setup checklist is complete; it does not prove that an unavailable or untested external tool works.</span><span class="l-ru">Прогресс считается только по применимым и проверенным требованиям настройки. Зелёный статус означает, что выбранный список настройки выполнен; он не доказывает, что недоступный или непроверенный внешний инструмент работает.</span><span class="l-de">Der Fortschritt wird nur aus anwendbaren, geprüften Einrichtungsanforderungen berechnet. Ein grüner Status bedeutet, dass die gewählte Checkliste erledigt ist; er belegt nicht, dass ein nicht verfügbares oder ungeprüftes externes Werkzeug funktioniert.</span></p>
+<p class="expl expl-red"><span class="l-en">A required condition for the selected mode is missing or a blocking error exists. Start with the next action below.</span><span class="l-ru">Не выполнено обязательное условие выбранного режима или есть блокирующая ошибка. Начните со следующего действия ниже.</span><span class="l-de">Eine Pflichtvoraussetzung des gewählten Modus fehlt oder ein blockierender Fehler liegt vor. Beginnen Sie mit der nächsten Aktion unten.</span></p>
+<p class="expl expl-yellow"><span class="l-en">Part of the setup is verified, but required actions remain. Nothing is blocked by an error.</span><span class="l-ru">Часть настройки проверена, но обязательные действия ещё остались. Блокирующей ошибки нет.</span><span class="l-de">Ein Teil der Einrichtung ist geprüft, aber Pflichtschritte fehlen noch. Kein Fehler blockiert den Ablauf.</span></p>
+<p class="expl expl-green"><span class="l-en">All required steps of the selected mode are verified and current. This does not allow any sending: sending needs a valid consent for it.</span><span class="l-ru">Все обязательные этапы выбранного режима проверены и актуальны. Это не разрешает никакой отправки: для неё нужно действующее согласие.</span><span class="l-de">Alle Pflichtschritte des gewählten Modus sind geprüft und aktuell. Das erlaubt keinen Versand: dafür ist eine gültige Zustimmung nötig.</span></p>
+<p class="done-msg"><span class="l-en">Setup complete. Your working package is ready. You can start working in the selected mode.</span><span class="l-ru">Настройка завершена. Ваш рабочий пакет готов. Можно начинать работу в выбранном режиме.</span><span class="l-de">Einrichtung abgeschlossen. Ihr Arbeitspaket ist bereit. Sie können im gewählten Modus beginnen.</span></p>
+<p class="warn-box"><span class="l-en">{{WARNING_EN}}</span><span class="l-ru">{{WARNING_RU}}</span><span class="l-de">{{WARNING_DE}}</span></p>
+<p class="small"><span class="l-en">Last successful check:</span><span class="l-ru">Последняя успешная проверка:</span><span class="l-de">Letzte erfolgreiche Prüfung:</span> {{LAST_CHECK_AT}} · <span class="l-en">Page updated:</span><span class="l-ru">Страница обновлена:</span><span class="l-de">Seite aktualisiert:</span> {{UPDATED_AT}}</p>
+<p class="small"><span class="l-en">Mode (the current one is marked):</span><span class="l-ru">Режим (текущий отмечен):</span><span class="l-de">Modus (der aktuelle ist markiert):</span></p>
+<ul class="modes">
+<li data-mode="prepare_only"><span class="l-en">Preparation only: packages, no sending</span><span class="l-ru">Только подготовка: пакеты, без отправки</span><span class="l-de">Nur Vorbereitung: Pakete, kein Versand</span></li>
+<li data-mode="send_after_approval"><span class="l-en">Sending after approval of each message</span><span class="l-ru">Отправка после согласования каждого письма</span><span class="l-de">Versand nach Freigabe jeder Nachricht</span></li>
+<li data-mode="approved_schedule"><span class="l-en">Approved planning within an agreed monthly plan</span><span class="l-ru">Согласованное планирование в согласованном месячном плане</span><span class="l-de">Freigegebene Planung im vereinbarten Monatsplan</span></li>
+</ul>
 </div>
 </div>
 </section>
+
 <section class="card">
 <h2><span class="l-en">System readiness</span><span class="l-ru">Готовность системы</span><span class="l-de">Bereitschaft des Systems</span></h2>
+<p class="small"><span class="l-en">Verified steps only. Each row shows what was checked and what remains.</span><span class="l-ru">Только проверенные этапы. В каждой строке видно, что проверено и что осталось.</span><span class="l-de">Nur geprüfte Schritte. Jede Zeile zeigt, was geprüft wurde und was noch fehlt.</span></p>
+<div class="table-wrap">
 <table>
-<thead><tr><th><span class="l-en">Step</span><span class="l-ru">Шаг</span><span class="l-de">Schritt</span></th><th><span class="l-en">Status</span><span class="l-ru">Статус</span><span class="l-de">Status</span></th><th><span class="l-en">What remains</span><span class="l-ru">Что осталось</span><span class="l-de">Was noch fehlt</span></th><th><span class="l-en">Evidence checked</span><span class="l-ru">Что проверено</span><span class="l-de">Geprüfte Nachweise</span></th></tr></thead>
+<thead><tr><th><span class="l-en">Step</span><span class="l-ru">Этап</span><span class="l-de">Schritt</span></th><th><span class="l-en">Status</span><span class="l-ru">Статус</span><span class="l-de">Status</span></th><th><span class="l-en">What remains</span><span class="l-ru">Что осталось сделать</span><span class="l-de">Was noch zu tun ist</span></th><th><span class="l-en">Evidence and time of the last check</span><span class="l-ru">Подтверждение и время последней проверки</span><span class="l-de">Nachweis und Zeit der letzten Prüfung</span></th></tr></thead>
 <tbody>{{SYSTEM_READINESS_ROWS}}</tbody>
 </table>
+</div>
 </section>
+
 <section class="card">
 <h2><span class="l-en">Your profile and documents</span><span class="l-ru">Ваш профиль и документы</span><span class="l-de">Ihr Profil und Ihre Unterlagen</span></h2>
-<p class="small"><span class="l-en">Each link opens a private file in this person's permitted local workspace. Missing files are listed as missing, never linked to a substitute.</span><span class="l-ru">Каждая ссылка открывает личный файл в разрешённой рабочей папке этого человека. Отсутствующие файлы показываются как отсутствующие, а не заменяются другими.</span><span class="l-de">Jeder Link öffnet eine private Datei im zugelassenen lokalen Arbeitsordner dieser Person. Fehlende Dateien werden als fehlend angezeigt und nie durch andere ersetzt.</span></p>
-<div class="links">{{PROFILE_DOCUMENT_LINKS}}</div>
+<p class="small"><span class="l-en">Each document has its own row and its own link. The links open private files in this person's permitted local folder; a missing file is shown as missing and is never replaced by another file. This page does not edit documents: ask in the chat for changes.</span><span class="l-ru">У каждого документа своя строка и своя ссылка. Ссылки открывают личные файлы в разрешённой локальной папке этого человека; отсутствующий файл показан как отсутствующий и никогда не заменяется другим. Страница не редактирует документы: изменения просите в чате.</span><span class="l-de">Jedes Dokument hat eine eigene Zeile und einen eigenen Link. Die Links öffnen private Dateien im zugelassenen lokalen Ordner dieser Person; eine fehlende Datei wird als fehlend angezeigt und nie durch eine andere ersetzt. Diese Seite ändert keine Dokumente: Änderungen bitte im Chat anfragen.</span></p>
+<div class="table-wrap">
+<table>
+<thead><tr><th><span class="l-en">Material / document</span><span class="l-ru">Материал / документ</span><span class="l-de">Material / Dokument</span></th><th><span class="l-en">Status</span><span class="l-ru">Статус</span><span class="l-de">Status</span></th><th><span class="l-en">Link to view</span><span class="l-ru">Ссылка для просмотра</span><span class="l-de">Link zur Ansicht</span></th><th><span class="l-en">What to improve</span><span class="l-ru">Что рекомендуется доделать</span><span class="l-de">Was noch verbessert werden sollte</span></th></tr></thead>
+<tbody>{{PROFILE_DOCUMENT_ROWS}}</tbody>
+</table>
+</div>
 </section>
+
 <section class="card">
 <h2><span class="l-en">Next recommended action</span><span class="l-ru">Следующее рекомендуемое действие</span><span class="l-de">Nächste empfohlene Aktion</span></h2>
-<p>{{NEXT_ACTION}}</p>
+<div class="nextbox"><span class="l-en">{{NEXT_ACTION_EN}}</span><span class="l-ru">{{NEXT_ACTION_RU}}</span><span class="l-de">{{NEXT_ACTION_DE}}</span></div>
 <p class="small"><span class="l-en">This page is a static local view maintained by the AI agent. It does not read or modify your files on its own.</span><span class="l-ru">Эта страница — статичный локальный вид, который ведёт ИИ-агент. Сама по себе она не читает и не меняет ваши файлы.</span><span class="l-de">Diese Seite ist eine statische lokale Ansicht, die der KI-Agent pflegt. Sie liest und ändert Ihre Dateien nicht von selbst.</span></p>
 </section>
 </main>

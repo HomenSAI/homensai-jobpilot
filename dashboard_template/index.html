@@ -1,20 +1,22 @@
 <!doctype html>
 <!-- © 2026 Serhii Khomenko / HomenS.AI · https://homensai.com/ · https://github.com/HomenSAI · https://www.linkedin.com/in/serhii-khomenko-homensai/
      Code and markup: PolyForm Noncommercial 1.0.0 — https://polyformproject.org/licenses/noncommercial/1.0.0
-     Statistics page template. View-only: no network requests, no writing, no Gmail access. The page reads its data from the file
-     summary.js that lies next to it (window.JP_DATA = {...}). In this repository summary.js is a SYNTHETIC SAMPLE (invented companies);
-     the sample can be cleared with the button on the page, and a real snapshot (demo: false) is never cleared automatically.
-     For a real profile the agent copies this page unchanged and writes only summary.js; the page file itself is never edited. -->
+     Statistics page template (schema 1.4). View-only: no network requests, no writing, no Gmail access. The page reads window.JP_DATA
+     from summary.js next to it. The page validates the whole snapshot first; a missing, broken or unsupported file shows an error
+     and no figures. In this repository summary.js is a SYNTHETIC SAMPLE (invented companies); the sample can be cleared with the button,
+     and a real snapshot (demo: false) is never cleared by the page. For a real profile the agent copies this page unchanged and writes only
+     summary.js; the page file itself is never edited. -->
 <html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>HomenS.AI JobPilot | Statistics</title>
-<meta name="description" content="Applications and employer answers by year, month and day, with shares, time saved, sorting and filters. Languages: English, Russian, German.">
+<meta name="description" content="Applications and employer answers by year, month and day, monthly results at a cutoff, shares, time saved, sorting and filters. Languages: English, Russian, German.">
 <meta name="author" content="Serhii Khomenko">
 <meta name="theme-color" content="#edf1f4" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#0f1720" media="(prefers-color-scheme: dark)">
 <script>try{var t=localStorage.getItem("homensai.theme");if(t==="light"||t==="dark")document.documentElement.setAttribute("data-theme",t)}catch(e){}</script>
+<script>window.addEventListener("error",function(e){if(/summary\.js/.test(String(e.filename||"")))window.__jpScriptError=true;});</script>
 <style>
 /* Same visual language as HomenS.AI Core and homensai.com. Fonts load from ../assets/fonts when the file sits in dashboard_template/;
    in any other folder the page uses system fonts (nothing is downloaded). */
@@ -48,10 +50,6 @@ code { font-family:var(--mono); font-size:.92em; }
 .brand { display:flex; align-items:center; gap:.6rem; font-weight:700; letter-spacing:-.02em; text-decoration:none; color:var(--text); white-space:nowrap; flex:none; }
 .brand-mark { width:2rem; height:2rem; color:var(--text); flex:none; } .brand .ai { color:var(--teal); } .brand .sub { font-weight:500; color:var(--muted); }
 .nav-main { display:flex; flex:1; flex-wrap:wrap; min-width:0; }
-.nav-link { display:flex; align-items:center; gap:.3rem; font-size:.72rem; letter-spacing:.04em; white-space:nowrap; text-transform:uppercase; color:var(--muted); padding:.45rem .35rem; text-decoration:none; border-radius:9px; }
-.nav-link:hover { color:var(--text); background:color-mix(in srgb,var(--text) 7%,transparent); }
-.nav-link[aria-current="page"] { color:var(--text); box-shadow:inset 0 -2px 0 var(--accent); border-radius:0; }
-.dot { width:.45rem; height:.45rem; border-radius:50%; background:var(--accent); } .dot.teal { background:var(--teal); } .dot.gold { background:var(--gold); }
 .tools { display:flex; align-items:center; gap:.5rem; margin-left:auto; flex:none; }
 .langs { display:inline-flex; border:1px solid var(--line); border-radius:999px; overflow:hidden; }
 .langs button { font:inherit; font-size:.75rem; padding:.15rem .65rem; color:var(--muted); background:none; border:0; cursor:pointer; }
@@ -67,20 +65,17 @@ code { font-family:var(--mono); font-size:.92em; }
 .lead { max-width:64ch; margin-top:.9rem; font-size:1.08rem; }
 .pills { display:flex; flex-wrap:wrap; gap:.5rem; margin-top:1rem; }
 .pill { display:inline-flex; align-items:center; gap:.35rem; font:.78rem var(--mono); padding:.2rem .7rem; border:1px solid var(--line); border-radius:999px; background:var(--surface); color:var(--muted); }
-.pill.ok { color:var(--ok); border-color:var(--ok); } .pill.warn { color:var(--warn); border-color:var(--warn); } .pill.info { color:var(--accent); border-color:var(--accent); }
+.pill.warn { color:var(--warn); border-color:var(--warn); } .pill.info { color:var(--accent); border-color:var(--accent); }
 .notice { border-left:4px solid var(--warn); padding:.55rem 1rem; background:var(--surface); margin:1rem 0 0; border-radius:0 var(--radius) var(--radius) 0; }
 .notice p { margin:0; }
 
 .tiles { display:grid; gap:.75rem; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); margin:.5rem 0 1rem; }
 .tile { background:var(--surface); border:1px solid var(--line); border-radius:var(--radius); padding:.7rem .9rem; }
-.tile b { display:block; font-size:1.5rem; letter-spacing:-.02em; font-variant-numeric:tabular-nums; } .tile span { color:var(--muted); font-size:.85rem; }
-.tile.ok b { color:var(--ok); } .tile.bad b { color:var(--bad); } .tile.warn b { color:var(--warn); }
-.quota { margin:.2rem 0 1.2rem; }
-.bar { height:.55rem; border-radius:99px; overflow:hidden; background:var(--line); display:flex; margin:.4rem 0; }
-.bar i { display:block; height:100%; } .bar .u { background:var(--accent); } .bar .r { background:var(--gold); }
-
+.tile b { display:block; font-size:1.5rem; letter-spacing:-.02em; font-variant-numeric:tabular-nums; } .tile span { display:block; color:var(--muted); font-size:.85rem; line-height:1.3; }
+.tile small { display:block; font-size:.74rem; line-height:1.3; margin-top:.15rem; }
 .controls { background:var(--surface); border:1px solid var(--line); border-radius:var(--radius); padding:1rem 1.1rem; margin:0 0 1.25rem; display:grid; gap:.9rem; }
 .ctl-row { display:flex; flex-wrap:wrap; gap:.75rem 1rem; align-items:end; }
+.ctl-h { font-weight:600; font-size:.88rem; margin-bottom:.3rem; }
 label { display:grid; gap:.25rem; font-weight:600; font-size:.88rem; }
 select, input[type=search] { font:inherit; font-weight:400; padding:.45rem .6rem; min-width:10rem; border:1px solid var(--line); border-radius:8px; background:var(--bg); color:var(--text); }
 .chips { display:flex; flex-wrap:wrap; gap:.5rem; }
@@ -88,6 +83,7 @@ select, input[type=search] { font:inherit; font-weight:400; padding:.45rem .6rem
 .chip[aria-pressed="true"] { background:var(--accent); color:var(--accent-text); border-color:var(--accent); }
 .chip .n { font-family:var(--mono); font-size:.8em; opacity:.8; margin-left:.3rem; }
 .btn { font:inherit; font-size:.9rem; padding:.4rem .9rem; border-radius:8px; border:1px solid var(--accent); background:transparent; color:var(--accent); cursor:pointer; }
+.btn:disabled { opacity:.6; cursor:default; }
 .count { color:var(--muted); font-size:.9rem; margin:0 0 .75rem; }
 
 details.year, details.month { margin:0 0 1rem; }
@@ -101,9 +97,6 @@ details[open] > summary::before { content:"▾"; }
 details.month { background:var(--surface); border:1px solid var(--line); border-radius:var(--radius); padding:.2rem 1rem .6rem; margin:.8rem 0; }
 details.month > summary { display:flex; flex-wrap:wrap; align-items:baseline; gap:.3rem 1rem; padding:.7rem 0; }
 details.month > summary h3 { font-size:1.15rem; }
-.mstats { display:grid; grid-template-columns:repeat(auto-fit,minmax(120px,1fr)); gap:.5rem; margin:.2rem 0 .9rem; }
-.mstats div { border:1px solid var(--line); border-radius:8px; padding:.35rem .6rem; background:var(--bg); }
-.mstats b { display:block; font-size:1.15rem; font-variant-numeric:tabular-nums; } .mstats span { color:var(--muted); font-size:.78rem; }
 .day { margin:.9rem 0 0; }
 .day h4 { margin:0 0 .35rem; font-size:.98rem; display:flex; flex-wrap:wrap; gap:.2rem .8rem; align-items:baseline; }
 .day h4 small { font-weight:400; }
@@ -115,8 +108,8 @@ td.time { font-family:var(--mono); white-space:nowrap; color:var(--muted); } td 
 .badge { display:inline-flex; align-items:center; font-size:.82rem; padding:.05rem .55rem; border-radius:999px; border:1px solid var(--line); white-space:nowrap; }
 .badge.ok { color:var(--ok); border-color:var(--ok); } .badge.bad { color:var(--bad); border-color:var(--bad); } .badge.warn { color:var(--warn); border-color:var(--warn); }
 .badge.wait { color:var(--accent); border-color:var(--accent); } .badge.err { color:var(--bad); border-style:dashed; border-color:var(--bad); }
-.kind { font-size:.82rem; color:var(--muted); white-space:nowrap; } .kind.reply { color:var(--teal); } .kind.bounce { color:var(--bad); }
 .empty { padding:2rem 1rem; text-align:center; border:1px dashed var(--line); border-radius:var(--radius); color:var(--muted); }
+.quiet { padding:.6rem .9rem; border:1px dashed var(--line); border-radius:8px; color:var(--muted); margin:.5rem 0 .9rem; }
 .help { margin:2rem 0 1rem; padding:1rem 1.2rem; background:var(--surface); border:1px solid var(--line); border-radius:var(--radius); }
 .help ul { margin:.4rem 0 0; padding-left:1.2rem; color:var(--muted); } .help li { margin:.3rem 0; }
 .site-footer { border-top:1px solid var(--line); margin-top:2rem; padding:1.25rem 0 2.5rem; color:var(--muted); font-size:.9rem; } .site-footer p { margin:0 0 .4rem; }
@@ -129,6 +122,7 @@ td.time { font-family:var(--mono); white-space:nowrap; color:var(--muted); } td 
 
 .panel { background:var(--surface); border:1px solid var(--line); border-radius:var(--radius); padding:1rem 1.2rem; margin:0 0 1rem; }
 .panel-h { font-size:1.1rem; margin-bottom:.5rem; }
+.sub-h { font-size:1rem; margin:1.1rem 0 .3rem; }
 .stack { display:flex; height:1.6rem; border-radius:8px; overflow:hidden; border:1px solid var(--line); background:var(--bg); }
 .stack i { display:block; height:100%; }
 .s-pos { background:var(--ok); } .s-wait { background:var(--accent); } .s-rej { background:var(--bad); } .s-err { background:var(--warn); } .s-res { background:var(--gold); }
@@ -141,9 +135,9 @@ td.time { font-family:var(--mono); white-space:nowrap; color:var(--muted); } td 
 .hours-big { font-size:1.5rem; font-weight:600; letter-spacing:-.02em; margin:.2rem 0 .3rem; color:var(--ok); }
 .assume { margin:.6rem 0; } .assume summary { cursor:pointer; color:var(--accent); }
 .assume ul { color:var(--muted); margin:.4rem 0 0 1.2rem; padding:0; }
-.ctl-h { font-weight:600; font-size:.88rem; margin-bottom:.3rem; }
+.unconf { color:var(--warn); font-weight:600; }
+.over { color:var(--bad); font-weight:600; }
 .group-h { font-size:1.3rem; margin:1.4rem 0 .2rem; letter-spacing:-.01em; border-bottom:2px solid var(--accent); padding-bottom:.2rem; }
-.btn:disabled { opacity:.6; cursor:default; }
 @media (max-width:640px) { .hbar { grid-template-columns:1fr; gap:.2rem; } .hbar-v { text-align:left; } }
 </style>
 </head>
@@ -154,7 +148,7 @@ td.time { font-family:var(--mono); white-space:nowrap; color:var(--muted); } td 
 <nav class="nav-main" id="demo-nav" aria-label="Project pages" hidden></nav>
 <div class="tools">
 <span class="langs" role="group" aria-label="Language"><button type="button" data-lang="en" aria-pressed="true">EN</button><button type="button" data-lang="ru" aria-pressed="false">RU</button><button type="button" data-lang="de" aria-pressed="false">DE</button></span>
-<button class="icon-btn" id="theme-btn" type="button" data-i-label="theme"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M12 4v16"/><path d="M12 4a8 8 0 0 1 0 16z" fill="currentColor"/></svg></button>
+<button class="icon-btn" id="theme-btn" type="button" aria-label="Theme"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M12 4v16"/><path d="M12 4a8 8 0 0 1 0 16z" fill="currentColor"/></svg></button>
 </div>
 </div></header>
 
@@ -166,6 +160,23 @@ td.time { font-family:var(--mono); white-space:nowrap; color:var(--muted); } td 
 <div class="pills" id="meta"></div>
 <div class="notice" id="demo-note" hidden><p data-i="demo"></p><p><button type="button" class="btn" id="clear-sample" data-i="sample_clear"></button></p></div>
 </div>
+
+<section class="empty" id="err" role="alert" hidden></section>
+
+<div id="data-area">
+
+<section class="panel" aria-labelledby="period-h">
+<h2 id="period-h" class="panel-h" data-i="period_h"></h2>
+<div class="ctl-row"><label><span data-i="period_sel"></span><select id="p-month"></select></label></div>
+<p class="sum" id="period-cut"></p>
+<p class="quiet" id="period-empty" hidden data-i="no_activity"></p>
+<div class="tiles" id="period-tiles"></div>
+<p class="sum" data-i="m_units_note"></p>
+<h3 class="sub-h" data-i="m_reasons_h"></h3>
+<div id="period-reasons"></div>
+<h3 class="sub-h" data-i="m_table_h"></h3>
+<div id="period-table"></div>
+</section>
 
 <section class="panel" aria-labelledby="share-h">
 <h2 id="share-h" class="panel-h" data-i="share_h"></h2>
@@ -181,7 +192,10 @@ td.time { font-family:var(--mono); white-space:nowrap; color:var(--muted); } td 
 
 <section class="panel" aria-labelledby="quota-h">
 <h2 id="quota-h" class="panel-h" data-i="quota_h"></h2>
-<p id="quota-text"></p>
+<p id="quota-now"></p>
+<p id="quota-state"></p>
+<p class="sum" id="quota-manual" hidden></p>
+<p class="sum" data-i="quota_note"></p>
 <div id="quota-months"></div>
 </section>
 
@@ -193,6 +207,8 @@ td.time { font-family:var(--mono); white-space:nowrap; color:var(--muted); } td 
 <div id="hours-months"></div>
 </section>
 
+<h2 class="panel-h" data-i="reg_h"></h2>
+<p class="sum" data-i="reg_note"></p>
 <section class="controls" aria-label="Filters and sorting">
 <div class="ctl-row">
 <label><span data-i="year"></span><select id="f-year"></select></label>
@@ -207,6 +223,8 @@ td.time { font-family:var(--mono); white-space:nowrap; color:var(--muted); } td 
 <p class="count" id="count" aria-live="polite"></p>
 <div id="out"></div>
 
+</div>
+
 <section class="help" aria-labelledby="help-h">
 <h2 id="help-h" style="font-size:1.05rem" data-i="help_h"></h2>
 <ul id="help-list"></ul>
@@ -218,45 +236,76 @@ td.time { font-family:var(--mono); white-space:nowrap; color:var(--muted); } td 
 </div></footer>
 <a class="to-top" id="to-top" href="#" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"/></svg><span data-i="top">Top</span></a>
 
-<script src="summary.js"></script>
+<script src="summary.js" onerror="window.__jpLoadFailed=true"></script>
 <script>
 (function () {
   "use strict";
   var RAW = window.JP_DATA;
   var LANGS = ["en", "ru", "de"];
   var LOCALE = { en: "en-GB", ru: "ru-RU", de: "de-DE" };
+  var SCHEMA = "1.4";
   var STORE = "homensai.jp.sampleCleared";
   var DAY = 86400000;
+  var MAX_MONTHS = 600;
   var STATUSES = ["prepared", "scheduled", "not_sent", "sent_waiting", "email_not_found", "documents_requested", "meeting_invited",
     "rejected_vacancy_unavailable", "rejected_cv_mismatch", "rejected_qualification_mismatch", "rejected_no_reason"];
   var GROUP = { prepared: "drafts", scheduled: "drafts", not_sent: "drafts", sent_waiting: "waiting", email_not_found: "error",
     documents_requested: "positive", meeting_invited: "positive", rejected_vacancy_unavailable: "rejected",
     rejected_cv_mismatch: "rejected", rejected_qualification_mismatch: "rejected", rejected_no_reason: "rejected" };
+  // Result order. "Successful first": successful, waiting, delivery errors, rejections, not sent.
+  // "Rejected first": rejections, delivery errors, waiting, successful, not sent. Delivery errors are never ranked as rejections.
   var GROUP_ORDER = ["positive", "waiting", "error", "rejected", "drafts"];
+  var REJ_FIRST = ["rejected", "error", "waiting", "positive", "drafts"];
+  var REASONS = [["rejected_vacancy_unavailable", "r_vacancy"], ["rejected_cv_mismatch", "r_cv"],
+    ["rejected_qualification_mismatch", "r_qual"], ["rejected_no_reason", "r_none"]];
   var MINUTE_KEYS = ["cv_adapting", "cover_letter", "email_text", "attachments_and_sending", "date_and_text_checks", "reply_tracking"];
   var MEETINGS = ["in_person", "video", "phone"];
   var CHANNELS = ["email", "web_form", "portal", "other"];
+  var KINDS = ["substantive", "auto_ack", "dsn"];
+  var ISO = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}(:\d{2}(\.\d{1,9})?)?(Z|[+-]\d{2}:?\d{2})$/;
 
   // ---- texts: every language is complete and separate; nothing is mixed between languages ----
   var T = {
     en: {
-      title: "Applications and answers", eyebrow: "Statistics",
-      lead: "All applications and employer answers, grouped by year, month and day. Sort by date or by result, filter and search. The page only shows a snapshot; the agent updates the data.",
+      title: "Applications and answers", eyebrow: "Statistics", skip: "Skip to content",
+      lead: "All applications and employer answers, grouped by year, month and day, with monthly results at a cutoff. Sort, filter and search. The page only shows a snapshot; the agent updates the data.",
       demo: "Sample data: the companies and results below are invented to show how the page works. Press the button to clear them; the real snapshot from the agent replaces them.",
       sample_clear: "Clear sample data", sample_cleared: "Sample data cleared",
       meta_profile: "Profile", meta_tz: "Time zone", meta_snapshot: "Snapshot", meta_old: "Snapshot is {d} days old",
-      share_h: "Result of the applications sent", share_base: "Based on {n} sent applications (drafts are not counted).",
-      share_pos: "Positive (interview, documents requested)", share_wait: "Waiting for a reply", share_rej: "Rejected", share_err: "Address does not exist", share_none: "No sent applications yet.",
-      reasons_h: "Reasons for rejection", r_vacancy: "Vacancy no longer available", r_cv: "CV does not match the vacancy", r_qual: "Qualifications do not match", r_none: "No reason given", s_rejected_no_reason: "Rejected, no reason given",
-      quota_h: "Monthly limit (shared by all profiles of the person)", quota_text: "{m}: used {u} · reserved {r} · remaining {l} (limit {limit})",
-      quota_val: "{u} of {limit} used · {r} reserved",
-      hours_h: "Time saved", hours_total: "About {h} hours saved on {n} sent applications", hours_note: "An estimate for a person who would prepare each application by hand in Word. Change the minutes in the summary file to match your own work.",
-      assumptions_h: "Assumptions (minutes per application)", a_cv_adapting: "Adapting the CV to the vacancy", a_cover_letter: "Writing the cover letter", a_email_text: "Writing the e-mail text",
-      a_attachments_and_sending: "Attaching files and sending", a_date_and_text_checks: "Checking dates and texts", a_reply_tracking: "Following the replies", min: "min",
-      hours_month: "{m}: {h} h", 
+      period_h: "Monthly report (results by the state at the cutoff)", period_sel: "Report month",
+      cutoff_line: "{m} · Cutoff: {c} · source revision {r} · time zone {tz}", cut_end: "end of the month", cut_snap: "snapshot time {t}",
+      no_activity: "No events were recorded for the selected period.", no_responses: "No application has a response in this month.",
+      m_units_note: "Units: applications are counted once per application; messages are counted once per message. The two are never added together.",
+      m_sent: "Applications sent (CV submissions)", m_events: "Substantive responses (messages)", m_apps: "Applications with a substantive response",
+      m_prior: "Responses to applications sent before this month (messages)", m_waiting: "Waiting at the cutoff (sent this month)",
+      m_pos: "Successful at month end", m_rej: "Rejected at month end", m_open: "Still open at month end (answer needs review)",
+      m_err: "New delivery errors this month (address does not exist)", m_auto: "Automatic replies (messages, not responses)",
+      m_dsn: "Delivery notices (messages, not rejections)", u_apps: "applications", u_msgs: "messages",
+      m_reasons_h: "Rejection reasons at month end (applications)", m_table_h: "Applications with a response this month",
+      th_sent: "Sent", th_resp_month: "Responses in the month", th_end: "At month end", th_now: "Now (current)", th_status_now: "Current status",
+      share_h: "Current status of the sent applications", share_base: "Based on {n} sent applications (drafts are not counted). This is the status today, not a month result.",
+      share_none: "No sent applications yet.", share_pos: "Successful (interview, documents requested)", share_wait: "Waiting for a reply",
+      share_rej: "Rejected", share_err: "Delivery error: address does not exist",
+      reasons_h: "Reasons for rejection (current status, applications)", r_vacancy: "Vacancy no longer available", r_cv: "CV does not match the vacancy",
+      r_qual: "Qualifications do not match", r_none: "No reason given",
+      quota_h: "Monthly limit (shared by all profiles of the person)", quota_note: "The numbers are the person's shared quota from the journal, for all profiles together. A missing count is shown as not confirmed, never as zero.",
+      q_counted: "counted from the journal", q_used: "used", q_res: "reserved", q_limit: "limit", q_not_conf: "not confirmed",
+      q_unknown_note: "Free slots are not shown, because the counts for this month are not confirmed.",
+      q_free_n: "Free slots: {n}", q_full: "No free slots: the limit is used up by submissions and reservations.",
+      q_over: "Limit exceeded by {n}: new CV submissions are blocked. The true count is shown.",
+      q_unver: "{n} submissions are claimed but not yet confirmed; until they are checked they count as taken.",
+      q_manual_yes: "Submissions made by hand outside JobPilot are not counted in these numbers.",
+      q_manual_num: "Manual submissions outside JobPilot reported: {n}. They are not counted in these numbers.",
+      quota_val: "{u} used · {r} reserved",
+      hours_h: "Time saved", hours_total: "About {h} hours saved on {n} sent applications",
+      hours_note: "An estimate for a person who would prepare each application by hand in Word. Change the minutes in the summary file to match your own work.",
+      assumptions_h: "Assumptions (minutes per application)", a_cv_adapting: "Adapting the CV to the vacancy", a_cover_letter: "Writing the cover letter",
+      a_email_text: "Writing the e-mail text", a_attachments_and_sending: "Attaching files and sending", a_date_and_text_checks: "Checking dates and texts",
+      a_reply_tracking: "Following the replies", min: "min", hours_month: "{m}: {h} h",
+      reg_h: "Register: all applications", reg_note: "Register by date sent. The status here is the current one, as of the snapshot. Month results are in the monthly report above.",
       year: "Year", month: "Month", sort: "Sort by", search: "Search", search_ph: "Company, city or role", result: "Result", all_years: "All years", all_months: "All months",
       sort_new: "Date: newest first", sort_old: "Date: oldest first", sort_pos: "Result: successful first", sort_rej: "Result: rejected first",
-      grp_all: "All", grp_positive: "Successful", grp_waiting: "Waiting", grp_error: "Address error", grp_rejected: "Rejected", grp_drafts: "Not sent yet",
+      grp_all: "All", grp_positive: "Successful", grp_waiting: "Waiting", grp_error: "Delivery error", grp_rejected: "Rejected", grp_drafts: "Not sent yet",
       expand: "Expand all", collapse: "Collapse all", reset: "Reset filters",
       count: "Records shown: {a} of {b}", year_sum: "{y}: {sent} sent · {pos} successful · {rej} rejected · {wait} waiting",
       month_sum: "{sent} sent · {pos} successful · {rej} rejected · {wait} waiting",
@@ -264,38 +313,71 @@ td.time { font-family:var(--mono); white-space:nowrap; color:var(--muted); } td 
       ch_email: "E-mail", ch_web_form: "Web form", ch_portal: "Portal", ch_other: "Other",
       s_prepared: "Prepared", s_scheduled: "Scheduled", s_not_sent: "Not sent", s_sent_waiting: "Sent, waiting for a reply",
       s_waiting_one: "1 day without a reply", s_waiting_many: "{d} days without a reply", s_waiting_unknown: "Sent, no reply",
-      s_email_not_found: "E-mail address does not exist", s_documents_requested: "Employer asked for documents",
+      s_email_not_found: "E-mail address does not exist (delivery error)", s_documents_requested: "Employer asked for documents",
       s_meeting_invited: "Meeting invited", s_meeting_in_person: "In person", s_meeting_video: "Video call", s_meeting_phone: "Phone call",
-      s_rejected_vacancy_unavailable: "Rejected: vacancy not available", s_rejected_cv_mismatch: "Rejected: CV does not match", s_rejected_qualification_mismatch: "Rejected: qualifications do not match",
-      thanks_yes: "Sent", thanks_no: "Not sent", thanks_none: "—", undated: "No date",
+      s_rejected_vacancy_unavailable: "Rejected: vacancy not available", s_rejected_cv_mismatch: "Rejected: CV does not match",
+      s_rejected_qualification_mismatch: "Rejected: qualifications do not match", s_rejected_no_reason: "Rejected, no reason given",
+      thanks_yes: "Sent", thanks_no: "Not sent", thanks_none: "—", undated: "No date", empty: "No records match the filters.",
       help_h: "How to read this page",
       help1: "Years, months and days are opened with the arrows. Sorting by date keeps the calendar order; sorting by result puts the groups first.",
       help2: "Days without a reply count from the sending date to the snapshot time, not to today.",
       help3: "A thank-you is sent to an employer who answered, even with a rejection. “Not sent” means it is still open.",
       help4: "The time saved is an estimate from the minutes in the summary file, not a measurement.",
       help5: "The page sends nothing, reads no mail and changes no data. Print it with the browser's print function.",
-      license: "Code and markup: PolyForm Noncommercial 1.0.0. Documentation: CC BY-NC 4.0.",
-      top: "Top", error_h: "Snapshot not shown", error_text: "The file summary.js next to this page is missing or invalid: {why}. The agent writes it again.",
-      empty: "No records match the filters.", days_word: "d"
+      help6: "Monthly results are counted by the state at the end of each month (the cutoff). The current status is shown separately and is not used for earlier months.",
+      help7: "Rejections and delivery errors are counted apart. A delivery notice is not a rejection, and an automatic reply is not a response.",
+      license: "Code and markup: PolyForm Noncommercial 1.0.0. Documentation: CC BY-NC 4.0.", top: "Top",
+      error_h: "Snapshot not shown",
+      error_text: "The statistics are not shown, because summary.js next to this page did not pass the check: {why}. Reference: {ref}. The agent writes the file again. No figures are shown.",
+      e_missing: "the file is missing", e_unreadable: "the file cannot be read (syntax error or unexpected content)", e_nodata: "the data object is missing",
+      e_schema: "the schema version is not 1.4; this page does not interpret other versions", e_field: "field {f} is missing or invalid",
+      e_tz: "the time zone is not a valid IANA zone", e_app: "application {n}: field {f} is missing or invalid",
+      e_app_dup: "application {n}: the id is used twice", e_app_sent: "application {n}: it has a result but no sent date",
+      e_app_future: "application {n}: a date is later than the snapshot time", e_hist: "application {n}: the status history is missing, out of order or does not end with the current status",
+      e_resp: "response {n}: field {f} is missing or invalid", e_resp_dup: "response {n}: the id is used twice",
+      e_resp_app: "response {n} refers to an application that is not in this snapshot", e_resp_scope: "response {n} belongs to another person or profile",
+      e_resp_early: "response {n} is earlier than the sent date, or its application has no sent date", e_quota: "the quota for {m} is lower than the submissions of this profile in that month"
     },
     ru: {
-      title: "Заявки и ответы", eyebrow: "Статистика",
-      lead: "Все заявки и ответы работодателей, сгруппированные по годам, месяцам и дням. Сортировка по дате или по результату, фильтры и поиск. Страница только показывает снимок; данные обновляет агент.",
+      title: "Заявки и ответы", eyebrow: "Статистика", skip: "Перейти к содержимому",
+      lead: "Все заявки и ответы работодателей по годам, месяцам и дням, с результатами месяцев на срез. Сортировка, фильтры и поиск. Страница только показывает снимок; данные обновляет агент.",
       demo: "Примеры данных: компании и результаты придуманы, чтобы показать работу страницы. Кнопка очищает их; настоящий снимок от агента заменяет их.",
       sample_clear: "Очистить примеры", sample_cleared: "Примеры очищены",
       meta_profile: "Профиль", meta_tz: "Часовой пояс", meta_snapshot: "Снимок", meta_old: "Снимку {d} дн.",
-      share_h: "Результат отправленных заявок", share_base: "Основа: отправлено заявок — {n} (черновики не считаются).",
-      share_pos: "Успешно (приглашение, запрос документов)", share_wait: "Ждём ответа", share_rej: "Отказ", share_err: "Адрес не существует", share_none: "Отправленных заявок пока нет.",
-      reasons_h: "Причины отказов", r_vacancy: "Вакансия больше не доступна", r_cv: "Резюме не соответствует вакансии", r_qual: "Квалификация не подходит", r_none: "Причина не указана", s_rejected_no_reason: "Отказ, причина не указана",
-      quota_h: "Месячный лимит (общий для всех профилей человека)", quota_text: "{m}: использовано {u} · зарезервировано {r} · осталось {l} (лимит {limit})",
-      quota_val: "использовано {u} из {limit} · зарезервировано {r}",
-      hours_h: "Сэкономленное время", hours_total: "Примерно {h} ч. экономии: отправлено заявок — {n}", hours_note: "Оценка для человека, который готовил бы каждую заявку вручную в Word. Минуты в файле снимка можно изменить под свою работу.",
-      assumptions_h: "Допущения (минуты на одну заявку)", a_cv_adapting: "Подгонка резюме под вакансию", a_cover_letter: "Написание сопроводительного письма", a_email_text: "Текст письма",
-      a_attachments_and_sending: "Прикрепление файлов и отправка", a_date_and_text_checks: "Проверка дат и текстов", a_reply_tracking: "Отслеживание ответов", min: "мин",
-      hours_month: "{m}: {h} ч",
+      period_h: "Отчёт за месяц (результаты по состоянию на срез)", period_sel: "Отчётный месяц",
+      cutoff_line: "{m} · Срез: {c} · ревизия источника {r} · часовой пояс {tz}", cut_end: "конец месяца", cut_snap: "время снимка {t}",
+      no_activity: "За выбранный период событий не было.", no_responses: "В этом месяце ни одна заявка не получила ответа.",
+      m_units_note: "Единицы: заявки считаются по одной на заявку, сообщения — по одному на сообщение. Их не складывают.",
+      m_sent: "Отправлено заявок (подач CV)", m_events: "Содержательные ответы (сообщения)", m_apps: "Заявки с содержательным ответом",
+      m_prior: "Ответы на заявки, отправленные раньше (сообщения)", m_waiting: "Ждут ответа на срез (отправлены в этом месяце)",
+      m_pos: "Успешно на конец месяца", m_rej: "Отказ на конец месяца", m_open: "Остаются открытыми (ответ требует проверки)",
+      m_err: "Новые ошибки доставки за месяц (адрес не существует)", m_auto: "Автоответы (сообщения, не ответы)",
+      m_dsn: "Уведомления о недоставке (сообщения, не отказы)", u_apps: "заявки", u_msgs: "сообщения",
+      m_reasons_h: "Причины отказов на конец месяца (заявки)", m_table_h: "Заявки с ответом в этом месяце",
+      th_sent: "Отправлено", th_resp_month: "Ответы в месяце", th_end: "На конец месяца", th_now: "Сейчас (текущий)", th_status_now: "Текущий статус",
+      share_h: "Текущий статус отправленных заявок", share_base: "Основа: {n} отправленных заявок (черновики не считаются). Это статус на сегодня, а не результат за месяц.",
+      share_none: "Отправленных заявок пока нет.", share_pos: "Успешно (приглашение, запрос документов)", share_wait: "Ждём ответа",
+      share_rej: "Отказ", share_err: "Ошибка доставки: адрес не существует",
+      reasons_h: "Причины отказов (текущий статус, заявки)", r_vacancy: "Вакансия больше не доступна", r_cv: "Резюме не соответствует вакансии",
+      r_qual: "Квалификация не подходит", r_none: "Причина не указана",
+      quota_h: "Месячный лимит (общий для всех профилей человека)", quota_note: "Числа — общая квота человека из журнала, по всем профилям вместе. Отсутствующее значение показывается как «не подтверждено», а не как ноль.",
+      q_counted: "по журналу", q_used: "использовано", q_res: "зарезервировано", q_limit: "лимит", q_not_conf: "не подтверждено",
+      q_unknown_note: "Свободные слоты не показаны: счётчики за этот месяц не подтверждены.",
+      q_free_n: "Свободных слотов: {n}", q_full: "Свободных слотов нет: лимит занят отправками и резервами.",
+      q_over: "Лимит превышен на {n}: новые отправки CV заблокированы. Показано фактическое число.",
+      q_unver: "Заявлено отправок, но не подтверждено: {n}. До сверки они учитываются как занятые.",
+      q_manual_yes: "Отправки, сделанные вручную вне JobPilot, в этих числах не учтены.",
+      q_manual_num: "Сообщено отправок вручную вне JobPilot: {n}. В этих числах они не учтены.",
+      quota_val: "использовано {u} · зарезервировано {r}",
+      hours_h: "Сэкономленное время", hours_total: "Примерно {h} ч. экономии: отправлено заявок — {n}",
+      hours_note: "Оценка для человека, который готовил бы каждую заявку вручную в Word. Минуты в файле снимка можно изменить под свою работу.",
+      assumptions_h: "Допущения (минуты на одну заявку)", a_cv_adapting: "Подгонка резюме под вакансию", a_cover_letter: "Написание сопроводительного письма",
+      a_email_text: "Текст письма", a_attachments_and_sending: "Прикрепление файлов и отправка", a_date_and_text_checks: "Проверка дат и текстов",
+      a_reply_tracking: "Отслеживание ответов", min: "мин", hours_month: "{m}: {h} ч",
+      reg_h: "Реестр: все заявки", reg_note: "Реестр по дате отправки. Статус здесь текущий, на момент снимка. Результаты по месяцам — в отчёте за месяц выше.",
       year: "Год", month: "Месяц", sort: "Сортировка", search: "Поиск", search_ph: "Компания, город или должность", result: "Результат", all_years: "Все годы", all_months: "Все месяцы",
       sort_new: "Дата: сначала новые", sort_old: "Дата: сначала старые", sort_pos: "Результат: сначала успешные", sort_rej: "Результат: сначала отказы",
-      grp_all: "Все", grp_positive: "Успешно", grp_waiting: "Ждём ответа", grp_error: "Ошибка адреса", grp_rejected: "Отказ", grp_drafts: "Ещё не отправлено",
+      grp_all: "Все", grp_positive: "Успешно", grp_waiting: "Ждём ответа", grp_error: "Ошибка доставки", grp_rejected: "Отказ", grp_drafts: "Ещё не отправлено",
       expand: "Развернуть всё", collapse: "Свернуть всё", reset: "Сбросить фильтры",
       count: "Записей по фильтрам: {a} из {b}", year_sum: "{y}: отправлено {sent} · успешно {pos} · отказов {rej} · ждём {wait}",
       month_sum: "отправлено {sent} · успешно {pos} · отказов {rej} · ждём {wait}",
@@ -303,38 +385,71 @@ td.time { font-family:var(--mono); white-space:nowrap; color:var(--muted); } td 
       ch_email: "E-mail", ch_web_form: "Веб-форма", ch_portal: "Портал", ch_other: "Другое",
       s_prepared: "Подготовлено", s_scheduled: "Запланировано", s_not_sent: "Не отправлено", s_sent_waiting: "Отправлено, ждём ответа",
       s_waiting_one: "1 день без ответа", s_waiting_many: "{d} дн. без ответа", s_waiting_unknown: "Отправлено, ответа нет",
-      s_email_not_found: "Адрес e-mail не существует", s_documents_requested: "Работодатель запросил документы",
+      s_email_not_found: "Адрес e-mail не существует (ошибка доставки)", s_documents_requested: "Работодатель запросил документы",
       s_meeting_invited: "Приглашение на встречу", s_meeting_in_person: "Личная встреча", s_meeting_video: "Онлайн-встреча", s_meeting_phone: "Созвон по телефону",
-      s_rejected_vacancy_unavailable: "Отказ: вакансия недоступна", s_rejected_cv_mismatch: "Отказ: резюме не соответствует", s_rejected_qualification_mismatch: "Отказ: квалификация не подходит",
-      thanks_yes: "Отправлена", thanks_no: "Не отправлена", thanks_none: "—", undated: "Без даты",
+      s_rejected_vacancy_unavailable: "Отказ: вакансия недоступна", s_rejected_cv_mismatch: "Отказ: резюме не соответствует",
+      s_rejected_qualification_mismatch: "Отказ: квалификация не подходит", s_rejected_no_reason: "Отказ, причина не указана",
+      thanks_yes: "Отправлена", thanks_no: "Не отправлена", thanks_none: "—", undated: "Без даты", empty: "Нет записей по фильтрам.",
       help_h: "Как читать страницу",
       help1: "Годы, месяцы и дни открываются стрелками. Сортировка по дате сохраняет календарный порядок; сортировка по результату ставит группы вперёд.",
       help2: "Дни без ответа считаются от даты отправки до времени снимка, а не до сегодня.",
       help3: "Благодарность отправляется работодателю, который ответил, даже при отказе. «Не отправлена» значит, что она ещё открыта.",
       help4: "Сэкономленное время — оценка по минутам из файла снимка, а не измерение.",
       help5: "Страница ничего не отправляет, почту не читает и данных не меняет. Печать — стандартной функцией браузера.",
-      license: "Код и разметка: PolyForm Noncommercial 1.0.0. Документация: CC BY-NC 4.0.",
-      top: "Наверх", error_h: "Снимок не показан", error_text: "Файл summary.js рядом с этой страницей отсутствует или неверен: {why}. Агент записывает его заново.",
-      empty: "Нет записей по фильтрам.", days_word: "дн."
+      help6: "Результаты месяца считаются по состоянию на конец каждого месяца (срез). Текущий статус показан отдельно и для прошлых месяцев не используется.",
+      help7: "Отказы и ошибки доставки считаются раздельно. Уведомление о недоставке — не отказ, а автоответ — не ответ.",
+      license: "Код и разметка: PolyForm Noncommercial 1.0.0. Документация: CC BY-NC 4.0.", top: "Наверх",
+      error_h: "Снимок не показан",
+      error_text: "Статистика не показана: файл summary.js рядом с этой страницей не прошёл проверку: {why}. Код: {ref}. Агент запишет файл заново. Цифры не показаны.",
+      e_missing: "файл отсутствует", e_unreadable: "файл не удаётся прочитать (синтаксическая ошибка или неожиданное содержимое)", e_nodata: "объект данных отсутствует",
+      e_schema: "версия схемы не 1.4; эта страница не интерпретирует другие версии", e_field: "поле {f} отсутствует или неверно",
+      e_tz: "часовой пояс не является допустимой зоной IANA", e_app: "заявка {n}: поле {f} отсутствует или неверно",
+      e_app_dup: "заявка {n}: идентификатор повторяется", e_app_sent: "заявка {n}: есть результат, но нет даты отправки",
+      e_app_future: "заявка {n}: дата позже времени снимка", e_hist: "заявка {n}: история статусов отсутствует, не по порядку или не заканчивается текущим статусом",
+      e_resp: "ответ {n}: поле {f} отсутствует или неверно", e_resp_dup: "ответ {n}: идентификатор повторяется",
+      e_resp_app: "ответ {n} ссылается на заявку, которой нет в снимке", e_resp_scope: "ответ {n} относится к другому человеку или профилю",
+      e_resp_early: "ответ {n} раньше даты отправки или у его заявки нет даты отправки", e_quota: "квота за {m} меньше числа отправок этого профиля в этом месяце"
     },
     de: {
-      title: "Bewerbungen und Antworten", eyebrow: "Statistik",
-      lead: "Alle Bewerbungen und Antworten der Arbeitgeber, gegliedert nach Jahr, Monat und Tag. Sortierung nach Datum oder Ergebnis, Filter und Suche. Die Seite zeigt nur einen Snapshot; die Daten aktualisiert der Agent.",
+      title: "Bewerbungen und Antworten", eyebrow: "Statistik", skip: "Zum Inhalt springen",
+      lead: "Alle Bewerbungen und Antworten der Arbeitgeber, gegliedert nach Jahr, Monat und Tag, mit Monatsergebnissen zum Stichtag. Sortierung, Filter und Suche. Die Seite zeigt nur einen Snapshot; die Daten aktualisiert der Agent.",
       demo: "Beispieldaten: Firmen und Ergebnisse sind erfunden, um die Seite zu zeigen. Die Schaltfläche löscht sie; der echte Snapshot des Agenten ersetzt sie.",
       sample_clear: "Beispieldaten löschen", sample_cleared: "Beispieldaten gelöscht",
       meta_profile: "Profil", meta_tz: "Zeitzone", meta_snapshot: "Snapshot", meta_old: "Snapshot ist {d} Tage alt",
-      share_h: "Ergebnis der versendeten Bewerbungen", share_base: "Basis: {n} versendete Bewerbungen (Entwürfe zählen nicht).",
-      share_pos: "Erfolgreich (Einladung, Unterlagen angefordert)", share_wait: "Warten auf Antwort", share_rej: "Absage", share_err: "Adresse existiert nicht", share_none: "Noch keine versendeten Bewerbungen.",
-      reasons_h: "Gründe für Absagen", r_vacancy: "Stelle nicht mehr verfügbar", r_cv: "Lebenslauf passt nicht zur Stelle", r_qual: "Qualifikation passt nicht", r_none: "Kein Grund angegeben", s_rejected_no_reason: "Absage, kein Grund angegeben",
-      quota_h: "Monatliches Limit (gemeinsam für alle Profile der Person)", quota_text: "{m}: genutzt {u} · reserviert {r} · übrig {l} (Limit {limit})",
-      quota_val: "{u} von {limit} genutzt · {r} reserviert",
-      hours_h: "Gesparte Zeit", hours_total: "Etwa {h} Stunden gespart bei {n} versendeten Bewerbungen", hours_note: "Eine Schätzung für eine Person, die jede Bewerbung von Hand in Word erstellen würde. Die Minuten in der Snapshot-Datei lassen sich an die eigene Arbeit anpassen.",
-      assumptions_h: "Annahmen (Minuten pro Bewerbung)", a_cv_adapting: "Lebenslauf an die Stelle anpassen", a_cover_letter: "Anschreiben verfassen", a_email_text: "E-Mail-Text schreiben",
-      a_attachments_and_sending: "Anhänge und Versand", a_date_and_text_checks: "Daten und Texte prüfen", a_reply_tracking: "Antworten verfolgen", min: "Min.",
-      hours_month: "{m}: {h} Std.",
+      period_h: "Monatsbericht (Ergebnisse nach dem Stand zum Stichtag)", period_sel: "Berichtsmonat",
+      cutoff_line: "{m} · Stichtag: {c} · Quellrevision {r} · Zeitzone {tz}", cut_end: "Monatsende", cut_snap: "Snapshot-Zeit {t}",
+      no_activity: "Im gewählten Zeitraum gab es keine Ereignisse.", no_responses: "In diesem Monat hat keine Bewerbung eine Antwort erhalten.",
+      m_units_note: "Einheiten: Bewerbungen werden je Bewerbung gezählt, Nachrichten je Nachricht. Beide werden nie addiert.",
+      m_sent: "Versendete Bewerbungen (CV-Einreichungen)", m_events: "Inhaltliche Antworten (Nachrichten)", m_apps: "Bewerbungen mit inhaltlicher Antwort",
+      m_prior: "Antworten auf früher versendete Bewerbungen (Nachrichten)", m_waiting: "Offen zum Stichtag (in diesem Monat versendet)",
+      m_pos: "Erfolgreich am Monatsende", m_rej: "Absage am Monatsende", m_open: "Am Monatsende offen (Antwort muss geprüft werden)",
+      m_err: "Neue Zustellfehler im Monat (Adresse existiert nicht)", m_auto: "Automatische Antworten (Nachrichten, keine Antworten)",
+      m_dsn: "Zustellberichte (Nachrichten, keine Absagen)", u_apps: "Bewerbungen", u_msgs: "Nachrichten",
+      m_reasons_h: "Absagegründe am Monatsende (Bewerbungen)", m_table_h: "Bewerbungen mit Antwort in diesem Monat",
+      th_sent: "Versendet", th_resp_month: "Antworten im Monat", th_end: "Am Monatsende", th_now: "Jetzt (aktuell)", th_status_now: "Aktueller Status",
+      share_h: "Aktueller Status der versendeten Bewerbungen", share_base: "Basis: {n} versendete Bewerbungen (Entwürfe zählen nicht). Dies ist der heutige Status, kein Monatsergebnis.",
+      share_none: "Noch keine versendeten Bewerbungen.", share_pos: "Erfolgreich (Einladung, Unterlagen angefordert)", share_wait: "Warten auf Antwort",
+      share_rej: "Absage", share_err: "Zustellfehler: Adresse existiert nicht",
+      reasons_h: "Absagegründe (aktueller Status, Bewerbungen)", r_vacancy: "Stelle nicht mehr verfügbar", r_cv: "Lebenslauf passt nicht zur Stelle",
+      r_qual: "Qualifikation passt nicht", r_none: "Kein Grund angegeben",
+      quota_h: "Monatliches Limit (gemeinsam für alle Profile der Person)", quota_note: "Die Zahlen sind das gemeinsame Kontingent der Person aus dem Journal, für alle Profile zusammen. Ein fehlender Wert wird als „nicht bestätigt“ gezeigt, nie als null.",
+      q_counted: "aus dem Journal gezählt", q_used: "genutzt", q_res: "reserviert", q_limit: "Limit", q_not_conf: "nicht bestätigt",
+      q_unknown_note: "Freie Plätze werden nicht angezeigt, weil die Zählungen für diesen Monat nicht bestätigt sind.",
+      q_free_n: "Freie Plätze: {n}", q_full: "Keine freien Plätze: das Limit ist durch Einreichungen und Reservierungen belegt.",
+      q_over: "Limit um {n} überschritten: neue CV-Einreichungen sind gesperrt. Die tatsächliche Zahl wird angezeigt.",
+      q_unver: "{n} Einreichungen sind angegeben, aber noch nicht bestätigt; bis zur Prüfung gelten sie als belegt.",
+      q_manual_yes: "Einreichungen von Hand außerhalb von JobPilot sind in diesen Zahlen nicht enthalten.",
+      q_manual_num: "Gemeldete Einreichungen von Hand außerhalb von JobPilot: {n}. Sie sind in diesen Zahlen nicht enthalten.",
+      quota_val: "{u} genutzt · {r} reserviert",
+      hours_h: "Gesparte Zeit", hours_total: "Etwa {h} Stunden gespart bei {n} versendeten Bewerbungen",
+      hours_note: "Eine Schätzung für eine Person, die jede Bewerbung von Hand in Word erstellen würde. Die Minuten in der Snapshot-Datei lassen sich an die eigene Arbeit anpassen.",
+      assumptions_h: "Annahmen (Minuten pro Bewerbung)", a_cv_adapting: "Lebenslauf an die Stelle anpassen", a_cover_letter: "Anschreiben verfassen",
+      a_email_text: "E-Mail-Text schreiben", a_attachments_and_sending: "Anhänge und Versand", a_date_and_text_checks: "Daten und Texte prüfen",
+      a_reply_tracking: "Antworten verfolgen", min: "Min.", hours_month: "{m}: {h} Std.",
+      reg_h: "Register: alle Bewerbungen", reg_note: "Register nach Versanddatum. Der Status hier ist der aktuelle Stand zum Zeitpunkt des Snapshots. Monatsergebnisse stehen im Monatsbericht oben.",
       year: "Jahr", month: "Monat", sort: "Sortierung", search: "Suche", search_ph: "Firma, Ort oder Position", result: "Ergebnis", all_years: "Alle Jahre", all_months: "Alle Monate",
       sort_new: "Datum: neueste zuerst", sort_old: "Datum: älteste zuerst", sort_pos: "Ergebnis: erfolgreiche zuerst", sort_rej: "Ergebnis: Absagen zuerst",
-      grp_all: "Alle", grp_positive: "Erfolgreich", grp_waiting: "Warten", grp_error: "Adressfehler", grp_rejected: "Absage", grp_drafts: "Noch nicht versendet",
+      grp_all: "Alle", grp_positive: "Erfolgreich", grp_waiting: "Warten", grp_error: "Zustellfehler", grp_rejected: "Absage", grp_drafts: "Noch nicht versendet",
       expand: "Alle öffnen", collapse: "Alle schließen", reset: "Filter zurücksetzen",
       count: "Einträge nach Filter: {a} von {b}", year_sum: "{y}: {sent} versendet · {pos} erfolgreich · {rej} Absagen · {wait} offen",
       month_sum: "{sent} versendet · {pos} erfolgreich · {rej} Absagen · {wait} offen",
@@ -342,27 +457,39 @@ td.time { font-family:var(--mono); white-space:nowrap; color:var(--muted); } td 
       ch_email: "E-Mail", ch_web_form: "Webformular", ch_portal: "Portal", ch_other: "Sonstiges",
       s_prepared: "Vorbereitet", s_scheduled: "Geplant", s_not_sent: "Nicht versendet", s_sent_waiting: "Versendet, warten auf Antwort",
       s_waiting_one: "1 Tag ohne Antwort", s_waiting_many: "{d} Tage ohne Antwort", s_waiting_unknown: "Versendet, keine Antwort",
-      s_email_not_found: "E-Mail-Adresse existiert nicht", s_documents_requested: "Arbeitgeber hat Unterlagen angefordert",
+      s_email_not_found: "E-Mail-Adresse existiert nicht (Zustellfehler)", s_documents_requested: "Arbeitgeber hat Unterlagen angefordert",
       s_meeting_invited: "Gespräch eingeladen", s_meeting_in_person: "Persönlich", s_meeting_video: "Videogespräch", s_meeting_phone: "Telefonat",
-      s_rejected_vacancy_unavailable: "Absage: Stelle nicht verfügbar", s_rejected_cv_mismatch: "Absage: Lebenslauf passt nicht", s_rejected_qualification_mismatch: "Absage: Qualifikation passt nicht",
-      thanks_yes: "Gesendet", thanks_no: "Nicht gesendet", thanks_none: "—", undated: "Ohne Datum",
+      s_rejected_vacancy_unavailable: "Absage: Stelle nicht verfügbar", s_rejected_cv_mismatch: "Absage: Lebenslauf passt nicht",
+      s_rejected_qualification_mismatch: "Absage: Qualifikation passt nicht", s_rejected_no_reason: "Absage, kein Grund angegeben",
+      thanks_yes: "Gesendet", thanks_no: "Nicht gesendet", thanks_none: "—", undated: "Ohne Datum", empty: "Keine Einträge für diese Filter.",
       help_h: "So lesen Sie die Seite",
       help1: "Jahre, Monate und Tage öffnen Sie mit den Pfeilen. Die Sortierung nach Datum behält die Kalenderreihenfolge; die Sortierung nach Ergebnis stellt die Gruppen voran.",
       help2: "Tage ohne Antwort zählen vom Versanddatum bis zum Zeitpunkt des Snapshots, nicht bis heute.",
       help3: "Ein Dank wird an einen Arbeitgeber gesendet, der geantwortet hat, auch bei einer Absage. „Nicht gesendet“ heißt: noch offen.",
       help4: "Die gesparte Zeit ist eine Schätzung aus den Minuten in der Snapshot-Datei, keine Messung.",
       help5: "Die Seite versendet nichts, liest keine Post und ändert keine Daten. Drucken Sie über die Druckfunktion des Browsers.",
-      license: "Code und Auszeichnung: PolyForm Noncommercial 1.0.0. Dokumentation: CC BY-NC 4.0.",
-      top: "Nach oben", error_h: "Snapshot nicht angezeigt", error_text: "Die Datei summary.js neben dieser Seite fehlt oder ist ungültig: {why}. Der Agent schreibt sie neu.",
-      empty: "Keine Einträge für diese Filter.", days_word: "Tage"
+      help6: "Monatsergebnisse werden nach dem Stand am Ende jedes Monats (Stichtag) gezählt. Der aktuelle Status wird getrennt angezeigt und gilt nicht für frühere Monate.",
+      help7: "Absagen und Zustellfehler werden getrennt gezählt. Ein Zustellbericht ist keine Absage, eine automatische Bestätigung ist keine Antwort.",
+      license: "Code und Auszeichnung: PolyForm Noncommercial 1.0.0. Dokumentation: CC BY-NC 4.0.", top: "Nach oben",
+      error_h: "Snapshot nicht angezeigt",
+      error_text: "Die Statistik wird nicht angezeigt, weil die Datei summary.js neben dieser Seite die Prüfung nicht bestanden hat: {why}. Kennung: {ref}. Der Agent schreibt die Datei neu. Es werden keine Zahlen angezeigt.",
+      e_missing: "die Datei fehlt", e_unreadable: "die Datei lässt sich nicht lesen (Syntaxfehler oder unerwarteter Inhalt)", e_nodata: "das Datenobjekt fehlt",
+      e_schema: "die Schema-Version ist nicht 1.4; diese Seite deutet andere Versionen nicht", e_field: "Feld {f} fehlt oder ist ungültig",
+      e_tz: "die Zeitzone ist keine gültige IANA-Zone", e_app: "Bewerbung {n}: Feld {f} fehlt oder ist ungültig",
+      e_app_dup: "Bewerbung {n}: die ID kommt doppelt vor", e_app_sent: "Bewerbung {n}: Ergebnis vorhanden, aber kein Versanddatum",
+      e_app_future: "Bewerbung {n}: ein Datum liegt nach dem Snapshot-Zeitpunkt", e_hist: "Bewerbung {n}: der Statusverlauf fehlt, ist nicht sortiert oder endet nicht mit dem aktuellen Status",
+      e_resp: "Antwort {n}: Feld {f} fehlt oder ist ungültig", e_resp_dup: "Antwort {n}: die ID kommt doppelt vor",
+      e_resp_app: "Antwort {n} verweist auf eine Bewerbung, die nicht im Snapshot ist", e_resp_scope: "Antwort {n} gehört zu einer anderen Person oder einem anderen Profil",
+      e_resp_early: "Antwort {n} liegt vor dem Versanddatum oder ihre Bewerbung hat kein Versanddatum", e_quota: "das Kontingent für {m} ist niedriger als die Einreichungen dieses Profils in diesem Monat"
     }
   };
+  // Status labels are shared by the three languages through T[lang]["s_" + code]; help texts are listed in applyStatic.
 
   var lang = "en";
   (function pickLanguage() {
     var p = new URLSearchParams(location.search).get("lang");
     if (LANGS.indexOf(p) >= 0) { lang = p; return; }
-    if (RAW && LANGS.indexOf(RAW.default_language) >= 0) lang = RAW.default_language;
+    if (RAW && typeof RAW === "object" && LANGS.indexOf(RAW.default_language) >= 0) lang = RAW.default_language;
   })();
   function t(key, vars) {
     var s = T[lang][key]; if (s === undefined) s = T.en[key]; if (s === undefined) s = key;
@@ -374,76 +501,183 @@ td.time { font-family:var(--mono); white-space:nowrap; color:var(--muted); } td 
     if (text !== undefined && text !== null) e.textContent = String(text);
     return e;
   }
+  function setText(id, s) { document.getElementById(id).textContent = s; }
   function pad(n) { return (n < 10 ? "0" : "") + n; }
-  function isRecord(v) { return !!v && typeof v === "object" && !Array.isArray(v); }
-  function validDate(v) { return typeof v === "string" && v.length > 0 && Number.isFinite(Date.parse(v)); }
-  function validCount(v) { return Number.isInteger(v) && v >= 0; }
-  function validMonth(v) { return typeof v === "string" && /^\d{4}-(0[1-9]|1[0-2])$/.test(v); }
-  function textOrNull(v) { return v === null || v === undefined || typeof v === "string"; }
 
-  // ---- validation: a broken snapshot is reported, never half-rendered ----
-  function problem(d) {
-    if (!isRecord(d)) return "no data object";
-    if (!validDate(d.generated_at)) return "generated_at is missing or invalid";
-    if (typeof d.timezone !== "string") return "timezone is missing";
-    if (!Array.isArray(d.applications)) return "applications is not a list";
-    var ids = {};
-    for (var i = 0; i < d.applications.length; i++) {
-      var a = d.applications[i];
-      if (!isRecord(a) || typeof a.id !== "string" || ids[a.id]) return "application " + (i + 1) + " has no unique id";
-      ids[a.id] = true;
-      if (STATUSES.indexOf(a.status) < 0) return "application " + a.id + " has an unknown status";
-      if (["company", "city", "role", "note"].some(function (k) { return !textOrNull(a[k]); })) return "application " + a.id + " has a non-text field";
-      if (a.channel !== null && a.channel !== undefined && CHANNELS.indexOf(a.channel) < 0) return "application " + a.id + " has an unknown channel";
-      if (a.meeting_type !== null && a.meeting_type !== undefined && MEETINGS.indexOf(a.meeting_type) < 0) return "application " + a.id + " has an unknown meeting type";
-      if (["sent_at", "planned_at", "status_at", "thank_you_sent_at"].some(function (k) { return a[k] != null && !validDate(a[k]); })) return "application " + a.id + " has an invalid date";
-      if (!a.sent_at && !a.planned_at && !a.status_at) { /* shown under “no date” */ }
-    }
-    if (d.quota !== undefined) {
-      if (!isRecord(d.quota)) return "quota is not an object";
-      if (d.quota.limit !== undefined && !validCount(d.quota.limit)) return "quota limit is invalid";
-      ["used", "reserved"].forEach(function (k) {
-        if (d.quota[k] === undefined) return;
-        if (!isRecord(d.quota[k])) throw new Error(k);
-        Object.keys(d.quota[k]).forEach(function (m) { if (!validMonth(m) || !validCount(d.quota[k][m])) throw new Error(k); });
-      });
-    }
-    if (d.minutes_per_application !== undefined) {
-      if (!isRecord(d.minutes_per_application)) return "minutes_per_application is not an object";
-      for (var j = 0; j < MINUTE_KEYS.length; j++) {
-        var v = d.minutes_per_application[MINUTE_KEYS[j]];
-        if (v !== undefined && (typeof v !== "number" || !isFinite(v) || v < 0)) return "minutes_per_application." + MINUTE_KEYS[j] + " is invalid";
-      }
-    }
-    return "";
+  // ---- validation: the whole snapshot is checked before anything is shown ----
+  function isRec(v) { return !!v && typeof v === "object" && !Array.isArray(v); }
+  function isIso(v) { return typeof v === "string" && ISO.test(v) && Number.isFinite(Date.parse(v)); }
+  function isDate(v) { return v === undefined || v === null || isIso(v); }
+  function isMonth(v) { return typeof v === "string" && /^\d{4}-(0[1-9]|1[0-2])$/.test(v); }
+  function isCount(v) { return typeof v === "number" && Number.isInteger(v) && v >= 0; }
+  function isText(v) { return v === undefined || v === null || typeof v === "string"; }
+  function has(map, k) { return isRec(map) && Object.prototype.hasOwnProperty.call(map, k); }
+  function isTz(z) {
+    if (typeof z !== "string" || z === "") return false;
+    try { new Intl.DateTimeFormat("en-US", { timeZone: z }); return true; } catch (e) { return false; }
   }
-  function safeProblem(d) { try { return problem(d); } catch (e) { return "quota " + e.message + " is invalid"; } }
+  function bad(code, key, vars) { return { ok: false, code: code, key: key, vars: vars || {} }; }
 
-  var problemText = RAW ? safeProblem(RAW) : "summary.js is missing";
-  var DATA = RAW && !problemText ? RAW : null;
+  // Month key of an instant in the person's time zone (YYYY-MM).
+  var FMT = {};
+  function pm(iso, tz) {
+    if (!FMT[tz]) FMT[tz] = new Intl.DateTimeFormat("en-US", { timeZone: tz, year: "numeric", month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit", hourCycle: "h23" });
+    var o = {}; FMT[tz].formatToParts(new Date(iso)).forEach(function (p) { o[p.type] = p.value; });
+    var y = +o.year, m = +o.month, d = +o.day;
+    return { y: y, mkey: y + "-" + pad(m), key: y + "-" + pad(m) + "-" + pad(d), hh: o.hour, mi: o.minute, ts: Date.parse(iso) };
+  }
 
+  function validate(d) {
+    if (!isRec(d)) return bad("DATA", "e_nodata");
+    if (d.schema_version !== SCHEMA) return bad("SCHEMA", "e_schema");
+    var scalars = [
+      ["person_id", typeof d.person_id === "string" && d.person_id !== ""],
+      ["profile_id", typeof d.profile_id === "string" && d.profile_id !== ""],
+      ["snapshot_id", typeof d.snapshot_id === "string" && d.snapshot_id !== ""],
+      ["source_revision", isCount(d.source_revision)],
+      ["generated_at", isIso(d.generated_at)],
+      ["demo", typeof d.demo === "boolean"],
+      ["last_mail_check_at", isDate(d.last_mail_check_at)],
+      ["default_language", d.default_language === undefined || LANGS.indexOf(d.default_language) >= 0],
+      ["history_start_month", isMonth(d.history_start_month)],
+      ["minutes_per_application", isRec(d.minutes_per_application)],
+      ["quota", isRec(d.quota)],
+      ["applications", Array.isArray(d.applications)],
+      ["responses", d.responses === undefined || Array.isArray(d.responses)]
+    ];
+    for (var s = 0; s < scalars.length; s++) if (!scalars[s][1]) return bad("FIELD-" + scalars[s][0], "e_field", { f: scalars[s][0] });
+    if (!isTz(d.timezone)) return bad("FIELD-timezone", "e_tz");
+    var gen = Date.parse(d.generated_at);
+    var snapM = pm(d.generated_at, d.timezone).mkey;
+    if (d.history_start_month > snapM) return bad("FIELD-history_start_month", "e_field", { f: "history_start_month" });
+
+    // quota: counts are non-negative integers; a missing count stays missing (never zero)
+    var q = d.quota;
+    if (!isCount(q.limit)) return bad("QUOTA-limit", "e_field", { f: "quota.limit" });
+    var maps = ["used", "reserved", "unverified"];
+    for (var k = 0; k < maps.length; k++) {
+      var mp = q[maps[k]];
+      if (mp === undefined) continue;
+      if (!isRec(mp)) return bad("QUOTA-" + maps[k], "e_field", { f: "quota." + maps[k] });
+      var keys = Object.keys(mp);
+      for (var kk = 0; kk < keys.length; kk++) if (!isMonth(keys[kk]) || !isCount(mp[keys[kk]])) return bad("QUOTA-" + maps[k], "e_field", { f: "quota." + maps[k] });
+    }
+    if (q.manual_unknown !== undefined && q.manual_unknown !== true && !isCount(q.manual_unknown)) return bad("QUOTA-manual", "e_field", { f: "quota.manual_unknown" });
+
+    var mpa = d.minutes_per_application;
+    for (var m = 0; m < MINUTE_KEYS.length; m++) {
+      var v = mpa[MINUTE_KEYS[m]];
+      if (typeof v !== "number" || !isFinite(v) || v < 0) return bad("MINUTES-" + MINUTE_KEYS[m], "e_field", { f: "minutes_per_application." + MINUTE_KEYS[m] });
+    }
+
+    // applications: unique ids, known codes, valid dates, a history that ends with the current status
+    var byId = Object.create(null);
+    for (var i = 0; i < d.applications.length; i++) {
+      var a = d.applications[i], n = i + 1;
+      if (!isRec(a) || typeof a.id !== "string" || a.id === "") return bad("APP#" + n + "-id", "e_app", { n: n, f: "id" });
+      if (byId[a.id]) return bad("APP#" + n + "-dup", "e_app_dup", { n: n });
+      byId[a.id] = a;
+      var fields = ["company", "city", "role", "note"];
+      if (STATUSES.indexOf(a.status) < 0) return bad("APP#" + n + "-status", "e_app", { n: n, f: "status" });
+      for (var f = 0; f < fields.length; f++) if (!isText(a[fields[f]])) return bad("APP#" + n + "-" + fields[f], "e_app", { n: n, f: fields[f] });
+      if (a.channel !== undefined && a.channel !== null && CHANNELS.indexOf(a.channel) < 0) return bad("APP#" + n + "-channel", "e_app", { n: n, f: "channel" });
+      if (a.meeting_type !== undefined && a.meeting_type !== null && MEETINGS.indexOf(a.meeting_type) < 0) return bad("APP#" + n + "-meeting", "e_app", { n: n, f: "meeting_type" });
+      var dates = ["sent_at", "planned_at", "status_at", "thank_you_sent_at", "meeting_at"];
+      for (var dd = 0; dd < dates.length; dd++) if (!isDate(a[dates[dd]])) return bad("APP#" + n + "-" + dates[dd], "e_app", { n: n, f: dates[dd] });
+      var sent = GROUP[a.status] !== "drafts";
+      if (sent && !a.sent_at) return bad("APP#" + n + "-sent", "e_app_sent", { n: n });
+      if (a.sent_at && Date.parse(a.sent_at) > gen) return bad("APP#" + n + "-future", "e_app_future", { n: n });
+      if (!Array.isArray(a.history)) return bad("APP#" + n + "-history", "e_hist", { n: n });
+      if (sent && a.history.length === 0) return bad("APP#" + n + "-history", "e_hist", { n: n });
+      var prev = -Infinity;
+      for (var j = 0; j < a.history.length; j++) {
+        var h = a.history[j];
+        if (!isRec(h) || STATUSES.indexOf(h.status) < 0 || !isIso(h.at)) return bad("APP#" + n + "-history", "e_hist", { n: n });
+        var ts = Date.parse(h.at);
+        if (ts < prev || ts > gen || (sent && ts < Date.parse(a.sent_at))) return bad("APP#" + n + "-history-order", "e_hist", { n: n });
+        prev = ts;
+      }
+      if (a.history.length && a.history[a.history.length - 1].status !== a.status) return bad("APP#" + n + "-history-end", "e_hist", { n: n });
+    }
+
+    // responses: unique ids, a known application of this profile, a date after sending
+    var rids = Object.create(null);
+    var responses = d.responses || [];
+    for (var r = 0; r < responses.length; r++) {
+      var x = responses[r], rn = r + 1;
+      if (!isRec(x) || typeof x.id !== "string" || x.id === "") return bad("RESP#" + rn + "-id", "e_resp", { n: rn, f: "id" });
+      if (rids[x.id]) return bad("RESP#" + rn + "-dup", "e_resp_dup", { n: rn });
+      rids[x.id] = true;
+      var app = typeof x.application_id === "string" ? byId[x.application_id] : undefined;
+      if (!app) return bad("RESP#" + rn + "-app", "e_resp_app", { n: rn });
+      if ((x.profile_id !== undefined && x.profile_id !== d.profile_id) || (x.person_id !== undefined && x.person_id !== d.person_id)) return bad("RESP#" + rn + "-scope", "e_resp_scope", { n: rn });
+      if (!isIso(x.received_at) || Date.parse(x.received_at) > gen) return bad("RESP#" + rn + "-at", "e_resp", { n: rn, f: "received_at" });
+      if (!app.sent_at || Date.parse(x.received_at) < Date.parse(app.sent_at)) return bad("RESP#" + rn + "-early", "e_resp_early", { n: rn });
+      if (KINDS.indexOf(x.kind) < 0) return bad("RESP#" + rn + "-kind", "e_resp", { n: rn, f: "kind" });
+    }
+
+    // the shared used count can never be below the submissions of this profile in that month
+    var sentPerMonth = {};
+    Object.keys(byId).forEach(function (id) {
+      if (byId[id].sent_at) { var mk = pm(byId[id].sent_at, d.timezone).mkey; sentPerMonth[mk] = (sentPerMonth[mk] || 0) + 1; }
+    });
+    var conflict = Object.keys(sentPerMonth).filter(function (mk) { return has(q.used, mk) && q.used[mk] < sentPerMonth[mk]; })[0];
+    if (conflict) return bad("QUOTA-conflict", "e_quota", { m: conflict });
+    return { ok: true };
+  }
+  var CHECK;
+  if (RAW === undefined) {
+    CHECK = window.__jpLoadFailed ? bad("FILE-missing", "e_missing") : bad(window.__jpScriptError ? "FILE-syntax" : "FILE-empty", "e_unreadable");
+  } else {
+    try { CHECK = validate(RAW); } catch (e) { CHECK = e && e.ok === false ? e : bad("INTERNAL", "e_unreadable"); }
+  }
+  var DATA = CHECK.ok ? RAW : null;
+
+  // ---- the snapshot shown: the sample can be cleared for this browser only ----
   var cleared = false;
   try { cleared = localStorage.getItem(STORE) === "1"; } catch (e) { cleared = false; }
   var isSample = !!(DATA && DATA.demo === true);
   function emptied(d) {
-    return { schema_version: d.schema_version, snapshot_id: d.snapshot_id, source_revision: d.source_revision, generated_at: d.generated_at,
-      last_mail_check_at: d.last_mail_check_at, timezone: d.timezone, profile_id: d.profile_id, demo: true, default_language: d.default_language,
-      quota: { limit: (d.quota && d.quota.limit) || 44, used: {}, reserved: {} }, minutes_per_application: d.minutes_per_application, applications: [] };
+    var q = { limit: d.quota.limit };
+    return { schema_version: d.schema_version, person_id: d.person_id, profile_id: d.profile_id, snapshot_id: d.snapshot_id,
+      source_revision: d.source_revision, generated_at: d.generated_at, last_mail_check_at: d.last_mail_check_at, timezone: d.timezone,
+      demo: true, default_language: d.default_language, history_start_month: d.history_start_month, quota: q,
+      minutes_per_application: d.minutes_per_application, applications: [], responses: [] };
   }
-  var SRC = DATA ? (isSample && cleared ? emptied(DATA) : DATA) : null;
+  var SNAP = DATA ? (isSample && cleared ? emptied(DATA) : DATA) : null;
 
-  // ---- time helpers (all in the snapshot's time zone; dates are never sorted as text) ----
-  var fmtParts = null;
-  function parts(iso) {
-    var tz = (SRC && SRC.timezone) || "UTC";
-    var f = new Intl.DateTimeFormat("en-US", { timeZone: tz, year: "numeric", month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit", hourCycle: "h23" });
-    var o = {}; f.formatToParts(new Date(iso)).forEach(function (p) { o[p.type] = p.value; });
-    var y = +o.year, m = +o.month, d = +o.day;
-    return { y: y, mkey: y + "-" + pad(m), key: y + "-" + pad(m) + "-" + pad(d), hh: o.hour, mi: o.minute, ts: Date.parse(iso) };
+  // ---- model: one projection of the validated snapshot, shared by every view ----
+  function monthsBetween(a, b) {
+    var out = [], y = +a.slice(0, 4), m = +a.slice(5, 7), ye = +b.slice(0, 4), me = +b.slice(5, 7);
+    while ((y < ye || (y === ye && m <= me)) && out.length < MAX_MONTHS) { out.push(y + "-" + pad(m)); m++; if (m > 12) { m = 1; y++; } }
+    return out;
   }
-  function fmtNum(x) { return x.toLocaleString(LOCALE[lang], { maximumFractionDigits: 1 }); }
-  function monthLabel(mkey) {
-    var p = mkey.split("-");
+  function build(d) {
+    var tz = d.timezone, snapM = pm(d.generated_at, tz).mkey;
+    var rows = [], byId = Object.create(null), sentByMonth = Object.create(null);
+    d.applications.forEach(function (a) {
+      var when = a.sent_at || a.status_at || a.planned_at || null;
+      var row = { a: a, id: a.id, g: GROUP[a.status], when: when, p: when ? pm(when, tz) : null,
+        sentM: a.sent_at ? pm(a.sent_at, tz).mkey : null, hist: [], resp: [] };
+      row.hist = (a.history || []).map(function (h) { return { status: h.status, at: h.at, mk: pm(h.at, tz).mkey }; });
+      if (row.sentM) sentByMonth[row.sentM] = (sentByMonth[row.sentM] || 0) + 1;
+      rows.push(row); byId[a.id] = row;
+    });
+    var responses = (d.responses || []).map(function (r) {
+      var x = { r: r, mk: pm(r.received_at, tz).mkey, row: byId[r.application_id], ts: Date.parse(r.received_at) };
+      x.row.resp.push(x); return x;
+    }).sort(function (x, y) { return x.ts - y.ts; });
+    var end = snapM;
+    rows.forEach(function (row) { if (row.a.planned_at) { var mk = pm(row.a.planned_at, tz).mkey; if (mk > end) end = mk; } });
+    ["used", "reserved", "unverified"].forEach(function (k) { Object.keys(d.quota[k] || {}).forEach(function (mk) { if (mk > end) end = mk; }); });
+    return { tz: tz, snapM: snapM, rows: rows, byId: byId, responses: responses, sentByMonth: sentByMonth,
+      months: monthsBetween(d.history_start_month, end) };
+  }
+  var M = SNAP ? build(SNAP) : null;
+
+  // ---- time and text helpers ----
+  function monthLabel(mk) {
+    var p = mk.split("-");
     var s = new Intl.DateTimeFormat(LOCALE[lang], { timeZone: "UTC", month: "long", year: "numeric" }).format(new Date(Date.UTC(+p[0], +p[1] - 1, 1)));
     return s.charAt(0).toUpperCase() + s.slice(1);
   }
@@ -452,122 +686,201 @@ td.time { font-family:var(--mono); white-space:nowrap; color:var(--muted); } td 
     return new Intl.DateTimeFormat(LOCALE[lang], { timeZone: "UTC", weekday: "short", day: "2-digit", month: "2-digit", year: "numeric" }).format(new Date(Date.UTC(+p[0], +p[1] - 1, +p[2])));
   }
   function stamp(iso) {
-    return new Intl.DateTimeFormat(LOCALE[lang], { timeZone: SRC.timezone, dateStyle: "medium", timeStyle: "short", hourCycle: "h23" }).format(new Date(iso));
+    return new Intl.DateTimeFormat(LOCALE[lang], { timeZone: SNAP.timezone, dateStyle: "medium", timeStyle: "short", hourCycle: "h23" }).format(new Date(iso));
   }
-  function monthEnd(mkey) { var p = mkey.split("-"); return mkey + "-" + pad(new Date(Date.UTC(+p[0], +p[1], 0)).getUTCDate()); }
-
-  // ---- one record = one application with its current status ----
-  function dateOf(a) { return a.sent_at || a.status_at || a.planned_at || null; }
-  function group(a) { return GROUP[a.status]; }
-  function isSent(a) { return group(a) !== "drafts"; }
-  var generatedMs = SRC ? Date.parse(SRC.generated_at) : 0;
-  function daysWaiting(a) { return a.sent_at ? Math.floor((generatedMs - Date.parse(a.sent_at)) / DAY) : null; }
-
-  var rows = [];
-  if (DATA) {
-    SRC.applications.forEach(function (a) {
-      var when = dateOf(a);
-      rows.push({ a: a, when: when, p: when ? parts(when) : null, g: group(a) });
-    });
-  }
-  function inQuota(map, mkey) { return SRC && SRC.quota && isRecord(SRC.quota[map]) && validCount(SRC.quota[map][mkey]) ? SRC.quota[map][mkey] : 0; }
-  var limit = SRC && SRC.quota && validCount(SRC.quota.limit) ? SRC.quota.limit : 44;
-  var nowKey = SRC ? parts(SRC.generated_at).mkey : "";
-  var minutes = {};
-  MINUTE_KEYS.forEach(function (k) { minutes[k] = SRC && SRC.minutes_per_application && typeof SRC.minutes_per_application[k] === "number" ? SRC.minutes_per_application[k] : 0; });
-  var minutesPerApp = MINUTE_KEYS.reduce(function (s, k) { return s + minutes[k]; }, 0);
-
-  function countWhere(list, fn) { return list.filter(fn).length; }
+  function fmtNum(x) { return x.toLocaleString(LOCALE[lang], { maximumFractionDigits: 1 }); }
+  function fmtInt(x) { return x.toLocaleString(LOCALE[lang]); }
   function pct(n, base) { return base ? Math.round((n * 100) / base) + "%" : "—"; }
+  function badge(cls, text) { return el("span", "badge " + cls, text); }
+  function toneOf(g) { return { positive: "ok", rejected: "bad", waiting: "wait", error: "err", drafts: "" }[g] || ""; }
+  function minutesPerApp() { return MINUTE_KEYS.reduce(function (s, k) { return s + SNAP.minutes_per_application[k]; }, 0); }
+  function daysWaiting(a) { return a.sent_at ? Math.floor((Date.parse(SNAP.generated_at) - Date.parse(a.sent_at)) / DAY) : null; }
+  function codeLabel(code, meeting) {
+    if (code === "meeting_invited") return t("s_meeting_invited") + (meeting ? " — " + t("s_meeting_" + meeting) : "");
+    return t("s_" + code);
+  }
+  function statusLabel(a) {
+    if (a.status === "sent_waiting") {
+      var d = daysWaiting(a);
+      if (d === null) return t("s_waiting_unknown");
+      return d === 1 ? t("s_waiting_one") : t("s_waiting_many", { d: d });
+    }
+    return codeLabel(a.status, a.meeting_type);
+  }
+  // Status of one application at the end of month mk: the last history entry at or before the cutoff.
+  function stateAt(row, mk) {
+    var s = null;
+    row.hist.forEach(function (h) { if (h.mk <= mk) s = h.status; });
+    return s;
+  }
+  function periodMonth() { return state.period && M.months.indexOf(state.period) >= 0 ? state.period : M.snapM; }
+  function cutText(mk) {
+    return mk === M.snapM ? t("cut_snap", { t: stamp(SNAP.generated_at) }) : t("cut_end");
+  }
+
+  // ---- results of one month, from events only ----
+  function monthReport(mk) {
+    var subs = M.rows.filter(function (r) { return r.sentM === mk; });
+    var evs = M.responses.filter(function (x) { return x.mk === mk; });
+    var subEv = evs.filter(function (x) { return x.r.kind === "substantive"; });
+    var R = { sent: subs.length, events: subEv.length, auto: evs.filter(function (x) { return x.r.kind === "auto_ack"; }).length,
+      dsn: evs.filter(function (x) { return x.r.kind === "dsn"; }).length,
+      prior: subEv.filter(function (x) { return x.row.sentM && x.row.sentM < mk; }).length,
+      waiting: 0, positive: 0, rejected: 0, open: 0, responded: 0, bounces: 0, reasons: {}, table: [] };
+    var byApp = Object.create(null);
+    subEv.forEach(function (x) { (byApp[x.row.id] = byApp[x.row.id] || { row: x.row, evs: [] }).evs.push(x); });
+    Object.keys(byApp).forEach(function (id) {
+      var b = byApp[id], st = stateAt(b.row, mk), g = st ? GROUP[st] : null;
+      b.st = st;
+      if (g === "positive") R.positive++;
+      else if (g === "rejected") { R.rejected++; R.reasons[st] = (R.reasons[st] || 0) + 1; }
+      else R.open++;
+      R.table.push(b);
+    });
+    R.responded = R.table.length;
+    R.table.sort(function (x, y) { return x.row.p.ts - y.row.p.ts; });
+    subs.forEach(function (row) {
+      var hasSub = row.resp.some(function (x) { return x.r.kind === "substantive" && x.mk <= mk; });
+      if (!hasSub && stateAt(row, mk) !== "email_not_found") R.waiting++;
+    });
+    R.bounces = M.rows.filter(function (row) { return row.hist.some(function (h) { return h.mk === mk && h.status === "email_not_found"; }); }).length;
+    R.quiet = subs.length === 0 && evs.length === 0 && R.bounces === 0;
+    return R;
+  }
+
+  // ---- quota: only what the journal confirmed; a missing count is never zero ----
+  function quotaOf(mk) {
+    var q = SNAP.quota, lim = q.limit;
+    var u = has(q.used, mk) ? q.used[mk] : null, r = has(q.reserved, mk) ? q.reserved[mk] : null;
+    var unv = has(q.unverified, mk) ? q.unverified[mk] : 0;
+    if (u === null || r === null) return { state: "unconfirmed", limit: lim, unv: unv };
+    var free = lim - u - r - unv;
+    var over = u > lim ? u - lim : -free;
+    var st = (u > lim || free < 0) ? "over" : (free === 0 ? "full" : "free");
+    return { state: st, u: u, r: r, unv: unv, free: free, limit: lim, over: over };
+  }
 
   // ---- rendering ----
-  function render() {
-    var out = document.getElementById("out"); out.textContent = "";
-    if (!DATA) return showError();
-    var sentRows = rows.filter(function (r) { return r.g !== "drafts"; });
-    var base = sentRows.length;
+  var state = { year: "all", month: "all", group: "all", sort: "new", q: "", period: null };
+  var visibleCount = 0;
+  function drawReasons(id, counts) {
+    var box = document.getElementById(id); box.textContent = "";
+    var total = REASONS.reduce(function (s, x) { return s + (counts[x[0]] || 0); }, 0);
+    REASONS.forEach(function (x) {
+      var n = counts[x[0]] || 0;
+      var line = el("div", "hbar"); line.appendChild(el("span", "hbar-l", t(x[1])));
+      var track = el("span", "track"); var fill = el("i", "s-rej"); fill.style.width = (total ? n * 100 / total : 0) + "%"; track.appendChild(fill);
+      line.appendChild(track); line.appendChild(el("span", "hbar-v", n + " (" + pct(n, total) + ")")); box.appendChild(line);
+    });
+  }
+  function renderShare() {
+    var sent = M.rows.filter(function (r) { return r.g !== "drafts"; });
+    var base = sent.length;
     var counts = { positive: 0, waiting: 0, rejected: 0, error: 0 };
-    sentRows.forEach(function (r) { counts[r.g] = (counts[r.g] || 0) + 1; });
-
+    sent.forEach(function (r) { counts[r.g]++; });
     setText("share-base", base ? t("share_base", { n: base }) : t("share_none"));
     var bar = document.getElementById("share-bar"); bar.textContent = "";
     var legend = document.getElementById("share-legend"); legend.textContent = "";
     [["positive", "share_pos", "s-pos"], ["waiting", "share_wait", "s-wait"], ["rejected", "share_rej", "s-rej"], ["error", "share_err", "s-err"]].forEach(function (x) {
       var n = counts[x[0]];
       if (base && n) { var seg = el("i", x[2]); seg.style.width = (n * 100 / base) + "%"; bar.appendChild(seg); }
-      var li = el("li", "");
-      li.appendChild(el("i", "key " + x[2]));
-      li.appendChild(el("span", "", t(x[1]) + ": " + n + " (" + pct(n, base) + ")"));
-      legend.appendChild(li);
+      var li = el("li", ""); li.appendChild(el("i", "key " + x[2])); li.appendChild(el("span", "", t(x[1]) + ": " + n + " (" + pct(n, base) + ")")); legend.appendChild(li);
     });
     bar.setAttribute("aria-label", base ? [counts.positive, counts.waiting, counts.rejected, counts.error].join(" / ") : t("share_none"));
-
-    var reasons = document.getElementById("reasons"); reasons.textContent = "";
-    var rej = { rejected_vacancy_unavailable: 0, rejected_cv_mismatch: 0, rejected_qualification_mismatch: 0, rejected_no_reason: 0 };
-    sentRows.forEach(function (r) { if (rej[r.a.status] !== undefined) rej[r.a.status]++; });
-    var rejTotal = rej.rejected_vacancy_unavailable + rej.rejected_cv_mismatch + rej.rejected_qualification_mismatch + rej.rejected_no_reason;
-    [["rejected_vacancy_unavailable", "r_vacancy"], ["rejected_cv_mismatch", "r_cv"], ["rejected_qualification_mismatch", "r_qual"], ["rejected_no_reason", "r_none"]].forEach(function (x) {
-      var n = rej[x[0]];
-      var line = el("div", "hbar");
-      line.appendChild(el("span", "hbar-l", t(x[1])));
-      var track = el("span", "track"); var fill = el("i", "s-rej"); fill.style.width = (rejTotal ? n * 100 / rejTotal : 0) + "%"; track.appendChild(fill);
-      line.appendChild(track);
-      line.appendChild(el("span", "hbar-v", n + " (" + pct(n, rejTotal) + ")"));
-      reasons.appendChild(line);
+    var byCode = {};
+    sent.forEach(function (r) { if (GROUP[r.a.status] === "rejected") byCode[r.a.status] = (byCode[r.a.status] || 0) + 1; });
+    drawReasons("reasons", byCode);
+  }
+  function renderPeriod() {
+    var mk = periodMonth(), R = monthReport(mk);
+    setText("period-cut", t("cutoff_line", { m: monthLabel(mk), c: cutText(mk), r: SNAP.source_revision, tz: SNAP.timezone }));
+    document.getElementById("period-empty").hidden = !R.quiet;
+    var tiles = document.getElementById("period-tiles"); tiles.textContent = "";
+    [[R.sent, "m_sent", "u_apps"], [R.responded, "m_apps", "u_apps"], [R.events, "m_events", "u_msgs"], [R.prior, "m_prior", "u_msgs"],
+      [R.waiting, "m_waiting", "u_apps"], [R.positive, "m_pos", "u_apps"], [R.rejected, "m_rej", "u_apps"], [R.open, "m_open", "u_apps"],
+      [R.bounces, "m_err", "u_apps"], [R.auto, "m_auto", "u_msgs"], [R.dsn, "m_dsn", "u_msgs"]].forEach(function (x) {
+      var tile = el("div", "tile"); tile.appendChild(el("b", "", fmtInt(x[0]))); tile.appendChild(el("span", "", t(x[1]))); tile.appendChild(el("small", "", t(x[2]))); tiles.appendChild(tile);
     });
-
-    setText("quota-text", t("quota_text", { m: monthLabel(nowKey), u: inQuota("used", nowKey), r: inQuota("reserved", nowKey), l: Math.max(0, limit - inQuota("used", nowKey) - inQuota("reserved", nowKey)), limit: limit }));
+    drawReasons("period-reasons", R.reasons);
+    var box = document.getElementById("period-table"); box.textContent = "";
+    if (!R.table.length) { box.appendChild(el("p", "sum", t("no_responses"))); return; }
+    var wrap = el("div", "tscroll"), tb = el("table", ""), thead = el("thead", ""), hr = el("tr", "");
+    ["th_company", "th_sent", "th_resp_month", "th_end", "th_now"].forEach(function (k) { hr.appendChild(el("th", "", t(k))); });
+    thead.appendChild(hr); tb.appendChild(thead);
+    var body = el("tbody", "");
+    R.table.forEach(function (b) {
+      var a = b.row.a, tr = el("tr", ""); tr.setAttribute("data-id", a.id);
+      var cd = el("td", ""); cd.appendChild(el("span", "co", a.company || "—")); cd.appendChild(el("span", "sub", a.city || "—")); tr.appendChild(cd);
+      tr.appendChild(el("td", "time", stamp(a.sent_at)));
+      tr.appendChild(el("td", "", b.evs.length + " " + t("u_msgs") + ": " + b.evs.map(function (x) { return stamp(x.r.received_at); }).join(", ")));
+      var endG = GROUP[b.st];
+      var td1 = el("td", ""); td1.appendChild(badge(toneOf(endG), codeLabel(b.st, null))); tr.appendChild(td1);
+      var td2 = el("td", ""); td2.appendChild(badge(toneOf(b.row.g), codeLabel(a.status, a.meeting_type))); tr.appendChild(td2);
+      body.appendChild(tr);
+    });
+    tb.appendChild(body); wrap.appendChild(tb); box.appendChild(wrap);
+  }
+  function renderPeriodSelect() {
+    var sel = document.getElementById("p-month"); sel.textContent = "";
+    var cur = periodMonth();
+    M.months.slice().reverse().forEach(function (mk) { var o = el("option", "", monthLabel(mk)); o.value = mk; if (mk === cur) o.selected = true; sel.appendChild(o); });
+  }
+  function barLine(label, q, valueText) {
+    var line = el("div", "hbar"); line.appendChild(el("span", "hbar-l", label));
+    var track = el("span", "track");
+    if (q) {
+      var base = q.limit > 0 ? q.limit : 1;
+      var fu = el("i", "s-wait"); fu.style.width = Math.min(100, q.u * 100 / base) + "%"; track.appendChild(fu);
+      var fr = el("i", "s-res"); fr.style.width = Math.min(100 - Math.min(100, q.u * 100 / base), q.r * 100 / base) + "%"; track.appendChild(fr);
+    }
+    line.appendChild(track); line.appendChild(el("span", "hbar-v", valueText)); return line;
+  }
+  function renderQuota() {
+    var mk = periodMonth(), Q = quotaOf(mk);
+    var now = document.getElementById("quota-now"), stEl = document.getElementById("quota-state");
+    if (Q.state === "unconfirmed") {
+      now.textContent = monthLabel(mk) + " (" + t("q_counted") + "): " + t("q_not_conf");
+      stEl.textContent = t("q_unknown_note");
+    } else {
+      now.textContent = monthLabel(mk) + " (" + t("q_counted") + "): " + t("q_used") + " " + Q.u + " · " + t("q_res") + " " + Q.r + " · " + t("q_limit") + " " + Q.limit;
+      stEl.textContent = Q.state === "over" ? t("q_over", { n: Q.over }) : (Q.state === "full" ? t("q_full") : t("q_free_n", { n: Q.free }));
+      stEl.className = Q.state === "over" ? "over" : "";
+      if (Q.unv) stEl.textContent += " " + t("q_unver", { n: Q.unv });
+    }
+    var manual = document.getElementById("quota-manual");
+    var mu = SNAP.quota.manual_unknown;
+    manual.hidden = mu === undefined;
+    if (mu !== undefined) manual.textContent = mu === true ? t("q_manual_yes") : t("q_manual_num", { n: mu });
     var qm = document.getElementById("quota-months"); qm.textContent = "";
-    var months = Object.keys((SRC.quota && SRC.quota.used) || {}).sort().reverse();
-    months.forEach(function (mk) {
-      var u = inQuota("used", mk), rs = inQuota("reserved", mk);
-      var line = el("div", "hbar");
-      line.appendChild(el("span", "hbar-l", monthLabel(mk)));
-      var track = el("span", "track"); var fu = el("i", "s-wait"); fu.style.width = Math.min(100, u * 100 / limit) + "%"; track.appendChild(fu);
-      var fr = el("i", "s-res"); fr.style.width = Math.min(100 - Math.min(100, u * 100 / limit), rs * 100 / limit) + "%"; track.appendChild(fr);
-      line.appendChild(track);
-      line.appendChild(el("span", "hbar-v", t("quota_val", { u: u, r: rs, limit: limit })));
-      qm.appendChild(line);
+    M.months.slice().reverse().forEach(function (m) {
+      var X = quotaOf(m);
+      if (X.state === "unconfirmed") qm.appendChild(barLine(monthLabel(m), null, t("q_not_conf")));
+      else qm.appendChild(barLine(monthLabel(m), X, t("quota_val", { u: X.u, r: X.r })));
     });
-
-    var hoursAll = base * minutesPerApp / 60;
-    setText("hours-total", t("hours_total", { h: fmtNum(hoursAll), n: base }));
+  }
+  function renderHours() {
+    var sentAll = M.rows.filter(function (r) { return r.g !== "drafts"; }).length, mpa = minutesPerApp();
+    setText("hours-total", t("hours_total", { h: fmtNum(sentAll * mpa / 60), n: sentAll }));
     var ul = document.getElementById("assumptions"); ul.textContent = "";
-    MINUTE_KEYS.forEach(function (k) { ul.appendChild(el("li", "", t("a_" + k) + ": " + minutes[k] + " " + t("min"))); });
+    MINUTE_KEYS.forEach(function (k) { ul.appendChild(el("li", "", t("a_" + k) + ": " + SNAP.minutes_per_application[k] + " " + t("min"))); });
     var hm = document.getElementById("hours-months"); hm.textContent = "";
-    var sentMonths = {}; sentRows.forEach(function (r) { if (r.p) sentMonths[r.p.mkey] = (sentMonths[r.p.mkey] || 0) + 1; });
-    Object.keys(sentMonths).sort().reverse().forEach(function (mk) {
-      hm.appendChild(el("p", "sum", t("hours_month", { m: monthLabel(mk), h: fmtNum(sentMonths[mk] * minutesPerApp / 60) })));
+    M.months.slice().reverse().forEach(function (mk) {
+      hm.appendChild(el("p", "sum", t("hours_month", { m: monthLabel(mk), h: fmtNum((M.sentByMonth[mk] || 0) * mpa / 60) })));
     });
-
-    renderControls();
-    renderList();
-    document.getElementById("count").textContent = t("count", { a: visibleCount, b: rows.length });
-  }
-  function setText(id, s) { document.getElementById(id).textContent = s; }
-
-  function showError() {
-    var out = document.getElementById("out");
-    var box = el("div", "empty"); box.appendChild(el("h2", "", t("error_h"))); box.appendChild(el("p", "", t("error_text", { why: problemText || "summary.js" })));
-    out.appendChild(box);
-    ["share-base", "quota-text", "hours-total", "count"].forEach(function (id) { setText(id, ""); });
   }
 
-  // ---- filters and sorting ----
-  var state = { year: "all", month: "all", group: "all", sort: "new", q: "" };
-  var visibleCount = 0;
+  // ---- register: one record = one application with its current status ----
+  function visibleRows() { return M.rows.filter(matches); }
   function renderControls() {
-    var years = {}; rows.forEach(function (r) { if (r.p) years[r.p.y] = 1; });
-    var ys = Object.keys(years).sort().reverse();
-    fill("f-year", [["all", t("all_years")]].concat(ys.map(function (y) { return [y, y]; })), state.year);
-    var ms = {}; rows.forEach(function (r) { if (r.p && (state.year === "all" || String(r.p.y) === state.year)) ms[r.p.mkey] = 1; });
-    fill("f-month", [["all", t("all_months")]].concat(Object.keys(ms).sort().reverse().map(function (m) { return [m, monthLabel(m)]; })), state.month);
+    var years = {}; M.months.forEach(function (mk) { years[mk.slice(0, 4)] = 1; });
+    fill("f-year", [["all", t("all_years")]].concat(Object.keys(years).sort().reverse().map(function (y) { return [y, y]; })), state.year);
+    var ms = M.months.filter(function (mk) { return state.year === "all" || mk.slice(0, 4) === state.year; }).reverse();
+    fill("f-month", [["all", t("all_months")]].concat(ms.map(function (mk) { return [mk, monthLabel(mk)]; })), state.month);
     fill("f-sort", [["new", t("sort_new")], ["old", t("sort_old")], ["pos", t("sort_pos")], ["rej", t("sort_rej")]], state.sort);
     var box = document.getElementById("f-group"); box.textContent = "";
     ["all"].concat(GROUP_ORDER).forEach(function (g) {
-      var n = g === "all" ? rows.length : countWhere(rows, function (r) { return r.g === g; });
-      var b = el("button", "chip", t("grp_" + (g === "all" ? "all" : g)));
-      b.type = "button"; b.setAttribute("aria-pressed", String(state.group === g));
+      var n = g === "all" ? M.rows.length : M.rows.filter(function (r) { return r.g === g; }).length;
+      var b = el("button", "chip", t("grp_" + g)); b.type = "button"; b.setAttribute("aria-pressed", String(state.group === g));
       b.appendChild(el("span", "n", n));
       b.addEventListener("click", function () { state.group = g; renderControls(); renderList(); });
       box.appendChild(b);
@@ -576,7 +889,8 @@ td.time { font-family:var(--mono); white-space:nowrap; color:var(--muted); } td 
   }
   function fill(id, items, current) {
     var sel = document.getElementById(id); sel.textContent = "";
-    items.forEach(function (it) { var o = el("option", "", it[1]); o.value = it[0]; if (it[0] === current) o.selected = true; sel.appendChild(o); });
+    var found = items.some(function (it) { return it[0] === current; });
+    items.forEach(function (it) { var o = el("option", "", it[1]); o.value = it[0]; if (it[0] === (found ? current : "all")) o.selected = true; sel.appendChild(o); });
   }
   function matches(r) {
     if (state.group !== "all" && r.g !== state.group) return false;
@@ -588,22 +902,24 @@ td.time { font-family:var(--mono); white-space:nowrap; color:var(--muted); } td 
     }
     return true;
   }
-  var REJ_FIRST = ["rejected", "positive", "waiting", "error", "drafts"];
   function groupOrder() { return state.sort === "rej" ? REJ_FIRST : GROUP_ORDER; }
   function cmp(x, y) {
     var dx = x.when ? x.p.ts : 0, dy = y.when ? y.p.ts : 0;
     if (state.sort === "old") return dx - dy;
     if (state.sort === "new") return dy - dx;
-    var gx = groupOrder().indexOf(x.g), gy = groupOrder().indexOf(y.g);
+    var order = groupOrder(), gx = order.indexOf(x.g), gy = order.indexOf(y.g);
     return gx !== gy ? gx - gy : dy - dx;
   }
-
   function renderList() {
     var out = document.getElementById("out"); out.textContent = "";
-    var list = rows.filter(matches).sort(cmp);
+    var list = visibleRows().sort(cmp);
     visibleCount = list.length;
-    document.getElementById("count").textContent = t("count", { a: visibleCount, b: rows.length });
-    if (!list.length) { out.appendChild(el("div", "empty", t("empty"))); return; }
+    setText("count", t("count", { a: visibleCount, b: M.rows.length }));
+    if (!list.length) {
+      var monthRows = state.month !== "all" && M.rows.some(function (r) { return r.p && r.p.mkey === state.month; });
+      out.appendChild(el("div", "empty", state.month !== "all" && !monthRows ? t("no_activity") : t("empty")));
+      return;
+    }
     var blocks = [];
     if (state.sort === "pos" || state.sort === "rej") {
       groupOrder().forEach(function (g) {
@@ -624,53 +940,48 @@ td.time { font-family:var(--mono); white-space:nowrap; color:var(--muted); } td 
       if (!r.p) { yb.undated.push(r); return; }
       (yb.months[r.p.mkey] = yb.months[r.p.mkey] || []).push(r);
     });
-    var yKeys = Object.keys(years).sort(function (a, b) { return (state.sort === "old") ? (a > b ? 1 : -1) : (a < b ? 1 : -1); });
-    yKeys.forEach(function (y) {
-      var yb = years[y];
-      var all = []; Object.keys(yb.months).forEach(function (m) { all = all.concat(yb.months[m]); });
+    Object.keys(years).sort(function (a, b) { return state.sort === "old" ? (a > b ? 1 : -1) : (a < b ? 1 : -1); }).forEach(function (y) {
+      var yb = years[y], all = [];
+      Object.keys(yb.months).forEach(function (m) { all = all.concat(yb.months[m]); });
       var det = el("details", "year"); det.open = true;
       var sm = el("summary", ""); sm.appendChild(el("h2", "", y));
-      sm.appendChild(el("span", "sum", t("year_sum", { y: y, sent: countWhere(all, function (r) { return r.g !== "drafts"; }), pos: countWhere(all, function (r) { return r.g === "positive"; }), rej: countWhere(all, function (r) { return r.g === "rejected"; }), wait: countWhere(all, function (r) { return r.g === "waiting"; }) })));
+      sm.appendChild(el("span", "sum", t("year_sum", { y: y, sent: all.filter(function (r) { return r.g !== "drafts"; }).length,
+        pos: all.filter(function (r) { return r.g === "positive"; }).length, rej: all.filter(function (r) { return r.g === "rejected"; }).length,
+        wait: all.filter(function (r) { return r.g === "waiting"; }).length })));
       det.appendChild(sm);
-      var mKeys = Object.keys(yb.months).sort(function (a, b) { return state.sort === "old" ? (a > b ? 1 : -1) : (a < b ? 1 : -1); });
-      mKeys.forEach(function (mk) {
+      Object.keys(yb.months).sort(function (a, b) { return state.sort === "old" ? (a > b ? 1 : -1) : (a < b ? 1 : -1); }).forEach(function (mk) {
         var ms = yb.months[mk];
         var md = el("details", "month"); md.open = true;
         var msum = el("summary", ""); msum.appendChild(el("h3", "", monthLabel(mk)));
-        msum.appendChild(el("span", "sum", t("month_sum", { sent: countWhere(ms, function (r) { return r.g !== "drafts"; }), pos: countWhere(ms, function (r) { return r.g === "positive"; }), rej: countWhere(ms, function (r) { return r.g === "rejected"; }), wait: countWhere(ms, function (r) { return r.g === "waiting"; }) })));
+        msum.appendChild(el("span", "sum", t("month_sum", { sent: ms.filter(function (r) { return r.g !== "drafts"; }).length,
+          pos: ms.filter(function (r) { return r.g === "positive"; }).length, rej: ms.filter(function (r) { return r.g === "rejected"; }).length,
+          wait: ms.filter(function (r) { return r.g === "waiting"; }).length })));
         md.appendChild(msum);
         var days = {}; ms.forEach(function (r) { (days[r.p.key] = days[r.p.key] || []).push(r); });
-        var dKeys = Object.keys(days).sort(function (a, b) { return state.sort === "old" ? (a > b ? 1 : -1) : (a < b ? 1 : -1); });
-        dKeys.forEach(function (dk) { md.appendChild(dayBlock(dk, days[dk])); });
+        Object.keys(days).sort(function (a, b) { return state.sort === "old" ? (a > b ? 1 : -1) : (a < b ? 1 : -1); }).forEach(function (dk) {
+          var d = el("div", "day"); var h = el("h4", ""); h.appendChild(el("span", "", dayLabel(dk))); h.appendChild(el("small", "", days[dk].length)); d.appendChild(h);
+          d.appendChild(table(days[dk].slice().sort(cmp))); md.appendChild(d);
+        });
         det.appendChild(md);
       });
       if (yb.undated.length) {
-        var ud = el("div", "day"); ud.appendChild(el("h4", "", t("undated")));
-        ud.appendChild(table(yb.undated));
-        det.appendChild(ud);
+        var ud = el("div", "day"); ud.appendChild(el("h4", "", t("undated"))); ud.appendChild(table(yb.undated.slice().sort(cmp))); det.appendChild(ud);
       }
       parent.appendChild(det);
     });
   }
-  function dayBlock(dk, list) {
-    var d = el("div", "day"); var h = el("h4", ""); h.appendChild(el("span", "", dayLabel(dk))); h.appendChild(el("small", "", list.length)); d.appendChild(h);
-    d.appendChild(table(list.slice().sort(function (x, y) { return cmp(x, y); })));
-    return d;
-  }
   function table(list) {
-    var wrap = el("div", "tscroll"); var tb = el("table", "");
-    var thead = el("thead", ""); var hr = el("tr", "");
+    var wrap = el("div", "tscroll"), tb = el("table", ""), thead = el("thead", ""), hr = el("tr", "");
     ["th_time", "th_company", "th_role", "th_channel", "th_status", "th_thanks", "th_note"].forEach(function (k) { hr.appendChild(el("th", "", t(k))); });
     thead.appendChild(hr); tb.appendChild(thead);
     var body = el("tbody", "");
     list.forEach(function (r) {
-      var a = r.a; var tr = el("tr", "");
+      var a = r.a, tr = el("tr", ""); tr.setAttribute("data-id", a.id);
       tr.appendChild(el("td", "time", r.p ? r.p.hh + ":" + r.p.mi : "—"));
       var cd = el("td", ""); cd.appendChild(el("span", "co", a.company || "—")); cd.appendChild(el("span", "sub", a.city || "—")); tr.appendChild(cd);
       tr.appendChild(el("td", "", a.role || "—"));
       tr.appendChild(el("td", "", a.channel ? t("ch_" + a.channel) : "—"));
-      var sd = el("td", ""); var badge = el("span", "badge " + toneOf(r.g), statusLabel(a)); sd.appendChild(badge);
-      tr.appendChild(sd);
+      var sd = el("td", ""); sd.appendChild(badge(toneOf(r.g), statusLabel(a))); tr.appendChild(sd);
       var th = "—";
       if (r.g === "rejected" || r.g === "positive") th = a.thank_you_sent_at ? t("thanks_yes") : t("thanks_no");
       tr.appendChild(el("td", "", th));
@@ -679,68 +990,65 @@ td.time { font-family:var(--mono); white-space:nowrap; color:var(--muted); } td 
     });
     tb.appendChild(body); wrap.appendChild(tb); return wrap;
   }
-  function toneOf(g) { return { positive: "ok", rejected: "bad", waiting: "wait", error: "err", drafts: "" }[g] || ""; }
-  function statusLabel(a) {
-    if (a.status === "sent_waiting") {
-      var d = daysWaiting(a);
-      if (d === null) return t("s_waiting_unknown");
-      return d === 1 ? t("s_waiting_one") : t("s_waiting_many", { d: d });
-    }
-    if (a.status === "meeting_invited") return t("s_meeting_invited") + (a.meeting_type ? " — " + t("s_meeting_" + a.meeting_type) : "");
-    return t("s_" + a.status);
-  }
 
-  // ---- static parts: language, buttons, help ----
+  // ---- messages, errors and the whole page ----
   function applyStatic() {
     document.documentElement.lang = lang;
     document.title = "HomenS.AI JobPilot | " + t("eyebrow");
     document.querySelectorAll("[data-i]").forEach(function (n) { n.textContent = t(n.getAttribute("data-i")); });
     document.querySelectorAll("[data-lang]").forEach(function (b) { b.setAttribute("aria-pressed", String(b.getAttribute("data-lang") === lang)); });
     var help = document.getElementById("help-list"); help.textContent = "";
-    ["help1", "help2", "help3", "help4", "help5"].forEach(function (k) { help.appendChild(el("li", "", t(k))); });
+    ["help1", "help2", "help3", "help4", "help5", "help6", "help7"].forEach(function (k) { help.appendChild(el("li", "", t(k))); });
     var meta = document.getElementById("meta"); meta.textContent = "";
-    if (SRC) {
-      meta.appendChild(el("span", "pill info", t("meta_profile") + ": " + (SRC.profile_id || "—")));
-      meta.appendChild(el("span", "pill", t("meta_tz") + ": " + SRC.timezone));
-      meta.appendChild(el("span", "pill", t("meta_snapshot") + ": " + stamp(SRC.generated_at)));
-      var age = Math.floor((Date.now() - generatedMs) / DAY);
+    if (SNAP) {
+      meta.appendChild(el("span", "pill info", t("meta_profile") + ": " + SNAP.profile_id));
+      meta.appendChild(el("span", "pill", t("meta_tz") + ": " + SNAP.timezone));
+      meta.appendChild(el("span", "pill", t("meta_snapshot") + ": " + stamp(SNAP.generated_at)));
+      var age = Math.floor((Date.now() - Date.parse(SNAP.generated_at)) / DAY);
       if (age >= 2) meta.appendChild(el("span", "pill warn", t("meta_old", { d: age })));
     }
-    var note = document.getElementById("demo-note");
-    note.hidden = !(isSample && !cleared);
+    document.getElementById("demo-note").hidden = !(isSample && !cleared);
     var btn = document.getElementById("clear-sample");
     btn.disabled = cleared;
     btn.textContent = cleared ? t("sample_cleared") : t("sample_clear");
+  }
+  function showError() {
+    document.getElementById("data-area").hidden = true;
+    var box = document.getElementById("err"); box.textContent = ""; box.hidden = false;
+    box.appendChild(el("h2", "", t("error_h")));
+    box.appendChild(el("p", "", t("error_text", { why: t(CHECK.key, CHECK.vars), ref: CHECK.code })));
+    setText("count", ""); document.getElementById("out").textContent = "";
+  }
+  function renderAll() {
+    if (!SNAP) { showError(); return; }
+    document.getElementById("err").hidden = true;
+    document.getElementById("data-area").hidden = false;
+    renderPeriodSelect(); renderPeriod(); renderShare(); renderQuota(); renderHours(); renderControls(); renderList();
   }
   function setLang(next) {
     if (LANGS.indexOf(next) < 0) return;
     lang = next;
     var u = new URL(location.href); u.searchParams.set("lang", lang);
     try { history.replaceState(null, "", u); } catch (e) { /* file address: nothing to update */ }
-    applyStatic(); renderFull();
-  }
-  function renderFull() {
-    if (!DATA) { showError(); return; }
-    rows.length = 0;
-    SRC.applications.forEach(function (a) { var when = dateOf(a); rows.push({ a: a, when: when, p: when ? parts(when) : null, g: group(a) }); });
-    render();
+    applyStatic(); renderAll();
   }
 
   document.querySelectorAll("[data-lang]").forEach(function (b) { b.addEventListener("click", function () { setLang(b.getAttribute("data-lang")); }); });
+  document.getElementById("p-month").addEventListener("change", function (e) { state.period = e.target.value; renderPeriod(); renderQuota(); });
   document.getElementById("f-year").addEventListener("change", function (e) { state.year = e.target.value; state.month = "all"; renderControls(); renderList(); });
   document.getElementById("f-month").addEventListener("change", function (e) { state.month = e.target.value; renderList(); });
   document.getElementById("f-sort").addEventListener("change", function (e) { state.sort = e.target.value; renderList(); });
   document.getElementById("f-search").addEventListener("input", function (e) { state.q = e.target.value.trim(); renderList(); });
   document.getElementById("reset").addEventListener("click", function () {
-    state = { year: "all", month: "all", group: "all", sort: "new", q: "" };
+    state = { year: "all", month: "all", group: "all", sort: "new", q: "", period: state.period };
     document.getElementById("f-search").value = ""; renderControls(); renderList();
   });
   document.getElementById("expand").addEventListener("click", function () { document.querySelectorAll("#out details").forEach(function (d) { d.open = true; }); });
   document.getElementById("collapse").addEventListener("click", function () { document.querySelectorAll("#out details").forEach(function (d) { d.open = false; }); });
   document.getElementById("clear-sample").addEventListener("click", function () {
     try { localStorage.setItem(STORE, "1"); } catch (e) { /* private window: cleared for this view only */ }
-    cleared = true; SRC = emptied(DATA);
-    applyStatic(); renderFull();
+    cleared = true; SNAP = emptied(DATA); M = build(SNAP);
+    applyStatic(); renderAll();
   });
   var toTop = document.getElementById("to-top");
   window.addEventListener("scroll", function () { toTop.hidden = window.scrollY < 600; }, { passive: true });
@@ -751,8 +1059,7 @@ td.time { font-family:var(--mono); white-space:nowrap; color:var(--muted); } td 
   });
 
   applyStatic();
-  renderFull();
-  if (DATA && !SRC) showError();
+  renderAll();
 })();
 </script>
 </body>

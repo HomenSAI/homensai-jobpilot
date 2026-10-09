@@ -2,13 +2,15 @@
 
 [English](REVIEW.md) | [Русский](docs/ru/REVIEW.md)
 
-9 October 2026 · Version 1.5.1 · Author of the idea and developer: Serhii Khomenko / HomenS.AI · [homensai.com](https://homensai.com/) · CC BY-NC 4.0
+9 October 2026 · Version 1.6.0 (the `VERSION` file) · Author of the idea and developer: Serhii Khomenko / HomenS.AI · [homensai.com](https://homensai.com/) · CC BY-NC 4.0
 
 ## Where the project stands
 
 **In this release:** bilingual operating procedures; updated README, author story and separate code/documentation license notices; expanded journal and schedule contracts; and fixes to the statistics snapshot validation, historical counters, empty-month selector, shared quota display and result ordering.
 
-**Verified in this work copy:** 18 targeted statistics-page VM checks passed, including malformed snapshots, duplicate response IDs, late replies, empty-month selection, missing shared quota totals and technical-error sorting. This is not a full browser test or an agent/Gmail acceptance cycle.
+**Verified in this work copy:** 18 targeted statistics-page VM checks passed, including malformed snapshots, duplicate response IDs, late replies, empty-month selection, missing shared quota totals and technical-error sorting. This is not a full browser test or an agent/Gmail acceptance cycle. These checks belong to the 1.5.1 work copy; they were not repeated for 1.6.0.
+
+**Development environment:** the project was developed, audited locally and checked virtually in the **Codex** environment. **Anthropic / Claude Code was not tested in this cycle**; its compatibility is not confirmed. The Codex checks are not a full certification of the project, and the independent full acceptance of the source agent remains incomplete.
 
 **Not done yet:** full manual acceptance of the agent workflow; real Codex or Claude Code onboarding; real Gmail scheduled-send and reply processing; DOCX rendering through Word/LibreOffice; the automated GitHub release/privacy gate. Gmail, employers and external AI APIs were not connected.
 
@@ -41,6 +43,29 @@ The review covered AI_BUILD_SPEC.md, the HTML overview and the user guide. Perso
 
 The product name is **HomenS.AI JobPilot** and the repository is `homensai-jobpilot` ([HomenSAI/homensai-jobpilot](https://github.com/HomenSAI/homensai-jobpilot)). Authorship and visual identity (the same as homensai.com and HomenS.AI Core) are kept. The agent and the folder are required; Docker is not used; the HTML page only displays; the limit is 44 submissions per person per month. Nearby targets come first, CVs and letters are personalized, languages are independent, reports are neutral, mail actions need their own consent, and code from reviewed alternatives is not reused.
 
+## Capability status (R09)
+
+Each capability is marked with one of three labels: **verified in tests** (a recorded check exists, with its scope stated), **described, not tested in practice** (written in the instructions, no recorded run), or **not available** (the platform or the package does not provide it). No capability is marked as verified in practice unless a recorded run exists.
+
+| Capability | Label | Note |
+|---|---|---|
+| Statistics page: validation, sorting and filtering of a sample snapshot | verified in tests | 18 checks in an isolated JavaScript VM on synthetic data (1.5.1 work copy); not a browser test |
+| Statistics page in a real browser (layout, keyboard, mobile width, print, offline) | described, not tested in practice | |
+| Agent first setup, interview, knowledge base and search settings | described, not tested in practice | No agent run recorded |
+| Monthly limit of 44 CV submissions and send consent | described, not tested in practice | Procedural only; there is no technical lock |
+| Gmail reading and classification of whole threads | described, not tested in practice | No Gmail account was connected |
+| Gmail Schedule send and verification in Scheduled | described, not tested in practice | Not verified; the package does not claim that scheduled sending works |
+| Gmail sending of any message, by any route | described, not tested in practice | Sending through Gmail is not verified |
+| File upload by the built-in browser | not available | The official Browser documentation (checked 8 October 2026) says the agent cannot automate file uploads there |
+| DOCX/PDF creation and visual rendering | described, not tested in practice | No Word or LibreOffice rendering was run; no DOCX has been visually checked |
+| Daily 16:00 check as a registered recurring task | described, not tested in practice | Depends on the platform's scheduler; registration must be verified in the installation |
+| Daily report by Gmail to the user (R08) | described, not tested in practice | Requires consent and mock tests before use |
+| Readiness page (static template filled by the agent) | described, not tested in practice | No browser or data test recorded |
+| Local archives and recovery (R01) | described, not tested in practice | |
+| Document review in the agent chat (second way of adding a document) | described, not tested in practice | |
+| Release privacy gate (automated allowlist) | not available | Only the manual `RELEASE_CHECKLIST.md` exists |
+| Anthropic / Claude Code | described, not tested in practice | Compatibility not confirmed |
+
 ## Work not yet verified or not implemented
 
 - The workflow instructions have not been fully accepted with a real Codex or Claude Code user. The package remains experimental; scenarios are still to be run in chat with synthetic data.
@@ -49,8 +74,18 @@ The product name is **HomenS.AI JobPilot** and the repository is `homensai-jobpi
 - A complete step-by-step setup for Claude Code is not written; the detailed installation guide is for Codex on Windows.
 - The automated GitHub release workflow and any fail-closed privacy gate still need an authorized post-publication verification. The manual release checklist is present; it is not a technical enforcement mechanism.
 - The shared 44-per-person monthly quota, approvals, Gmail operations, scheduling, archives and report delivery are procedures, not hard locks or guaranteed background services.
+- The daily report by Gmail (R08), the price and plan statements (checked on 8 October 2026 from the official pricing page; not re-verified in the 1.6.0 pass, because the official sites could not be reached from the work environment), and the two-way document review (R19) need a recorded run before they can be called tested.
+- The German edition of the idea section and of the examples follows in a later phase.
 
 The `.gitignore`, example settings and statistics template can be inspected locally, but they do not prove the agent workflow works. Agent scenarios are not marked PASS without a recorded manual check and evidence.
+
+## Changes in the 1.6.0 documentation pass
+
+- Operating requirements: setup wording for the paid plan and the conditions disclaimer (R10); two ways to add a document and the confirmation step (R19); daily report by Gmail with its consent and duplicate rules (R08); built-in browser upload limit; review-before-sending block (R18).
+- User guide: "Don't know where to start?" simple-steps menu (R15); the paid plan and conditions step (R10); the example email text for the Gmail window, with a note that it is an example (R14); help block and review block (R18); two ways to add a document (R19); the capability labels (R09).
+- Idea section (R11) in README in both editions.
+- Release checklist: allowlist, archive and index checks, content checks and the record of the check (F10).
+- Nothing in this pass was run: no agent, Gmail, browser, scheduler or rendering check and no statistics check was repeated.
 
 ## Checks performed
 

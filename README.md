@@ -38,9 +38,24 @@ English is the primary language and lives at the repository root; the complete R
 
 ## How to start
 
-**As a person:** open `PROJECT_OVERVIEW.html`, then the *Install* page. Do the steps in the order given there: first the agent, then the project archive, then connect the two. You can prepare your materials first: put your CV and documents into `Локальные_данные/Положите_сюда/1_Мои_документы`, your story (for example a transcript of a voice recording) into `2_Рассказ_о_себе`. If you prepare nothing, the agent will interview you, by voice or in text. Then open the project folder in Codex or Claude Code and say “Start”: the agent loads its instructions by itself and asks you what it needs, one question at a time.
+**As a person:** open `PROJECT_OVERVIEW.html`, then the *Install* page. Do the steps in the order given there: first the agent, then the project archive, then connect the two. Before you pay for anything, read the first step in [USER_GUIDE.md](USER_GUIDE.md): the basic configuration requires a paid ChatGPT Plus subscription or a suitable higher plan with access to Codex, and the conditions must be checked on the official pages. You can prepare your materials first: put your CV and documents into `Локальные_данные/Положите_сюда/1_Мои_документы`, your story (for example a transcript of a voice recording) into `2_Рассказ_о_себе`. If you prepare nothing, the agent will interview you, by voice or in text. Then open the project folder in Codex and say “Start”: the agent loads its instructions by itself and asks you what it needs, one question at a time. Claude Code is an alternative whose compatibility is not confirmed (see *Capability status* below).
 
 **As an AI agent:** read `AGENTS.md` and `TODO_FOR_AI.md` and follow them. They are your rules and your playbook. Details are in `AI_BUILD_SPEC.md`, `ARCHITECTURE.md` and `DATA_CONTRACT.md`.
+
+## Capability status
+
+The project was developed, audited locally and checked virtually in the **Codex** environment. **Anthropic / Claude Code was not tested in this cycle.** The Codex checks are not a full certification of the project. Each capability is labelled as **verified in tests**, **described, not tested in practice** or **not available**. The full table is in [REVIEW.md](REVIEW.md#capability-status-r09).
+
+| Capability | Label |
+|---|---|
+| Statistics page (validation, sorting, filtering) on synthetic data | verified in tests (18 VM checks, not a browser test) |
+| Agent setup, monthly 44-CV limit, consent and approvals | described, not tested in practice (procedures only) |
+| Gmail reading, Gmail Schedule send and sending of any message | described, not tested in practice; sending is not verified |
+| Built-in browser uploading attachments | not available (per the official Browser documentation, checked 8 October 2026) |
+| DOCX/PDF creation and visual rendering | described, not tested in practice; no rendering was run |
+| Daily 16:00 check and daily report by Gmail | described, not tested in practice |
+| Release privacy gate (automated allowlist) | not available; the manual [RELEASE_CHECKLIST.md](RELEASE_CHECKLIST.md) is used |
+| Claude Code / Anthropic | described, not tested in practice; compatibility not confirmed |
 
 ## What is deliberately not implemented
 
@@ -52,7 +67,7 @@ Platform limits decide which actions are possible. Within them, the current inst
 
 ## Fixed decisions
 
-- A Codex or Claude Code agent and a folder it is allowed to open are required. Docker, a backend and SQL are not.
+- A Codex agent (the environment in which the project was checked) or a Claude Code agent (compatibility not confirmed) and a folder it is allowed to open are required. Docker, a backend and SQL are not.
 - Data is UTF-8 JSON/JSONL. The agent updates it; the static HTML page only displays a snapshot, grouped by year, month and day, with sorting by date and result.
 - A person's master profile holds confirmed biographical facts. Each CV and cover letter is tailored to one target without invented facts.
 - At most 44 CV submissions per person per calendar month, including repeat submissions and replacements. A new profile or chat does not reset the count.
@@ -60,15 +75,35 @@ Platform limits decide which actions are possible. Within them, the current inst
 - A new setup starts in `draft_only` mode. Gmail and other external actions are permitted separately. Gmail messages are not deleted, moved to Archive or relabelled; local backups are separate versioned files.
 - Design and development: Serhii Khomenko. No code, templates or prompts from the reviewed GitHub alternatives are used.
 
-## Why the project was created
+## Origin of the idea
 
-Serhii Khomenko began organizing his own ongoing job search on his computer. The first setup grew gradually from folders, documents and prompts rather than from a formal software application. When acquaintances described the same time-consuming work—finding suitable openings, tailoring a CV and cover letter, translating, preparing emails and tracking replies—the author decided to standardize the process for other people.
+**Idea author and developer: Serhii Khomenko.**
 
-HomenS.AI JobPilot also demonstrates how a complex workflow can be coordinated through prompts, written procedures, local files and an existing cloud AI agent such as Codex, without building a separate full-scale job-search application. The statistics page contains HTML/CSS/JavaScript for displaying and sorting the agent's snapshot. This is an architectural approach, not a measured claim that every equivalent application would take a fixed number of times longer to build. The earlier personal workflow was used for about two months; preparing the first standardized project documentation took the author about two working days. Neither statement means the current package has passed full acceptance.
+HomenS.AI JobPilot grew out of hands-on experience with an ongoing job search and the wish to automate its most time-consuming routines. Reviewing vacancies, tailoring a CV and cover letter, translating materials, submitting documents and tracking replies all take considerable time. The project reflects the HomenS.AI approach: modern AI tools can reduce repetitive work and help people focus on more important tasks. Learn more about the author and his projects at [homensai.com](https://homensai.com/).
+
+The system is an assistant, not a replacement for the user. It organizes vacancy-specific documents, assists with writing and translation, maintains an approved schedule, preserves correspondence history and presents clear statistics. This can reduce missed replies, forgotten applications and inconsistent information. Results depend on the supplied facts and the selected AI; the user must review factual claims, translations, documents and consequential decisions.
+
+Time saved can be spent preparing for interviews, searching independently, attending job fairs or meeting employers. The assistant can also support someone who is employed and looking for a more suitable position.
+
+According to the author, the earlier workflow was used for two months and proved practically useful. It had a different form. JobPilot turns that experience into standardized procedures, folders, personal profiles and recordkeeping. This does not mean that every feature of the current product has passed full acceptance testing.
+
+The developer initially organized the workflow on his own computer for personal use. Folders, documents and rules grew gradually, without a single consistent structure. When acquaintances expressed a similar need, he decided to turn that personal workflow into a system other people could use.
+
+At first, the task appeared straightforward. According to the developer's estimate, preparing the documentation and refining the initial project alone took roughly two working days. What looked like a few simple steps required many details to be addressed: personal data, factual checks, languages, document approval, scheduling, employer replies, delivery failures and recovery. The project's main value lies in its carefully considered workflow and standardized instructions for an AI agent, rather than a separate software-driven mailing engine. Its interface does use HTML/JavaScript, so it should not be described literally as containing no code. The two-day estimate concerns initial preparation, not completed implementation and validation of every subsequent enhancement.
+
+Another goal of the developer is to demonstrate how a fairly complex workflow can be organized without building a separate full-fledged application: combine prompts, written instructions, local files and existing cloud-based AI tools such as Codex. Instructions define the workflow, the AI agent performs approved tasks using its available tools, and local files preserve documents and results. The author's intention is to make the system substantially easier to create and revise than an equivalent application built from scratch. This is an engineering concept, not a measured claim of being several times faster: complexity depends on the features, reliability requirements and available tools. The approach does not remove the need to verify documents, permissions, outcomes and safeguards.
+
+During initial setup, the user supplies a CV and, where possible, a broader personal knowledge base: experience, skills, education, certificates, diplomas and other relevant information. Only necessary information that the user permits to be processed should be supplied. The agent asks for missing details and configures a local working folder. This is an organized AI-assisted workspace, not a mandatory separate server: a static page displays statistics while the agent performs the work.
+
+The basic workflow does not require a separate paid job-search management application, an SQL database, a server or Docker. It does require the selected AI subscription, available tools and configured permissions. The primary configuration specifies ChatGPT Plus or a suitable higher plan. The system simplifies organization but still requires initial setup and user oversight.
+
+To discourage mass mailing, JobPilot limits CV submissions to **44 per person per calendar month**, across all of that person's profiles. For example, 22 permitted working days allow two applications per day. Every application should be relevant and personalized; a numerical limit alone does not guarantee that messages will not be treated as spam. Independent actions outside the system remain the user's decisions and do not authorize the agent to bypass its limits. This experimental product does not guarantee employment, accurate external information or error-free third-party AI. The user reviews materials, authorizes external actions and follows applicable rules. Separate terms address use and liability without claiming to remove mandatory legal rights.
+
+The German edition of this section follows in a later phase.
 
 ## Publication and rights
 
-Working data stays in `Локальные_данные/` and is not part of the public package. `.gitignore` helps to exclude it but does not stop tracking of files that are already in Git, so both the release archive and the Git index are checked before publication.
+Working data stays in `Локальные_данные/` and is not part of the public package. `.gitignore` helps to exclude it but does not stop tracking of files that are already in Git, so both the release archive and the Git index are checked before publication. Before any public release the manual checks in [RELEASE_CHECKLIST.md](RELEASE_CHECKLIST.md) are run: a file allowlist, the archive and index check, and a content check for personal data, secrets, real documents and fake-looking real data. These checks are manual; passing them is not proof that no personal data exists.
 
 **Project code**, including the statistics page, is licensed under the [PolyForm Noncommercial License 1.0.0](LICENSE). **Project documentation** is licensed under [CC BY-NC 4.0](LICENSE-DOCS). Both require the stated attribution and noncommercial use; commercial use needs separate permission from the author. This is source-available, not OSI-defined open-source software. These licenses do not cover users' personal documents or third-party materials. IBM Plex fonts retain their separate SIL OFL 1.1 terms in `assets/fonts`. See [NOTICE](NOTICE).
 

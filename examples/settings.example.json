@@ -15,6 +15,7 @@
     "document_languages_inherit_ui": false
   },
   "languages": {
+    "review_language": null,
     "cv_language": null,
     "cover_letter_language": null,
     "email_language": null,
@@ -39,6 +40,7 @@
   },
   "schedule": {
     "prepare_month_at_start": true,
+    "monthly_reminder_local_time": null,
     "cadence": "allowed_workdays",
     "interval_days": null,
     "allowed_weekdays": [
@@ -48,7 +50,6 @@
       4,
       5
     ],
-    "local_send_time": "10:00",
     "local_send_times": [
       "10:00"
     ],
@@ -111,6 +112,27 @@
       "bus_tram",
       "bicycle",
       "walk"
+    ],
+    "languages.review_language": "a language code the person checks the materials in (for example en, ru, de); null until asked (TODO_FOR_AI.md, A7); separate from the sending languages and the report language",
+    "languages.cv_language": "default CV language for vacancies whose language is not stated; the vacancy language decides for each application; null until asked",
+    "languages.cover_letter_language": "default cover letter language, same rule as cv_language; null until asked",
+    "languages.email_language": "default e-mail text language, same rule as cv_language; null until asked",
+    "languages.report_language": "en, ru or de, chosen by the person; independent of the other languages",
+    "schedule.prepare_month_at_start": [
+      true,
+      false
+    ],
+    "schedule.monthly_reminder_local_time": "null until agreed in setup, then HH:MM local time (24 h); never assumed",
+    "schedule.daily_check_time": "HH:MM local time (24 h); default 16:00 in the person's time zone",
+    "schedule.local_send_times": "one or two HH:MM local times (24 h); one time per run unless a second time is chosen",
+    "schedule.max_per_run": [
+      1,
+      2
+    ],
+    "schedule.inter_message_delay_minutes": "null, or an integer of 1 or more; used when max_per_run is 2 and only one local time is given",
+    "schedule.interval_days": "null, or an integer of 1 or more; used only by every_n_calendar_days (calendar days) and every_n_allowed_workdays (permitted working days)",
+    "schedule.missed_send_policy": [
+      "needs_reschedule"
     ],
     "schedule.cadence": [
       "immediate",

@@ -6,6 +6,7 @@
   "format_version": "1.5",
   "language": "ru",
   "stage": "new",
+  "run_id": null,
   "progress": {
     "step": "A1",
     "done": [],
@@ -68,6 +69,11 @@
       "status": "unknown",
       "checked_at": "2026-10-08T08:00:00Z",
       "note": ""
+    },
+    "writer_lock": {
+      "status": "unknown",
+      "checked_at": "2026-10-08T08:00:00Z",
+      "note": "exclusive creation of journal/writer.lock (ARCHITECTURE.md section 4b); unavailable or unknown means no autonomous parallel external actions"
     }
   },
   "_allowed_values": {
@@ -81,6 +87,7 @@
       "profile_created",
       "ready"
     ],
+    "run_id": "UUID of the current chat, written at the start of every chat (TODO_FOR_AI.md, A1 and Part B); null before the first chat; it names the chat's session note and its writer.lock",
     "capabilities.*.status": [
       "available",
       "unavailable",
