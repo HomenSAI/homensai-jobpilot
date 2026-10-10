@@ -89,7 +89,7 @@ Das Format der Wissensbasis steht in [`DATA_CONTRACT.md`](./DATA_CONTRACT.md) §
 | Journal, Zustände, Kontingent, Wiederherstellung? | [`ARCHITECTURE.md`](./ARCHITECTURE.md), [`DATA_CONTRACT.md`](./DATA_CONTRACT.md) |
 | Wie wird meine Arbeit geprüft? | [`ACCEPTANCE_TESTS.md`](./ACCEPTANCE_TESTS.md) |
 
-Alle Sprachfassungen beschreiben dieselben Regeln. Maßgeblich ist der englische Text.
+Alle vier Sprachfassungen (Englisch im Hauptverzeichnis; Russisch, Deutsch und Ukrainisch in `docs/`) beschreiben dieselben Regeln. Maßgeblich ist der englische Text.
 
 ---
 

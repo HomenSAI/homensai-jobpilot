@@ -43,7 +43,7 @@
 <div class="eyebrow">Installation</div>
 <h1>Installation, <span class="accent">Schritt für Schritt</span></h1>
 <p class="lead">Die Einrichtung dauert etwa 30–40 Minuten. Führen Sie die Schritte in der Reihenfolge aus. Jeder Schritt sagt Ihnen, was Sie auf dem Bildschirm sehen sollten, damit Sie immer wissen, ob es geklappt hat. Auf Ihrem Computer werden weder Git, Python noch andere Entwicklerwerkzeuge benötigt.</p>
-<div class="pills"><span class="pill">Windows · ChatGPT Desktop · Codex</span><span class="pill">Claude Code ist eine Alternative</span><span class="pill">Ein Schritt pro Aktion</span></div>
+<div class="pills"><span class="pill">Windows · ChatGPT Desktop · Codex</span><span class="pill">Claude Code: Kompatibilität nicht bestätigt</span><span class="pill">Ein Schritt pro Aktion</span></div>
 </div>
 
 <section id="order">
@@ -127,7 +127,7 @@
 <p>Offizielle Erläuterungen: <a href="https://learn.chatgpt.com/docs/permission-modes">Berechtigungsmodi</a>, <a href="https://learn.chatgpt.com/docs/sandboxing">Sandboxing</a>.</p></li>
 <li><h3>Den ersten sicheren Start durchführen</h3>
 <p>Geben Sie dies in den neuen Chat ein (oder einfach „Start“):</p>
-<pre class="cmd">Start. Read AGENTS.md and TODO_FOR_AI.md and lead me through the first run.</pre>
+<pre class="cmd">Start. Lesen Sie AGENTS.md, TODO_FOR_AI.md und OPERATING_REQUIREMENTS.md im Projektordner und führen Sie mich durch die Ersteinrichtung. Stellen Sie jeweils eine Frage und erklären Sie in einfachen Worten. Arbeiten Sie nur im Projektordner. Solange ich die Materialien nicht geprüft und den Versand nicht erlaubt habe, senden Sie nichts und legen Sie nichts in Gmail unter „Scheduled“ ab.</pre>
 <p>Der Agent lädt seine Regeln selbst (Codex liest AGENTS.md, Claude Code liest CLAUDE.md). Er stellt sich vor, bestätigt den Arbeitsordner, prüft seine Werkzeuge und fragt Sie dann, jeweils eine Frage: Ihren Namen und die Sprache, die Sie bevorzugen. Danach bittet er um Ihre Zustimmung, Ihre persönlichen Unterlagen zu lesen, und beginnt die erste Einrichtung (Schritt 7). Antworten Sie mit eigenen Worten, per Sprache, wenn Ihre App eine Mikrofontaste hat.</p>
 <p class="see"><b>Sie sollten sehen:</b> Der Agent nennt den richtigen Ordner, erklärt in wenigen Zeilen, was passieren wird, sagt, dass er im Entwurfsmodus arbeitet, und stellt seine erste Frage.</p>
 <p class="stuck"><b>Wenn der Agent nicht weiß, was er tun soll, oder sagt, AGENTS.md oder TODO_FOR_AI.md fehle:</b> Der Ordner ist falsch oder das Archiv unvollständig. Prüfen Sie die Schritte 2 und 3. Bitten Sie den Agenten nicht, fehlende Dateien zu erfinden.</p></li>
@@ -195,7 +195,7 @@
 <article><h3>Der Agent kann kein Ergebnis speichern</h3><p>Prüfen Sie den Berechtigungsmodus und den Zugriff auf den Projektordner. Öffnen Sie nicht den Zugriff auf das ganze Laufwerk.</p></article>
 <article><h3>Gmail oder Anhänge sind nicht verfügbar</h3><p>Bei einem Connector prüfen Sie Verfügbarkeit, vorgesehenes Konto und Lese- und Sendeberechtigungen; beim Browser prüfen Sie die Berechtigungen für Browser und Computer Use. Funktioniert keiner der Wege, verwenden Sie EMAIL_TO_SEND.txt und das manuelle Ersatzverfahren. Fügen Sie keine Zugangsdaten in den Chat ein. Prüfen Sie Scheduled oder SENT, bevor Sie etwas als erledigt markieren.</p></article>
 <article><h3>Eine Regel- oder Vorlagendatei fehlt</h3><p>Das Archiv ist möglicherweise unvollständig oder noch ein Entwurfsstand. Bitten Sie den Agenten nicht, Dateien zu erfinden.</p></article>
-<article><h3>Die Statistik öffnet sich nicht</h3><p>Prüfen Sie, ob der Agent <code>dashboard/profiles/&lt;profile_id&gt;/index.html</code> erzeugt hat; die saubere Vorlage enthält nur Beispieldaten.</p></article>
+<article><h3>Die Statistik öffnet sich nicht</h3><p>Prüfen Sie, ob der Agent <code>Локальные_данные/dashboard/profiles/&lt;profile_id&gt;/index.html</code> erzeugt hat; die saubere Vorlage enthält nur Beispieldaten.</p></article>
 </div>
 </section>
 

@@ -8,22 +8,23 @@ Deutsche Fassung. Maßgeblich ist die englische Fassung (Datei im Hauptverzeichn
 
 ## Prüfumfang dieser Revision
 
-Die Quellen wurden gegen GitHub main `0b183dda02fdaf7b4e3c13767990d4839bd11936` (Release 1.9.0) geprüft. Neue Ordnerstruktur, neutrale Dokumentbeispiele, Tageslimits und segmentiertes Journal bleiben erhalten. Änderungen wurden aus GitHub-Quellen mit Prüfungen im Speicher vorbereitet; keine Gmail- oder Arbeitgeberaktion erfolgte.
+Was bis zu dieser Version ausgeführt wurde, von wem und womit. Nichts davon verwendete ein echtes Gmail-Konto, einen echten Arbeitgeber, Codex oder das eigene Claude Code des Nutzers.
 
-- 24 Prüfungen führten den vorhandenen Snapshot-Validator aus den GitHub-Quellen aus: PASS. Dies sind Validatorprüfungen, kein visueller Browsertest.
-- 23 Simulationen der Kontingent-, Empfänger- und Releaseregeln: PASS. Sie modellieren schriftliche Regeln und sind weder Maildienst noch tatsächlicher GitHub-Actions-Lauf.
-- JSON/JSONL und relative Dokumentlinks wurden geprüft. DOCX/PDF-Beispiele sind unverändert aus main; keine neue PDF-zu-DOCX-Konvertierung oder Word-/LibreOffice-Darstellung wurde hier ausgeführt.
-- Der überarbeitete Release-Workflow und die Abnahme mit einem tatsächlichen Agenten bleiben bis zur gesonderten Ausführung NOT RUN. Aussagen über Fähigkeiten sind auf diese Belege begrenzt.
+- **Ausführbares Modell der Regeln** (`examples/simulation/SIMULATION_REPORT.md`): Der Tester hat die schriftlichen Regeln als Wegwerfmodell mit einem simulierten Postfach umgesetzt. 46 Prüfungen bestanden: fünf Bewerbungen mit Antworten, eine Absage, ein Zustellfehler und ein Mailfehler, doppelter Versand, Limits, zwei Chats, unterbrochene Arbeit. Zwei Widersprüche in den Regeln wurden gefunden und behoben (1.17.1).
+- **Probeläufe der Ersteinrichtung**: Ein Claude-Agent in einer Sandbox-Kopie des Pakets folgte `CLAUDE.md`, `AGENTS.md` und `TODO_FOR_AI.md` für drei erfundene Personen (nichts vorbereitet; Ordner gefüllt; eine lange gesprochene Geschichte) bis zur Stufe `ready`. Ihre Befunde wurden in 1.18.0 übernommen. Dabei wurde LibreOffice zum Umwandeln und Rendern der Vorlagen verwendet.
+- **Statistikseite**: im Headless-Microsoft-Edge auf Russisch und Deutsch geöffnet (der Block zum Wert der Zeit, die Kontingentbalken); frühere Validatorprüfungen des Schnappschusses (18 in einer JavaScript-VM). Layout auf Telefonen, Tastaturbedienung und Druck wurden nicht getestet.
+- **Datenschutzgate**: `.github/workflows/privacy-gate.yml` wurde lokal an einer sauberen Kopie ausgeführt (bestanden) und an einer Kopie mit eingeschleusten persönlichen Daten (wie erwartet fehlgeschlagen); auf GitHub ist es noch nicht gelaufen.
+- **Nicht ausgeführt**: Codex; das Claude Code des Nutzers; echtes Gmail (Lesen, Nachweis in SENT und Scheduled, Anhänge); Word; echte Nutzer; geplante Aufgaben.
 
 ## Stand des Projekts
 
 **In dieser Freigabe:** zweisprachige Betriebsverfahren; aktualisierte README, Autorenbeschreibung und getrennte Lizenzhinweise für Code und Dokumentation; erweiterte Verträge für Journal und Terminplan; sowie Korrekturen bei der Prüfung des Statistik-Schnappschusses, bei historischen Zählern, bei der leeren Monatsauswahl, bei der Anzeige des gemeinsamen Kontingents und bei der Reihenfolge der Ergebnisse.
 
-**Im aktuellen Arbeitsstand geprüft:** 18 gezielte VM-Prüfungen der Statistikseite bestanden, darunter fehlerhafte Schnappschüsse, doppelte Antwort-IDs, späte Antworten, Auswahl eines leeren Monats, fehlende Summen des gemeinsamen Kontingents und die Sortierung technischer Fehler. Das ist kein vollständiger Browsertest und kein Agenten- oder Gmail-Abnahmezyklus. Diese Prüfungen gehören zum Arbeitsstand 1.5.1; sie wurden für 1.6.0 nicht wiederholt.
+**Im aktuellen Arbeitsstand geprüft:** 18 gezielte VM-Prüfungen der Statistikseite bestanden, darunter fehlerhafte Schnappschüsse, doppelte Antwort-IDs, späte Antworten, Auswahl eines leeren Monats, fehlende Summen des gemeinsamen Kontingents und die Sortierung technischer Fehler. Das ist kein vollständiger Browsertest und kein Agenten- oder Gmail-Abnahmezyklus. Diese Prüfungen gehören zu einem früheren Arbeitsstand (1.5.1).
 
 **Entwicklungsumgebung:** Das Projekt wurde entwickelt, lokal geprüft und virtuell in der Umgebung **Codex** überprüft. **Anthropic / Claude Code wurde in diesem Zyklus nicht getestet**; seine Kompatibilität ist nicht bestätigt. Die Codex-Prüfungen sind keine vollständige Zertifizierung des Projekts, und die unabhängige vollständige Abnahme des Quell-Agenten bleibt unvollständig.
 
-**Noch nicht erledigt:** vollständige manuelle Abnahme des Agenten-Ablaufs; echte Einrichtung mit Codex oder Claude Code; echter geplanter Gmail-Versand und Verarbeitung von Antworten; DOCX-Rendering über Word/LibreOffice; das automatische Freigabe- bzw. Datenschutz-Gate auf GitHub. Gmail, Arbeitgeber und externe KI-Schnittstellen wurden nicht angebunden.
+**Noch nicht erledigt:** vollständige manuelle Abnahme des Agenten-Ablaufs; echte Einrichtung mit Codex oder Claude Code; echter geplanter Gmail-Versand und Verarbeitung von Antworten; DOCX-Rendering über Word; der erste Lauf der Freigabe- und Datenschutzgate-Workflows auf GitHub. Gmail, Arbeitgeber und externe KI-Schnittstellen wurden nicht angebunden.
 
 Das Workflow verzichtet bewusst auf eine eigenständige Anwendung zur Stellensuche oder zum Versand von E-Mails. Die Statistikansicht enthält HTML/CSS/JavaScript zum Prüfen, Sortieren, Filtern und Anzeigen des vom Agenten geschriebenen Schnappschusses. Die Schutzmaßnahmen für Zustimmung, Kontingent und externe Post bleiben Verfahren und keine technischen Sperren. Die Versionen 1.2 bis 1.4 haben die zweisprachige Architektur, das personenbezogene Journal und das Agenten-Playbook festgelegt; Version 1.5 erweitert den Monatsablauf, die Abstimmung mit Gmail, lokale Archive, Berichte, Dateien zur Namensnennung und die Prüfung der Statistik-Schnappschüsse.
 
@@ -61,20 +62,20 @@ Jede Fähigkeit trägt eine von drei Kennzeichnungen: **verified in tests** [in 
 | Fähigkeit | Kennzeichnung | Hinweis |
 |---|---|---|
 | Statistikseite: Prüfung, Sortierung und Filterung eines Beispiel-Schnappschusses | verified in tests | 18 Prüfungen in einer isolierten JavaScript-VM mit synthetischen Daten (Arbeitsstand 1.5.1); kein Browsertest |
-| Statistikseite in einem echten Browser (Layout, Tastatur, mobile Breite, Druck, offline) | described, not tested in practice | |
-| Erste Einrichtung des Agenten, Interview, Wissensbasis und Sucheinstellungen | described, not tested in practice | Kein Agentenlauf aufgezeichnet |
+| Statistikseite in einem echten Browser (Layout, Tastatur, mobile Breite, Druck, offline) | verified in tests | Im Headless-Edge geöffnet (Russisch, Deutsch); Layout auf Telefonen, Tastatur und Druck nicht getestet |
+| Erste Einrichtung des Agenten, Interview, Wissensbasis und Sucheinstellungen | verified in tests | Ein Claude-Agent in einer Sandbox, drei erfundene Personen (`examples/simulation/SIMULATION_REPORT.md`); nicht Codex, nicht die Installation des Nutzers |
 | Monatliches Limit von 44 Lebensläufen und Zustimmung zum Versand | described, not tested in practice | Nur verfahrensmäßig; es gibt keine technische Sperre |
 | Gmail-Lesen und Klassifizierung ganzer Verläufe | described, not tested in practice | Kein Gmail-Konto verbunden |
 | Gmail-Terminversand und Prüfung in Scheduled | described, not tested in practice | Nicht geprüft; das Paket behauptet nicht, dass der Terminversand funktioniert |
 | Gmail-Versand beliebiger Nachrichten auf beliebigem Weg | described, not tested in practice | Versand über Gmail ist nicht geprüft |
 | Datei-Upload durch den integrierten Browser | not available | Die offizielle Browser-Dokumentation (geprüft am 8. Oktober 2026) besagt, dass der Agent dort Datei-Uploads nicht automatisieren kann |
-| DOCX-/PDF-Erstellung und visuelles Rendering | described, not tested in practice | Kein Rendering in Word oder LibreOffice ausgeführt; kein DOCX wurde visuell geprüft |
+| DOCX-/PDF-Erstellung und visuelles Rendering | described, not tested in practice | In den Sandbox-Probeläufen wurde die Umwandlung mit LibreOffice verwendet; Word wurde nicht getestet |
 | Tägliche Prüfung um 16:00 Uhr als registrierte wiederkehrende Aufgabe | described, not tested in practice | Hängt vom Terminplaner der Plattform ab; die Registrierung muss bei der Installation geprüft werden |
 | Täglicher Bericht per Gmail an den Nutzer (R08) | described, not tested in practice | Braucht Zustimmung und Probetests vor der Nutzung |
 | Bereitschaftsseite (statische, vom Agenten gefüllte Vorlage) | described, not tested in practice | Kein Browser- oder Datentest aufgezeichnet |
 | Lokale Archive und Wiederherstellung (R01) | described, not tested in practice | |
 | Dokumentenprüfung im Agenten-Chat (zweiter Weg, ein Dokument hinzuzufügen) | described, not tested in practice | |
-| Freigabe-Datenschutzgate (automatische Allowlist) | not available | Nur die manuelle `RELEASE_CHECKLIST.md` ist vorhanden |
+| Freigabe-Datenschutzgate (automatische Prüfung) | verified in tests | `.github/workflows/privacy-gate.yml`; lokal an einer sauberen Kopie und an einer Kopie mit eingeschleusten persönlichen Daten getestet; auf GitHub noch nicht ausgeführt |
 | Anthropic / Claude Code | described, not tested in practice | Kompatibilität nicht bestätigt |
 
 ## Noch nicht geprüfte oder nicht umgesetzte Arbeiten
@@ -83,10 +84,10 @@ Jede Fähigkeit trägt eine von drei Kennzeichnungen: **verified in tests** [in 
 - Die Fähigkeiten des Gmail-Connectors und des integrierten Browsers müssen am installierten Konto des Nutzers gesondert geprüft werden, einschließlich des Lesens ganzer Verläufe, Gmail Scheduled, Anhängen, SENT-Nachweis und Wiederherstellung nach unterbrochener Sitzung. Für diese Prüfung wurde kein echtes Gmail-Konto verbunden.
 - DOCX-/PDF-Erstellung und seitenweises Rendering in Word oder LibreOffice wurden vom Agenten noch nicht durchgehend ausgeführt.
 - Eine vollständige Schritt-für-Schritt-Einrichtung für Claude Code ist nicht geschrieben; die ausführliche Installationsanleitung gilt für Codex unter Windows.
-- Der automatische GitHub-Freigabe-Workflow und jedes Datenschutzgate mit Ausfallsicherung brauchen weiterhin eine berechtigte Prüfung nach der Veröffentlichung. Die manuelle Freigabe-Checkliste liegt vor; sie ist keine technische Durchsetzung.
+- Der Freigabe-Workflow und das Datenschutzgate (`.github/workflows/privacy-gate.yml`) brauchen noch ihren ersten Lauf auf GitHub. Die manuelle Freigabe-Checkliste bleibt bestehen.
 - Das gemeinsame Kontingent von 44 Bewerbungen pro Person und Monat, Freigaben, Gmail-Vorgänge, Terminplanung, Archive und Berichtszustellung sind Verfahren, keine harten Sperren oder garantierten Hintergrunddienste.
-- Der tägliche Bericht per Gmail (R08), die Angaben zu Preisen und Tarifen (geprüft am 8. Oktober 2026 auf der offiziellen Preisseite; im Durchgang 1.6.0 nicht erneut geprüft, weil die offiziellen Seiten aus der Arbeitsumgebung nicht erreichbar waren) und die zweiseitige Dokumentenprüfung (R19) brauchen einen aufgezeichneten Lauf, bevor sie als geprüft gelten können.
-- Die deutsche Fassung des Abschnitts zur Idee und der Beispiele folgt in einer späteren Phase. [Anmerkung: Diese Fassung liegt inzwischen vor; der Satz stammt aus der englischen Fassung.]
+- Der tägliche Bericht per Gmail (R08), die Angaben zu Preisen und Tarifen (geprüft am 8. Oktober 2026 auf der offiziellen Preisseite; seitdem nicht erneut geprüft) und die zweiseitige Dokumentenprüfung (R19) brauchen einen aufgezeichneten Lauf, bevor sie als geprüft gelten können.
+- Neutrale Vorlagen für Lebenslauf, Anschreiben und Bericht gibt es nur auf Englisch und Ukrainisch; Deutsch und Russisch fehlen.
 
 Die Dateien `.gitignore`, die Beispiel-Einstellungen und die Statistikvorlage können lokal angesehen werden, belegen aber nicht, dass der Agenten-Ablauf funktioniert. Agentenszenarien gelten nicht als PASS ohne ein aufgezeichnetes manuelles Prüfergebnis und einen Nachweis.
 

@@ -15,7 +15,7 @@ Die erste Version verwendet UTF-8-JSON für Konfiguration und Datensätze und JS
 | Pfad relativ zum Stammverzeichnis | Aufgabe |
 |---|---|
 | `Локальные_данные/persons/<person_id>/state/person.json` | Projektion der Identität der Person, der Zeitzone des Kontingents, der zulässigen `profile_id`-Werte und des `setup_progress` der Person (§17) |
-| `Локальные_данные/workspace.json` | Workspace-Kennung, `format_version`, Sprache, `stage` der Erstinstallation, `person_ids` und Fähigkeitsprüfungen (`examples/workspace.example.json`) |
+| `Локальные_данные/workspace.json` | Workspace-Kennung, `format_version`, Sprache, `stage` der Erstinstallation (in dieser Reihenfolge: `new`, `consent_given`, `story_ready`, `documents_ready`, `knowledge_base_draft`, `knowledge_base_confirmed`, `profile_created`, `ready`; TODO_FOR_AI.md, Teil A), `progress`, `run_id`, `person_ids` und Fähigkeitsprüfungen (`examples/workspace.example.json`) |
 | `Локальные_данные/Положите_сюда/1_Мои_документы`, `2_Рассказ_о_себе`, `3_Шаблон_отчёта`, `4_Шаблон_резюме`, `5_Шаблон_сопроводительного_письма` | Die Originale, die Geschichte, die optionale Berichtsvorlage und die Muster von Lebensläufen und Anschreiben der Person; der Agent liest sie nur und ändert sie nie |
 | `Локальные_данные/persons/<person_id>/База_знаний/Жизнеописание.md` | Die Wissensbasis: die maßgebliche Quelle bestätigter Fakten, siehe §3a |
 | `Локальные_данные/persons/<person_id>/journal/transactions-YYYY-MM.jsonl` | Das einzige Hauptjournal, in Monatsabschnitten geführt (§3c): Bewerbungen, Profile, Nachrichten, Einwilligungen und das gemeinsame Kontingent der Person. Nur der Abschnitt des laufenden Monats wird geschrieben |

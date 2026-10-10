@@ -2,6 +2,7 @@
 
 Short summary of every release in plain words. Technical details are in CHANGELOG.md. One line per release: `- version | date | text`.
 
+- 1.20.0 | 10 October 2026 | Prepared for the public release: one clear start command and better prompts in the guide, an honest description of what has been tested, and the four language versions brought in line.
 - 1.19.2 | 10 October 2026 | Translations were partly checked against the English texts; a hand-over note for the next work session was added.
 - 1.19.1 | 10 October 2026 | The saved-time value uses one rate, the German minimum wage for 2026, with its source.
 - 1.19.0 | 10 October 2026 | Statistics page: a new block estimates what the saved time is worth, at the German minimum wage, per month and per year (rough estimate, with sources).

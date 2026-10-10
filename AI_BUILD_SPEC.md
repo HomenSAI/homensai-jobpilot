@@ -215,7 +215,7 @@ The user downloads the GitHub ZIP, chooses a convenient place and extracts it. T
       5_Шаблон_сопроводительного_письма\  # everything about the cover letters
     persons\<person_id>\
       База_знаний\Жизнеописание.md   # the knowledge base: the person's life story, confirmed facts
-      journal\transactions-YYYY-MM.jsonl  # the person's single primary journal, one segment per month
+      journal\transactions-YYYY-MM.jsonl  # the person's single primary journal, one segment per month, split into -pN parts above 500 lines
       journal\writer.lock            # one local write lock
       state\quota.json               # derived counter by month
       outbox\                        # immutable packages of send attempts

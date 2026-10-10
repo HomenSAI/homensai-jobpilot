@@ -16,7 +16,7 @@ Führen Sie diese Prüfungen mit synthetischen Testdaten und an einem Kandidaten
 Das öffentliche Release darf nur die unten genannten Dateien enthalten. Jede andere Datei stoppt das Release, bis sie entfernt oder die Liste in einem geprüften Commit geändert wurde.
 
 - Dokumente im Hauptverzeichnis: `README.md`, `USER_GUIDE.md`, `OPERATING_REQUIREMENTS.md`, `AGENTS.md`, `CLAUDE.md`, `TODO_FOR_AI.md`, `AI_BUILD_SPEC.md`, `ARCHITECTURE.md`, `DATA_CONTRACT.md`, `ACCEPTANCE_TESTS.md`, `REVIEW.md`, `RELEASE_CHECKLIST.md`, `CHANGELOG.md`, `VERSION`, `LICENSE`, `LICENSE-DOCS`, `NOTICE`, `PROJECT_OVERVIEW.html`, `overview_*.html`, `.gitignore`.
-- Ordner: `docs/` (russische und deutsche Fassung und ihre Dateien), `dashboard_template/` (saubere Vorlagen und die Beispieldatei `summary.js`), `examples/` (nur neutrale Beispiele), `assets/` (gemeinsame Stile, Skripte und IBM-Plex-Schriften), `.github/workflows/`.
+- Ordner: `docs/` (die russische, deutsche und ukrainische Fassung), `dashboard_template/` (saubere Vorlagen und die Beispieldatei `summary.js`), `examples/` (nur neutrale Beispiele), `assets/` (gemeinsame Stile, Skripte und IBM-Plex-Schriften), `.github/workflows/`.
 - Unter `Локальные_данные/`: nur die leeren Eingangsordner und ihre `README.md`-Dateien sowie `Вопросы_для_рассказа.md`, soweit `.gitignore` es zulässt. Keine andere Datei und kein Datenunterordner.
 
 ## 2. Prüfung von Archiv und Git-Index
@@ -41,7 +41,7 @@ Führen Sie die Prüfungen von Hand durch. Ein automatischer Scanner kann helfen
 
 - Prüfen Sie `LICENSE` (Hinweise zu PolyForm Noncommercial 1.0.0), `LICENSE-DOCS` (Link zu CC BY-NC 4.0) und `NOTICE` (Hinweise des Autors und Hinweise zu IBM Plex SIL OFL 1.1).
 - Neue vom Projekt verfasste Anweisungen und Oberflächentexte behalten die Namensnennung für Serhii Khomenko / HomenS.AI.
-- Die englische Primärfassung sowie die russische und die deutsche Fassung beschreiben dieselben Regeln. Eine Abweichung wird in allen Fassungen korrigiert.
+- Die englische Primärfassung sowie die russische, die deutsche und die ukrainische Fassung beschreiben dieselben Regeln. Eine Abweichung wird in jeder Fassung korrigiert.
 
 ## 5. Aussagen und Status
 
@@ -73,7 +73,7 @@ Halten Sie Datum, Repository, Branch, Commit, SHA-256-Wert des Archivs, Prüfer 
 ## Status des aktuellen Pakets
 
 - Dokumentationsänderungen wurden vorbereitet. Die Abschnitte 1 bis 8 wurden an keinem Kandidaten-Release-Archiv durchgeführt.
-- Automatische Allowlist mit Ausfallsicherung und Datenschutzscan: NOT RUN. Ein solches Gate ist nicht Teil dieses Pakets, und es wird kein Skript hinzugefügt.
+- Automatische Datenschutzprüfung: `.github/workflows/privacy-gate.yml` (GitHub-Automatisierung, nicht Teil des Pakets der Person); lokal getestet, ihr erster Lauf auf GitHub muss geprüft werden.
 - Prüfungen der Statistik-VM: für 1.6.0 in diesem Durchgang nicht wiederholt.
 - Vollständige Prüfungen von Browser, Agent, Gmail, Gmail Scheduled und DOCX/LibreOffice: NOT RUN.
 

@@ -410,9 +410,9 @@ The first trial is a full pass on synthetic data, done by hand in a chat: profil
 
 The verification scenarios are in ACCEPTANCE_TESTS.md. Acceptance needs recorded evidence that the rules work in practice, not just the existence of this document.
 
-## 11. Three languages, one project
+## 11. Four languages, one project
 
-English is the primary edition at the root; Russian is in `docs/ru`, German in `docs/de`. The four editions share one data contract, event names and behavior. Update all three when a rule changes. The statistics interface supports `en`, `ru` and `de`; switching it changes labels only, not stored records or the independently chosen CV, letter, email and report languages.
+English is the primary edition at the root; Russian is in `docs/ru`, German in `docs/de`, Ukrainian in `docs/uk`. The four editions share one data contract, event names and behavior. Update all four when a rule changes. The statistics interface supports `en`, `ru` and `de`; switching it changes labels only, not stored records or the independently chosen CV, letter, email and report languages.
 
 ## 12. Local archives and recovery (R01)
 

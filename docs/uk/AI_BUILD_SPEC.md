@@ -217,7 +217,7 @@ AI agent ↔ allowed project folder (the single source of data)
       5_Шаблон_сопроводительного_письма\  # everything about the cover letters
     persons\<person_id>\
       База_знаний\Жизнеописание.md   # the knowledge base: the person's life story, confirmed facts
-      journal\transactions-YYYY-MM.jsonl  # the person's single primary journal, one segment per month
+      journal\transactions-YYYY-MM.jsonl  # the person's single primary journal, one segment per month, split into -pN parts above 500 lines
       journal\writer.lock            # one local write lock
       state\quota.json               # derived counter by month
       outbox\                        # immutable packages of send attempts
@@ -452,7 +452,7 @@ STATUS: [prepared | send_uncertain | a confirmed status]
 Встановлення поділено на три частини, і виконувати їх слід саме в такому порядку:
 
 1. **Агент.** Встановіть ChatGPT Desktop з офіційної сторінки, увійдіть, оберіть Codex і переконайтеся, що він доступний. Станом на 9 жовтня 2026 року OpenAI зазначає, що Codex входить до тарифів ChatGPT, зокрема Free і Go, при цьому ліміти використання різняться; для регулярного використання рекомендовано Plus, який у США коштує $20 на місяць. Ці умови змінюються: перед покупкою перевірте актуальний [доступ до Codex у тарифі](https://help.openai.com/en/articles/11369540-using-codex-with-your-chatgpt-plan) і [ціну Plus](https://help.openai.com/en/articles/6950777-what-is-chatgpt-free-plan). Агент іде першим, бо доступність функцій і ліміти залежать від облікового запису та організації.
-2. **Проєктна папка.** Завантажте ZIP з опублікованого репозиторію та розпакуйте його в окрему папку; переконайтеся, що `README.md`, `USER_GUIDE.md`, `AI_BUILD_SPEC.md`, `AGENTS.md`, `CLAUDE.md`, `TODO_FOR_AI.md`, `dashboard_template` і папка `Локальные_данные\Положите_сюда` з трьома підпапками лежать безпосередньо в ній, а не у вкладеній папці. Архів — це просто набір файлів; він стає корисним, коли його відкриває агент.
+2. **Проєктна папка.** Завантажте ZIP з опублікованого репозиторію та розпакуйте його в окрему папку; переконайтеся, що `README.md`, `USER_GUIDE.md`, `AI_BUILD_SPEC.md`, `AGENTS.md`, `CLAUDE.md`, `TODO_FOR_AI.md`, `dashboard_template` і папка `Локальные_данные\Положите_сюда` з п'ятьма підпапками лежать безпосередньо в ній, а не у вкладеній папці. Архів — це просто набір файлів; він стає корисним, коли його відкриває агент.
 3. **Підключення і перший запуск.** Створіть локальний проєкт або відкрийте папку та зробіть розпакований корінь основною папкою; створіть чат у проєкті в локальному середовищі (Local); увімкніть `Ask for approval`; запустіть стартовий промпт у режимі лише чернеток.
 
 Після цього людина кладе матеріали в п'ять папок `Положите_сюда` (це можна зробити навіть до кроку 1) або дозволяє агенту провести інтерв'ю, підтверджує факти бази знань (перед тим як хмарний агент уперше щось прочитає, людина дає згоду на передачу обраної інформації), окремо підключає Gmail, готує й перевіряє першу чергу, за потреби вмикає Computer Use, переходить до щоденної роботи та планування, відкриває статистику й звіти, робить резервну копію та оновлює пакет.

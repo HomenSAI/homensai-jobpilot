@@ -6,6 +6,14 @@ The project version is in the file [VERSION](VERSION). The project is an AI-agen
 
 Rules: `MAJOR.MINOR.PATCH`. MAJOR changes when data formats or rules change so that old data no longer fits. MINOR is a new feature or a new part of the documentation. PATCH is a fix or a wording change without new capabilities. Every change to `main` adds a line here; the number is raised when a release is made. Each release gets a git tag `vX.Y.Z`. Each entry is written in Russian first, with the English text directly below it. The same entry appears in both language files.
 
+## 1.20.0 — 10 October 2026
+
+**English.** Preparation for the public release, after a consistency review of all texts and a cold read of the copy-paste prompts as a new ChatGPT/Codex agent would see them. There is now one start command (it names `AGENTS.md`, `TODO_FOR_AI.md` and `OPERATING_REQUIREMENTS.md`); the prompts for a stuck setup and for adding a document follow the rules (consent first, the setup stage, the agent never writes into `Положите_сюда`); three short prompts are added (Gmail for reading only, the check before sending, the next month). The status of the checks is stated once and honestly (model run, dry runs on made-up people, the statistics page in a headless browser, the privacy gate tested locally; nothing with real Gmail, Codex, the user's Claude Code, Word or real users). Claude Code is described as "compatibility not confirmed" everywhere; the refusal of the 45th application is described as a rule the agent follows, not a technical lock. "Four editions" and "five folders" are used throughout; the licence notices say "HomenS.AI" and point to the existing font licence files; the stage names of the first setup are listed in the data contract. The Russian, German and Ukrainian editions were brought in line with the English text, including the prompts. This changes what the user is told to do, so the minor number is raised.
+
+- **Documents:** README, USER_GUIDE, REVIEW, RELEASE_CHECKLIST, AGENTS, AI_BUILD_SPEC, ARCHITECTURE, DATA_CONTRACT, TODO_FOR_AI; four editions.
+- **Pages:** overview, install, profile, safety and architecture pages; four editions.
+- **Notices:** NOTICE, LICENSE (Required Notice), the README of the materials folder.
+
 ## 1.19.2 — 10 October 2026
 
 **English.** `NEXT_SESSION.md` is added: an ordered list of what to do next, the working rules and the open decisions, for the next AI session. The Russian, German and Ukrainian editions were edited in a consistency pass against the English text; the pass was cut short by a session limit, so it is not finished. This is a developer file, so the patch number is raised.
