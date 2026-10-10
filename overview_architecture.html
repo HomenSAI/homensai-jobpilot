@@ -112,7 +112,7 @@
 </section>
 
 <section id="interactive">
-<div class="sec-head"><div class="num">04 · Interactive</div><h2>How the agent works, step by step</h2><p>Four diagrams you can click. They show the rules the agent follows. Nothing on this page sends mail or changes a file.</p></div>
+<div class="sec-head"><div class="num">04 · Interactive</div><h2>How the agent works, step by step</h2><p>Three diagrams you can click. They show the rules the agent follows. Nothing on this page sends mail or changes a file.</p></div>
 
 <div class="widget" aria-labelledby="t-life">
 <h3 id="t-life">1 · The life of one application</h3>
@@ -157,19 +157,11 @@
 <div class="out" aria-live="polite"><p id="q-out"></p></div>
 </div>
 
-<div class="widget" aria-labelledby="t-journal">
-<h3 id="t-journal">4 · Journal segments</h3>
-<p class="hint">A month is one file until it holds 500 lines. Then numbered parts continue it. A closed part is never edited.</p>
-<label for="j-lines">Lines written this month: <output id="j-count" for="j-lines">620</output></label>
-<input type="range" id="j-lines" min="0" max="1500" step="10" value="620">
-<div class="parts" id="j-parts"></div>
-<div class="out" aria-live="polite"><p id="j-out"></p></div>
-</div>
 </section>
 <script>
 (function () {
   'use strict';
-  var LIMIT = 44, MONTH = 'transactions-2026-10', SIZE = 500;
+  var LIMIT = 44;
   // Labels and texts are kept in one place so that the other language editions can mirror them.
   var L = { event: 'Journal event:', stops: 'Stops if:', lastOk: 'All six checks passed. The letter is sent once and the result is written down.', start: 'Press Next step to begin.' };
   var STAGES = [
@@ -253,24 +245,6 @@
   $('q-day').addEventListener('input', renderQuota);
   renderQuota();
 
-  /* 4 · Journal segments */
-  function renderJournal() {
-    var total = +$('j-lines').value, parts = Math.max(1, Math.ceil(total / SIZE)), box = $('j-parts');
-    $('j-count').textContent = String(total);
-    box.textContent = '';
-    for (var i = 0; i < parts; i++) {
-      var last = i === parts - 1;
-      var name = i === 0 ? MONTH + '.jsonl' : MONTH + '-p' + (i + 1) + '.jsonl';
-      var lines = last ? total - SIZE * (parts - 1) : SIZE;
-      var box1 = el('div', 'part ' + (last ? 'current' : 'closed'), name);
-      box1.appendChild(el('small', null, lines + ' lines · ' + (last ? 'current' : 'closed, never edited')));
-      box.appendChild(box1);
-    }
-    var next = (total > 0 && total % SIZE === 0) ? MONTH + '-p' + (parts + 1) + '.jsonl' : (parts === 1 ? MONTH + '.jsonl' : MONTH + '-p' + parts + '.jsonl');
-    $('j-out').textContent = 'The next line is written to ' + next + '.' + (parts > 1 ? ' Replay, counts and archives read the files by month and part number, not by file name.' : '');
-  }
-  $('j-lines').addEventListener('input', renderJournal);
-  renderJournal();
 })();
 </script>
 

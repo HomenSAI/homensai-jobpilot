@@ -112,7 +112,7 @@
 </section>
 
 <section id="interactive">
-<div class="sec-head"><div class="num">04 · Интерактив</div><h2>Как агент работает, шаг за шагом</h2><p>Четыре схемы, на которые можно нажимать. Они показывают правила, которым следует агент. Ничто на этой странице не отправляет почту и не меняет файлы.</p></div>
+<div class="sec-head"><div class="num">04 · Интерактив</div><h2>Как агент работает, шаг за шагом</h2><p>Три схемы, на которые можно нажимать. Они показывают правила, которым следует агент. Ничто на этой странице не отправляет почту и не меняет файлы.</p></div>
 
 <div class="widget" aria-labelledby="t-life">
 <h3 id="t-life">1 · Жизнь одной заявки</h3>
@@ -157,19 +157,11 @@
 <div class="out" aria-live="polite"><p id="q-out"></p></div>
 </div>
 
-<div class="widget" aria-labelledby="t-journal">
-<h3 id="t-journal">4 · Сегменты журнала</h3>
-<p class="hint">Месяц — один файл, пока в нём не набралось 500 строк. Затем его продолжают пронумерованные части. Закрытая часть никогда не редактируется.</p>
-<label for="j-lines">Строк, записанных в этом месяце: <output id="j-count" for="j-lines">620</output></label>
-<input type="range" id="j-lines" min="0" max="1500" step="10" value="620">
-<div class="parts" id="j-parts"></div>
-<div class="out" aria-live="polite"><p id="j-out"></p></div>
-</div>
 </section>
 <script>
 (function () {
   'use strict';
-  var LIMIT = 44, MONTH = 'transactions-2026-10', SIZE = 500;
+  var LIMIT = 44;
   // Labels and texts are kept in one place so that the other language editions can mirror them.
   var L = { event: 'Событие журнала:', stops: 'Останавливается, если:', lastOk: 'Все шесть проверок пройдены. Письмо отправлено один раз, результат записан.', start: 'Нажмите «Следующий шаг», чтобы начать.' };
   var STAGES = [
@@ -253,24 +245,6 @@
   $('q-day').addEventListener('input', renderQuota);
   renderQuota();
 
-  /* 4 · Journal segments */
-  function renderJournal() {
-    var total = +$('j-lines').value, parts = Math.max(1, Math.ceil(total / SIZE)), box = $('j-parts');
-    $('j-count').textContent = String(total);
-    box.textContent = '';
-    for (var i = 0; i < parts; i++) {
-      var last = i === parts - 1;
-      var name = i === 0 ? MONTH + '.jsonl' : MONTH + '-p' + (i + 1) + '.jsonl';
-      var lines = last ? total - SIZE * (parts - 1) : SIZE;
-      var box1 = el('div', 'part ' + (last ? 'current' : 'closed'), name);
-      box1.appendChild(el('small', null, 'строк: ' + lines + ' · ' + (last ? 'текущая' : 'закрыта, не редактируется')));
-      box.appendChild(box1);
-    }
-    var next = (total > 0 && total % SIZE === 0) ? MONTH + '-p' + (parts + 1) + '.jsonl' : (parts === 1 ? MONTH + '.jsonl' : MONTH + '-p' + parts + '.jsonl');
-    $('j-out').textContent = 'Следующая строка записывается в ' + next + '.' + (parts > 1 ? ' При пересборке из журнала, подсчётах и архивах файлы читаются по месяцу и номеру части, а не по имени файла.' : '');
-  }
-  $('j-lines').addEventListener('input', renderJournal);
-  renderJournal();
 })();
 </script>
 

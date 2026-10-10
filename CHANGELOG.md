@@ -6,6 +6,12 @@ The project version is in the file [VERSION](VERSION). The project is an AI-agen
 
 Rules: `MAJOR.MINOR.PATCH`. MAJOR changes when data formats or rules change so that old data no longer fits. MINOR is a new feature or a new part of the documentation. PATCH is a fix or a wording change without new capabilities. Every change to `main` adds a line here; the number is raised when a release is made. Each release gets a git tag `vX.Y.Z`. Each entry is written in Russian first, with the English text directly below it. The same entry appears in both language files.
 
+## 1.16.1 — 10 October 2026
+
+**English.** The fourth diagram on the architecture page, “Journal segments”, is removed in all four languages. It showed how the internal journal is split into files, which means nothing to the person using JobPilot. The page now has three diagrams: the path of one application, the six checks before sending, and the daily and monthly limits. This is a text and layout change without new capabilities, so the patch number is raised.
+
+- **Pages:** architecture page (EN, RU, DE, UK).
+
 ## 1.16.0 — 10 October 2026
 
 **English.** Every employer reply is now saved in full into the application folder, in a new file `Replies.txt` («Ответы»). For each incoming message the agent writes the sender name and address, Reply-To, Message-ID, date and time with the time zone, the sending IP address and the Received chain, authentication results, subject, recipients, the full text verbatim, and the attachments (name, type, size) or “no attachments”. What the mail tool does not provide is written as “not provided by the mail tool”, nothing is guessed. Earlier blocks are never rewritten, and a message is added once. The journal line `mail_received` carries the file path and the checksums of the headers and of the text. This is a new capability, so the minor number is raised. On the architecture page, diagram 2 is renamed “Six checks before sending” and rewritten in plain words (what each check does and what happens when it fails), and diagram 3 now says that the daily maximum is only a ceiling, not a minimum number of sending days; all four languages.
