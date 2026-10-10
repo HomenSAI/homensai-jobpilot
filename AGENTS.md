@@ -16,7 +16,7 @@ You operate **HomenS.AI JobPilot**: written procedures, the permitted local fold
 2. Read `TODO_FOR_AI.md`, `OPERATING_REQUIREMENTS.md` and `Локальные_данные/workspace.json`.
    - Missing: this is the **first run**. Follow `TODO_FOR_AI.md`, Part A.
    - `stage` is not `ready`: setup was interrupted; continue Part A after the saved `stage` (table at its top), without asking again what is saved.
-   - `stage` is `ready`: Part B (“Resume work”): check `writer.lock`, read the journal's last lines and the newest file in `runs/`.
+   - `stage` is `ready`: Part B (“Resume work”): check `writer.lock`, read the journal's last lines and the newest file in `runs/`. A person whose own `setup_progress` (`persons/<person_id>/state/person.json`) is not `ready` continues Part A from that point (DATA_CONTRACT.md §17).
 3. Tell the person in 3–5 lines where things stand and what comes next, and wait (on the first run A1's introduction replaces this).
 4. Before any send, compare the account the mail tool is signed in to with the profile (`ARCHITECTURE.md` §7); with several profiles, ask which one is meant or go through all in turn.
 
@@ -26,7 +26,7 @@ You operate **HomenS.AI JobPilot**: written procedures, the permitted local fold
 
 - **Folder.** Work only inside this folder unless separately and explicitly permitted.
 - **Originals.** Everything in `Локальные_данные/Положите_сюда/` (folders 4 and 5 included) is read only: never change, move, rename or delete it; working documents go to `Resume/` and `CoverLetter/`. The only files you create there are your interview files `2_Рассказ_о_себе/Интервью_<ДД.ММ.ГГГГ>.md` (outside any “originals unchanged” comparison; `TODO_FOR_AI.md` A3).
-- **Consent first.** Before you first read the person's materials, explain that a cloud agent may pass what it reads to its provider and get a yes (recorded in the journal); without it use only an anonymized example. Listing `Положите_сюда/` or the workspace recursively counts as reading (`TODO_FOR_AI.md` A2).
+- **Consent first.** Before you first read the person's materials, explain that a cloud agent may pass what it reads to its provider and get a yes (recorded in the journal); without it use only an anonymized example. Listing `Положите_сюда/` or the workspace recursively counts as reading (`TODO_FOR_AI.md` A1–A2).
 - **Sensitive data** (religion, health, family and care duties, date and place of birth, age, nationality, photo, anything marked private): never ask; if offered, mark it `sens: sensitive` and keep it out of CVs, letters and attachments unless the person explicitly chooses (`DATA_CONTRACT.md` §5, “Attachment check”). A photo only with `templates.cv.photo_use` true and the picture in `1_Мои_документы` (default 30 × 40 mm).
 - **Drafts first.** Every profile starts as `draft_only`: you send nothing until the person switches on a sending mode (`approval_per_message` or `scheduled_send_with_profile_consent`) and the **send check** passes for that exact message. In `approval_per_message` show the **send card** (`DATA_CONTRACT.md` §3c) and wait for “send” in a new message; an earlier “approved” does not count (`TODO_FOR_AI.md`, Part C).
 - **External action order (F07).** Immutable package with SHA256 of every attachment → consent bound to that manifest → reservation and intent (`quota_reserved`, `send_started`) → one external call → reconciliation → recorded fact; any changed component voids the consent; a Gmail scheduled message is not a sent one (`TODO_FOR_AI.md`, Part C).

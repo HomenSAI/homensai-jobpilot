@@ -165,8 +165,8 @@ The knowledge base is shared by all profiles of a person. An unknown value stays
 | `failed_before_send` / `send_uncertain` | **application_id**, **send_attempt_id**, **evidence** | proven non-send / unknown outcome (§12.2 for Gmail) |
 | `quota_consumed` | **application_id**, **send_attempt_id** (null for manual fallback), **consumed_month**, **occurred_at**, reservation_closed_month, **source** (`sent_verified`, `person_reported`), account_id, **evidence_status** (`verified`, `claimed`), **dedup_key**; a claimed one also carries **claimed_month** (= `consumed_month`) | a managed CV submission only (§5) |
 | `quota_released` | **application_id**, **send_attempt_id**, **reservation_closed_month**, **reason** (`failed_before_send`, `schedule_cancelled_verified`, `plan_cancelled_before_start`), **evidence** | closed without submission, with proof |
-| `quota_corrected` | **correction_of_event_id**, **correction_month**, and either **corrected_used_month** or **corrected_unverified_month** (= `correction_month`, naming the count it lowers), **reason**, **evidence** | a wrong `quota_consumed` withdrawn (§5) |
-| `evidence_attached` | **target_event_id**, **evidence_month** (the `consumed_month` of the claim it confirms), **evidence**, **evidence_status** (`verified`) | proof of a claim or schedule; never counts twice |
+| `quota_corrected` | **correction_of_event_id**, **correction_month** (the month of the corrected submission, not of the correction), and either **corrected_used_month** or **corrected_unverified_month** (= `correction_month`, naming the count it lowers), **reason**, **evidence** | a wrong `quota_consumed` withdrawn (§5) |
+| `evidence_attached` | **target_event_id**, **evidence**, **evidence_status** (`verified`); **evidence_month** (the `consumed_month` of the claim) only when the target is a claimed `quota_consumed`, never for other evidence such as a schedule | proof of a claim or schedule; never counts twice |
 | `send_blocked` | **application_id**, **reason_codes** | send check refused |
 | `mail_received` | **gmail_message_id** (null only if `source` = `person_reported`), **account_id**, rfc_message_id, thread_id, **classification**, linked_application_id, outcome, delivery, source, snippet (≤ 200 characters), **replies_file**, **raw_headers_sha256**, **body_sha256**, **occurred_at** | a new message classified (§4) |
 | `mail_checked` | **coverage**, **incomplete_reason** (null when complete), **accounts**, **pages_read**, **position**, **checked_at** | a scan is saved; every daily check, new mail or not (§15) |
@@ -182,9 +182,9 @@ The knowledge base is shared by all profiles of a person. An unknown value stays
 
 **Names that are not event types** (never a `type`): the states of §12.2 (`local_planned`, `scheduling_started`, `schedule_failed_before_commit`, `schedule_uncertain`; an unknown schedule result is the event `send_uncertain` with `transport` `gmail_scheduled`), intents and repeat keys, transports, reason values of `quota_released` and `approval_revoked`, `incomplete_reason` codes, cadence values (`on_request` included), the flag `needs_decision` and first-run stages.
 
-**Month fields** (`consumed_month`, `claimed_month`, `reserved_month`, `reservation_closed_month`, `correction_month`, `corrected_used_month`, `corrected_unverified_month`, `slot_month`, `month`) are the person's local month (`YYYY-MM`) at the event's `occurred_at` (`evidence_month` and the two `corrected_*` fields repeat the month of the submission they refer to) (mail: month of receipt), written with the line, never converted.
+**Month fields** (`consumed_month`, `claimed_month`, `reserved_month`, `reservation_closed_month`, `slot_month`, `month`) are the person's local month (`YYYY-MM`) at the event's `occurred_at`; `evidence_month`, `correction_month` and the two `corrected_*` fields repeat the month of the submission they refer to (mail: month of receipt), written with the line, never converted.
 
-**Counting.** Never by eye: text search (ARCHITECTURE.md §4a) over all segments and profiles of the person, tolerant of spaces around `:`, every match counting. Each term below is one search for one field name, and each of these fields is carried by one kind of event only, so no match is counted twice.
+**Counting.** Never by eye: text search (ARCHITECTURE.md §4a) over all segments and profiles of the person, tolerant of spaces around `:`, every match counting. Each term below is one search for one field name, and an event carries each of these fields at most once, so no match is counted twice.
 - used(M) = matches of `"consumed_month":"M"` − matches of `"claimed_month":"M"` + matches of `"evidence_month":"M"` − matches of `"corrected_used_month":"M"`.
 - unverified(M) = matches of `"claimed_month":"M"` − matches of `"evidence_month":"M"` − matches of `"corrected_unverified_month":"M"`.
 - reserved(M) = matches of `"reserved_month":"M"` (only `quota_reserved` and `reservation_moved` carry it; `slot_month`, `reserved_months` do not count) − matches of `"reservation_closed_month":"M"` (`quota_consumed`, `quota_released`, `reservation_moved`).
@@ -248,7 +248,7 @@ discovered → drafting → ready_for_review → approved → scheduled
 - `failed_before_send`: non-submission proven; only then is the reservation released.
 - `overdue`, `paused`, `cancelled` are queue states; they never make an application sent. Rescheduling never changes the actual date.
 
-Separate dimensions: delivery `unknown / permanent_bounce / temporary_failure` (SENT is not delivered; snapshot: `email_not_found`, `dsn` response); outcome `no_response / rejected / positive / needs_user / ambiguous`; incoming event (classification below); follow-ups (`thank_you_sent`, `ordinary_reply_sent`) are not outcomes. A new substantive message may change the outcome; earlier responses stay in history and reports. A rejection without explanation is “reason not provided”; unclear meaning is never positive.
+Separate dimensions: delivery `unknown / permanent_bounce / temporary_failure` (SENT is not delivered, and silence does not prove a bounce; snapshot: `email_not_found`, `dsn` response); outcome `no_response / rejected / positive / needs_user / ambiguous`; incoming event (classification below); follow-ups (`thank_you_sent`, `ordinary_reply_sent`) are not outcomes. A new substantive message may change the outcome; earlier responses stay in history and reports. A rejection without explanation is “reason not provided”; unclear meaning is never positive.
 
 ### Statuses shown to the person
 
@@ -329,7 +329,7 @@ The limit applies to the managed JobPilot workflow, not to Gmail; every managed 
 ### Quota scope and visibility (F13)
 
 - **Source.** A complete rebuild of the person's journal, shown with `source_revision`, month, time zone and cutoff; `quota.json` is its view and the journal wins. The send check reads the journal, never the statistics page.
-- **Free count (one formula).** free = limit − used − reserved − unverified (= remaining(M), §3c, §9.2), used by the send check (TODO_FOR_AI.md, Part C, item 5). A claim is in `unverified` from its `quota_consumed` until `evidence_attached` moves it to `used` or `quota_corrected` withdraws it; it counts once, never as free.
+- **Free count (one formula).** free = limit − used − reserved − unverified (= remaining(M), §3c, §9.2), used by the send check (TODO_FOR_AI.md, Part C, send check, item 5). A claim is in `unverified` from its `quota_consumed` until `evidence_attached` moves it to `used` or `quota_corrected` withdraws it; it counts once, never as free.
 - **Confirmed or not.** Confirmed only if all counters are valid integers, no `send_started` lacks a result, no `claimed` submission of the month is unresolved, and every account and page was reconciled; otherwise “quota not confirmed” (`QUOTA_UNCONFIRMED`) with no free number.
 - **Zero and missing.** An explicit 0 comes from a complete rebuild; a missing counter is `null`; negative, string or contradictory values are rejected.
 - **Limit.** From the settings, never a default; may only be lowered. Nothing said in chat raises it or allows a 45th submission; a new plan or calendar needs new approval (§13.3, §14). The daily cap `max_per_day` (1–44, from `sending_rule_statement`) is separate and never raises the monthly limit; reaching it is `DAILY_LIMIT` (§13.2, item 9).
@@ -449,7 +449,7 @@ A month missing from `used` or `reserved` is “not confirmed”, never zero; an
 
 Six numbers ≥ 0 from `profile.json`: `cv_adapting`, `cover_letter`, `email_text`, `attachments_and_sending`, `date_and_text_checks`, `reply_tracking`. Time saved = applications outside “Not sent yet” × their sum, an estimate shown with its assumptions. The values of `examples/settings.example.json` are labelled estimates.
 
-**Missing values block the snapshot.** While a value is missing, not a number or negative (`MINUTES-<key>`), no snapshot and no `statistics_updated` is written; the agent asks. A value is saved only when the person gives it or accepts the estimates, never filled by the agent, with `profile_changed` (`changed_fields`: `minutes_per_application`; reason: the answer). Until then the page is not refreshed, the person is told why, and an earlier snapshot stays.
+**Missing values block the snapshot.** While a value is missing, not a number or negative (`MINUTES-<key>`), no snapshot and no `statistics_updated` is written; the agent asks. A value is saved only when the person gives it or accepts the estimates, never filled by the agent; it is part of `profile_created` in A7, and a later answer is a `profile_changed` (`changed_fields`: `minutes_per_application`; reason: the answer). Until then the page is not refreshed, the person is told why, and an earlier snapshot stays.
 
 ### 9.4 Applications and responses
 
@@ -505,7 +505,7 @@ Codes appear as “Reference: <code>”; messages name a field or item number, n
 **The agent's write procedure**
 1. Count from one complete rebuild at one `source_revision`. A month's quota is written only when the journal confirms it, else left out. A missing minutes value stops here.
 2. Build the object; `generated_at` is the cutoff; `snapshot_id` takes the next `N`.
-3. **Escaping.** `window.JP_DATA = ` followed by one valid JSON object: every string JSON-escaped (`"`, `\`, control characters) and every `<` written as `<`, so a `</script>` in a company name cannot end the script. Vacancy and e-mail text is untrusted.
+3. **Escaping.** `window.JP_DATA = ` followed by one valid JSON object: every string JSON-escaped (`"`, `\`, control characters) and every `<` written as `\u003c`, so a `</script>` in a company name cannot end the script. Vacancy and e-mail text is untrusted.
 4. Write a temporary file next to `summary.js`, read it back, check every rule; on failure keep the old file, record nothing and rebuild from the journal.
 5. Replace `summary.js`.
 6. Record `statistics_updated` (`profile_id`, `snapshot_id`, `source_revision`, `cutoff`, `file`), then create the archive (§11).
@@ -735,7 +735,7 @@ A general inbox is not a specialized application address without confirmation. A
 ### 16.2 Dates
 
 - **Three dates:** document date (in the CV or letter), planned send date and time (plan), actual sent time (SENT), in separate fields; preparation time is never the send time.
-- **The plan is the only source** of the planned date and time; the same values appear in the letter, dated CV fields, the e-mail text, `Versanddatum.txt` or its equivalent, the card, the manifest and the Gmail Scheduled entry; a mismatch blocks approval (`DATE_MISMATCH`).
+- **The plan is the only source** of the planned date and time; the same values appear in the letter, dated CV fields, the e-mail text, `EMAIL_TO_SEND.txt`, `Company.md`, the card, the manifest and the Gmail Scheduled entry; a mismatch blocks approval (`DATE_MISMATCH`).
 - **Dates in the e-mail** (subject, body, recipient field) are checked against the vacancy and the local calendar: a valid day, not an excluded date or verified holiday when it is a send date, not before the planned send.
 - **A moved slot** is a new plan and package version, needs consent for the new binding, and the remote state is verified before a reservation changes; old versions stay.
 - **Biography dates** are never changed by scheduling.

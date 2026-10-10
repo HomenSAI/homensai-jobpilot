@@ -184,7 +184,7 @@ Plans, packages, outbox copies and archives are never edited. An issued report i
 
 ## 7. Capabilities of the agent's tools
 
-Only the platforms named in ACCEPTANCE_TESTS.md count as tested (Claude Code is not confirmed). At setup the agent tests each capability: filesystem, web search, route lookup, mail reading, whole-thread reading, mail sending, proof of sending (SENT), images and scans, DOCX rendering, PDF rendering, scheduled wake-up and the writer lock (`examples/workspace.example.json`). It records available / unavailable / unknown, the check time and a non-secret tool version in `workspace.json`; a line in a settings file is no evidence. In every chat that may send, the agent identifies the mail account and compares it with the profile, and tests mail capabilities again if their check is older than 7 days.
+Only the platforms named in ACCEPTANCE_TESTS.md count as tested (Claude Code is not confirmed). At setup the agent tests each capability: filesystem, web search, route lookup, mail reading, whole-thread reading, mail sending, proof of sending (SENT), images and scans, DOCX rendering, PDF rendering, scheduled wake-up and the writer lock (`examples/workspace.example.json`). It records available / unavailable / unknown, the check time and, in its `note`, a non-secret tool version where the tool reports one, in `workspace.json`; a line in a settings file is no evidence. In every chat that may send, the agent identifies the mail account and compares it with the profile, and tests mail capabilities again if their check is older than 7 days.
 
 | Unavailable | Work that can continue |
 |---|---|

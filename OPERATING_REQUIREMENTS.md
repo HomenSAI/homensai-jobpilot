@@ -58,7 +58,7 @@ Gmail is used through an approved connector or the built-in browser, chosen by t
 
 ## 5. Daily control, replies and local archives
 
-The mail check runs every day at 16:00 in the person's time zone by default, as a real scheduled task of the agent; without one, or while the computer sleeps, the person starts it by hand. Mail is never deleted, Gmail-archived or relabelled, and invitations, questions and document requests wait for the person (TODO_FOR_AI.md, Part B, step 6; DATA_CONTRACT.md §15). After every confirmed send or schedule, incoming message, delivery event, cancellation or reschedule a versioned local archive is written; if archives are lost, sending stops until the history is rebuilt from Gmail (DATA_CONTRACT.md §11).
+The mail check runs every day at 16:00 in the person's time zone by default, as a real scheduled task of the agent; without one, or while the computer sleeps, the person starts it by hand. Mail is never deleted, Gmail-archived or relabelled, and invitations, questions and document requests wait for the person (TODO_FOR_AI.md, Part B, step 6; DATA_CONTRACT.md §15). After every confirmed send or schedule, incoming message, delivery event, cancellation, reschedule or recorded `send_uncertain` a versioned local archive is written; if archives are lost, sending stops until the history is rebuilt from Gmail (DATA_CONTRACT.md §11).
 
 ## 6. Reports and delivery to the user
 
