@@ -26,7 +26,7 @@ These cannot be done by simulation. Until they are done, the matching rows of `A
 ## Found by the dry runs, not yet fixed
 
 12. **German and Russian templates.** The neutral CV, cover-letter and report templates exist only in English and Ukrainian (`examples/templates/`).
-13. **Empty lock file.** The lock is created empty and then written; define that an empty lock (the owner stopped in between) follows the stale-lock procedure.
+13. **Empty lock file.** Done in 1.22.0: the lock is created with its content in one command, and an empty or unreadable lock follows the stale-lock procedure (ARCHITECTURE.md §4b).
 14. **Flexible hours.** `employment_type` has no place for “part-time or flexible”; decide on a field or a free note.
 15. **Repeat the dry run** with Codex and with the user's own Claude Code, and with real people.
 

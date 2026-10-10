@@ -2,6 +2,7 @@
 
 Short summary of every release in plain words. Technical details are in CHANGELOG.md. One line per release: `- version | date | text`.
 
+- 1.22.0 | 10 October 2026 | The instructions for the agent are half as long and say each rule once; errors in the journal commands, the limit count and the first setup are fixed.
 - 1.21.0 | 10 October 2026 | You decide how the 44 applications of a month go out, even all on one day, and tell the agent in your own words. The pages got arrows, smooth scrolling effects and a reading-progress line.
 - 1.20.0 | 10 October 2026 | Prepared for the public release: one clear start command and better prompts in the guide, an honest description of what has been tested, and the four language versions brought in line.
 - 1.19.2 | 10 October 2026 | Translations were partly checked against the English texts; a hand-over note for the next work session was added.
