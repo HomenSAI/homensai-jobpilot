@@ -2,7 +2,7 @@
 
 # Контрольний список випуску
 
-[English](./RELEASE_CHECKLIST.md) | [Русский](../ru/RELEASE_CHECKLIST.md) | [Deutsch](../de/RELEASE_CHECKLIST.md) | [Українська](RELEASE_CHECKLIST.md)
+[English](../../RELEASE_CHECKLIST.md) | [Русский](../ru/RELEASE_CHECKLIST.md) | [Deutsch](../de/RELEASE_CHECKLIST.md) | [Українська](RELEASE_CHECKLIST.md)
 
 Автор і розробник: Serhii Khomenko / HomenS.AI  
 Стосується: випусків вихідного коду та документації HomenS.AI JobPilot.

@@ -2,7 +2,7 @@
 
 Українська редакція. Авторитетним є англійський текст у кореневій папці.
 
-[English](./ARCHITECTURE.md) | [Deutsch](../de/ARCHITECTURE.md) | [Русский](../ru/ARCHITECTURE.md) | [Українська](ARCHITECTURE.md)
+[English](../../ARCHITECTURE.md) | [Deutsch](../de/ARCHITECTURE.md) | [Русский](../ru/ARCHITECTURE.md) | [Українська](ARCHITECTURE.md)
 
 9 жовтня 2026 року · Автор ідеї та розробник: Serhii Khomenko / HomenS.AI · https://homensai.com/ · Документація: CC BY-NC 4.0.
 

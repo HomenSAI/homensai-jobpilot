@@ -2,7 +2,7 @@
 
 Українська редакція. Авторитетним є англійський текст у кореневій папці.
 
-[English](./AI_BUILD_SPEC.md) | [Deutsch](../de/AI_BUILD_SPEC.md) | [Русский](../ru/AI_BUILD_SPEC.md) | [Українська](AI_BUILD_SPEC.md)
+[English](../../AI_BUILD_SPEC.md) | [Deutsch](../de/AI_BUILD_SPEC.md) | [Русский](../ru/AI_BUILD_SPEC.md) | [Українська](AI_BUILD_SPEC.md)
 
 **Специфікація проєкту для Codex / Claude Code — [VERSION](../../VERSION), 10 жовтня 2026 року**
 

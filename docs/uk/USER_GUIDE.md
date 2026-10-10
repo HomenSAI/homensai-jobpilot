@@ -2,7 +2,7 @@
 
 # HomenS.AI JobPilot — покроковий посібник користувача
 
-[English](./USER_GUIDE.md) | [Русский](../ru/USER_GUIDE.md) | [Deutsch](../de/USER_GUIDE.md) | [Українська](USER_GUIDE.md)
+[English](../../USER_GUIDE.md) | [Русский](../ru/USER_GUIDE.md) | [Deutsch](../de/USER_GUIDE.md) | [Українська](USER_GUIDE.md)
 
 **Версія: [VERSION](../../VERSION)** · 2026-10-10 · Той самий посібник доступний як веб-сторінка з меню: [overview_install.html](overview_install.html).  
 **Для:** Windows і ChatGPT Desktop з Codex. Проєкт перевірявся віртуально лише в середовищі Codex. **Anthropic / Claude Code: сумісність не підтверджена**; цей посібник для нього не написано, і користувач Claude Code має спершу пройти контрольний список імітаційної приймальної перевірки в [REVIEW.md](REVIEW.md).

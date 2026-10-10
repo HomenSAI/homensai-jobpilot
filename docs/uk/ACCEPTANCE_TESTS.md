@@ -2,7 +2,7 @@
 
 # HomenS.AI JobPilot — сценарії приймання
 
-[English](./ACCEPTANCE_TESTS.md) | [Русский](../ru/ACCEPTANCE_TESTS.md) | [Українська](ACCEPTANCE_TESTS.md)
+[English](../../ACCEPTANCE_TESTS.md) | [Русский](../ru/ACCEPTANCE_TESTS.md) | [Українська](ACCEPTANCE_TESTS.md)
 
 Автор: Serhii Khomenko / HomenS.AI · https://homensai.com/ · CC BY-NC 4.0.
 

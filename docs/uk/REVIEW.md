@@ -2,7 +2,7 @@
 
 # HomenS.AI JobPilot — перевірка і статус
 
-[English](./REVIEW.md) | [Русский](../ru/REVIEW.md) | [Deutsch](../de/REVIEW.md) | [Українська](REVIEW.md)
+[English](../../REVIEW.md) | [Русский](../ru/REVIEW.md) | [Deutsch](../de/REVIEW.md) | [Українська](REVIEW.md)
 
 10 жовтня 2026 · Версія [VERSION](../../VERSION) (файл `VERSION`) · Автор ідеї та розробник: Serhii Khomenko / HomenS.AI · [homensai.com](https://homensai.com/) · CC BY-NC 4.0
 
