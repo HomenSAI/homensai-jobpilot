@@ -2,7 +2,7 @@
 
 [English](../../REVIEW.md) | [Русский](REVIEW.md)
 
-10.10.2026 · Версия 1.8.0 (файл `VERSION`) · Автор идеи и разработчик: Serhii Khomenko / HomenS.AI · [homensai.com](https://homensai.com/) · CC BY-NC 4.0
+10.10.2026 · Версия 1.9.0 (файл `VERSION`) · Автор идеи и разработчик: Serhii Khomenko / HomenS.AI · [homensai.com](https://homensai.com/) · CC BY-NC 4.0
 
 ## Где сейчас проект
 

@@ -211,7 +211,7 @@ Die Nutzerin oder der Nutzer lädt das GitHub-ZIP herunter, wählt einen passend
       3_Шаблон_отчёта\                # optional report template
     persons\<person_id>\
       База_знаний\Жизнеописание.md   # the knowledge base: the person's life story, confirmed facts
-      journal\transactions-YYYY-MM.jsonl  # the person's single primary journal, one segment per month
+      journal\transactions-YYYY-MM.jsonl  # the person's single primary journal, one segment per month, split into -pN parts above 500 lines
       journal\writer.lock            # one local write lock
       state\quota.json               # derived counter by month
       outbox\                        # immutable packages of send attempts

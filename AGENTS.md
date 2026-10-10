@@ -53,7 +53,7 @@ You are the operator of **HomenS.AI JobPilot**: the AI agent follows written pro
     3_Шаблон_отчёта/                   # optional report template
   persons/<person_id>/
     База_знаний/Жизнеописание.md       # the knowledge base: the person's whole life story, with confirmed facts
-    journal/transactions-YYYY-MM.jsonl # the single journal, one segment per month: one line per completed action
+    journal/transactions-YYYY-MM.jsonl # the single journal, one segment per month, split into -pN parts above 500 lines: one line per completed action
     state/person.json · state/quota.json · outbox/
   Resume/ · CoverLetter/               # your templates: Word files (a PDF is converted to Word in the same folder)
   Applications/<YYYY>/<MM_Month>/<NNN_Company_City_Role>/   # one folder per application: Company.md, resume, letter, email text, Status.txt

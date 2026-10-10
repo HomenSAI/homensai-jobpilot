@@ -6,6 +6,13 @@ The project version is in the file [VERSION](VERSION). The project is an AI-agen
 
 Rules: `MAJOR.MINOR.PATCH`. MAJOR changes when data formats or rules change so that old data no longer fits. MINOR is a new feature or a new part of the documentation. PATCH is a fix or a wording change without new capabilities. Every change to `main` adds a line here; the number is raised when a release is made. Each release gets a git tag `vX.Y.Z`.
 
+## 1.9.0 — 10 October 2026
+
+The journal keeps monthly segments, and a month that reaches 500 lines continues in numbered parts (`transactions-YYYY-MM-p2.jsonl`, `-p3` and so on). A closed part is never edited. Replay, counts and archives read the parts in order of month and part number, not by file name. This is a new rule for the journal, so the minor number is raised. Existing journals need no migration: a month under 500 lines keeps its single file.
+
+- **Journal:** the split rule and the reading order (DATA_CONTRACT.md §3c, §3d; ARCHITECTURE.md §4, rule 8).
+- **Acceptance:** JRN-01 is added (status NOT RUN until a run is recorded).
+
 ## 1.8.0 — 10 October 2026
 
 The daily maximum of CV submissions is now a setting the person chooses, from 1 to 43, instead of a fixed value of 2. The value 2 remains the default proposal shown to the person. The monthly limit of 44 is unchanged and cannot be changed in chat. A change of the daily value takes effect from the next local day and is recorded with its reason. This is a new capability in the rules, so the minor number is raised; no data needs migration, because the default for an existing profile stays 2.
