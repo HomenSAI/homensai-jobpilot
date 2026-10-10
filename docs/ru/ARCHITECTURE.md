@@ -1,4 +1,4 @@
-# HomenS.AI JobPilot — архитектура 1.6.0
+# HomenS.AI JobPilot — архитектура 1.7.0
 
 [English](../../ARCHITECTURE.md) | [Русский](ARCHITECTURE.md)
 
@@ -395,7 +395,7 @@ Codex и Claude Code следуют одним и тем же правилам. 
 ## 10. Изменения формата и граница первого выпуска
 
 **Метки версий (у каждого номера один смысл; другие документы ссылаются на эти названия).**
-- Версия документации — файл `VERSION`: сейчас 1.6.0.
+- Версия документации — файл `VERSION`: сейчас 1.7.0.
 - `schema_version` снимка статистики (`summary.js`) — 1.4 (DATA_CONTRACT.md §9.1).
 - `schema_version` настроек (`profile.json`) — 1.3, и `workspace.json` — 1.3 (`examples/settings.example.json`, `examples/workspace.example.json`); `schema_version` `quota.json` — 1.3 (`examples/quota.example.json`).
 - `format_version` `workspace.json` — 1.4: структура файла рабочей области (DATA_CONTRACT.md §1).

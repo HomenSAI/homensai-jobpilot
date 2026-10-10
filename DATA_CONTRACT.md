@@ -1,4 +1,4 @@
-# HomenS.AI JobPilot — Data Contract 1.6.0
+# HomenS.AI JobPilot — Data Contract 1.7.0
 
 [English](DATA_CONTRACT.md) | [Русский](docs/ru/DATA_CONTRACT.md)
 

@@ -2,7 +2,7 @@
 
 [English](REVIEW.md) | [Русский](docs/ru/REVIEW.md)
 
-9 October 2026 · Version 1.6.0 (the `VERSION` file) · Author of the idea and developer: Serhii Khomenko / HomenS.AI · [homensai.com](https://homensai.com/) · CC BY-NC 4.0
+9 October 2026 · Version 1.7.0 (the `VERSION` file) · Author of the idea and developer: Serhii Khomenko / HomenS.AI · [homensai.com](https://homensai.com/) · CC BY-NC 4.0
 
 ## Where the project stands
 

@@ -10,7 +10,7 @@ An AI agent can follow the local, prompt-based workflow to research jobs, prepar
 
 ## What this repository contains
 
-Project documentation **version 1.6.0**, agent instructions, an illustrated overview and a local statistics page. The project has no separate job-search or mail-sending application: an AI agent follows the written procedures and maintains local files. The statistics view is the exception: it uses HTML, CSS and JavaScript to display an agent-prepared snapshot, sort and filter entries. It does not search, send mail, change files or call a mail API. The agent instructions remain experimental and require user review; the repository does not itself connect accounts or grant permission to send.
+Project documentation **version 1.7.0**, agent instructions, an illustrated overview and a local statistics page. The project has no separate job-search or mail-sending application: an AI agent follows the written procedures and maintains local files. The statistics view is the exception: it uses HTML, CSS and JavaScript to display an agent-prepared snapshot, sort and filter entries. It does not search, send mail, change files or call a mail API. The agent instructions remain experimental and require user review; the repository does not itself connect accounts or grant permission to send.
 
 English is the primary language and lives at the repository root; the complete Russian edition is in `docs/ru`. Both editions share the same rules, data formats and technical identifiers. The languages of the CV, cover letter, email and report are chosen separately from the interface language.
 

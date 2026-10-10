@@ -1,4 +1,4 @@
-# HomenS.AI JobPilot — Architecture 1.6.0
+# HomenS.AI JobPilot — Architecture 1.7.0
 
 [English](ARCHITECTURE.md) | [Русский](docs/ru/ARCHITECTURE.md)
 
@@ -395,7 +395,7 @@ The journal grows by a few lines a day, which plain files handle easily. No inde
 ## 10. Format changes and the first release boundary
 
 **Version labels (each number has one meaning; other documents refer to these names).**
-- The documentation version is the file `VERSION`: now 1.6.0.
+- The documentation version is the file `VERSION`: now 1.7.0.
 - `schema_version` of a statistics snapshot (`summary.js`) is 1.4 (DATA_CONTRACT.md §9.1).
 - `schema_version` of settings (`profile.json`) is 1.3, and of `workspace.json` 1.3 (`examples/settings.example.json`, `examples/workspace.example.json`); `schema_version` of `quota.json` is 1.3 (`examples/quota.example.json`).
 - `format_version` of `workspace.json` is 1.4: the layout of the workspace file (DATA_CONTRACT.md §1).

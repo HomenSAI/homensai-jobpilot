@@ -6,6 +6,24 @@ The project version is in the file [VERSION](VERSION). The project is an AI-agen
 
 Rules: `MAJOR.MINOR.PATCH`. MAJOR changes when data formats or rules change so that old data no longer fits. MINOR is a new feature or a new part of the documentation. PATCH is a fix or a wording change without new capabilities. Every change to `main` adds a line here; the number is raised when a release is made. Each release gets a git tag `vX.Y.Z`.
 
+## 1.7.0 — 10 October 2026
+
+The consolidated review of the earlier audit (items F01–F14 and R01–R20) is applied to the rules, the statistics page and the user documents. A German edition is added. No real data was in use, so the changes need no migration of real records; a legacy single journal file is migrated by the procedure in DATA_CONTRACT.md §3d.
+
+- **Safety of external actions:** a hard gate before every external call (the intent line must be written and read back as the last journal line, otherwise no call is made); the order of external actions; a writer lock by exclusive creation; a defined append method for journal lines (anchored replace of the unique last line, read-back and checksum).
+- **Journal:** monthly segments `journal/transactions-YYYY-MM.jsonl` with one global sequence; a migration procedure for a single file (`journal_migrated`).
+- **Sending:** four kinds of send with their own repeat keys (`cv_submission`, `thank_you`, `ordinary_reply`, follow-up consent); at most two CV submissions per local day by default (an open decision for the owner); the `on_request` cadence for approval mode; `slot_missed` instead of a catch-up batch; a check of attachments for sensitive data before registration.
+- **Statistics:** snapshot schema 1.4 with a status history per application, responses, claimed submissions counted as unverified; full validation before display; months without events are shown; rejections and address errors counted separately; no snapshot is written until the minutes per application are set.
+- **Gmail:** scheduled sending through the agent's browser only where the upload of attachments is verified; a manual route with the file `EMAIL_TO_SEND.txt`.
+- **Documents:** resume and cover-letter templates in `Resume/` and `CoverLetter/`; neutral templates (Word and PDF) in `examples/templates/`, rendered with LibreOffice and checked page by page. Word rendering is not tested.
+- **German edition** in `docs/de/`: documents, rules, acceptance scenarios and overview pages, with the language switch EN | RU | DE.
+
+Verified: the statistics page in a headless browser (47 checks, three languages, sorting, filters, reset of the sample, invalid data, mobile width). Simulated months: month 1 and month 2 completed and audited; month 3 stopped in January 2027 with an owner decision open.
+
+Not verified: real Gmail sending or scheduling, Word rendering, capture of vacancy requirements from live pages, and the complete three-month run.
+
+Open decisions for the owner: the daily maximum of CV submissions (default 2), the minutes per application for the statistics (examples 30/20/5/5/5/5), the approval cadence values, and the segment size rule.
+
 ## 1.6.0 — 9 October 2026
 
 The application work has one folder structure, and the statistics page shows results as shares and time saved. No real data was in use yet, so no migration is needed.

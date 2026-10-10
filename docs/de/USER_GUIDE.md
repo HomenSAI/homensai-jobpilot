@@ -4,7 +4,7 @@ Deutsche Fassung. Maßgeblich ist die englische Fassung (Datei im Hauptverzeichn
 
 [English](../../USER_GUIDE.md) | [Русский](../ru/USER_GUIDE.md) | [Deutsch](USER_GUIDE.md)
 
-**Version 1.6.0 · 2026-10-09** · Dieselbe Anleitung gibt es als Webseite mit Menü: [overview_install.html](../../overview_install.html).
+**Version 1.7.0 · 2026-10-09** · Dieselbe Anleitung gibt es als Webseite mit Menü: [overview_install.html](../../overview_install.html).
 **Für:** Windows und ChatGPT Desktop mit Codex. Das Projekt wurde nur virtuell in der Codex-Umgebung geprüft. **Anthropic / Claude Code: Kompatibilität nicht bestätigt**; diese Anleitung ist dafür nicht geschrieben, und ein Claude-Code-Nutzer muss zuerst die Checkliste der Probeabnahme in [REVIEW.md](REVIEW.md) durchlaufen.
 
 Die Einrichtung dauert etwa 30–40 Minuten. Gehen Sie die Schritte der Reihe nach durch. Jeder Schritt sagt, was Sie auf dem Bildschirm sehen sollten, damit Sie immer wissen, ob es funktioniert hat. Auf Ihrem Computer werden kein Git, kein Python und keine anderen Entwicklerwerkzeuge benötigt.

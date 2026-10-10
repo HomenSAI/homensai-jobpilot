@@ -2,7 +2,7 @@
 
 [English](USER_GUIDE.md) | [Русский](docs/ru/USER_GUIDE.md)
 
-**Version 1.6.0 · 2026-10-09** · The same guide is available as a web page with a menu: [overview_install.html](overview_install.html).
+**Version 1.7.0 · 2026-10-09** · The same guide is available as a web page with a menu: [overview_install.html](overview_install.html).
 **For:** Windows and ChatGPT Desktop with Codex. The project was checked virtually in the Codex environment only. **Anthropic / Claude Code: compatibility not confirmed**; this guide is not written for it, and a Claude Code user must first complete the mock acceptance checklist in [REVIEW.md](REVIEW.md).
 
 The setup takes about 30–40 minutes. Do the steps in order. Every step says what you should see on the screen, so you always know whether it worked. No Git, Python or other developer tools are needed on your computer.
