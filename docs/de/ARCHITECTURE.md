@@ -64,6 +64,7 @@ Local_Data/
   dashboard/
     index.html  # local menu: statistics and readiness per profile
     profiles/<profile_id>/summary.js · index.html · readiness.html  # data; unchanged template copy; readiness page
+  Archive/<YYYY-MM-DD>_daily/  # daily full archive of Local_Data, for a USB stick (DATA_CONTRACT.md §11.9)
 ```
 
 `Local_Data` ist in jeder Sprachfassung der technische Pfad; das Dashboard hat einen Pfad, `Local_Data/dashboard/`; Profilkennungen sind eindeutig. Jede Journalzeile trägt `person_id` und, wo zutreffend, ihr Profil; vor dem Handeln prüft der Agent, dass das Profil zur Person und zum Konto gehört.

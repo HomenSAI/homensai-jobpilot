@@ -15,7 +15,8 @@ UTF-8-JSON-Datensätze, JSONL-Ereignisse; kein SQL, keine Server, Skripte oder B
 | Pfad relativ zum Stammverzeichnis | Aufgabe |
 |---|---|
 | `Local_Data/persons/<person_id>/state/person.json` | Identität, Zeitzone des Kontingents, zulässige `profile_id`-Werte, `setup_progress` (§17) |
-| `Local_Data/workspace.json` | Workspace-Kennung, `format_version`, Sprache, `stage` und `progress` der Erstinstallation (TODO_FOR_AI.md, Teil A), `run_id`, `person_ids`, Fähigkeitsprüfungen |
+| `Local_Data/workspace.json` | Workspace-Kennung, `format_version`, Sprache, `stage` und `progress` der Erstinstallation (TODO_FOR_AI.md, Teil A), `run_id`, `person_ids`, Fähigkeitsprüfungen, die Einstellungen des täglichen Archivs `archive` (§11.9) |
+| `Local_Data/Archive/<YYYY-MM-DD>_daily/` | Das tägliche Vollarchiv des ganzen `Local_Data` (§11.9): die Kopie, die die Person auf einen USB-Stick überträgt; nie veröffentlicht |
 | `Local_Data/Put_Here/1_My_Documents`, `2_My_Story`, `3_Report_Template`, `4_CV_Templates`, `5_Cover_Letter_Templates` | Die Originale der Person, ihre Geschichte, optionale Berichtsvorlage; nur lesen |
 | `Local_Data/persons/<person_id>/Knowledge_Base/Life_Story.md` | Wissensbasis (§3a) |
 | `Local_Data/persons/<person_id>/journal/transactions-YYYY-MM.jsonl` | Das einzige primäre Journal, in Monatssegmenten (§3c), mit dem gemeinsamen Kontingent der Person |
@@ -432,6 +433,7 @@ Der Berichtskalender reicht von `history_start_month` (lokaler Monat von `person
 | `history_start_month` | `YYYY-MM` | ja | nicht nach dem Monat des Snapshots |
 | `quota`, `minutes_per_application`, `applications` | Objekt, Objekt, Array | ja | 9.2–9.4 |
 | `responses` | Array | nein | fehlt = `[]` |
+| `archive` | Objekt | nein | das tägliche Archiv (§11.9): `folder_href` (Link auf `Local_Data/Archive/` relativ zur Seite, zum Beispiel `../../../Archive/`), `folder_path` (der absolute Pfad, angezeigt und kopiert), `last_daily_at` (ISO-Zeit oder null), `last_daily_name` (Text oder null) |
 
 ### 9.2 Kontingent
 
@@ -494,6 +496,7 @@ Kein Feld `group` oder `delivery`.
 - Eine Aktualitätswarnung, wenn der Snapshot zwei oder mehr Tage alt ist; 1.4 zeigt `last_mail_check_at` nicht, daher ist die Mail-Aktualität aus §16.3 noch nicht sichtbar.
 - Sprache aus dem URL-Parameter `lang`, sonst `default_language`, sonst `en`; Namen und Notizen unübersetzt.
 - Mit `demo` `true`: ein Hinweis mit einer roten, pulsierenden Schaltfläche „Beispiel zurücksetzen“ (ohne Pulsieren bei reduzierter Bewegung); ein Druck löscht das Beispiel für diese Kopie der Seite in diesem Browser, danach verschwinden Hinweis und Schaltfläche dauerhaft; sie löscht das Beispiel nur in diesem Browser löscht; ein echter Snapshot (`demo` `false`) wird nie gelöscht.
+- Mit `archive`: eine Erinnerung „Kopieren Sie Ihr Archiv auf einen USB-Stick“, das letzte tägliche Archiv und sein Datum (eine Warnung, wenn es zwei oder mehr Tage alt ist oder fehlt), ein Link, der den Archivordner im Browser öffnet, eine Schaltfläche, die `folder_path` kopiert, und drei kurze Schritte: den Datei-Explorer öffnen (Win+E), den Pfad in die Adressleiste einfügen (Strg+L, Strg+V, Enter), den neuesten Ordner auf den USB-Stick kopieren. Eine Browserseite kann den Datei-Explorer nicht selbst öffnen; der kopierte Pfad ist daher der Weg dorthin.
 - Browserspeicher: nur Farbschema und das Kennzeichen „Beispiel gelöscht“; keine Datei geschrieben, keine Netzwerkanfrage.
 
 ### 9.6 Prüfung und Schreibverfahren des Agenten
@@ -501,7 +504,7 @@ Kein Feld `group` oder `delivery`.
 Codes erscheinen als „Reference: <code>“; Meldungen nennen ein Feld oder eine Positionsnummer, nie eine Person, Firma, Adresse oder einen Nachrichtentext.
 - `FILE-missing`, `FILE-syntax`, `FILE-empty` (keine Daten zugewiesen), `DATA` (`window.JP_DATA` kein Objekt), `INTERNAL`.
 - `SCHEMA`; `FIELD-<name>` (fehlt oder falscher Typ, oder `history_start_month` nach dem Monat des Snapshots); `FIELD-timezone`.
-- `QUOTA-limit`, `QUOTA-used`, `QUOTA-reserved`, `QUOTA-unverified`, `QUOTA-manual`, `QUOTA-conflict`; `MINUTES-<key>`.
+- `QUOTA-limit`, `QUOTA-used`, `QUOTA-reserved`, `QUOTA-unverified`, `QUOTA-manual`, `QUOTA-conflict`; `MINUTES-<key>`; `ARCHIVE` (`archive` ist kein Objekt, oder ein Feld hat den falschen Typ).
 - `APP#<n>-<check>`, `RESP#<n>-<check>`: fehlende oder doppelte `id`, unbekannter `status`, `channel`, `meeting_type` oder `kind`, ungültiges Datum, fehlendes oder künftiges `sent_at`, fehlerhafter Verlauf, unbekannte `application_id`, abweichendes Profil oder abweichende Person, `received_at` vor `sent_at`.
 
 **Das Schreibverfahren des Agenten**
@@ -595,6 +598,17 @@ Gmail ist der Nachweis. Der Verlust der Archive bedeutet nie, dass nichts gesend
 7. Verbrauchtes Kontingent aus nachgewiesenen Lebenslauf-Versendungen, Reservierungen aus bestätigten Scheduled-Einträgen, über alle Konten; Nachfassnachrichten sind keine Lebensläufe. Unklare Nachrichten, Lücken oder ein nicht verfügbares Konto machen das Kontingent „nicht bestätigt“, nie null. Monatszahlen aus Ereignisdaten, aktuelle Status getrennt.
 8. Bericht über geprüfte Konten und Zeiträume, Wiederhergestelltes, extrahierte Dokumente, Nichtverfügbares, offene Konflikte; dann ein neues geprüftes Archiv.
 9. Externe Aktionen gehen erst weiter, wenn Konflikte geklärt, das Kontingent bestätigt und eine gültige Erlaubnis vorhanden ist. Nachrichten, die bereits in Gmail Scheduled stehen, können inzwischen gesendet werden: sie vor dem Abschluss gegen SENT prüfen; nie ohne Erlaubnis stornieren und nie versprechen, dass eine lokale Sperre sie aufhält.
+
+### 11.9 Tägliches Vollarchiv (für einen USB-Stick)
+
+Neben den Vorgangsarchiven oben erstellt der Agent **jeden Tag ein vollständiges Archiv**, damit die Person das ganze System nach einem defekten oder verlorenen Computer wieder aufbauen kann.
+- **Aufgabe.** Eingerichtet in TODO_FOR_AI.md, A9, als echte geplante Aufgabe des Agenten zu `archive.daily_time` in `workspace.json` (Standard: 30 Minuten nach `schedule.daily_check_time`, oder 16:30 Ortszeit ohne E-Mail-Verfolgung), jeden Tag, Wochenenden eingeschlossen; geprüft und notiert wie die tägliche Prüfung (§15.1). Ohne Planer wird die Person informiert und startet es von Hand („Erstelle das heutige Archiv“).
+- **Was.** Eine Kopie des ganzen `Local_Data/` außer `Archive/` selbst: `workspace.json`, `Put_Here/` (die Originale), `persons/` (Wissensbasis, Journal, Zustand, Postausgang, Vorgangsarchive), `profiles/`, `Applications/`, `Resume/`, `CoverLetter/`, `dashboard/`. Keine Geheimnisse (§11.2). Einfache Ordner, damit die Person sie ohne Werkzeuge öffnen kann.
+- **Wo.** `Local_Data/Archive/<YYYY-MM-DD>_daily/` (lokales Datum der Person; ein zweiter Lauf am selben Tag wird übersprungen, wenn das Archiv dieses Tages vollständig ist). Geschrieben als `Archive/_tmp_<UUID>/`, dann geprüft und umbenannt, wie in §11.4: Das Journal wird unter der Schreibersperre kopiert; `manifest.json` listet jede Datei mit relativem Pfad, Größe und SHA-256 sowie die `source_revision` jeder Person; jede Prüfsumme wird vor dem Umbenennen erneut gelesen. Ein Fehler lässt `_tmp_` als unvollständig gekennzeichnet zurück, wird der Person mitgeteilt und nie als Archiv gezeigt.
+- **Festhalten.** `backup_created` (oder `backup_failed`) für jede Person im Archiv, mit der `archive_id` `<YYYY-MM-DD>_daily`; `archive.last_daily_at` und `archive.last_daily_name` in `workspace.json`; der Statistik-Snapshot zeigt es dann (§9.1 `archive`).
+- **Aufbewahrung.** Wie in §11.5: Die Person wählt, wie viele tägliche Archive bleiben (`archive.keep_last`, zum Beispiel 14); bis dahin wird keines gelöscht, und die Person wird informiert, wenn der Datenträger voll wird.
+- **Auf einen USB-Stick.** Die Person kopiert den neuesten Ordner `<YYYY-MM-DD>_daily` (oder den ganzen Ordner `Archive`) regelmäßig auf einen USB-Stick oder einen anderen Datenträger; die Statistikseite erinnert sie daran und verlinkt den Ordner (§9.5).
+- **Wiederherstellung.** Ein tägliches Archiv wird wie jedes Archiv wiederhergestellt (§11.7): zuerst in eine separate Kopie, anhand des Manifests geprüft, Journal wiedergegeben, Versand abgeschaltet, bis Scheduled und SENT abgeglichen sind. Dann ersetzt die Person das beschädigte `Local_Data` durch die geprüfte Kopie.
 
 Tests: ACCEPTANCE_TESTS.md.
 

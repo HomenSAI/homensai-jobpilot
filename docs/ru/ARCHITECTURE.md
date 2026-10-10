@@ -62,6 +62,7 @@ Local_Data/
   dashboard/
     index.html  # local menu: statistics and readiness per profile
     profiles/<profile_id>/summary.js · index.html · readiness.html  # data; unchanged template copy; readiness page
+  Archive/<YYYY-MM-DD>_daily/  # daily full archive of Local_Data, for a USB stick (DATA_CONTRACT.md §11.9)
 ```
 
 `Local_Data` — технический путь во всех языковых редакциях; у панели один путь, `Local_Data/dashboard/`; идентификаторы профилей уникальны. Каждая строка журнала несёт `person_id` и, где это применимо, свой профиль; перед действием агент проверяет, что профиль принадлежит этому человеку и этой учётной записи.

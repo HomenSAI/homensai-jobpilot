@@ -66,6 +66,7 @@ Local_Data/                      # private, never published
   Applications/<YYYY>/<MM_Month>/<NNN_Company_City_Role>/   # one folder per application
   profiles/<profile_id>/               # one search direction: profile.json, registry, runs, reports
   dashboard/                           # statistics and readiness pages
+  Archive/                             # daily full archive for the USB stick (DATA_CONTRACT.md §11.9)
 ```
 
 Повне дерево: `ARCHITECTURE.md` §3. Файли-приклади: `examples/`.
