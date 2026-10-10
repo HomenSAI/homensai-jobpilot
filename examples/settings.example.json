@@ -28,7 +28,11 @@
       "docx_relative_path": null,
       "source_sha256": null,
       "docx_sha256": null,
-      "verified_at": null
+      "verified_at": null,
+      "photo_use": false,
+      "photo_relative_path": null,
+      "photo_width_mm": 30,
+      "photo_height_mm": 40
     },
     "cover_letter": {
       "source_relative_path": null,
@@ -143,11 +147,11 @@
       "bicycle",
       "walk"
     ],
-    "languages.review_language": "a language code the person checks the materials in (for example en, ru, de); null until asked (TODO_FOR_AI.md, A7); separate from the sending languages and the report language",
+    "languages.review_language": "a language code the person checks the materials in (for example en, ru, de, uk); null until asked (TODO_FOR_AI.md, A7); separate from the sending languages and the report language",
     "languages.cv_language": "default CV language for vacancies whose language is not stated; the vacancy language decides for each application; null until asked",
     "languages.cover_letter_language": "default cover letter language, same rule as cv_language; null until asked",
     "languages.email_language": "default e-mail text language, same rule as cv_language; null until asked",
-    "languages.report_language": "en, ru or de, chosen by the person; independent of the other languages",
+    "languages.report_language": "en, ru, de or uk, chosen by the person; independent of the other languages",
     "schedule.prepare_month_at_start": [
       true,
       false

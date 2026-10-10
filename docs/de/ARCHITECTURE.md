@@ -66,6 +66,8 @@ Anweisungsdateien (Markdown, kein Code; Entwürfe, die in der Praxis noch nicht 
     1_Мои_документы/                # CVs, diplomas, certificates, references (originals, never changed)
     2_Рассказ_о_себе/               # the person's story: voice transcripts, notes, interviews, the questions
     3_Шаблон_отчёта/                # optional report template
+    4_Шаблон_резюме/                # everything about your CVs, any format; read only
+    5_Шаблон_сопроводительного_письма/  # everything about your cover letters; read only
   persons/<person_id>/
     База_знаний/Жизнеописание.md    # the knowledge base: the person's life story as confirmed facts
     journal/transactions-YYYY-MM.jsonl  # sole authoritative journal, monthly segments, split into -pN parts above 500 lines; only the current segment is written
@@ -73,8 +75,8 @@ Anweisungsdateien (Markdown, kein Code; Entwürfe, die in der Praxis noch nicht 
     state/person.json               # person and profile-list view
     state/quota.json                # monthly counters, rebuilt from the journal
     outbox/<send_attempt_id>/            # prepared send package, never edited
-  Resume/                              # resume template: your Word file, or a PDF converted to Word here
-  CoverLetter/                         # cover letter template, same design as the resume
+  Resume/                              # working documents: CV drafts and the Word copy of the template in use
+  CoverLetter/                         # working documents: letter drafts and the Word copy of the template in use
   profiles/<profile_id>/
     profile.json                    # current confirmed configuration
     registry.json                   # targets, applications and the queue (projection)
@@ -105,7 +107,7 @@ Jede Journalzeile trägt `person_id` und gegebenenfalls ihr Profil; das gemeinsa
 
 **Trennung zwischen Personen und Profilen (Verfahren, F12).** Ein Ordner kann mehreren Personen dienen. Sie werden durch Verfahren getrennt:
 
-- Jede Person hat `persons/<person_id>/` und für Originale einen persönlichen Unterordner `Положите_сюда/<name>/` mit seinen drei Unterordnern (ACCEPTANCE_TESTS.md, KB-04). Der Agent öffnet nie Originale, Wissensbasis, Journal, Zustand, Outbox, Archive oder Mail einer anderen Person.
+- Jede Person hat `persons/<person_id>/` und für Originale einen persönlichen Unterordner `Положите_сюда/<name>/` mit seinen fünf Unterordnern (ACCEPTANCE_TESTS.md, KB-04). Der Agent öffnet nie Originale, Wissensbasis, Journal, Zustand, Outbox, Archive oder Mail einer anderen Person.
 - Eine zweite Person wird mit einer neuen `person_id` angelegt, und die gesamte Erstinstallation (Teil A von TODO_FOR_AI.md) läuft für diese Person erneut. Der Fortschritt dieser Installation wird je Person in `persons/<person_id>/state/person.json` (`setup_progress`) geführt. Die `stage` in `workspace.json` beschreibt nur den Ordner und bedeutet nicht, dass eine neue Person bereit ist.
 - Die Einwilligung wird je Person erteilt (`consent_granted` trägt die `person_id` dieser Person). Eine Ablehnung oder ein Widerruf durch eine Person eröffnet nichts aus dem Bestand einer anderen.
 - Bevor der Agent Originale liest, Mails öffnet oder eine Journalzeile schreibt, nennt er die aktive Person und prüft, dass Profil und Konto zu dieser Person gehören. Ist die Person unklar, fragt der Agent, bevor er etwas anderes tut.

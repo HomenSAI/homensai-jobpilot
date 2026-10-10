@@ -14,7 +14,7 @@ The first version uses UTF-8 JSON for configuration and records, and JSONL for e
 |---|---|
 | `Локальные_данные/persons/<person_id>/state/person.json` | Projection of the person's identity, quota time zone, permitted `profile_id` values and the person's `setup_progress` (§17) |
 | `Локальные_данные/workspace.json` | Workspace id, `format_version`, language, `stage` of the first run, `person_ids` and capability checks (`examples/workspace.example.json`) |
-| `Локальные_данные/Положите_сюда/1_Мои_документы`, `2_Рассказ_о_себе`, `3_Шаблон_отчёта` | The person's originals, story and optional report template; the agent only reads them and never changes them |
+| `Локальные_данные/Положите_сюда/1_Мои_документы`, `2_Рассказ_о_себе`, `3_Шаблон_отчёта`, `4_Шаблон_резюме`, `5_Шаблон_сопроводительного_письма` | The person's originals, story and optional report template; the agent only reads them and never changes them |
 | `Локальные_данные/persons/<person_id>/База_знаний/Жизнеописание.md` | The knowledge base: the master source of confirmed facts, see §3a |
 | `Локальные_данные/persons/<person_id>/journal/transactions-YYYY-MM.jsonl` | The only primary journal, kept in monthly segments (§3c): applications, profiles, messages, consent, and the shared quota of the person. Only the current month's segment is written |
 | `Локальные_данные/persons/<person_id>/journal/writer.lock` | Lock file of one person's journal: exists only while one chat writes; acquisition and release in §5 |
@@ -28,7 +28,7 @@ The first version uses UTF-8 JSON for configuration and records, and JSONL for e
 | `Локальные_данные/profiles/<profile_id>/reports/<YYYY-MM>/` | Reports and their manifests of this profile only |
 | Application folders `Applications/<YYYY>/<MM_Month>/<NNN_…>/`: `Company.md` | Company data from public sources with the source and the check date; a view of the `company_registered` and `company_updated` events |
 | Application folders: `Status.txt` | Append-only, human-readable status history: one line per `status_recorded` event, with the time in the person's time zone and the `event_id`; existing lines are never rewritten |
-| `Локальные_данные/Resume/`, `CoverLetter/` | The person's resume and cover letter templates (Word; a PDF is converted to Word here); the originals are never changed, versions are new files |
+| `Локальные_данные/Resume/`, `CoverLetter/` | Working documents: drafts prepared from `4_Шаблон_резюме/` and `5_Шаблон_сопроводительного_письма/`, and the Word copy of the template the person names (one-to-one checked, §3b `templates`); the sources are never changed, versions are new files |
 | `Локальные_данные/dashboard/profiles/<profile_id>/summary.js`, `index.html`, `readiness.html` | Statistics snapshot (§9), an unchanged copy of the template and the private readiness page; `Локальные_данные/dashboard/index.html` is a local menu with links for each profile. This is the only dashboard path |
 
 New events are first durably recorded in the journal, then projections are updated. The line format, the event names and the counting rules are in §3c; the complete replay is in §3d. (Exception: a file that the agent creates as a whole, such as `profile.json`, a package or `summary.js`, is written and checked first, and its event is recorded right after, because the journal records completed actions.) Changing a projection without an event is prohibited. Correcting a fact or classification requires a new event with `supersedes_event_id`, not an edit to the past. Rebuilding a projection must not duplicate Status.txt lines or response records: check the `event_id` and the mail dedup key (§3d).
@@ -147,6 +147,7 @@ Settings schema 1.4 adds the optional `templates` group. In an older profile, a 
 | Rhythm | `schedule.prepare_month_at_start`, `schedule.cadence` (`immediate`, `allowed_workdays`, `every_second_allowed_workday`, `every_n_calendar_days`, `every_n_allowed_workdays`, `selected_weekdays`, and `on_request` only with `approval_per_message`), `interval_days`, `allowed_weekdays` and `excluded_weekdays` (ISO numbers, Monday = 1), `excluded_dates`, `local_send_times`, `max_per_run`, `max_per_day`, `inter_message_delay_minutes`, `dst_rule`, `daily_check_time`, `monthly_reminder_local_time`, `holiday_region`, `holidays_verified`, `holiday_source`, `missed_send_policy` | asked: cadence, batch size, spacing and times. Validation is in §13. The daily check defaults to 16:00 local; any other value needs a `profile_changed` line with its reason. The reminder time is never assumed. The holiday region is proposed from the place and verified with a source |
 | Time estimate | `minutes_per_application`: six numbers (`cv_adapting`, `cover_letter`, `email_text`, `attachments_and_sending`, `date_and_text_checks`, `reply_tracking`) | asked in A7: the person gives own minutes or accepts the example estimates in `examples/settings.example.json`, which are labelled as estimates. Used only in §9.3, where a missing value blocks the statistics snapshot |
 | Mail | `mail.connection_mode` (`approved_connector`, `built_in_browser` or `manual_fallback`; null until selected), account_id, `mail.mode`, thank-you / period-question / replacement rules | the user selects a currently available path; secrets and browser tokens are never stored in the project |
+| CV photo | `templates.cv.photo_use`, `photo_relative_path`, `photo_width_mm`, `photo_height_mm` | the photo is placed in the CV only when `photo_use` is true (the person's choice, asked only when a photo file is found); default 30 × 40 mm, top right of the first page, proportions kept; never on the cover letter (TODO_FOR_AI.md, Part C, “Photo on the CV”) |
 | Safe defaults | `quota` (44 per person per month), `mail.mode` = `draft_only`, `subject_max_unicode_characters` = 50, `thank_you_enabled` = false, `period_question_enabled` = false, `replacement_auto_send_enabled` = false, `privacy.include_sensitive_facts` = false, `report.market_appendix_required` = true, `report.daily_email_enabled` = false | not asked; the person changes them only later and on purpose |
 | Consents | `privacy.cloud_processing_consent_ref`, `mail.consent_ref` | the id of the journal line that records the consent (A2, A8) |
 | Report | `report.template_relative_path`, `report.daily_email_to` | a user template path or null; daily report recipient is set only with separate consent |
@@ -536,7 +537,7 @@ A month with no events shows zero in every figure and the reason "No events were
 | `generated_at` | ISO time | yes | the cutoff of the snapshot (§8); no counted event may be later |
 | `timezone` | IANA zone | yes | an invalid zone is refused |
 | `demo` | boolean | yes | `true` only for the synthetic sample |
-| `default_language` | `en`, `ru` or `de` | no | the start language of the page (9.5) |
+| `default_language` | `en`, `ru`, `de` or `uk` | no | the start language of the page (9.5) |
 | `last_mail_check_at` | ISO time or null | no | time of the last complete mail check (§15.3, §16.3); validated, but not shown by snapshot 1.4 |
 | `history_start_month` | `YYYY-MM` | yes | first month of the calendar (§8); not later than the snapshot month |
 | `quota` | object | yes | 9.2 |
@@ -616,7 +617,7 @@ The counts built from these records are in §8.
 - Days without reply, counted from `sent_at` to `generated_at` (for `sent_waiting`).
 - Sorting and filters, on the view only, as in §4.
 - Freshness: a warning when the snapshot is two or more days old (from `generated_at` to the time the page is opened). Snapshot 1.4 does not display `last_mail_check_at`, so the mail freshness of §16.3 is not yet visible on this page.
-- Language: `en`, `ru` or `de`, taken from the `lang` URL parameter, otherwise from `default_language`, otherwise `en`. Names and notes are never translated.
+- Language: `en`, `ru`, `de` or `uk`, taken from the `lang` URL parameter, otherwise from `default_language`, otherwise `en`. Names and notes are never translated.
 - Sample: when `demo` is `true`, a notice with a "Clear sample data" button is shown; the button clears the sample in this browser only. The page never clears a real snapshot (`demo` `false`).
 - Browser storage: only the theme and the sample-cleared flag. The page writes no file and makes no network request.
 

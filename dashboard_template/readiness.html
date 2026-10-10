@@ -1,17 +1,17 @@
 <!doctype html>
 <!-- © 2026 Serhii Khomenko / HomenS.AI · https://homensai.com/ · CC BY-NC 4.0 (documentation), PolyForm Noncommercial 1.0.0 (code).
      Readiness page template. Static and read-only: no script, no network request, no mail, no journal writes.
-     The AI agent sets <html lang> to the person's interface language (en, ru or de) and fills the double-brace placeholders listed below from its verified
-     setup-state file. Every visible label exists in en, ru and de; the page shows only the chosen language (spans with classes l-en, l-ru, l-de).
+     The AI agent sets <html lang> to the person's interface language (en, ru, de or uk) and fills the double-brace placeholders listed below from its verified
+     setup-state file. Every visible label exists in en, ru, de and uk; the page shows only the chosen language (spans with classes l-en, l-ru, l-de, l-uk).
      Placeholders (see the agent notes for the value rules):
        {{READY_LABEL}}  "42%" or "—" (not determined)          {{READY_PERCENT}}  whole number 0-100 (floor, never rounded up), or 0
        {{NEEDLE_DEGREES}}  -90 + 1.8 x READY_PERCENT (-90 when not determined)   {{GAUGE_DASH}}  same number as READY_PERCENT
        {{STATUS_COLOR}}  red | yellow | green (one value; it drives the gauge colour, the lights and the status text)
        {{DONE_COUNT}} / {{REQUIRED_COUNT}}  verified required applicable steps / all required applicable steps
-       {{WARNING_EN}} {{WARNING_RU}} {{WARNING_DE}}  optional warning text (delete the whole <p class="warn-box"> element when there is none)
+       {{WARNING_EN}} {{WARNING_RU}} {{WARNING_DE}} {{WARNING_UK}}  optional warning text (delete the whole <p class="warn-box"> element when there is none)
        {{LAST_CHECK_AT}}  time of the last successful check, {{UPDATED_AT}}  time this page was written (plain text with the zone)
        {{SYSTEM_READINESS_ROWS}}  <tr> rows of the system block         {{PROFILE_DOCUMENT_ROWS}}  <tr> rows of the profile block
-       {{NEXT_ACTION_EN}} {{NEXT_ACTION_RU}} {{NEXT_ACTION_DE}}  the next recommended action in three languages
+       {{NEXT_ACTION_EN}} {{NEXT_ACTION_RU}} {{NEXT_ACTION_DE}} {{NEXT_ACTION_UK}}  the next recommended action in four languages
        {{STATISTICS_HREF}} {{OVERVIEW_HREF}}  relative links to the statistics page and the project guide -->
 <html lang="en">
 <head>
@@ -70,17 +70,17 @@ footer{border-top:1px solid var(--line);color:var(--muted);font-size:.9rem;margi
 @media(max-width:700px){.toprow{grid-template-columns:1fr}header{align-items:flex-start;flex-direction:column}th,td{padding:7px}main{padding-top:18px}}
 @media(prefers-reduced-motion:reduce){.needle-g{transition:none}}
 @media print{body{background:#fff;color:#14212e}.card{break-inside:avoid}a{color:#14212e}}
-.l-ru,.l-de{display:none}
-html[lang="ru"] .l-en,html[lang="ru"] .l-de,html[lang="de"] .l-en,html[lang="de"] .l-ru{display:none}
-html[lang="ru"] .l-ru,html[lang="de"] .l-de{display:inline}
+.l-ru,.l-de,.l-uk{display:none}
+html[lang="ru"] .l-en,html[lang="ru"] .l-de,html[lang="ru"] .l-uk,html[lang="de"] .l-en,html[lang="de"] .l-ru,html[lang="de"] .l-uk,html[lang="uk"] .l-en,html[lang="uk"] .l-ru,html[lang="uk"] .l-de{display:none}
+html[lang="ru"] .l-ru,html[lang="de"] .l-de,html[lang="uk"] .l-uk{display:inline}
 </style>
 </head>
 <body>
-<header><strong>HomenS.AI JobPilot</strong><span><a href="{{STATISTICS_HREF}}"><span class="l-en">Open statistics</span><span class="l-ru">Открыть статистику</span><span class="l-de">Statistik öffnen</span></a> · <a href="{{OVERVIEW_HREF}}"><span class="l-en">Project guide</span><span class="l-ru">Руководство</span><span class="l-de">Anleitung</span></a></span></header>
+<header><strong>HomenS.AI JobPilot</strong><span><a href="{{STATISTICS_HREF}}"><span class="l-en">Open statistics</span><span class="l-ru">Открыть статистику</span><span class="l-de">Statistik öffnen</span><span class="l-uk">Відкрити статистику</span></a> · <a href="{{OVERVIEW_HREF}}"><span class="l-en">Project guide</span><span class="l-ru">Руководство</span><span class="l-de">Anleitung</span><span class="l-uk">Посібник</span></a></span></header>
 <main>
 
 <section class="card status-{{STATUS_COLOR}}" id="system-readiness" aria-labelledby="sys-h">
-<h1 id="sys-h"><span class="l-en">Your system readiness</span><span class="l-ru">Готовность вашей системы</span><span class="l-de">Bereitschaft Ihres Systems</span></h1>
+<h1 id="sys-h"><span class="l-en">Your system readiness</span><span class="l-ru">Готовность вашей системы</span><span class="l-de">Bereitschaft Ihres Systems</span><span class="l-uk">Готовність вашої системи</span></h1>
 <div class="toprow">
 <div class="gauge">
 <svg viewBox="0 0 200 134" aria-hidden="true" focusable="false">
@@ -93,59 +93,59 @@ html[lang="ru"] .l-ru,html[lang="de"] .l-de{display:inline}
 <circle class="hub" cx="100" cy="100" r="6"/>
 <text class="percent" x="100" y="128" text-anchor="middle">{{READY_LABEL}}</text>
 </svg>
-<p class="gauge-caption" role="status"><span class="l-en">{{READY_PERCENT}}% ready · {{DONE_COUNT}} of {{REQUIRED_COUNT}} required steps verified</span><span class="l-ru">Готовность {{READY_PERCENT}}% · {{DONE_COUNT}} из {{REQUIRED_COUNT}} обязательных этапов проверено</span><span class="l-de">{{READY_PERCENT}}% bereit · {{DONE_COUNT}} von {{REQUIRED_COUNT}} Pflichtschritten geprüft</span></p>
+<p class="gauge-caption" role="status"><span class="l-en">{{READY_PERCENT}}% ready · {{DONE_COUNT}} of {{REQUIRED_COUNT}} required steps verified</span><span class="l-ru">Готовность {{READY_PERCENT}}% · {{DONE_COUNT}} из {{REQUIRED_COUNT}} обязательных этапов проверено</span><span class="l-de">{{READY_PERCENT}}% bereit · {{DONE_COUNT}} von {{REQUIRED_COUNT}} Pflichtschritten geprüft</span><span class="l-uk">Готовність {{READY_PERCENT}}% · перевірено {{DONE_COUNT}} з {{REQUIRED_COUNT}} обов’язкових етапів</span></p>
 </div>
 <div>
 <div class="traffic">
 <span class="lights" aria-hidden="true"><span class="light red"></span><span class="light yellow"></span><span class="light green"></span></span>
-<span class="s-red"><span class="l-en">Not ready to work</span><span class="l-ru">Не готова к работе</span><span class="l-de">Noch nicht arbeitsbereit</span></span>
-<span class="s-yellow"><span class="l-en">Setup in progress</span><span class="l-ru">Настройка в процессе</span><span class="l-de">Einrichtung läuft</span></span>
-<span class="s-green"><span class="l-en">Ready to work</span><span class="l-ru">Готова к работе</span><span class="l-de">Arbeitsbereit</span></span>
+<span class="s-red"><span class="l-en">Not ready to work</span><span class="l-ru">Не готова к работе</span><span class="l-de">Noch nicht arbeitsbereit</span><span class="l-uk">Не готова до роботи</span></span>
+<span class="s-yellow"><span class="l-en">Setup in progress</span><span class="l-ru">Настройка в процессе</span><span class="l-de">Einrichtung läuft</span><span class="l-uk">Налаштування триває</span></span>
+<span class="s-green"><span class="l-en">Ready to work</span><span class="l-ru">Готова к работе</span><span class="l-de">Arbeitsbereit</span><span class="l-uk">Готова до роботи</span></span>
 </div>
-<p class="expl expl-red"><span class="l-en">A required condition for the selected mode is missing or a blocking error exists. Start with the next action below.</span><span class="l-ru">Не выполнено обязательное условие выбранного режима или есть блокирующая ошибка. Начните со следующего действия ниже.</span><span class="l-de">Eine Pflichtvoraussetzung des gewählten Modus fehlt oder ein blockierender Fehler liegt vor. Beginnen Sie mit der nächsten Aktion unten.</span></p>
-<p class="expl expl-yellow"><span class="l-en">Part of the setup is verified, but required actions remain. Nothing is blocked by an error.</span><span class="l-ru">Часть настройки проверена, но обязательные действия ещё остались. Блокирующей ошибки нет.</span><span class="l-de">Ein Teil der Einrichtung ist geprüft, aber Pflichtschritte fehlen noch. Kein Fehler blockiert den Ablauf.</span></p>
-<p class="expl expl-green"><span class="l-en">All required steps of the selected mode are verified and current. This does not allow any sending: sending needs a valid consent for it.</span><span class="l-ru">Все обязательные этапы выбранного режима проверены и актуальны. Это не разрешает никакой отправки: для неё нужно действующее согласие.</span><span class="l-de">Alle Pflichtschritte des gewählten Modus sind geprüft und aktuell. Das erlaubt keinen Versand: dafür ist eine gültige Zustimmung nötig.</span></p>
-<p class="done-msg"><span class="l-en">Setup complete. Your working package is ready. You can start working in the selected mode.</span><span class="l-ru">Настройка завершена. Ваш рабочий пакет готов. Можно начинать работу в выбранном режиме.</span><span class="l-de">Einrichtung abgeschlossen. Ihr Arbeitspaket ist bereit. Sie können im gewählten Modus beginnen.</span></p>
-<p class="warn-box"><span class="l-en">{{WARNING_EN}}</span><span class="l-ru">{{WARNING_RU}}</span><span class="l-de">{{WARNING_DE}}</span></p>
-<p class="small"><span class="l-en">Last successful check:</span><span class="l-ru">Последняя успешная проверка:</span><span class="l-de">Letzte erfolgreiche Prüfung:</span> {{LAST_CHECK_AT}} · <span class="l-en">Page updated:</span><span class="l-ru">Страница обновлена:</span><span class="l-de">Seite aktualisiert:</span> {{UPDATED_AT}}</p>
-<p class="small"><span class="l-en">Mode (the current one is marked):</span><span class="l-ru">Режим (текущий отмечен):</span><span class="l-de">Modus (der aktuelle ist markiert):</span></p>
+<p class="expl expl-red"><span class="l-en">A required condition for the selected mode is missing or a blocking error exists. Start with the next action below.</span><span class="l-ru">Не выполнено обязательное условие выбранного режима или есть блокирующая ошибка. Начните со следующего действия ниже.</span><span class="l-de">Eine Pflichtvoraussetzung des gewählten Modus fehlt oder ein blockierender Fehler liegt vor. Beginnen Sie mit der nächsten Aktion unten.</span><span class="l-uk">Не виконано обов’язкову умову обраного режиму або є блокувальна помилка. Почніть з наступної дії нижче.</span></p>
+<p class="expl expl-yellow"><span class="l-en">Part of the setup is verified, but required actions remain. Nothing is blocked by an error.</span><span class="l-ru">Часть настройки проверена, но обязательные действия ещё остались. Блокирующей ошибки нет.</span><span class="l-de">Ein Teil der Einrichtung ist geprüft, aber Pflichtschritte fehlen noch. Kein Fehler blockiert den Ablauf.</span><span class="l-uk">Частину налаштування перевірено, але обов’язкові дії ще залишилися. Жодна помилка не блокує роботу.</span></p>
+<p class="expl expl-green"><span class="l-en">All required steps of the selected mode are verified and current. This does not allow any sending: sending needs a valid consent for it.</span><span class="l-ru">Все обязательные этапы выбранного режима проверены и актуальны. Это не разрешает никакой отправки: для неё нужно действующее согласие.</span><span class="l-de">Alle Pflichtschritte des gewählten Modus sind geprüft und aktuell. Das erlaubt keinen Versand: dafür ist eine gültige Zustimmung nötig.</span><span class="l-uk">Усі обов’язкові етапи обраного режиму перевірено й актуальні. Це не дозволяє жодної відправки: для неї потрібна чинна згода.</span></p>
+<p class="done-msg"><span class="l-en">Setup complete. Your working package is ready. You can start working in the selected mode.</span><span class="l-ru">Настройка завершена. Ваш рабочий пакет готов. Можно начинать работу в выбранном режиме.</span><span class="l-de">Einrichtung abgeschlossen. Ihr Arbeitspaket ist bereit. Sie können im gewählten Modus beginnen.</span><span class="l-uk">Налаштування завершено. Ваш робочий пакет готовий. Можна починати роботу в обраному режимі.</span></p>
+<p class="warn-box"><span class="l-en">{{WARNING_EN}}</span><span class="l-ru">{{WARNING_RU}}</span><span class="l-de">{{WARNING_DE}}</span><span class="l-uk">{{WARNING_UK}}</span></p>
+<p class="small"><span class="l-en">Last successful check:</span><span class="l-ru">Последняя успешная проверка:</span><span class="l-de">Letzte erfolgreiche Prüfung:</span><span class="l-uk">Остання успішна перевірка:</span> {{LAST_CHECK_AT}} · <span class="l-en">Page updated:</span><span class="l-ru">Страница обновлена:</span><span class="l-de">Seite aktualisiert:</span><span class="l-uk">Сторінку оновлено:</span> {{UPDATED_AT}}</p>
+<p class="small"><span class="l-en">Mode (the current one is marked):</span><span class="l-ru">Режим (текущий отмечен):</span><span class="l-de">Modus (der aktuelle ist markiert):</span><span class="l-uk">Режим (поточний позначено):</span></p>
 <ul class="modes">
-<li data-mode="prepare_only"><span class="l-en">Preparation only: packages, no sending</span><span class="l-ru">Только подготовка: пакеты, без отправки</span><span class="l-de">Nur Vorbereitung: Pakete, kein Versand</span></li>
-<li data-mode="send_after_approval"><span class="l-en">Sending after approval of each message</span><span class="l-ru">Отправка после согласования каждого письма</span><span class="l-de">Versand nach Freigabe jeder Nachricht</span></li>
-<li data-mode="approved_schedule"><span class="l-en">Approved planning within an agreed monthly plan</span><span class="l-ru">Согласованное планирование в согласованном месячном плане</span><span class="l-de">Freigegebene Planung im vereinbarten Monatsplan</span></li>
+<li data-mode="prepare_only"><span class="l-en">Preparation only: packages, no sending</span><span class="l-ru">Только подготовка: пакеты, без отправки</span><span class="l-de">Nur Vorbereitung: Pakete, kein Versand</span><span class="l-uk">Лише підготовка: пакети, без відправки</span></li>
+<li data-mode="send_after_approval"><span class="l-en">Sending after approval of each message</span><span class="l-ru">Отправка после согласования каждого письма</span><span class="l-de">Versand nach Freigabe jeder Nachricht</span><span class="l-uk">Відправка після погодження кожного листа</span></li>
+<li data-mode="approved_schedule"><span class="l-en">Approved planning within an agreed monthly plan</span><span class="l-ru">Согласованное планирование в согласованном месячном плане</span><span class="l-de">Freigegebene Planung im vereinbarten Monatsplan</span><span class="l-uk">Погоджене планування в узгодженому місячному плані</span></li>
 </ul>
 </div>
 </div>
 </section>
 
 <section class="card">
-<h2><span class="l-en">System readiness</span><span class="l-ru">Готовность системы</span><span class="l-de">Bereitschaft des Systems</span></h2>
-<p class="small"><span class="l-en">Verified steps only. Each row shows what was checked and what remains.</span><span class="l-ru">Только проверенные этапы. В каждой строке видно, что проверено и что осталось.</span><span class="l-de">Nur geprüfte Schritte. Jede Zeile zeigt, was geprüft wurde und was noch fehlt.</span></p>
+<h2><span class="l-en">System readiness</span><span class="l-ru">Готовность системы</span><span class="l-de">Bereitschaft des Systems</span><span class="l-uk">Готовність системи</span></h2>
+<p class="small"><span class="l-en">Verified steps only. Each row shows what was checked and what remains.</span><span class="l-ru">Только проверенные этапы. В каждой строке видно, что проверено и что осталось.</span><span class="l-de">Nur geprüfte Schritte. Jede Zeile zeigt, was geprüft wurde und was noch fehlt.</span><span class="l-uk">Лише перевірені етапи. У кожному рядку видно, що перевірено і що залишилося.</span></p>
 <div class="table-wrap">
 <table>
-<thead><tr><th><span class="l-en">Step</span><span class="l-ru">Этап</span><span class="l-de">Schritt</span></th><th><span class="l-en">Status</span><span class="l-ru">Статус</span><span class="l-de">Status</span></th><th><span class="l-en">What remains</span><span class="l-ru">Что осталось сделать</span><span class="l-de">Was noch zu tun ist</span></th><th><span class="l-en">Evidence and time of the last check</span><span class="l-ru">Подтверждение и время последней проверки</span><span class="l-de">Nachweis und Zeit der letzten Prüfung</span></th></tr></thead>
+<thead><tr><th><span class="l-en">Step</span><span class="l-ru">Этап</span><span class="l-de">Schritt</span><span class="l-uk">Етап</span></th><th><span class="l-en">Status</span><span class="l-ru">Статус</span><span class="l-de">Status</span><span class="l-uk">Статус</span></th><th><span class="l-en">What remains</span><span class="l-ru">Что осталось сделать</span><span class="l-de">Was noch zu tun ist</span><span class="l-uk">Що ще потрібно зробити</span></th><th><span class="l-en">Evidence and time of the last check</span><span class="l-ru">Подтверждение и время последней проверки</span><span class="l-de">Nachweis und Zeit der letzten Prüfung</span><span class="l-uk">Підтвердження і час останньої перевірки</span></th></tr></thead>
 <tbody>{{SYSTEM_READINESS_ROWS}}</tbody>
 </table>
 </div>
 </section>
 
 <section class="card">
-<h2><span class="l-en">Your profile and documents</span><span class="l-ru">Ваш профиль и документы</span><span class="l-de">Ihr Profil und Ihre Unterlagen</span></h2>
-<p class="small"><span class="l-en">Each document has its own row and its own link. The links open private files in this person's permitted local folder; a missing file is shown as missing and is never replaced by another file. This page does not edit documents: ask in the chat for changes.</span><span class="l-ru">У каждого документа своя строка и своя ссылка. Ссылки открывают личные файлы в разрешённой локальной папке этого человека; отсутствующий файл показан как отсутствующий и никогда не заменяется другим. Страница не редактирует документы: изменения просите в чате.</span><span class="l-de">Jedes Dokument hat eine eigene Zeile und einen eigenen Link. Die Links öffnen private Dateien im zugelassenen lokalen Ordner dieser Person; eine fehlende Datei wird als fehlend angezeigt und nie durch eine andere ersetzt. Diese Seite ändert keine Dokumente: Änderungen bitte im Chat anfragen.</span></p>
+<h2><span class="l-en">Your profile and documents</span><span class="l-ru">Ваш профиль и документы</span><span class="l-de">Ihr Profil und Ihre Unterlagen</span><span class="l-uk">Ваш профіль і документи</span></h2>
+<p class="small"><span class="l-en">Each document has its own row and its own link. The links open private files in this person's permitted local folder; a missing file is shown as missing and is never replaced by another file. This page does not edit documents: ask in the chat for changes.</span><span class="l-ru">У каждого документа своя строка и своя ссылка. Ссылки открывают личные файлы в разрешённой локальной папке этого человека; отсутствующий файл показан как отсутствующий и никогда не заменяется другим. Страница не редактирует документы: изменения просите в чате.</span><span class="l-de">Jedes Dokument hat eine eigene Zeile und einen eigenen Link. Die Links öffnen private Dateien im zugelassenen lokalen Ordner dieser Person; eine fehlende Datei wird als fehlend angezeigt und nie durch eine andere ersetzt. Diese Seite ändert keine Dokumente: Änderungen bitte im Chat anfragen.</span><span class="l-uk">Кожен документ має свій рядок і власне посилання. Посилання відкривають особисті файли в дозволеній локальній папці цієї людини; відсутній файл показано як відсутній і ніколи не замінюють іншим. Ця сторінка не редагує документи: зміни просіть у чаті.</span></p>
 <div class="table-wrap">
 <table>
-<thead><tr><th><span class="l-en">Material / document</span><span class="l-ru">Материал / документ</span><span class="l-de">Material / Dokument</span></th><th><span class="l-en">Status</span><span class="l-ru">Статус</span><span class="l-de">Status</span></th><th><span class="l-en">Link to view</span><span class="l-ru">Ссылка для просмотра</span><span class="l-de">Link zur Ansicht</span></th><th><span class="l-en">What to improve</span><span class="l-ru">Что рекомендуется доделать</span><span class="l-de">Was noch verbessert werden sollte</span></th></tr></thead>
+<thead><tr><th><span class="l-en">Material / document</span><span class="l-ru">Материал / документ</span><span class="l-de">Material / Dokument</span><span class="l-uk">Матеріал / документ</span></th><th><span class="l-en">Status</span><span class="l-ru">Статус</span><span class="l-de">Status</span><span class="l-uk">Статус</span></th><th><span class="l-en">Link to view</span><span class="l-ru">Ссылка для просмотра</span><span class="l-de">Link zur Ansicht</span><span class="l-uk">Посилання для перегляду</span></th><th><span class="l-en">What to improve</span><span class="l-ru">Что рекомендуется доделать</span><span class="l-de">Was noch verbessert werden sollte</span><span class="l-uk">Що варто доопрацювати</span></th></tr></thead>
 <tbody>{{PROFILE_DOCUMENT_ROWS}}</tbody>
 </table>
 </div>
 </section>
 
 <section class="card">
-<h2><span class="l-en">Next recommended action</span><span class="l-ru">Следующее рекомендуемое действие</span><span class="l-de">Nächste empfohlene Aktion</span></h2>
-<div class="nextbox"><span class="l-en">{{NEXT_ACTION_EN}}</span><span class="l-ru">{{NEXT_ACTION_RU}}</span><span class="l-de">{{NEXT_ACTION_DE}}</span></div>
-<p class="small"><span class="l-en">This page is a static local view maintained by the AI agent. It does not read or modify your files on its own.</span><span class="l-ru">Эта страница — статичный локальный вид, который ведёт ИИ-агент. Сама по себе она не читает и не меняет ваши файлы.</span><span class="l-de">Diese Seite ist eine statische lokale Ansicht, die der KI-Agent pflegt. Sie liest und ändert Ihre Dateien nicht von selbst.</span></p>
+<h2><span class="l-en">Next recommended action</span><span class="l-ru">Следующее рекомендуемое действие</span><span class="l-de">Nächste empfohlene Aktion</span><span class="l-uk">Наступна рекомендована дія</span></h2>
+<div class="nextbox"><span class="l-en">{{NEXT_ACTION_EN}}</span><span class="l-ru">{{NEXT_ACTION_RU}}</span><span class="l-de">{{NEXT_ACTION_DE}}</span><span class="l-uk">{{NEXT_ACTION_UK}}</span></div>
+<p class="small"><span class="l-en">This page is a static local view maintained by the AI agent. It does not read or modify your files on its own.</span><span class="l-ru">Эта страница — статичный локальный вид, который ведёт ИИ-агент. Сама по себе она не читает и не меняет ваши файлы.</span><span class="l-de">Diese Seite ist eine statische lokale Ansicht, die der KI-Agent pflegt. Sie liest und ändert Ihre Dateien nicht von selbst.</span><span class="l-uk">Ця сторінка — статичний локальний вигляд, який веде ШІ-агент. Сама по собі вона не читає і не змінює ваші файли.</span></p>
 </section>
 </main>
-<footer><span class="l-en">Idea author and developer</span><span class="l-ru">Автор идеи и разработчик</span><span class="l-de">Ideengeber und Entwickler</span>: Serhii Khomenko · <a href="https://homensai.com/">homensai.com</a> · <a href="https://github.com/HomenSAI/homensai-jobpilot">HomenS.AI JobPilot</a> · CC BY-NC 4.0</footer>
+<footer><span class="l-en">Idea author and developer</span><span class="l-ru">Автор идеи и разработчик</span><span class="l-de">Ideengeber und Entwickler</span><span class="l-uk">Автор ідеї та розробник</span>: Serhii Khomenko · <a href="https://homensai.com/">homensai.com</a> · <a href="https://github.com/HomenSAI/homensai-jobpilot">HomenS.AI JobPilot</a> · CC BY-NC 4.0</footer>
 </body>
 </html>

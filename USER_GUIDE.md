@@ -143,16 +143,18 @@ Current official information: [Pricing and plans](https://learn.chatgpt.com/docs
 
 ## Prepare your materials — you can do it first
 
-The project ZIP contains a ready folder `Локальные_данные\Положите_сюда` (“put here”) with three subfolders. It is the only place where you have to put anything by hand. Fill it right after step 2, or gather the files now and copy them later. If you prepare nothing, the agent asks you everything itself (step 7).
+The project ZIP contains a ready folder `Локальные_данные\Положите_сюда` (“put here”) with five subfolders. It is the only place where you have to put anything by hand. Fill it right after step 2, or gather the files now and copy them later. If you prepare nothing, the agent asks you everything itself (step 7).
 
 | Folder | What to put there |
 |---|---|
 | `1_Мои_документы` (my documents) | CVs of any version, diplomas, certificates, references, official letters, a portfolio, samples of your own letters. PDF, DOCX, TXT, photos and scans. No sorting or renaming needed |
 | `2_Рассказ_о_себе` (my story) | Your story in your own words: a transcript of a voice recording, notes, answers to the questions in `Вопросы_для_рассказа.md` (it lies in this folder) |
 | `3_Шаблон_отчёта` (report template) | Only if you have your own report sample. Otherwise leave it empty |
+| `4_Шаблон_резюме` (CV layout) | Your CV sample in the layout you want for submissions, DOCX or PDF. A PDF is converted to Word before any other work |
+| `5_Шаблон_сопроводительного_письма` (cover letter layout) | Your cover letter in your own design, DOCX or PDF. The same conversion applies |
 
 Two more folders, next to `Положите_сюда`, hold your **templates**:
-- `Локальные_данные\Resume` — your resume. Put a Word (.docx) or PDF file here. A PDF is converted by the agent into a Word file saved in the same folder. No file yet? The agent offers the neutral example, prepares it with the available document tools and asks you to approve the layout.
+- `Локальные_данные\Resume` — your resume. Put a Word (.docx) or PDF file here. The agent makes a Word copy in the working folder from the PDF you name; the sample stays unchanged. No file yet? The agent offers the neutral example, prepares it with the available document tools and asks you to approve the layout.
 - `Локальные_данные\CoverLetter` — your cover-letter template. The approved CV design can be reused if you agree; the same conversion and verification rules apply.
 
 Template handling: keep the source unchanged, save a distinct editable DOCX beside a PDF, visually compare every page and approve the result before use. If conversion is unavailable, the agent reports it and asks for manual conversion or an approved reconstruction. Selected source/DOCX paths, hashes and verification times are stored per profile; each vacancy receives its own files. See [Application templates](OPERATING_REQUIREMENTS.md#application-templates).
@@ -230,7 +232,7 @@ If Codex does not appear in the interface, check whether the feature is availabl
 
 The extracted folder will hold both project instructions and local working data. Personal profiles, CVs, emails, OAuth tokens, and user statistics must not be published on GitHub.
 
-**You should see:** in the folder itself, not inside another folder: `README.md`, `USER_GUIDE.md`, `AI_BUILD_SPEC.md`, `AGENTS.md`, `CLAUDE.md`, `TODO_FOR_AI.md`, `dashboard_template` and the folder `Локальные_данные\Положите_сюда` with three subfolders.
+**You should see:** in the folder itself, not inside another folder: `README.md`, `USER_GUIDE.md`, `AI_BUILD_SPEC.md`, `AGENTS.md`, `CLAUDE.md`, `TODO_FOR_AI.md`, `dashboard_template` and the folder `Локальные_данные\Положите_сюда` with five subfolders.
 
 ## Part 3 · Connect the agent to the folder and start
 
@@ -293,7 +295,7 @@ From here the agent leads. There is no form: it asks one question at a time and 
 
 1. **Consent.** Before it reads anything personal, it explains that a cloud agent may pass what it reads to its provider, and asks your consent. “Stored locally” does not mean “processed offline”. You can say no and start with an anonymized example.
 2. **Your story.** It tells you where your story belongs: the folder `Локальные_данные\Положите_сюда\2_Рассказ_о_себе`. If you have none, it offers to prepare it right now, completely by voice: switch on the microphone and talk about your whole life. It does not interrupt and saves every word.
-3. **Your documents.** It asks whether you have a CV, diplomas, certificates, course records or references. Put all of them into `1_Мои_документы` (photos and scans are fine) and say “ready”. No documents? Say so, and you continue.
+3. **Your documents.** It asks whether you have a CV, diplomas, certificates, course records or references. Put all of them into `1_Мои_документы` (photos and scans are fine) and say “ready”. No documents? Say so, and you continue. If you have a CV in the layout you want for submissions and a cover letter in your own design, put them into `4_Шаблон_резюме` and `5_Шаблон_сопроводительного_письма`; a PDF is converted to Word before any other work.
 4. **Analysis.** It reads everything and writes your knowledge base. Then it asks about what is missing, one topic at a time: certificates, courses, language levels, skills, real situations, the driving licence and a car.
 5. **Confirmation.** It shows the facts section by section. For each say: *right*, *correct it* or *wrong*. It never invents experience, dates, certificates or language levels. A fact without a document stays valid, marked “self-reported”.
 6. **The search.** It asks what we are looking for (job, Ausbildung, internship, Probearbeit, temporary work), which roles and industries, where you live, the radius in kilometres, how you get there (car, train, bus or tram, bicycle, on foot — any combination), how long the way may take, transfers, walking and the evening return, preferred towns, the languages of the CV, the letter, the email and the report (separately), how to spread the applications, and whether you have a report template (`3_Шаблон_отчёта`).

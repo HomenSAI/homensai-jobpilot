@@ -26,14 +26,13 @@
 <a class="nav-link" href="overview_profile.html"><i class="nav-dot gold" aria-hidden="true"></i>Profile</a>
 <a class="nav-link" href="overview_architecture.html"><i class="nav-dot" aria-hidden="true"></i>Architecture</a>
 <a class="nav-link" href="overview_safety.html"><i class="nav-dot teal" aria-hidden="true"></i>Safety</a>
-<a class="nav-link" href="overview_market.html"><i class="nav-dot gold" aria-hidden="true"></i>Market</a>
 <a class="nav-link" href="overview_roadmap.html"><i class="nav-dot" aria-hidden="true"></i>Roadmap</a>
 <a class="nav-link" href="overview_author.html"><i class="nav-dot gold" aria-hidden="true"></i>Author</a>
 <a class="nav-link" href="dashboard_template/index.html"><i class="nav-dot teal" aria-hidden="true"></i>Statistics</a>
 </nav>
 <div class="nav-tools">
 <a class="nav-link site-link" href="https://homensai.com/" rel="me noopener">homensai.com</a>
-<span class="langs" role="group" aria-label="Language"><a href="overview_install.html" lang="en" hreflang="en" class="on" aria-current="true">EN</a><a href="docs/ru/overview_install.html" lang="ru" hreflang="ru">RU</a><a href="docs/de/overview_install.html" lang="de" hreflang="de">DE</a></span>
+<span class="langs" role="group" aria-label="Language"><a href="overview_install.html" lang="en" hreflang="en" class="on" aria-current="true">EN</a><a href="docs/ru/overview_install.html" lang="ru" hreflang="ru">RU</a><a href="docs/de/overview_install.html" lang="de" hreflang="de">DE</a><a href="docs/uk/overview_install.html" lang="uk" hreflang="uk">UK</a></span>
 <button class="icon-btn" id="theme-btn" type="button" aria-label="Switch light / dark theme" title="Switch light / dark theme"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M12 4v16"/><path d="M12 4a8 8 0 0 1 0 16z" fill="currentColor"/></svg></button>
 <button class="icon-btn menu-btn" id="menu-btn" type="button" aria-expanded="false" aria-controls="site-nav" aria-label="Menu" title="Menu"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
 </div>
@@ -67,11 +66,13 @@
 </section>
 
 <section id="prepare">
-<div class="sec-head"><div class="num">Prepare</div><h2>Prepare your materials — you can do it first</h2><p>The project ZIP contains a ready folder <code>Локальные_данные\Положите_сюда</code> (“put here”) with three subfolders. It is the only place where you have to put anything by hand. Fill it right after step 2, or gather the files now and copy them later. If you prepare nothing, the agent asks you everything itself (step 7).</p></div>
+<div class="sec-head"><div class="num">Prepare</div><h2>Prepare your materials — you can do it first</h2><p>The project ZIP contains a ready folder <code>Локальные_данные\Положите_сюда</code> (“put here”) with five subfolders. It is the only place where you have to put anything by hand. Fill it right after step 2, or gather the files now and copy them later. If you prepare nothing, the agent asks you everything itself (step 7).</p></div>
 <div class="table-scroll"><table class="cmp"><thead><tr><th>Folder</th><th>What to put there</th></tr></thead><tbody>
 <tr><td><code>1_Мои_документы</code><br><small>my documents</small></td><td>CVs of any version, diplomas, certificates, references, official letters, a portfolio, samples of your own letters. PDF, DOCX, TXT, photos and scans. No sorting or renaming needed.</td></tr>
 <tr><td><code>2_Рассказ_о_себе</code><br><small>my story</small></td><td>Your story in your own words: a transcript of a voice recording, notes, answers to the questions in <code>Вопросы_для_рассказа.md</code> (it lies in this folder).</td></tr>
 <tr><td><code>3_Шаблон_отчёта</code><br><small>report template</small></td><td>Only if you have your own report sample. Otherwise leave it empty.</td></tr>
+<tr><td><code>4_Шаблон_резюме</code><br><small>CV layout</small></td><td>Your CV sample in the layout you want for submissions, DOCX or PDF. A PDF is converted to Word before any other work.</td></tr>
+<tr><td><code>5_Шаблон_сопроводительного_письма</code><br><small>cover letter layout</small></td><td>Your cover letter in your own design, DOCX or PDF. The same conversion applies.</td></tr>
 </tbody></table></div>
 <div class="grid2" style="margin-top:1rem">
 <article class="panel blue"><h3>Tell your story by voice</h3><ol><li>Open a chat with Claude or ChatGPT and switch on voice mode (the microphone icon).</li><li>Say: “I will tell you about myself for my CV. Ask me questions one topic at a time. At the end write down my story word for word, adding nothing, as a text file.” You can paste the questions from <code>Вопросы_для_рассказа.md</code>.</li><li>Talk as long as you want, in parts, on different days, in any order. If you do not remember something, say so.</li><li>Save the text file into <code>2_Рассказ_о_себе</code>.</li></ol></article>
@@ -95,7 +96,7 @@
 <ol class="guide" style="counter-reset: g 1">
 <li><h3>Download and extract the project archive</h3>
 <ol><li>Open the project repository on GitHub (<a href="https://github.com/HomenSAI/homensai-jobpilot">github.com/HomenSAI/homensai-jobpilot</a>) in your browser.</li><li>Choose <strong>Code → Download ZIP</strong>.</li><li>In File Explorer create a folder such as <code>Documents\HomenSAI-JobPilot</code>.</li><li>Extract the ZIP into that folder.</li><li>Do not extract into a Windows system folder.</li></ol>
-<p class="see"><b>You should see:</b> in the folder, directly (not inside another folder): <code>README.md</code>, <code>USER_GUIDE.md</code>, <code>AI_BUILD_SPEC.md</code>, <code>AGENTS.md</code>, <code>CLAUDE.md</code>, <code>TODO_FOR_AI.md</code>, <code>dashboard_template</code> and the folder <code>Локальные_данные\Положите_сюда</code> with three subfolders.</p>
+<p class="see"><b>You should see:</b> in the folder, directly (not inside another folder): <code>README.md</code>, <code>USER_GUIDE.md</code>, <code>AI_BUILD_SPEC.md</code>, <code>AGENTS.md</code>, <code>CLAUDE.md</code>, <code>TODO_FOR_AI.md</code>, <code>dashboard_template</code> and the folder <code>Локальные_данные\Положите_сюда</code> with five subfolders.</p>
 <p class="stuck"><b>If the files are one level deeper:</b> you extracted into an extra subfolder. Move the contents up, or pick the inner folder in step 3.</p>
 <p>The folder will hold both the project instructions and your local working data. Personal profiles, CVs, emails, OAuth tokens and statistics must never be published on GitHub.</p></li>
 </ol>
@@ -178,7 +179,7 @@
 </div>
 </section>
 
-<section id="application-templates"><div class="sec-head"><h2>CV and cover-letter templates</h2></div><p>PDF templates keep their source unchanged. An editable DOCX is saved beside the source only after conversion, page-by-page comparison and approval. If conversion cannot be verified, the agent reports the limitation and asks for manual conversion or an approved reconstruction. The exact selected paths/hashes are saved per profile; new vacancies receive new document files.</p><div class="links"><a href="Локальные_данные/Resume/README.md">Resume</a><a href="Локальные_данные/CoverLetter/README.md">CoverLetter</a><a href="examples/templates/README.md">DOCX / PDF</a><a href="OPERATING_REQUIREMENTS.md">Verification rules</a></div></section>
+<section id="application-templates"><div class="sec-head"><h2>CV and cover-letter templates</h2></div><p>Put your CV sample into <code>4_Шаблон_резюме</code> and your cover-letter sample into <code>5_Шаблон_сопроводительного_письма</code> (DOCX or PDF). A PDF sample is converted to Word before any other work; the working Word copy appears in <code>Resume/</code> and <code>CoverLetter/</code>. The original sample is never changed. The conversion is checked page by page against the PDF (page count, size, text, position, pictures and fonts), and you see the comparison before you approve it. If a page differs or the check cannot be made, the agent reports the difference and asks what to do. The exact selected paths/hashes are saved per profile; new vacancies receive new document files.</p><div class="links"><a href="Локальные_данные/Resume/README.md">Resume</a><a href="Локальные_данные/CoverLetter/README.md">CoverLetter</a><a href="examples/templates/README.md">DOCX / PDF</a><a href="OPERATING_REQUIREMENTS.md">Verification rules</a></div></section>
 <section id="help">
 <div class="sec-head"><div class="num">Help</div><h2>If something does not work</h2></div>
 <div class="rules">

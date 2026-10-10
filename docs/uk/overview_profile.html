@@ -1,0 +1,107 @@
+<!doctype html>
+<!-- © 2026 Serhii Khomenko / HomenS.AI · https://homensai.com/ · https://github.com/HomenSAI · https://www.linkedin.com/in/serhii-khomenko-homensai/
+     Code and markup: PolyForm Noncommercial 1.0.0 — https://polyformproject.org/licenses/noncommercial/1.0.0
+     Documentation text: CC BY-NC 4.0 — https://creativecommons.org/licenses/by-nc/4.0/ -->
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ваша база знань | HomenS.AI JobPilot</title>
+<meta name="description" content="Як JobPilot перетворює ваші документи і розповідь на базу знань, яку ви підтверджуєте по одному факту.">
+<meta name="author" content="Serhii Khomenko">
+<meta name="theme-color" content="#edf1f4" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0f1720" media="(prefers-color-scheme: dark)">
+<script src="../../assets/theme.js"></script>
+<link rel="icon" type="image/svg+xml" href="../../assets/logo.svg">
+<link rel="stylesheet" href="../../assets/site.css">
+<script src="../../assets/site.js" defer></script>
+</head>
+<body>
+<a class="skip-link" href="#main">Перейти до змісту</a>
+<header class="topbar"><div class="wrap">
+<a class="brand" href="PROJECT_OVERVIEW.html" aria-label="HomenS.AI JobPilot"><svg class="brand-mark" focusable="false" viewBox="0 0 100 100" aria-hidden="true"><path d="M50.0 13.0 L48.1 13.1 L46.1 13.2 L44.2 13.5 L42.3 13.8 L42.2 21.0 L40.7 21.5 L39.2 22.0 L37.8 22.6 L36.4 23.3 L31.5 18.0 L29.8 19.0 L28.3 20.1 L26.7 21.2 L25.2 22.5 L28.8 28.8 L27.7 29.9 L26.7 31.1 L25.7 32.4 L24.8 33.7 L18.0 31.5 L17.0 33.2 L16.2 35.0 L15.5 36.7 L14.8 38.6 L21.0 42.2 L20.7 43.8 L20.4 45.3 L20.2 46.9 L20.0 48.4 L13.0 50.0 L13.1 51.9 L13.2 53.9 L13.5 55.8 L13.8 57.7 L21.0 57.8 L21.5 59.3 L22.0 60.8 L22.6 62.2 L23.3 63.6 L18.0 68.5 L19.0 70.2 L20.1 71.7 L21.2 73.3 L22.5 74.8 L28.8 71.2 L29.9 72.3 L31.1 73.3 L32.4 74.3 L33.7 75.2 L31.5 82.0 L33.2 83.0 L35.0 83.8 L36.7 84.5 L38.6 85.2 L42.2 79.0 L43.8 79.3 L45.3 79.6 L46.9 79.8 L48.4 80.0 L50.0 87.0 Z" fill="#c9a24a"/><path d="M50 20 A30 30 0 0 1 50 80" fill="none" stroke="#2bb3c4" stroke-width="5"/><g fill="none" stroke="#2bb3c4" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M50 36 H64 L70 30"/><path d="M50 50 H72"/><path d="M50 64 H62 L68 70"/></g><g fill="#2bb3c4"><circle cx="71" cy="29" r="4"/><circle cx="74" cy="50" r="4"/><circle cx="69" cy="71" r="4"/></g><circle cx="50" cy="50" r="9" fill="currentColor"/><circle cx="50" cy="50" r="3.5" fill="#c9a24a"/></svg><span class="brand-word">HomenS<span class="ai">.AI</span> <span class="sub">JobPilot</span></span></a>
+<nav id="site-nav" class="nav-main" aria-label="Сторінки проєкту">
+<a class="nav-link" href="PROJECT_OVERVIEW.html"><i class="nav-dot" aria-hidden="true"></i>Огляд</a>
+<a class="nav-link" href="overview_install.html"><i class="nav-dot teal" aria-hidden="true"></i>Встановлення</a>
+<a class="nav-link" href="overview_profile.html" aria-current="page"><i class="nav-dot gold" aria-hidden="true"></i>Профіль</a>
+<a class="nav-link" href="overview_architecture.html"><i class="nav-dot" aria-hidden="true"></i>Архітектура</a>
+<a class="nav-link" href="overview_safety.html"><i class="nav-dot teal" aria-hidden="true"></i>Безпека</a>
+<a class="nav-link" href="overview_roadmap.html"><i class="nav-dot" aria-hidden="true"></i>План робіт</a>
+<a class="nav-link" href="overview_author.html"><i class="nav-dot gold" aria-hidden="true"></i>Автор</a>
+<a class="nav-link" href="../../dashboard_template/index.html"><i class="nav-dot teal" aria-hidden="true"></i>Статистика</a>
+</nav>
+<div class="nav-tools">
+<a class="nav-link site-link" href="https://homensai.com/" rel="me noopener">homensai.com</a>
+<span class="langs" role="group" aria-label="Мова"><a href="../../overview_profile.html" lang="en" hreflang="en">EN</a><a href="../ru/overview_profile.html" lang="ru" hreflang="ru">RU</a><a href="../de/overview_profile.html" lang="de" hreflang="de">DE</a><a href="overview_profile.html" lang="uk" hreflang="uk" class="on" aria-current="true">UK</a></span>
+<button class="icon-btn" id="theme-btn" type="button" aria-label="Перемкнути світлу / темну тему" title="Перемкнути світлу / темну тему"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M12 4v16"/><path d="M12 4a8 8 0 0 1 0 16z" fill="currentColor"/></svg></button>
+<button class="icon-btn menu-btn" id="menu-btn" type="button" aria-expanded="false" aria-controls="site-nav" aria-label="Меню" title="Меню"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+</div>
+</div></header>
+<main id="main" class="wrap">
+<div class="page-head">
+<div class="eyebrow">Профіль</div>
+<h1>Ваша <span class="accent">історія життя</span> в одному файлі</h1>
+<p class="lead">Покладіть документи в три готові теки або просто розкажіть агенту про себе голосом. Агент записує всю історію вашого життя у вигляді фактів в один файл — базу знань, — а ви підтверджуєте кожен факт. Кожна заявка потім використовує лише відповідну, підтверджену частину.</p>
+<div class="pills"><span class="pill">Теки готові в ZIP</span><span class="pill">Голосом або текстом</span><span class="pill">Факти потребують вашого підтвердження</span></div>
+</div>
+
+<section id="folders">
+<div class="sec-head"><div class="num">01 · Теки</div><h2>Куди покласти свої матеріали</h2><p>Єдине місце, куди вам потрібно покласти файли вручну, — <code>Локальные_данные\Положите_сюда</code> («покласти сюди»). Вона вже є в теці проєкту. Агент лише читає її і ніколи не змінює ваші файли.</p></div>
+<div class="table-scroll"><table class="cmp"><thead><tr><th>Тека</th><th>Що покласти сюди</th></tr></thead><tbody>
+<tr><td><code>1_Мои_документы</code><br><small>мої документи</small></td><td>Резюме будь-якої версії, дипломи, сертифікати, рекомендації, офіційні листи, портфоліо, зразки ваших листів. Будь-який формат, сортувати не потрібно.</td></tr>
+<tr><td><code>2_Рассказ_о_себе</code><br><small>моя розповідь</small></td><td>Ваша розповідь своїми словами: розшифровка голосового запису, нотатки, відповіді на підготовлені запитання. Агент також зберігає тут інтерв’ю дослівно.</td></tr>
+<tr><td><code>3_Шаблон_отчёта</code><br><small>шаблон звіту</small></td><td>Лише якщо у вас є власний зразок звіту.</td></tr>
+</tbody></table></div>
+<p style="margin-top:.75rem">Теки можна заповнити до першого запуску або залишити порожніми. Як їх готувати, зокрема запис голосом: <a href="overview_install.html#prepare">Встановлення → Підготуйте свої матеріали</a>.</p>
+</section>
+
+<section id="voice">
+<div class="sec-head"><div class="num">02 · Інтерв’ю</div><h2>Розкажіть голосом або текстом</h2><p>Якщо ви нічого не підготували, агент проводить з вами інтерв’ю. Він ставить запитання по одній темі, приймає довгі усні відповіді, зберігає їх дослівно після кожної теми і каже, що саме зрозумів.</p></div>
+<div class="facts">
+<article><h3>Хто ви</h3><small>Ім’я, місце, мови, чого ви хочете, чого не хочете.</small></article>
+<article><h3>Кожна робота</h3><small>Роботодавець, місце, посада, період, щоденні завдання, інструменти, команда, результати.</small></article>
+<article><h3>Освіта і сертифікати</h3><small>Школа, навчання, університет, курси, хто і коли що видав.</small></article>
+<article><h3>Мови і навички</h3><small>Рівень читання, письма, розмовної мови; технічні та комп’ютерні навички, де і коли їх застосовували.</small></article>
+<article><h3>Проєкти і реальні ситуації</h3><small>Стажування, волонтерство, проєкти; три–п’ять історій: завдання, що ви зробили, результат.</small></article>
+<article><h3>Умови і приватність</h3><small>Радіус, транспорт, графік, дата початку; що ніколи не можна показувати роботодавцю.</small></article>
+</div>
+<p style="margin-top:.75rem"><small>Агент не питає про здоров’я, релігію чи сімейний стан. Якщо ви самі згадаєте щось подібне, це позначається як чутливе і ніколи не потрапляє в резюме без вашого явного вибору.</small></p>
+</section>
+
+<section id="kb">
+<div class="sec-head"><div class="num">03 · База знань</div><h2>Один файл з усією історією вашого життя</h2><p>З ваших документів і розповіді агент складає файл <code>Локальные_данные\persons\&lt;ваш id&gt;\База_знаний\Жизнеописание.md</code>. Він написаний вашою мовою, ви можете відкрити й прочитати його в будь-якому текстовому редакторі та виправити вручну.</p></div>
+<div class="grid2">
+<article class="panel blue"><h3>Як виглядає факт</h3><pre class="cmd" style="white-space:pre-wrap">- [F012] Mechanical engineer at Muster GmbH, Stuttgart, 2012–2016; commissioning of packaging lines | source: Zeugnis_Muster.pdf p.2 | status: confirmed 2026-10-07 | use: cv | sens: normal</pre><p>Один факт у рядку, з його джерелом, статусом (<code>proposed</code>, <code>confirmed</code> або <code>rejected</code>), тим, чи може він з’являтися в документах заявок (<code>use</code>), і тим, чи є він чутливим (<code>sens</code>).</p></article>
+<article class="panel teal"><h3>Правила</h3><ul><li>Агент спершу записує кожен факт як <code>proposed</code>; лише ваше підтвердження робить його <code>confirmed</code>.</li><li>Факт ніколи не видаляється: виправлення додає новий рядок, а старий позначається як <code>rejected</code>.</li><li>Факт без документа залишається чинним і позначається як <code>self-reported</code>.</li><li>Резюме та листи використовують лише підтверджені факти, дозволені для документів.</li><li>Ваші власні слова зберігаються без змін у <code>2_Рассказ_о_себе</code>.</li></ul></article>
+</div>
+</section>
+
+<section id="search">
+<div class="sec-head"><div class="num">04 · Пошук</div><h2>Про що агент питає щодо пошуку</h2><p>Після вашої історії й документів агент питає, кого ми шукаємо і як. По одному запитанню; відповіді зберігаються в <code>profile.json</code>.</p></div>
+<div class="table-scroll"><table class="cmp"><thead><tr><th>Агент питає</th><th>Ви обираєте</th></tr></thead><tbody>
+<tr><td>Кого ми шукаємо?</td><td>Робота, Ausbildung, стажування (Praktikum), Probearbeit, тимчасова робота — будь-яка комбінація; які ролі та галузі; що виключити; тип зайнятості; найраніша дата початку</td></tr>
+<tr><td>Де ви живете?</td><td>Місто, а за бажанням район чи вулиця. Це використовується лише для планування маршрутів</td></tr>
+<tr><td>Наскільки далеко?</td><td>Радіус пошуку в кілометрах</td></tr>
+<tr><td>Як ви добираєтеся?</td><td>Авто · потяг · автобус або трамвай (громадський транспорт) · велосипед · пішки — будь-яка комбінація</td></tr>
+<tr><td>Наскільки складна дорога?</td><td>Найдовша поїздка в хвилинах, кількість пересадок, відстань пішки, чи обов’язкове повернення ввечері</td></tr>
+<tr><td>Які міста першочергові?</td><td>Бажані міста за порядком пріоритету</td></tr>
+<tr><td>Які мови?</td><td>Резюме, супровідний лист, текст листа та звіт — п’ять окремих відповідей, кожна однією з чотирьох мов</td></tr>
+<tr><td>Як надсилати?</td><td>Одразу · щороботного дня · кожного другого робочого дня; час доби. Нічого не надсилається без вашого дозволу</td></tr>
+</tbody></table></div>
+<p style="margin-top:.75rem"><small>Решта має безпечні значення за замовчуванням: ліміт 44 заявки на місяць, лише чернетки, тема до 50 символів, ринкова сторінка у звіті.</small></p>
+</section>
+
+<section id="cv">
+<div class="sec-head"><div class="num">05 · Від файлу до резюме</div><h2>Коротке резюме для кожної вакансії</h2><p>База знань містить широкий запис. Для кожної заявки агент пише стислі, зрозумілі резюме та супровідний лист мовою, яку ви обрали, лише з підтверджених фактів, і показує, з якого факту походить кожне твердження. Ви бачите прогалини і вирішуєте, що уточнити. Фото не запитується. Воно додається лише тоді, коли ви його явно обираєте.</p></div>
+<div class="notice"><p><strong>Нейтральний звіт обраною мовою.</strong> Якщо ви покладете шаблон звіту в <code>3_Шаблон_отчёта</code>, агент працює з копією і залишає оригінал без змін. Без шаблону він створює таблицю з прізвищем, ім’ям, періодом, датою подання, компанією, вакансією, каналом, датою відповіді та коротким результатом. Жодних інституційних полів чи чужого брендингу не додається. Відсутність відповіді позначається мовою звіту; реальна відповідь узагальнюється за причиною або рішенням, а не за тим, чи було надіслано подяку.</p></div>
+</section>
+
+<div class="pager"><a href="overview_install.html">← Встановлення</a><a href="overview_architecture.html">Архітектура →</a></div>
+</main>
+<footer class="site-footer"><div class="wrap">
+<p>© 2026 Serhii Khomenko / HomenS.AI · <a href="https://homensai.com/" rel="me noopener">homensai.com</a> · <a href="https://github.com/HomenSAI" rel="me noopener">GitHub</a> · <a href="https://www.linkedin.com/in/serhii-khomenko-homensai/" rel="me noopener">LinkedIn</a> · <a href="https://orcid.org/0009-0009-5371-9717" rel="me noopener">ORCID</a> · <a href="https://doi.org/10.5281/zenodo.23160031" rel="noopener">DOI</a> · <a href="mailto:info@homensai.com">info@homensai.com</a></p>
+<p>Документи: <a href="../../README.md">README</a> · <a href="../../USER_GUIDE.md">Посібник користувача</a> · <a href="../../AI_BUILD_SPEC.md">Специфікація збирання</a> · <a href="../../ARCHITECTURE.md">Архітектура</a> · <a href="../../DATA_CONTRACT.md">Контракт даних</a> · <a href="../../ACCEPTANCE_TESTS.md">Сценарії приймання</a> · <a href="../../REVIEW.md">Огляд і статус</a></p>
+<p><small>Документація · <a href="../../VERSION">VERSION</a> · 10 жовтня 2026 · без особистих профілів, резюме та облікових даних. Код: PolyForm Noncommercial 1.0.0 · документація: CC BY-NC 4.0 (LICENSE-DOCS). Обов’язкові реквізити авторства — у файлі NOTICE.</small></p>
+</div></footer>
+<a class="to-top" id="to-top" href="#" aria-label="Нагору сторінки"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"/></svg>Нагору</a>
+</body></html>

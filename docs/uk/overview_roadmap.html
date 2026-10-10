@@ -1,0 +1,102 @@
+<!doctype html>
+<!-- © 2026 Serhii Khomenko / HomenS.AI · https://homensai.com/ · https://github.com/HomenSAI · https://www.linkedin.com/in/serhii-khomenko-homensai/
+     Code and markup: PolyForm Noncommercial 1.0.0 — https://polyformproject.org/licenses/noncommercial/1.0.0
+     Documentation text: CC BY-NC 4.0 — https://creativecommons.org/licenses/by-nc/4.0/ -->
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>План робіт | HomenS.AI JobPilot</title>
+<meta name="description" content="Що вже готове в HomenS.AI JobPilot, що ще не перевірено і що робити далі. Без плутання планів із готовими функціями.">
+<meta name="author" content="Serhii Khomenko">
+<meta name="theme-color" content="#edf1f4" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0f1720" media="(prefers-color-scheme: dark)">
+<script src="../../assets/theme.js"></script>
+<link rel="icon" type="image/svg+xml" href="../../assets/logo.svg">
+<link rel="stylesheet" href="../../assets/site.css">
+<script src="../../assets/site.js" defer></script>
+</head>
+<body>
+<a class="skip-link" href="#main">Перейти до змісту</a>
+<header class="topbar"><div class="wrap">
+<a class="brand" href="PROJECT_OVERVIEW.html" aria-label="HomenS.AI JobPilot"><svg class="brand-mark" focusable="false" viewBox="0 0 100 100" aria-hidden="true"><path d="M50.0 13.0 L48.1 13.1 L46.1 13.2 L44.2 13.5 L42.3 13.8 L42.2 21.0 L40.7 21.5 L39.2 22.0 L37.8 22.6 L36.4 23.3 L31.5 18.0 L29.8 19.0 L28.3 20.1 L26.7 21.2 L25.2 22.5 L28.8 28.8 L27.7 29.9 L26.7 31.1 L25.7 32.4 L24.8 33.7 L18.0 31.5 L17.0 33.2 L16.2 35.0 L15.5 36.7 L14.8 38.6 L21.0 42.2 L20.7 43.8 L20.4 45.3 L20.2 46.9 L20.0 48.4 L13.0 50.0 L13.1 51.9 L13.2 53.9 L13.5 55.8 L13.8 57.7 L21.0 57.8 L21.5 59.3 L22.0 60.8 L22.6 62.2 L23.3 63.6 L18.0 68.5 L19.0 70.2 L20.1 71.7 L21.2 73.3 L22.5 74.8 L28.8 71.2 L29.9 72.3 L31.1 73.3 L32.4 74.3 L33.7 75.2 L31.5 82.0 L33.2 83.0 L35.0 83.8 L36.7 84.5 L38.6 85.2 L42.2 79.0 L43.8 79.3 L45.3 79.6 L46.9 79.8 L48.4 80.0 L50.0 87.0 Z" fill="#c9a24a"/><path d="M50 20 A30 30 0 0 1 50 80" fill="none" stroke="#2bb3c4" stroke-width="5"/><g fill="none" stroke="#2bb3c4" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M50 36 H64 L70 30"/><path d="M50 50 H72"/><path d="M50 64 H62 L68 70"/></g><g fill="#2bb3c4"><circle cx="71" cy="29" r="4"/><circle cx="74" cy="50" r="4"/><circle cx="69" cy="71" r="4"/></g><circle cx="50" cy="50" r="9" fill="currentColor"/><circle cx="50" cy="50" r="3.5" fill="#c9a24a"/></svg><span class="brand-word">HomenS<span class="ai">.AI</span> <span class="sub">JobPilot</span></span></a>
+<nav id="site-nav" class="nav-main" aria-label="Сторінки проєкту">
+<a class="nav-link" href="PROJECT_OVERVIEW.html"><i class="nav-dot" aria-hidden="true"></i>Огляд</a>
+<a class="nav-link" href="overview_install.html"><i class="nav-dot teal" aria-hidden="true"></i>Встановлення</a>
+<a class="nav-link" href="overview_profile.html"><i class="nav-dot gold" aria-hidden="true"></i>Профіль</a>
+<a class="nav-link" href="overview_architecture.html"><i class="nav-dot" aria-hidden="true"></i>Архітектура</a>
+<a class="nav-link" href="overview_safety.html"><i class="nav-dot teal" aria-hidden="true"></i>Безпека</a>
+<a class="nav-link" href="overview_roadmap.html" aria-current="page"><i class="nav-dot" aria-hidden="true"></i>План робіт</a>
+<a class="nav-link" href="overview_author.html"><i class="nav-dot gold" aria-hidden="true"></i>Автор</a>
+<a class="nav-link" href="../../dashboard_template/index.html"><i class="nav-dot teal" aria-hidden="true"></i>Статистика</a>
+</nav>
+<div class="nav-tools">
+<a class="nav-link site-link" href="https://homensai.com/" rel="me noopener">homensai.com</a>
+<span class="langs" role="group" aria-label="Мова"><a href="../../overview_roadmap.html" lang="en" hreflang="en">EN</a><a href="../ru/overview_roadmap.html" lang="ru" hreflang="ru">RU</a><a href="../de/overview_roadmap.html" lang="de" hreflang="de">DE</a><a href="overview_roadmap.html" lang="uk" hreflang="uk" class="on" aria-current="true">UK</a></span>
+<button class="icon-btn" id="theme-btn" type="button" aria-label="Перемкнути світлу / темну тему" title="Перемкнути світлу / темну тему"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M12 4v16"/><path d="M12 4a8 8 0 0 1 0 16z" fill="currentColor"/></svg></button>
+<button class="icon-btn menu-btn" id="menu-btn" type="button" aria-expanded="false" aria-controls="site-nav" aria-label="Меню" title="Меню"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+</div>
+</div></header>
+<main id="main" class="wrap">
+<div class="page-head">
+<div class="eyebrow">План робіт</div>
+<h1>Що є, <span class="accent">що далі</span></h1>
+<p class="lead">Ця сторінка відокремлює готове від лише запланованого, щоб нічого запланованого не сприймали як уже працюючу функцію.</p>
+<div class="pills"><span class="pill">Версія <a href="../../VERSION">VERSION</a></span><span class="pill">10 жовтня 2026</span></div>
+</div>
+
+<section id="now">
+<div class="sec-head"><div class="num">01 · Сьогодні</div><h2>Що є</h2></div>
+<div class="grid2">
+<article class="panel teal"><h3>Готово</h3><ul>
+<li>Правила для агента: специфікація, архітектура, контракт даних і сценарії приймання, англійською, російською, німецькою та українською.</li>
+<li>Файли інструкцій для агента як чернетки (AGENTS.md, CLAUDE.md, TODO_FOR_AI.md), готові теки для ваших матеріалів і формат бази знань.</li>
+<li>Цей ілюстрований огляд і покроковий посібник зі встановлення.</li>
+<li>Сторінка статистики: перевірені знімки, історичні межі, порожні місяці, відображення спільної квоти та сортування за результатом. Локальний регресійний прогін у ВМ показує 18 цільових перевірок, що пройшли; це не повне тестування браузера чи агента.</li>
+<li>Експлуатаційні вимоги для місячної підготовки, Gmail Scheduled/ручного запасного варіанта, архівів, щоденних перевірок і звітів, готовності та звітності; окремі повідомлення про ліцензії коду й документації.</li>
+</ul></article>
+<article class="panel blue"><h3>Ще не зроблено</h3><ul>
+<li>Практична перевірка файлів інструкцій для агента (AGENTS.md, CLAUDE.md, TODO_FOR_AI.md): з людиною, яка нічого не підготувала, з людиною, яка заповнила теки, і з голосовим інтерв’ю.</li>
+<li>Перевірка підключення Gmail і його точного налаштування.</li>
+<li>Виконання сценаріїв приймання вручну, на синтетичних даних.</li>
+<li>Повне приймання реальним користувачем робочого процесу агента, Gmail, рендерингу документів і планування.</li>
+<li>Автоматизований шлюз випуску й конфіденційності та повна перевірка налаштування в Claude Code.</li>
+</ul></article>
+</div>
+</section>
+
+<section id="history">
+<div class="sec-head"><div class="num">Історія</div><h2>Історія версій</h2><p>Створюється з <a href="../../CHANGELOG.md">CHANGELOG.md</a> під час кожного випуску. Повна історія — у журналі змін.</p></div>
+<!-- release-history:start -->
+<ol class="history">
+<li><strong>1.13.0</strong> · 10 жовтня 2026<br>Додано правило щодо фото в резюме. Фото потрапляє в резюме лише за вашим вибором: зображення має бути в 1_Мои_документы, а templates.cv.photo_use має бути true. Тоді воно розміщується у верхньому правому куті першої сторінки розміром 30 × 40 мм за замовчуванням; ви можете обрати інший розмір, пропорції зображення зберігаються. Фото ніколи не додається до супровідного листа. Резюме з фото вважається чутливим вкладенням і проходить перевірку вкладень. Це нове правило для резюме, тому номер другорядної версії підвищено.</li>
+<li><strong>1.12.0</strong> · 10 жовтня 2026<br>Додано сторінку про автора (EN, RU, DE) з відомостями про досвід, проєкти та контакти; посилання «Автор» є в навігації всіх оглядових сторінок. Посилання на документацію виробників перенесено зі сторінки встановлення на сторінку «Безпека», кожне з коротким призначенням і номером кроку. Виправлено неперевірені твердження на оглядових сторінках: фото не запитується і потрапляє в документи лише за явним вибором особи; виправлено дату в німецькому футері та список мов у плані робіт. Це нова частина документації, тому номер другорядної версії підвищено.</li>
+<li><strong>1.11.0</strong> · 10 жовтня 2026<br>Оглядові сторінки тепер показують значок сайту, логотип HomenS.AI, на вкладці браузера. На сторінці архітектури є чотири інтерактивні схеми: шлях однієї заявки, шлюз надсилання, денні та місячні ліміти і поділ журналу на частини. Схеми лише пояснюють правила; вони нічого не надсилають і не змінюють файли. Це нова частина документації, тому номер другорядної версії підвищено.</li>
+<li><strong>1.10.0</strong> · 10.10.2026<br>Завершено вибір шаблонів документів і уточнено область квоти власника. Незалежні подання користувача не витрачають 44 керовані слоти CV JobPilot; ручний запасний варіант для пакета JobPilot — витрачає. Послідовні керовані подання резюме на той самий нормалізований адресат відхиляються; відповіді в листуванні без резюме зберігають власні правила.</li>
+<li><strong>1.9.0</strong> · 10 жовтня 2026<br>Журнал веде місячні сегменти, а місяць, що досягає 500 рядків, продовжується в пронумерованих частинах (transactions-YYYY-MM-p2.jsonl, -p3 тощо). Закрита частина ніколи не редагується. Відтворення, підрахунки й архіви читають частини у порядку місяця і номера частини, а не за назвою файлу. Це нове правило для журналу, тому номер другорядної версії підвищено. Наявні журнали не потребують міграції: місяць менше ніж із 500 рядків зберігає єдиний файл.</li>
+<li><strong>1.8.0</strong> · 10 жовтня 2026<br>Денний максимум подань резюме тепер є налаштуванням, яке обирає особа, від 1 до 43, а не фіксованим значенням 2. Значення 2 залишається типовою пропозицією для особи. Місячний ліміт 44 не змінено і не може змінюватися в чаті. Зміна денного значення діє з наступного локального дня і фіксується з причиною. Це нова можливість у правилах, тому номер другорядної версії підвищено; міграція даних не потрібна, бо типове значення для наявного профілю лишається 2.</li>
+</ol>
+<!-- release-history:end -->
+</section>
+<section id="todo">
+<div class="sec-head"><div class="num">05 · Далі</div><h2>Що залишилося зробити</h2></div>
+<div class="panel"><ul>
+<li>Спробувати файли інструкцій у Codex і в Claude Code та виправити те, що агенти розуміють неправильно.</li>
+<li>Перша повна пробна робота на синтетичних даних, вручну в чаті: профіль → ціль → пакет → план → змодельована відповідь → звіт і офлайн-HTML.</li>
+<li>Перевірки перерваної роботи й того, коли два чати пишуть одночасно.</li>
+<li>Потім читання Gmail і контрольоване надсилання з перевіркою доказів. Кожен профіль обирає режим чернеток, схвалення кожного листа або — з прийнятим обмеженням — автоматичну чергу.</li>
+<li>Джерела вакансій і маршрутів та умови їх використання.</li>
+<li>Заплановані запуски агента там, де це доступно; ручне відновлення має працювати самостійно.</li>
+<li>Перевірки прав і приватності перед публікацією.</li>
+</ul></div>
+</section>
+
+<div class="pager"><a href="overview_safety.html">← Безпека</a><span></span></div>
+</main>
+<footer class="site-footer"><div class="wrap">
+<p>© 2026 Serhii Khomenko / HomenS.AI · <a href="https://homensai.com/" rel="me noopener">homensai.com</a> · <a href="https://github.com/HomenSAI" rel="me noopener">GitHub</a> · <a href="https://www.linkedin.com/in/serhii-khomenko-homensai/" rel="me noopener">LinkedIn</a> · <a href="https://orcid.org/0009-0009-5371-9717" rel="me noopener">ORCID</a> · <a href="https://doi.org/10.5281/zenodo.23160031" rel="noopener">DOI</a> · <a href="mailto:info@homensai.com">info@homensai.com</a></p>
+<p>Документи: <a href="../../README.md">README</a> · <a href="../../USER_GUIDE.md">Посібник користувача</a> · <a href="../../AI_BUILD_SPEC.md">Специфікація збирання</a> · <a href="../../ARCHITECTURE.md">Архітектура</a> · <a href="../../DATA_CONTRACT.md">Контракт даних</a> · <a href="../../ACCEPTANCE_TESTS.md">Сценарії приймання</a> · <a href="../../REVIEW.md">Огляд і статус</a></p>
+<p><small>Документація · <a href="../../VERSION">VERSION</a> · 10 жовтня 2026 · без особистих профілів, резюме та облікових даних. Код: PolyForm Noncommercial 1.0.0 · документація: CC BY-NC 4.0 (LICENSE-DOCS). Обов’язкові реквізити авторства — у файлі NOTICE.</small></p>
+</div></footer>
+<a class="to-top" id="to-top" href="#" aria-label="Нагору сторінки"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"/></svg>Нагору</a>
+</body></html>

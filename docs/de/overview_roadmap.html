@@ -26,14 +26,13 @@
 <a class="nav-link" href="overview_profile.html"><i class="nav-dot gold" aria-hidden="true"></i>Profil</a>
 <a class="nav-link" href="overview_architecture.html"><i class="nav-dot" aria-hidden="true"></i>Architektur</a>
 <a class="nav-link" href="overview_safety.html"><i class="nav-dot teal" aria-hidden="true"></i>Sicherheit</a>
-<a class="nav-link" href="overview_market.html"><i class="nav-dot gold" aria-hidden="true"></i>Markt</a>
 <a class="nav-link" href="overview_roadmap.html" aria-current="page"><i class="nav-dot" aria-hidden="true"></i>Fahrplan</a>
 <a class="nav-link" href="overview_author.html"><i class="nav-dot gold" aria-hidden="true"></i>Autor</a>
 <a class="nav-link" href="../../dashboard_template/index.html?lang=de"><i class="nav-dot teal" aria-hidden="true"></i>Statistik</a>
 </nav>
 <div class="nav-tools">
 <a class="nav-link site-link" href="https://homensai.com/" rel="me noopener">homensai.com</a>
-<span class="langs" role="group" aria-label="Sprache"><a href="../../overview_roadmap.html" lang="en" hreflang="en">EN</a><a href="../ru/overview_roadmap.html" lang="ru" hreflang="ru">RU</a><a href="overview_roadmap.html" lang="de" hreflang="de" class="on" aria-current="true">DE</a></span>
+<span class="langs" role="group" aria-label="Sprache"><a href="../../overview_roadmap.html" lang="en" hreflang="en">EN</a><a href="../ru/overview_roadmap.html" lang="ru" hreflang="ru">RU</a><a href="overview_roadmap.html" lang="de" hreflang="de" class="on" aria-current="true">DE</a><a href="../uk/overview_roadmap.html" lang="uk" hreflang="uk">UK</a></span>
 <button class="icon-btn" id="theme-btn" type="button" aria-label="Hell- und Dunkelmodus umschalten" title="Hell- und Dunkelmodus umschalten"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M12 4v16"/><path d="M12 4a8 8 0 0 1 0 16z" fill="currentColor"/></svg></button>
 <button class="icon-btn menu-btn" id="menu-btn" type="button" aria-expanded="false" aria-controls="site-nav" aria-label="Menü" title="Menü"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
 </div>
@@ -66,36 +65,19 @@
 </div>
 </section>
 
-<section id="v15">
-<div class="sec-head"><div class="num">02 · Version 1.5.0</div><h2>Was Version 1.5.0 ändert</h2></div>
-<div class="rules">
-<article><h3>Den Monat vorbereiten</h3><p>Am Anfang jedes Monats fragt der Agent einmal, ob er die Zielliste, passgenaue Lebensläufe und Anschreiben, E-Mail-Texte und einen bestätigten Monatsplan vorbereiten soll. Das Limit von 44 Lebensläufen bleibt über die Profile einer Person gemeinsam.</p></article>
-<article><h3>Gmail und Wiederherstellung</h3><p>Die Nutzerin bzw. der Nutzer wählt einen verfügbaren, zugelassenen Connector oder den integrierten Browser und meldet sich persönlich an. Eine Terminierung wird erst verbucht, nachdem die Nachricht in Gmail unter „Scheduled“ geprüft wurde. Der integrierte Browser kann Datei-Uploads nicht automatisieren; ein Connector kann es unter Umständen, das muss geprüft werden. Lokale Archive entstehen nach E-Mail-Vorgängen; verlorene Archive lösen einen rein lesenden Abgleich mit Gmail aus.</p></article>
-<article><h3>Tägliche Prüfungen und Berichte</h3><p>Die Standardprüfung läuft täglich um 16:00 Uhr Ortszeit, vorausgesetzt, eine echte Funktion für geplante Aufgaben ist vorhanden. Tägliche Berichte an die Nutzerin bzw. den Nutzer sind freiwillig (Opt-in). Monatliche DOCX/PDF-Berichte verwenden eine Vorlage der Nutzerin bzw. des Nutzers oder eine neutrale Tabelle, mit visueller Prüfung jeder Seite.</p></article>
-<article><h3>Statistik und Datenschutz</h3><p>Die Seite weist fehlerhafte oder doppelte Snapshots ab, bewahrt den Verlauf zum Monatsende, zeigt leere Monate, erfindet nie eine Summe des gemeinsamen Kontingents und sortiert Absagen von Arbeitgebern vor technischen Zustellfehlern. Die Veröffentlichung braucht weiterhin die vollständige Abnahme von Agent und Browser.</p></article>
-</div>
+<section id="history">
+<div class="sec-head"><div class="num">Verlauf</div><h2>Versionsverlauf</h2><p>Wird bei jeder Veröffentlichung aus dem <a href="../../CHANGELOG.md">Änderungsprotokoll</a> erzeugt. Die vollständige Historie steht im Änderungsprotokoll.</p></div>
+<!-- release-history:start -->
+<ol class="history">
+<li><strong>1.13.0</strong> · 10 October 2026<br>A photo rule is added for the CV. A photo goes into the CV only by the person's choice: the picture must be in 1_Мои_документы and templates.cv.photo_use must be true. Then it is placed in the top-right corner of the first page at 30 × 40 mm by default; the person may choose another size, and the proportions of the picture are kept. A photo is never added to the cover letter. A CV with a photo counts as a sensitive attachment and passes the attachment check. This is a new rule for the CV, so the minor number is raised.</li>
+<li><strong>1.12.0</strong> · 10 October 2026<br>An author page (EN, RU, DE) is added with background, projects and contacts; the Author link is in the navigation of all overview pages. The links to the vendor documentation moved from the install page to the Safety page, each with a short purpose and its step number. Unsupported claims were fixed on the overview pages: a photo is not requested and enters documents only by the person's explicit choice; the German footer date and the list of languages in the roadmap were corrected. This is a new part of the documentation, so the minor number is raised.</li>
+<li><strong>1.11.0</strong> · 10 October 2026<br>The overview pages now show the site icon, the HomenS.AI logo, in the browser tab. The architecture page has four interactive diagrams: the path of one application, the send gate, the daily and monthly limits, and the split of the journal into parts. The diagrams only explain the rules; they send nothing and change no file. This is a new part of the documentation, so the minor number is raised.</li>
+<li><strong>1.10.0</strong> · 10.10.2026<br>Completes application-template selection and clarifies the owner's quota scope. Independent user submissions do not consume JobPilot's 44 managed CV slots; a manual fallback for a JobPilot package does. Consecutive managed CV submissions to the same normalized recipient are refused; legitimate CV-free thread replies keep their own rules.</li>
+<li><strong>1.9.0</strong> · 10 October 2026<br>The journal keeps monthly segments, and a month that reaches 500 lines continues in numbered parts (transactions-YYYY-MM-p2.jsonl, -p3 and so on). A closed part is never edited. Replay, counts and archives read the parts in order of month and part number, not by file name. This is a new rule for the journal, so the minor number is raised. Existing journals need no migration: a month under 500 lines keeps its single file.</li>
+<li><strong>1.8.0</strong> · 10 October 2026<br>The daily maximum of CV submissions is now a setting the person chooses, from 1 to 43, instead of a fixed value of 2. The value 2 remains the default proposal shown to the person. The monthly limit of 44 is unchanged and cannot be changed in chat. A change of the daily value takes effect from the next local day and is recorded with its reason. This is a new capability in the rules, so the minor number is raised; no data needs migration, because the default for an existing profile stays 2.</li>
+</ol>
+<!-- release-history:end -->
 </section>
-
-<section id="v14">
-<div class="sec-head"><div class="num">03 · Version 1.4</div><h2>Was Version 1.4 ändert</h2></div>
-<div class="rules">
-<article><h3>Der Agent startet von selbst</h3><p>AGENTS.md, CLAUDE.md und TODO_FOR_AI.md sind im Paket. Sie öffnen den Ordner und sagen „Start“; der Agent stellt sich vor und stellt jeweils eine Frage.</p></article>
-<article><h3>Fertige Ordner für Ihre Dateien</h3><p>Drei Ordner in <code>Локальные_данные\Положите_сюда</code>: Unterlagen, Ihre Geschichte, Berichtsvorlage. Sie legen dort vor oder nach dem ersten Start etwas ab.</p></article>
-<article><h3>Eine Wissensbasis statt eines Formulars</h3><p>Ihre ganze Lebensgeschichte als bestätigte Angaben in einer lesbaren Datei, geschrieben aus Ihren Dateien und aus einem Interview per Sprache oder Text.</p></article>
-</div>
-</section>
-
-<section id="v13">
-<div class="sec-head"><div class="num">04 · Version 1.3</div><h2>Was Version 1.3 geändert hat</h2></div>
-<div class="rules">
-<article><h3>Keine eigenständige Anwendung</h3><p>Der Ablauf von Suche und E-Mail wird vom KI-Agenten anhand schriftlicher Verfahren und lokaler Dateien ausgeführt. Die Statistikseite verwendet HTML/CSS/JavaScript nur, um den vom Agenten geschriebenen Snapshot zu prüfen, zu sortieren, zu filtern und anzuzeigen. Journal- und Kontingentsicherungen bleiben verfahrensbedingt.</p></article>
-<article><h3>Ein Journal pro Person</h3><p>Jede abgeschlossene Aktion ist eine Zeile in einem einzigen Journal, geschrieben unter der Markierungsdatei writer.lock. Mehrere Profile führen nie konkurrierende Journale. Alles Übrige lässt sich daraus neu aufbauen.</p></article>
-<article><h3>Ehrliche Schutzmechanismen</h3><p>Das Limit von 44 und „niemals doppelt senden“ sind Verfahren, keine technischen Sperren. Entwürfe und die Freigabe jeder Nachricht kommen zuerst; automatischer Versand ist standardmäßig ausgeschaltet.</p></article>
-</div>
-<p style="margin-top:1rem">Die früheren Regeln gelten weiterhin: Drei Antworten auf eine Bewerbung zählen als drei Ereignisse, aber als eine Bewerbung mit Antwort, und eine späte Antwort gehört zu dem Monat, in dem sie eingegangen ist. Berichte behalten ihre Fassungen. Die Abnahmeszenarien werden im Chat von Hand geprüft; dass es Szenarien gibt, heißt nicht, dass sie bestanden wurden.</p>
-<div class="links"><a href="../../ARCHITECTURE.md">Architektur</a><a href="../../AI_BUILD_SPEC.md">Bauspezifikation</a><a href="../../DATA_CONTRACT.md">Daten und Status</a><a href="../../ACCEPTANCE_TESTS.md">Abnahmeszenarien</a><a href="../../REVIEW.md">Prüfung und Status</a><a href="../../CHANGELOG.md">Änderungsprotokoll</a></div>
-</section>
-
 <section id="todo">
 <div class="sec-head"><div class="num">05 · Als Nächstes</div><h2>Was noch zu tun ist</h2></div>
 <div class="panel"><ul>
@@ -109,7 +91,7 @@
 </ul></div>
 </section>
 
-<div class="pager"><a href="overview_market.html">← Markt</a><span></span></div>
+<div class="pager"><a href="overview_safety.html">← Sicherheit</a><span></span></div>
 </main>
 <footer class="site-footer"><div class="wrap">
 <p>© 2026 Serhii Khomenko / HomenS.AI · <a href="https://homensai.com/" rel="me noopener">homensai.com</a> · <a href="https://github.com/HomenSAI" rel="me noopener">GitHub</a> · <a href="https://www.linkedin.com/in/serhii-khomenko-homensai/" rel="me noopener">LinkedIn</a> · <a href="https://orcid.org/0009-0009-5371-9717" rel="me noopener">ORCID</a> · <a href="https://doi.org/10.5281/zenodo.23160031" rel="noopener">DOI</a> · <a href="mailto:info@homensai.com">info@homensai.com</a></p>

@@ -144,13 +144,15 @@ Aktuelle offizielle Informationen: [Preise und Tarife](https://learn.chatgpt.com
 
 ## Materialien vorbereiten — das können Sie vorab tun
 
-Das Projekt-ZIP enthält einen fertigen Ordner `Локальные_данные\Положите_сюда` („hier ablegen“) mit drei Unterordnern. Er ist der einzige Ort, an den Sie etwas von Hand legen müssen. Füllen Sie ihn gleich nach Schritt 2 oder sammeln Sie die Dateien jetzt und kopieren Sie sie später. Wenn Sie nichts vorbereiten, fragt Sie der Agent alles selbst (Schritt 7).
+Das Projekt-ZIP enthält einen fertigen Ordner `Локальные_данные\Положите_сюда` („hier ablegen“) mit fünf Unterordnern. Er ist der einzige Ort, an den Sie etwas von Hand legen müssen. Füllen Sie ihn gleich nach Schritt 2 oder sammeln Sie die Dateien jetzt und kopieren Sie sie später. Wenn Sie nichts vorbereiten, fragt Sie der Agent alles selbst (Schritt 7).
 
 | Ordner | Was hinein gehört |
 |---|---|
 | `1_Мои_документы` (meine Dokumente) | Lebensläufe in beliebiger Fassung, Diplome, Zeugnisse, Referenzen, amtliche Schreiben, ein Portfolio, Muster Ihrer eigenen Anschreiben. PDF, DOCX, TXT, Fotos und Scans. Kein Sortieren oder Umbenennen nötig |
 | `2_Рассказ_о_себе` (meine Geschichte) | Ihre Geschichte in Ihren eigenen Worten: eine Abschrift einer Sprachaufnahme, Notizen, Antworten auf die Fragen in `Вопросы_для_рассказа.md` (die Datei liegt in diesem Ordner) |
 | `3_Шаблон_отчёта` (Berichtsvorlage) | Nur wenn Sie ein eigenes Berichtsmuster haben. Sonst leer lassen |
+| `4_Шаблон_резюме` (Lebenslauf-Layout) | Ihr Muster eines Lebenslaufs im Layout für Bewerbungen, DOCX oder PDF. Eine PDF-Datei wird vor allen anderen Schritten in Word umgewandelt |
+| `5_Шаблон_сопроводительного_письма` (Anschreiben-Layout) | Ihr Anschreiben in Ihrem eigenen Design, DOCX oder PDF. Dieselbe Umwandlung gilt |
 
 Zwei weitere Ordner neben `Положите_сюда` enthalten Ihre **Vorlagen**:
 - `Локальные_данные\Resume` — Ihr Lebenslauf. Legen Sie hier eine Word-Datei (.docx) oder eine PDF-Datei ab. Eine PDF-Datei wandelt der Agent in eine Word-Datei um, die im selben Ordner gespeichert wird. Noch keine Datei? Der Agent bietet das neutrale Beispiel an, bereitet es mit verfügbaren Dokumentwerkzeugen vor und bittet um Freigabe des Layouts.
@@ -233,7 +235,7 @@ Wenn Codex in der Oberfläche nicht erscheint, prüfen Sie, ob die Funktion für
 
 Der entpackte Ordner enthält sowohl die Projektanweisungen als auch lokale Arbeitsdaten. Persönliche Profile, Lebensläufe, E-Mails, OAuth-Tokens und Nutzerstatistiken dürfen nicht auf GitHub veröffentlicht werden.
 
-**Sie sollten sehen:** direkt im Ordner, nicht in einem anderen Ordner: `README.md`, `USER_GUIDE.md`, `AI_BUILD_SPEC.md`, `AGENTS.md`, `CLAUDE.md`, `TODO_FOR_AI.md`, `dashboard_template` und den Ordner `Локальные_данные\Положите_сюда` mit drei Unterordnern.
+**Sie sollten sehen:** direkt im Ordner, nicht in einem anderen Ordner: `README.md`, `USER_GUIDE.md`, `AI_BUILD_SPEC.md`, `AGENTS.md`, `CLAUDE.md`, `TODO_FOR_AI.md`, `dashboard_template` und den Ordner `Локальные_данные\Положите_сюда` mit fünf Unterordnern.
 
 ## Teil 3 · Den Agenten mit dem Ordner verbinden und starten
 
@@ -296,7 +298,7 @@ Ab hier führt der Agent. Es gibt kein Formular: Er stellt eine Frage nach der a
 
 1. **Zustimmung.** Bevor er etwas Persönliches liest, erklärt er, dass ein Cloud-Agent übergebene Inhalte an seinen Anbieter weitergeben kann, und bittet um Ihre Zustimmung. „Lokal gespeichert“ bedeutet nicht „offline verarbeitet“. Sie können Nein sagen und mit einem anonymisierten Beispiel beginnen.
 2. **Ihre Geschichte.** Er sagt, wohin Ihre Geschichte gehört: in den Ordner `Локальные_данные\Положите_сюда\2_Рассказ_о_себе`. Haben Sie keine, bietet er an, sie gleich vorzubereiten, vollständig per Sprache: Schalten Sie das Mikrofon ein und erzählen Sie von Ihrem ganzen Leben. Er unterbricht nicht und speichert jedes Wort.
-3. **Ihre Dokumente.** Er fragt, ob Sie Lebenslauf, Diplome, Zeugnisse, Kursbescheinigungen oder Referenzen haben. Legen Sie alle in `1_Мои_документы` (Fotos und Scans sind in Ordnung) und sagen Sie „ready“. Keine Dokumente? Sagen Sie das, dann machen Sie weiter.
+3. **Ihre Dokumente.** Er fragt, ob Sie Lebenslauf, Diplome, Zeugnisse, Kursbescheinigungen oder Referenzen haben. Legen Sie alle in `1_Мои_документы` (Fotos und Scans sind in Ordnung) und sagen Sie „ready“. Keine Dokumente? Sagen Sie das, dann machen Sie weiter. Haben Sie einen Lebenslauf im Layout, das Sie für Bewerbungen verwenden möchten, und ein Anschreiben in Ihrem eigenen Design, legen Sie sie in `4_Шаблон_резюме` und `5_Шаблон_сопроводительного_письма` ab; eine PDF-Datei wird vor allen anderen Schritten in Word umgewandelt.
 4. **Analyse.** Er liest alles und schreibt Ihre Wissensbasis. Dann fragt er nach Lücken, jeweils zu einem Thema: Zeugnisse, Kurse, Sprachniveaus, Fähigkeiten, reale Situationen, Führerschein und Auto.
 5. **Bestätigung.** Er zeigt die Fakten Abschnitt für Abschnitt. Sagen Sie zu jedem: *richtig*, *korrigieren* oder *falsch*. Er erfindet nie Erfahrung, Daten, Zeugnisse oder Sprachniveaus. Ein Fakt ohne Dokument bleibt gültig und ist als „self-reported“ (selbst angegeben) markiert.
 6. **Die Suche.** Er fragt, wonach wir suchen (Job, Ausbildung, Praktikum, Probearbeit, befristete Arbeit), welche Rollen und Branchen, wo Sie wohnen, den Radius in Kilometern, wie Sie hinkommen (Auto, Zug, Bus oder Straßenbahn, Fahrrad, zu Fuß — beliebig kombiniert), wie lang der Weg dauern darf, Umstiege, Fußweg und ob eine Rückkehr am Abend möglich sein muss, bevorzugte Städte, die Sprachen des Lebenslaufs, des Anschreibens, der E-Mail und des Berichts (jeweils getrennt), wie die Bewerbungen verteilt werden sollen und ob Sie eine Berichtsvorlage haben (`3_Шаблон_отчёта`).

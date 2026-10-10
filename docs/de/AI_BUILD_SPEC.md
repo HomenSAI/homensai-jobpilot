@@ -144,15 +144,17 @@ Diese Empfehlungen sind eine Referenz, kein verbindliches Formular. Ein Foto und
 
 ### 4.6 Wohin die Person Materialien legt und die Datei der Wissensbasis
 
-Das Paket enthält einen fertigen Ordner `Локальные_данные/Положите_сюда/` („hier ablegen“) mit drei Unterordnern und einer kurzen README-Datei in jedem. Es ist der einzige Ort, an den die Person etwas von Hand legen muss:
+Das Paket enthält einen fertigen Ordner `Локальные_данные/Положите_сюда/` („hier ablegen“) mit fünf Unterordnern und einer kurzen README-Datei in jedem. Es ist der einzige Ort, an den die Person etwas von Hand legen muss:
 
 | Ordner | Was die Person dort ablegt |
 |---|---|
 | `1_Мои_документы` (meine Dokumente) | Lebensläufe in beliebiger Fassung, Diplome, Zeugnisse, Referenzen, amtliche Schreiben, ein Portfolio, Beispiele eigener Anschreiben; PDF, DOCX, TXT, Fotos und Scans; ohne Sortierung oder Umbenennung |
 | `2_Рассказ_о_себе` (meine Geschichte) | Die Lebensgeschichte der Person in eigenen Worten: eine Abschrift einer Sprachaufnahme, Notizen, Antworten auf die Fragen aus `Вопросы_для_рассказа.md` (in diesem Ordner mitgeliefert); der Agent speichert Interviews hier auch wortwörtlich als `Интервью_<date>.md` |
 | `3_Шаблон_отчёта` (Berichtsvorlage) | Nur wenn die Person ein eigenes Muster für einen Bericht hat |
+| `4_Шаблон_резюме` (Material zum Lebenslauf) | Alles zu den Lebensläufen der Person in jedem Format, aktuelle und alte; nur lesen; der Agent erstellt daraus Entwürfe und die von der Person benannte Vorlage |
+| `5_Шаблон_сопроводительного_письма` (Material zum Anschreiben) | Alles zu den Anschreiben der Person in jedem Format; nur lesen; dieselbe Regel wie für Ordner 4 |
 
-Die Ordner können **vor** dem ersten Lauf befüllt oder leer gelassen werden. Der Agent liest sie nur und ändert, verschiebt, benennt um oder löscht darin nichts. Für eine zweite Person, die denselben Ordner nutzt, wird in `Положите_сюда` ein Unterordner mit dem Namen der Person angelegt, mit denselben drei Unterordnern.
+Die Ordner können **vor** dem ersten Lauf befüllt oder leer gelassen werden. Der Agent liest sie nur und ändert, verschiebt, benennt um oder löscht darin nichts. Für eine zweite Person, die denselben Ordner nutzt, wird in `Положите_сюда` ein Unterordner mit dem Namen der Person angelegt, mit denselben fünf Unterordnern.
 
 **Die Geschichte per Sprache vorbereiten.** Die Person kann die Geschichte vorab auf zwei Wegen vorbereiten: (a) außerhalb des Projekts, in einem beliebigen Chat von Claude oder ChatGPT mit Sprachmodus: die Fragen aus `Вопросы_для_рассказа.md` verwenden, sprechen und den Assistenten bitten, die Geschichte wortwörtlich, ohne Zusätze, als Textdatei aufzuschreiben und in `2_Рассказ_о_себе` zu speichern; (b) innerhalb des Projekts: dem Agenten sagen, dass die Person über sich sprechen möchte, und der Agent führt das Interview (4.2) und speichert jede Antwort wortwörtlich. Beide Wege führen zum gleichen Ergebnis.
 
@@ -211,6 +213,8 @@ Die Nutzerin oder der Nutzer lädt das GitHub-ZIP herunter, wählt einen passend
       1_Мои_документы\                # CVs, diplomas, certificates, references
       2_Рассказ_о_себе\               # the story: voice transcripts, notes, interviews, the questions
       3_Шаблон_отчёта\                # optional report template
+      4_Шаблон_резюме\                # everything about the CVs, any format
+      5_Шаблон_сопроводительного_письма\  # everything about the cover letters
     persons\<person_id>\
       База_знаний\Жизнеописание.md   # the knowledge base: the person's life story, confirmed facts
       journal\transactions-YYYY-MM.jsonl  # the person's single primary journal, one segment per month, split into -pN parts above 500 lines
@@ -447,7 +451,7 @@ Die Schritt-für-Schritt-Anleitung für die Nutzerin oder den Nutzer existiert i
 Die Installation gliedert sich in drei Teile in genau dieser Reihenfolge:
 
 1. **Der Agent.** ChatGPT Desktop von der offiziellen Seite installieren, anmelden, Codex wählen und sicherstellen, dass es verfügbar ist. Laut Prüfung am 9. Oktober 2026 erklärt OpenAI, dass Codex in den ChatGPT-Tarifen einschließlich Free und Go enthalten ist, die Nutzungslimits jedoch variieren; für dauerhafte Nutzung wird Plus empfohlen, das in den USA mit 20 $ pro Monat geführt wird. Diese Bedingungen ändern sich: vor dem Kauf den aktuellen [Codex-Zugang im Tarif](https://help.openai.com/en/articles/11369540-using-codex-with-your-chatgpt-plan) und den [Plus-Preis](https://help.openai.com/en/articles/6950777-what-is-chatgpt-free-plan) prüfen. Der Agent kommt zuerst, weil Funktionsverfügbarkeit und Limits je nach Konto und Organisation variieren.
-2. **Der Projektordner.** Das ZIP aus dem veröffentlichten Repository herunterladen und in einen eigenen Ordner entpacken; prüfen, dass `README.md`, `USER_GUIDE.md`, `AI_BUILD_SPEC.md`, `AGENTS.md`, `CLAUDE.md`, `TODO_FOR_AI.md`, `dashboard_template` und der Ordner `Локальные_данные\Положите_сюда` mit seinen drei Unterordnern direkt darin liegen, nicht in einem verschachtelten Ordner. Das Archiv ist nur eine Menge von Dateien; es wird nützlich, wenn der Agent es öffnet.
+2. **Der Projektordner.** Das ZIP aus dem veröffentlichten Repository herunterladen und in einen eigenen Ordner entpacken; prüfen, dass `README.md`, `USER_GUIDE.md`, `AI_BUILD_SPEC.md`, `AGENTS.md`, `CLAUDE.md`, `TODO_FOR_AI.md`, `dashboard_template` und der Ordner `Локальные_данные\Положите_сюда` mit seinen fünf Unterordnern direkt darin liegen, nicht in einem verschachtelten Ordner. Das Archiv ist nur eine Menge von Dateien; es wird nützlich, wenn der Agent es öffnet.
 3. **Verbindung und erster Start.** Ein lokales Projekt anlegen oder den Ordner öffnen und den entpackten Stamm als Hauptordner festlegen; im Projekt einen Chat in der lokalen Umgebung (Local) anlegen; `Ask for approval` einschalten; den Startprompt im Modus nur-Entwurf ausführen.
 
 Danach legt die Nutzerin oder der Nutzer Materialien in die drei Ordner `Положите_сюда` (das kann schon vor Schritt 1 geschehen) oder lässt den Agenten sie im Interview erfassen, bestätigt die Fakten der Wissensbasis (bevor ein Cloud-Agent zum ersten Mal etwas liest, willigt die Nutzerin oder der Nutzer ein, die gewählten Informationen zu übergeben), verbindet Gmail gesondert, bereitet die erste Warteschlange vor und prüft sie, aktiviert bei Bedarf Computer Use, geht zur täglichen Arbeit und Planung über, öffnet Statistik und Berichte, erstellt eine Sicherung und aktualisiert das Paket.

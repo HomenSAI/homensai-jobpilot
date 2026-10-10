@@ -6,6 +6,24 @@ The project version is in the file [VERSION](VERSION). The project is an AI-agen
 
 Rules: `MAJOR.MINOR.PATCH`. MAJOR changes when data formats or rules change so that old data no longer fits. MINOR is a new feature or a new part of the documentation. PATCH is a fix or a wording change without new capabilities. Every change to `main` adds a line here; the number is raised when a release is made. Each release gets a git tag `vX.Y.Z`. Each entry is written in Russian first, with the English text directly below it. The same entry appears in both language files.
 
+## 1.14.0 — 10 October 2026
+
+**English.** Ukrainian is added as a full package: the documents in `docs/uk` (rules, guide, specification, data contract, acceptance scenarios, overview pages), the statistics and readiness pages, neutral CV, letter and report templates in DOCX and PDF, and Ukrainian in the language lists of the settings. The translation has not yet been checked by a native speaker; the translation audit is the next stage. The folders “4_Шаблон_резюме” and “5_Шаблон_сопроводительного_письма” take all material about CVs and letters in any format, old versions included: the agent reads it, prepares drafts and asks you to check them. The template for mailings is the one you name; without a template the agent offers three layout variants or takes a template you send. Roadmap page: the version history is generated from this changelog at each release; the sentence about “three replies” is removed. This is a new part of the rules and the documentation, so the minor number is raised.
+
+- **Languages:** `en`, `ru`, `de`, `uk` in the settings and on the pages; a link to the Ukrainian edition in the README.
+- **Folders:** `4_Шаблон_резюме/`, `5_Шаблон_сопроводительного_письма/` (README in three languages); working `Resume/` and `CoverLetter/`.
+- **Release:** the workflow step updates the version history on the roadmap page.
+- **Acceptance:** RES-01, RES-03, RES-04 (status NOT RUN until a run is recorded).
+
+## 1.13.0 — 10 October 2026
+
+**English.** A photo rule is added for the CV. A photo goes into the CV only by the person's choice: the picture must be in `1_Мои_документы` and `templates.cv.photo_use` must be true. Then it is placed in the top-right corner of the first page at 30 × 40 mm by default; the person may choose another size, and the proportions of the picture are kept. A photo is never added to the cover letter. A CV with a photo counts as a sensitive attachment and passes the attachment check. This is a new rule for the CV, so the minor number is raised.
+
+- **Rules:** AGENTS.md (the photo exception), TODO_FOR_AI.md (the profile question and the rule “Photo on the CV”), DATA_CONTRACT.md (row “CV photo”).
+- **Settings:** `templates.cv.photo_use`, `photo_relative_path`, `photo_width_mm`, `photo_height_mm` in examples/settings.example.json.
+- **Acceptance:** CV-PH-01 (status NOT RUN until a run is recorded).
+- **Removed:** the market page (overview_market.html, EN, RU, DE) with its navigation links, the “Similar projects” card and the pager links; it compared other people’s projects and was not about this package.
+
 ## 1.12.0 — 10 October 2026
 
 **English.** An author page (EN, RU, DE) is added with background, projects and contacts; the Author link is in the navigation of all overview pages. The links to the vendor documentation moved from the install page to the Safety page, each with a short purpose and its step number. Unsupported claims were fixed on the overview pages: a photo is not requested and enters documents only by the person's explicit choice; the German footer date and the list of languages in the roadmap were corrected. This is a new part of the documentation, so the minor number is raised.

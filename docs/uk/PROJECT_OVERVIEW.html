@@ -1,0 +1,98 @@
+<!doctype html>
+<!-- © 2026 Serhii Khomenko / HomenS.AI · https://homensai.com/ · https://github.com/HomenSAI · https://www.linkedin.com/in/serhii-khomenko-homensai/
+     Code and markup: PolyForm Noncommercial 1.0.0 — https://polyformproject.org/licenses/noncommercial/1.0.0
+     Documentation text: CC BY-NC 4.0 — https://creativecommons.org/licenses/by-nc/4.0/ -->
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>HomenS.AI JobPilot | Пошук роботи і керування заявками</title>
+<meta name="description" content="HomenS.AI JobPilot: локальний ШІ-агент для пошуку роботи, підготовки заявок, відстеження відповідей і місячних звітів. Огляд проєкту.">
+<meta name="author" content="Serhii Khomenko">
+<meta name="theme-color" content="#edf1f4" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0f1720" media="(prefers-color-scheme: dark)">
+<script src="../../assets/theme.js"></script>
+<link rel="icon" type="image/svg+xml" href="../../assets/logo.svg">
+<link rel="stylesheet" href="../../assets/site.css">
+<script src="../../assets/site.js" defer></script>
+</head>
+<body>
+<a class="skip-link" href="#main">Перейти до змісту</a>
+<header class="topbar"><div class="wrap">
+<a class="brand" href="PROJECT_OVERVIEW.html" aria-label="HomenS.AI JobPilot"><svg class="brand-mark" focusable="false" viewBox="0 0 100 100" aria-hidden="true"><path d="M50.0 13.0 L48.1 13.1 L46.1 13.2 L44.2 13.5 L42.3 13.8 L42.2 21.0 L40.7 21.5 L39.2 22.0 L37.8 22.6 L36.4 23.3 L31.5 18.0 L29.8 19.0 L28.3 20.1 L26.7 21.2 L25.2 22.5 L28.8 28.8 L27.7 29.9 L26.7 31.1 L25.7 32.4 L24.8 33.7 L18.0 31.5 L17.0 33.2 L16.2 35.0 L15.5 36.7 L14.8 38.6 L21.0 42.2 L20.7 43.8 L20.4 45.3 L20.2 46.9 L20.0 48.4 L13.0 50.0 L13.1 51.9 L13.2 53.9 L13.5 55.8 L13.8 57.7 L21.0 57.8 L21.5 59.3 L22.0 60.8 L22.6 62.2 L23.3 63.6 L18.0 68.5 L19.0 70.2 L20.1 71.7 L21.2 73.3 L22.5 74.8 L28.8 71.2 L29.9 72.3 L31.1 73.3 L32.4 74.3 L33.7 75.2 L31.5 82.0 L33.2 83.0 L35.0 83.8 L36.7 84.5 L38.6 85.2 L42.2 79.0 L43.8 79.3 L45.3 79.6 L46.9 79.8 L48.4 80.0 L50.0 87.0 Z" fill="#c9a24a"/><path d="M50 20 A30 30 0 0 1 50 80" fill="none" stroke="#2bb3c4" stroke-width="5"/><g fill="none" stroke="#2bb3c4" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M50 36 H64 L70 30"/><path d="M50 50 H72"/><path d="M50 64 H62 L68 70"/></g><g fill="#2bb3c4"><circle cx="71" cy="29" r="4"/><circle cx="74" cy="50" r="4"/><circle cx="69" cy="71" r="4"/></g><circle cx="50" cy="50" r="9" fill="currentColor"/><circle cx="50" cy="50" r="3.5" fill="#c9a24a"/></svg><span class="brand-word">HomenS<span class="ai">.AI</span> <span class="sub">JobPilot</span></span></a>
+<nav id="site-nav" class="nav-main" aria-label="Сторінки проєкту">
+<a class="nav-link" href="PROJECT_OVERVIEW.html" aria-current="page"><i class="nav-dot" aria-hidden="true"></i>Огляд</a>
+<a class="nav-link" href="overview_install.html"><i class="nav-dot teal" aria-hidden="true"></i>Встановлення</a>
+<a class="nav-link" href="overview_profile.html"><i class="nav-dot gold" aria-hidden="true"></i>Профіль</a>
+<a class="nav-link" href="overview_architecture.html"><i class="nav-dot" aria-hidden="true"></i>Архітектура</a>
+<a class="nav-link" href="overview_safety.html"><i class="nav-dot teal" aria-hidden="true"></i>Безпека</a>
+<a class="nav-link" href="overview_roadmap.html"><i class="nav-dot" aria-hidden="true"></i>План робіт</a>
+<a class="nav-link" href="overview_author.html"><i class="nav-dot gold" aria-hidden="true"></i>Автор</a>
+<a class="nav-link" href="../../dashboard_template/index.html"><i class="nav-dot teal" aria-hidden="true"></i>Статистика</a>
+</nav>
+<div class="nav-tools">
+<a class="nav-link site-link" href="https://homensai.com/" rel="me noopener">homensai.com</a>
+<span class="langs" role="group" aria-label="Мова"><a href="../../PROJECT_OVERVIEW.html" lang="en" hreflang="en">EN</a><a href="../ru/PROJECT_OVERVIEW.html" lang="ru" hreflang="ru">RU</a><a href="../de/PROJECT_OVERVIEW.html" lang="de" hreflang="de">DE</a><a href="PROJECT_OVERVIEW.html" lang="uk" hreflang="uk" class="on" aria-current="true">UK</a></span>
+<button class="icon-btn" id="theme-btn" type="button" aria-label="Перемкнути світлу / темну тему" title="Перемкнути світлу / темну тему"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M12 4v16"/><path d="M12 4a8 8 0 0 1 0 16z" fill="currentColor"/></svg></button>
+<button class="icon-btn menu-btn" id="menu-btn" type="button" aria-expanded="false" aria-controls="site-nav" aria-label="Меню" title="Меню"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+</div>
+</div></header>
+<main id="main" class="wrap">
+<div class="page-head">
+<div class="eyebrow">Пошук роботи · Керування заявками</div>
+<h1>HomenS.AI <span class="accent">JobPilot</span></h1>
+<p class="lead">Локальний ШІ-агент знаходить компанії та вакансії поблизу, готує персоналізоване резюме й супровідний лист для кожної з них, відстежує кожну відповідь і складає місячний звіт. Усі робочі дані зберігаються в одній теці на вашому комп’ютері.</p>
+<div class="pills"><span class="pill">Ідея і розробка: Serhii Khomenko</span><span class="pill">Codex або Claude Code</span><span class="pill">Файли JSON, без сервера</span></div>
+</div>
+
+<section>
+<div class="notice warn"><p><strong>Поточний етап: експериментальна документація і робочий процес агента.</strong> Окремого застосунку для пошуку роботи чи надсилання пошти немає. Статистика — виняток: її HTML/CSS/JavaScript перевіряє, сортує, фільтрує і показує знімок, записаний агентом; вона не шукає і не надсилає пошту. Повне приймання агента й Gmail ще не завершене. <a href="../../README.md">Що містить пакет</a>.</p></div>
+</section>
+
+<section id="how">
+<div class="sec-head"><div class="num">01 · Робочий процес</div><h2>Шлях однієї заявки</h2><p>Агент виконує робочий процес у чаті. Усе, що має бути надійним, зберігається в теці проєкту, а не в чаті.</p></div>
+<ol class="steps">
+<li><strong>Ваша історія</strong><span>Ваші документи та ваші власні слова, голосом або текстом, стають базою знань. Кожен факт підтверджуєте ви.</span></li>
+<li><strong>Пошук</strong><span>Компанії та вакансії в обраному радіусі. Спершу ближчі місця; дорогу перевіряють.</span></li>
+<li><strong>Відповідність</strong><span>Вимоги вакансії порівнюються з підтвердженим досвідом.</span></li>
+<li><strong>Документи</strong><span>Персоналізоване резюме, супровідний лист і текст листа, перевірені візуально як PDF.</span></li>
+<li><strong>Розклад</strong><span>Одразу, щороботного дня або кожного другого дня, з урахуванням свят і місячного ліміту.</span></li>
+<li><strong>Gmail</strong><span>Авторизоване підключення, перевірка адресата і вкладень, цілі листування читаються до будь-якої відповіді.</span></li>
+<li><strong>Відстеження</strong><span>Відповіді, збої доставки і підтвердження надсилання — без дублікатів.</span></li>
+<li><strong>Звіт</strong><span>Нейтральний підсумок обраною мовою і окрема сторінка ринкових рекомендацій.</span></li>
+</ol>
+<p style="margin-top:1rem">Користувач обирає радіус і спосіб пересування (авто або громадський транспорт). Оцінюються час у дорозі, пересадки, відстань пішки і можливість повернутися ввечері. Додавання міста не змінює пріоритети користувача: зона пошуку розширюється поступово.</p>
+</section>
+
+<section id="pages">
+<div class="sec-head"><div class="num">02 · Зміст</div><h2>Що на інших сторінках</h2><p>Огляд поділено на короткі сторінки. Перемикайтеся між ними через меню вгорі.</p></div>
+<div class="grid3">
+<a class="card t" href="overview_install.html"><span class="tag">Встановлення</span><h3>Покрокове встановлення</h3><p>Агент, тека проєкту та дозволи в правильному порядку, із описом того, що ви маєте побачити після кожного кроку.</p><span class="go">Відкрити →</span></a>
+<a class="card g" href="overview_profile.html"><span class="tag">Профіль</span><h3>Ваша база знань</h3><p>Куди покласти документи, як розповісти агенту про себе і як історія вашого життя стає резюме.</p><span class="go">Відкрити →</span></a>
+<a class="card" href="overview_architecture.html"><span class="tag">Архітектура</span><h3>Правила, файли і журнал</h3><p>Як агент, письмові правила та журнал працюють разом і які правила експлуатації.</p><span class="go">Відкрити →</span></a>
+<a class="card t" href="overview_safety.html"><span class="tag">Безпека</span><h3>Приватність, умови і ліцензія</h3><p>Підтверджені факти, окремі дозволи, межі продукту і те, як його можна повторно використовувати.</p><span class="go">Відкрити →</span></a>
+<a class="card" href="../../dashboard_template/index.html"><span class="tag">Статистика</span><h3>Сторінка статистики</h3><p>Роки, місяці й дні з сортуванням за датою та результатом. Відкривається з прикладними даними.</p><span class="go">Відкрити →</span></a>
+</div>
+</section>
+
+<section id="rules">
+<div class="sec-head"><div class="num">03 · Принципи</div><h2>Правила, які не змінюються</h2></div>
+<div class="rules">
+<article><h3>Не більше 44 на місяць</h3><p>Не більше 44 подань резюме на одну особу за календарний місяць, з урахуванням усіх профілів і чатів. Сорок п’яте блокується до надсилання.</p></article>
+<article><h3>Спершу чернетки</h3><p>Нове налаштування лише готує чернетки. Надсилання вмикається окремо для кожного профілю і кожного облікового запису Gmail.</p></article>
+<article><h3>Лише підтверджені факти</h3><p>Агент ніколи не вигадує досвіду, дат, сертифікатів чи рівнів мов. Користувач підтверджує кожен факт.</p></article>
+<article><h3>Статистика лише для перегляду</h3><p>HTML-сторінка показує знімок. Дані оновлює агент; сторінка не може змінювати записи чи читати Gmail.</p></article>
+<article><h3>Пошта залишається недоторканою</h3><p>Жодне повідомлення не видаляється, не архівується і не отримує нових міток.</p></article>
+<article><h3>Без секретів у теці</h3><p>Паролі й токени ніколи не зберігаються у файлах проєкту і не публікуються на GitHub.</p></article>
+</div>
+</section>
+
+<div class="pager"><span></span><a href="overview_install.html">Встановлення →</a></div>
+</main>
+<footer class="site-footer"><div class="wrap">
+<p>© 2026 Serhii Khomenko / HomenS.AI · <a href="https://homensai.com/" rel="me noopener">homensai.com</a> · <a href="https://github.com/HomenSAI" rel="me noopener">GitHub</a> · <a href="https://www.linkedin.com/in/serhii-khomenko-homensai/" rel="me noopener">LinkedIn</a> · <a href="https://orcid.org/0009-0009-5371-9717" rel="me noopener">ORCID</a> · <a href="https://doi.org/10.5281/zenodo.23160031" rel="noopener">DOI</a> · <a href="mailto:info@homensai.com">info@homensai.com</a></p>
+<p>Документи: <a href="../../README.md">README</a> · <a href="../../USER_GUIDE.md">Посібник користувача</a> · <a href="../../AI_BUILD_SPEC.md">Специфікація збирання</a> · <a href="../../ARCHITECTURE.md">Архітектура</a> · <a href="../../DATA_CONTRACT.md">Контракт даних</a> · <a href="../../ACCEPTANCE_TESTS.md">Сценарії приймання</a> · <a href="../../REVIEW.md">Огляд і статус</a></p>
+<p><small>Документація · <a href="../../VERSION">VERSION</a> · 10 жовтня 2026 · без особистих профілів, резюме та облікових даних. Код: PolyForm Noncommercial 1.0.0 · документація: CC BY-NC 4.0 (LICENSE-DOCS). Обов’язкові реквізити авторства — у файлі NOTICE.</small></p>
+</div></footer>
+<a class="to-top" id="to-top" href="#" aria-label="Нагору сторінки"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"/></svg>Нагору</a>
+</body></html>

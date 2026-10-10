@@ -26,14 +26,13 @@
 <a class="nav-link" href="overview_profile.html"><i class="nav-dot gold" aria-hidden="true"></i>Профиль</a>
 <a class="nav-link" href="overview_architecture.html"><i class="nav-dot" aria-hidden="true"></i>Архитектура</a>
 <a class="nav-link" href="overview_safety.html"><i class="nav-dot teal" aria-hidden="true"></i>Безопасность</a>
-<a class="nav-link" href="overview_market.html"><i class="nav-dot gold" aria-hidden="true"></i>Рынок</a>
 <a class="nav-link" href="overview_roadmap.html"><i class="nav-dot" aria-hidden="true"></i>План работ</a>
 <a class="nav-link" href="overview_author.html"><i class="nav-dot gold" aria-hidden="true"></i>Автор</a>
 <a class="nav-link" href="../../dashboard_template/index.html?lang=ru"><i class="nav-dot teal" aria-hidden="true"></i>Статистика</a>
 </nav>
 <div class="nav-tools">
 <a class="nav-link site-link" href="https://homensai.com/" rel="me noopener">homensai.com</a>
-<span class="langs" role="group" aria-label="Язык"><a href="../../overview_install.html" lang="en" hreflang="en">EN</a><a href="overview_install.html" lang="ru" hreflang="ru" class="on" aria-current="true">RU</a><a href="../de/overview_install.html" lang="de" hreflang="de">DE</a></span>
+<span class="langs" role="group" aria-label="Язык"><a href="../../overview_install.html" lang="en" hreflang="en">EN</a><a href="overview_install.html" lang="ru" hreflang="ru" class="on" aria-current="true">RU</a><a href="../de/overview_install.html" lang="de" hreflang="de">DE</a><a href="../uk/overview_install.html" lang="uk" hreflang="uk">UK</a></span>
 <button class="icon-btn" id="theme-btn" type="button" aria-label="Переключить светлую / тёмную тему" title="Переключить светлую / тёмную тему"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M12 4v16"/><path d="M12 4a8 8 0 0 1 0 16z" fill="currentColor"/></svg></button>
 <button class="icon-btn menu-btn" id="menu-btn" type="button" aria-expanded="false" aria-controls="site-nav" aria-label="Меню" title="Меню"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
 </div>
@@ -72,6 +71,8 @@
 <tr><td><code>1_Мои_документы</code></td><td>Резюме любых версий, дипломы, сертификаты, рекомендации, официальные письма, портфолио, образцы ваших писем. PDF, DOCX, TXT, фото и сканы. Сортировать и переименовывать не нужно.</td></tr>
 <tr><td><code>2_Рассказ_о_себе</code></td><td>Ваш рассказ своими словами: расшифровка голосовой записи, заметки, ответы на вопросы из файла <code>Вопросы_для_рассказа.md</code> (он лежит в этой папке).</td></tr>
 <tr><td><code>3_Шаблон_отчёта</code></td><td>Только если у вас есть свой образец отчёта. Иначе оставьте пустой.</td></tr>
+<tr><td><code>4_Шаблон_резюме</code></td><td>Ваш образец резюме в том макете, который вы хотите использовать для откликов, DOCX или PDF. PDF конвертируется в Word до любых других действий.</td></tr>
+<tr><td><code>5_Шаблон_сопроводительного_письма</code></td><td>Ваше сопроводительное письмо в вашем собственном оформлении, DOCX или PDF. Действует та же конвертация.</td></tr>
 </tbody></table></div>
 <div class="grid2" style="margin-top:1rem">
 <article class="panel blue"><h3>Расскажите о себе голосом</h3><ol><li>Откройте чат с Claude или ChatGPT и включите голосовой режим (значок микрофона).</li><li>Скажите: «Я расскажу о себе для резюме. Задавай мне вопросы по одной теме за раз. В конце запиши мой рассказ дословно, ничего не добавляя, в текстовый файл». Можно вставить вопросы из <code>Вопросы_для_рассказа.md</code>.</li><li>Говорите сколько нужно — частями, в разные дни, в любом порядке. Если что-то не помните, так и скажите.</li><li>Сохраните текстовый файл в <code>2_Рассказ_о_себе</code>.</li></ol></article>
@@ -178,7 +179,7 @@
 </div>
 </section>
 
-<section id="application-templates"><div class="sec-head"><h2>Шаблоны резюме и сопроводительного письма</h2></div><p>Исходный PDF-шаблон сохраняется без изменений. Рядом добавляется редактируемый DOCX после конвертации, сравнения каждой страницы и утверждения. Если результат нельзя проверить, агент сообщает об ограничении и предлагает ручную конвертацию либо согласованное восстановление макета. Точные пути/хеши шаблонов сохраняются по профилям; под новые вакансии создаются новые документы.</p><div class="links"><a href="../../Локальные_данные/Resume/README.md">Resume</a><a href="../../Локальные_данные/CoverLetter/README.md">CoverLetter</a><a href="../../examples/templates/README.md">DOCX / PDF</a><a href="OPERATING_REQUIREMENTS.md">Правила проверки</a></div></section>
+<section id="application-templates"><div class="sec-head"><h2>Шаблоны резюме и сопроводительного письма</h2></div><p>Ваш образец резюме положите в <code>4_Шаблон_резюме</code>, образец сопроводительного письма — в <code>5_Шаблон_сопроводительного_письма</code> (DOCX или PDF). PDF-образец конвертируется в Word до любых других действий; рабочая копия в Word появляется в <code>Resume/</code> и <code>CoverLetter/</code>. Исходный образец никогда не меняется. Конвертация проверяется постранично по PDF (число страниц, размер, текст, положение, изображения и шрифты), а сравнение вы видите до утверждения. Если страница отличается или проверку нельзя выполнить, агент сообщает о различии и спрашивает, что делать. Точные пути и хеши шаблонов сохраняются по профилям; под новые вакансии создаются новые документы.</p><div class="links"><a href="../../Локальные_данные/Resume/README.md">Resume</a><a href="../../Локальные_данные/CoverLetter/README.md">CoverLetter</a><a href="../../examples/templates/README.md">DOCX / PDF</a><a href="OPERATING_REQUIREMENTS.md">Правила проверки</a></div></section>
 <section id="help">
 <div class="sec-head"><div class="num">Помощь</div><h2>Если что-то не работает</h2></div>
 <div class="rules">

@@ -8,7 +8,7 @@
 
 Start with [README.md](README.md). Operational procedures are in [OPERATING_REQUIREMENTS.md](OPERATING_REQUIREMENTS.md); architecture is in [ARCHITECTURE.md](ARCHITECTURE.md), file formats and recovery in [DATA_CONTRACT.md](DATA_CONTRACT.md), and test scenarios in [ACCEPTANCE_TESTS.md](ACCEPTANCE_TESTS.md). Step-by-step installation is available in [USER_GUIDE.md](USER_GUIDE.md) and [overview_install.html](overview_install.html). The agent performs the workflow; the statistics page only presents its local snapshot.
 
-The project has three editions: English at the root, Russian in `docs/ru`, German in `docs/de`. English is primary; all three use identical technical identifiers, rules and examples. Document and report languages are selected separately. Rule changes update all editions.
+The project has four editions: English at the root, Russian in `docs/ru`, German in `docs/de`, Ukrainian in `docs/uk`. English is primary; all three use identical technical identifiers, rules and examples. Document and report languages are selected separately. Rule changes update all editions.
 
 **Authorship and independent development.** Serhii Khomenko is the author of the idea and the developer of the system. The concept, the scenario and the requirements were formulated by the author from their own experience and workflow, and the system itself was designed independently. The GitHub projects listed in section 14 were looked at only as an overview of existing solutions. Their source code, components, templates, design, architecture, prompts and other materials were not used in preparing these documents and are not the basis of the system: they are not copied, adapted or forked. The system is developed by Serhii Khomenko independently from this specification. The choice of libraries and development tools is agreed separately; it does not mean that code of the reviewed projects is used.
 
@@ -142,15 +142,17 @@ These recommendations are a reference, not a mandatory form. A photo and optiona
 
 ### 4.6 Where the person puts materials, and the knowledge base file
 
-The package contains a ready folder `Локальные_данные/Положите_сюда/` (“put here”) with three subfolders and a short README in each. It is the only place where the person has to put anything by hand:
+The package contains a ready folder `Локальные_данные/Положите_сюда/` (“put here”) with five subfolders and a short README in each. It is the only place where the person has to put anything by hand:
 
 | Folder | What the person puts there |
 |---|---|
 | `1_Мои_документы` (my documents) | CVs of any version, diplomas, certificates, references, official letters, a portfolio, samples of own letters; PDF, DOCX, TXT, photos and scans; no sorting or renaming |
 | `2_Рассказ_о_себе` (my story) | The person's story in their own words: a transcript of a voice recording, notes, answers to the questions of `Вопросы_для_рассказа.md` (shipped in this folder); the agent also saves interviews here word for word as `Интервью_<date>.md` |
 | `3_Шаблон_отчёта` (report template) | Only if the person has their own report sample |
+| `4_Шаблон_резюме` (CV material) | Everything about the person's CVs in any format, current and old; read only; the agent prepares drafts from it and the template the person names |
+| `5_Шаблон_сопроводительного_письма` (cover letter material) | Everything about the person's cover letters in any format; read only; the same rule as folder 4 |
 
-The folders can be filled **before** the first run or left empty. The agent only reads them and never changes, moves, renames or deletes anything in them. For a second person who uses the same folder, a subfolder with the person's name is created in `Положите_сюда`, with the same three subfolders.
+The folders can be filled **before** the first run or left empty. The agent only reads them and never changes, moves, renames or deletes anything in them. For a second person who uses the same folder, a subfolder with the person's name is created in `Положите_сюда`, with the same five subfolders.
 
 **Preparing the story by voice.** The person can prepare the story in advance, in two ways: (a) outside the project, in any chat of Claude or ChatGPT with voice mode: use the questions of `Вопросы_для_рассказа.md`, talk, then ask the assistant to write the story down word for word, without adding anything, as a text file, and save it to `2_Рассказ_о_себе`; (b) inside the project: tell the agent that they want to speak about themselves, and the agent conducts the interview (4.2), saving every answer word for word. Both ways give the same result.
 
@@ -209,6 +211,8 @@ The user downloads the GitHub ZIP, chooses a convenient place and extracts it. T
       1_Мои_документы\                # CVs, diplomas, certificates, references
       2_Рассказ_о_себе\               # the story: voice transcripts, notes, interviews, the questions
       3_Шаблон_отчёта\                # optional report template
+      4_Шаблон_резюме\                # everything about the CVs, any format
+      5_Шаблон_сопроводительного_письма\  # everything about the cover letters
     persons\<person_id>\
       База_знаний\Жизнеописание.md   # the knowledge base: the person's life story, confirmed facts
       journal\transactions-YYYY-MM.jsonl  # the person's single primary journal, one segment per month
@@ -221,7 +225,7 @@ The user downloads the GitHub ZIP, chooses a convenient place and extracts it. T
       profile.json
       registry.json                   # targets, applications and the queue (projection)
       runs\                           # work sessions, resuming from a new chat
-      reports\                        # reports of this profile (English, Russian or German)
+      reports\                        # reports of this profile (English, Russian, German or Ukrainian)
     Applications\                     # all application work, one tree for all years
       2026\
         10_October\
@@ -445,7 +449,7 @@ The step-by-step instruction for the user exists in two forms with the same cont
 The installation is divided into three parts in exactly this order:
 
 1. **The agent.** Install ChatGPT Desktop from the official page, sign in, choose Codex and make sure it is available. As checked on 9 October 2026, OpenAI states that Codex is included across ChatGPT plans including Free and Go, while usage limits vary; Plus is recommended for sustained use and is listed at $20/month in the US. These terms change: verify current [Codex plan access](https://help.openai.com/en/articles/11369540-using-codex-with-your-chatgpt-plan) and [Plus pricing](https://help.openai.com/en/articles/6950777-what-is-chatgpt-free-plan) before purchase. The agent comes first because feature availability and limits vary by account and organization.
-2. **The project folder.** Download the ZIP from the published repository and extract it into a separate folder; check that `README.md`, `USER_GUIDE.md`, `AI_BUILD_SPEC.md`, `AGENTS.md`, `CLAUDE.md`, `TODO_FOR_AI.md`, `dashboard_template` and the folder `Локальные_данные\Положите_сюда` with its three subfolders lie directly in it, not in a nested folder. The archive is just a set of files; it becomes useful when the agent opens it.
+2. **The project folder.** Download the ZIP from the published repository and extract it into a separate folder; check that `README.md`, `USER_GUIDE.md`, `AI_BUILD_SPEC.md`, `AGENTS.md`, `CLAUDE.md`, `TODO_FOR_AI.md`, `dashboard_template` and the folder `Локальные_данные\Положите_сюда` with its five subfolders lie directly in it, not in a nested folder. The archive is just a set of files; it becomes useful when the agent opens it.
 3. **Connection and the first start.** Create a local project or open the folder and make the extracted root the primary folder; create a chat inside the project in the local environment (Local); switch on `Ask for approval`; run the starting prompt in draft-only mode.
 
 After that the user puts materials into the three folders `Положите_сюда` (this can be done even before step 1) or lets the agent interview them, and confirms the facts of the knowledge base (before a cloud agent reads anything for the first time, the user consents to passing the chosen information), connects Gmail separately, prepares and checks the first queue, if necessary enables Computer Use, moves on to daily work and scheduling, opens the statistics and reports, makes a backup and updates the package.

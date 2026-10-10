@@ -11,7 +11,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>HomenS.AI JobPilot | Statistics</title>
-<meta name="description" content="Applications and employer answers by year, month and day, monthly results at a cutoff, shares, time saved, sorting and filters. Languages: English, Russian, German.">
+<meta name="description" content="Applications and employer answers by year, month and day, monthly results at a cutoff, shares, time saved, sorting and filters. Languages: English, Russian, German, Ukrainian.">
 <meta name="author" content="Serhii Khomenko">
 <meta name="theme-color" content="#edf1f4" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#0f1720" media="(prefers-color-scheme: dark)">
@@ -147,7 +147,7 @@ td.time { font-family:var(--mono); white-space:nowrap; color:var(--muted); } td 
 <a class="brand" href="../PROJECT_OVERVIEW.html" id="brand" aria-label="HomenS.AI JobPilot"><svg class="brand-mark" focusable="false" viewBox="0 0 100 100" aria-hidden="true"><path d="M50.0 13.0 L48.1 13.1 L46.1 13.2 L44.2 13.5 L42.3 13.8 L42.2 21.0 L40.7 21.5 L39.2 22.0 L37.8 22.6 L36.4 23.3 L31.5 18.0 L29.8 19.0 L28.3 20.1 L26.7 21.2 L25.2 22.5 L28.8 28.8 L27.7 29.9 L26.7 31.1 L25.7 32.4 L24.8 33.7 L18.0 31.5 L17.0 33.2 L16.2 35.0 L15.5 36.7 L14.8 38.6 L21.0 42.2 L20.7 43.8 L20.4 45.3 L20.2 46.9 L20.0 48.4 L13.0 50.0 L13.1 51.9 L13.2 53.9 L13.5 55.8 L13.8 57.7 L21.0 57.8 L21.5 59.3 L22.0 60.8 L22.6 62.2 L23.3 63.6 L18.0 68.5 L19.0 70.2 L20.1 71.7 L21.2 73.3 L22.5 74.8 L28.8 71.2 L29.9 72.3 L31.1 73.3 L32.4 74.3 L33.7 75.2 L31.5 82.0 L33.2 83.0 L35.0 83.8 L36.7 84.5 L38.6 85.2 L42.2 79.0 L43.8 79.3 L45.3 79.6 L46.9 79.8 L48.4 80.0 L50.0 87.0 Z" fill="#c9a24a"/><path d="M50 20 A30 30 0 0 1 50 80" fill="none" stroke="#2bb3c4" stroke-width="5"/><g fill="none" stroke="#2bb3c4" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M50 36 H64 L70 30"/><path d="M50 50 H72"/><path d="M50 64 H62 L68 70"/></g><g fill="#2bb3c4"><circle cx="71" cy="29" r="4"/><circle cx="74" cy="50" r="4"/><circle cx="69" cy="71" r="4"/></g><circle cx="50" cy="50" r="9" fill="currentColor"/><circle cx="50" cy="50" r="3.5" fill="#c9a24a"/></svg><span>HomenS<span class="ai">.AI</span> <span class="sub">JobPilot</span></span></a>
 <nav class="nav-main" id="demo-nav" aria-label="Project pages" hidden></nav>
 <div class="tools">
-<span class="langs" role="group" aria-label="Language"><button type="button" data-lang="en" aria-pressed="true">EN</button><button type="button" data-lang="ru" aria-pressed="false">RU</button><button type="button" data-lang="de" aria-pressed="false">DE</button></span>
+<span class="langs" role="group" aria-label="Language"><button type="button" data-lang="en" aria-pressed="true">EN</button><button type="button" data-lang="ru" aria-pressed="false">RU</button><button type="button" data-lang="de" aria-pressed="false">DE</button><button type="button" data-lang="uk" aria-pressed="false">UK</button></span>
 <button class="icon-btn" id="theme-btn" type="button" aria-label="Theme"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M12 4v16"/><path d="M12 4a8 8 0 0 1 0 16z" fill="currentColor"/></svg></button>
 </div>
 </div></header>
@@ -241,8 +241,8 @@ td.time { font-family:var(--mono); white-space:nowrap; color:var(--muted); } td 
 (function () {
   "use strict";
   var RAW = window.JP_DATA;
-  var LANGS = ["en", "ru", "de"];
-  var LOCALE = { en: "en-GB", ru: "ru-RU", de: "de-DE" };
+  var LANGS = ["en", "ru", "de", "uk"];
+  var LOCALE = { en: "en-GB", ru: "ru-RU", de: "de-DE", uk: "uk-UA" };
   var SCHEMA = "1.4";
   var STORE = "homensai.jp.sampleCleared";
   var DAY = 86400000;
@@ -481,9 +481,81 @@ td.time { font-family:var(--mono); white-space:nowrap; color:var(--muted); } td 
       e_resp: "Antwort {n}: Feld {f} fehlt oder ist ungültig", e_resp_dup: "Antwort {n}: die ID kommt doppelt vor",
       e_resp_app: "Antwort {n} verweist auf eine Bewerbung, die nicht im Snapshot ist", e_resp_scope: "Antwort {n} gehört zu einer anderen Person oder einem anderen Profil",
       e_resp_early: "Antwort {n} liegt vor dem Versanddatum oder ihre Bewerbung hat kein Versanddatum", e_quota: "das Kontingent für {m} ist niedriger als die Einreichungen dieses Profils in diesem Monat"
+    },
+    uk: {
+      title: "Заявки і відповіді", eyebrow: "Статистика", skip: "Перейти до вмісту",
+      lead: "Усі заявки й відповіді роботодавців за роками, місяцями та днями, з результатами місяців на момент зрізу. Сортування, фільтри та пошук. Сторінка показує лише знімок; дані оновлює агент.",
+      demo: "Зразкові дані: компанії та результати вигадані, щоб показати роботу сторінки. Кнопка очищає їх; справжній знімок від агента замінює їх.",
+      sample_clear: "Очистити зразкові дані", sample_cleared: "Зразкові дані очищено",
+      meta_profile: "Профіль", meta_tz: "Часовий пояс", meta_snapshot: "Знімок", meta_old: "Знімку {d} дн.",
+      period_h: "Звіт за місяць (результати на момент зрізу)", period_sel: "Звітний місяць",
+      cutoff_line: "{m} · Зріз: {c} · ревізія джерела {r} · часовий пояс {tz}", cut_end: "кінець місяця", cut_snap: "час знімка {t}",
+      no_activity: "За вибраний період подій не зафіксовано.", no_responses: "У цьому місяці жодна заявка не отримала відповіді.",
+      m_units_note: "Одиниці: заявки рахуються по одній на заявку, повідомлення — по одному на повідомлення. Їх ніколи не додають разом.",
+      m_sent: "Надіслано заявок (подань CV)", m_events: "Змістовні відповіді (повідомлення)", m_apps: "Заявки зі змістовною відповіддю",
+      m_prior: "Відповіді на раніше надіслані заявки (повідомлення)", m_waiting: "Очікують відповіді на зріз (надіслано в цьому місяці)",
+      m_pos: "Успішно на кінець місяця", m_rej: "Відмова на кінець місяця", m_open: "Лишаються відкритими на кінець місяця (відповідь потребує перевірки)",
+      m_err: "Нові помилки доставки за місяць (адреса не існує)", m_auto: "Автовідповіді (повідомлення, не відповіді)",
+      m_dsn: "Повідомлення про недоставку (повідомлення, не відмови)", u_apps: "заявки", u_msgs: "повідомлення",
+      m_reasons_h: "Причини відмов на кінець місяця (заявки)", m_table_h: "Заявки з відповіддю в цьому місяці",
+      th_sent: "Надіслано", th_resp_month: "Відповіді за місяць", th_end: "На кінець місяця", th_now: "Зараз (поточний)", th_status_now: "Поточний статус",
+      share_h: "Поточний статус надісланих заявок", share_base: "Основа: {n} надісланих заявок (чернетки не враховуються). Це статус на сьогодні, а не результат за місяць.",
+      share_none: "Надісланих заявок поки немає.", share_pos: "Успішно (запрошення, запит документів)", share_wait: "Очікують відповіді",
+      share_rej: "Відмова", share_err: "Помилка доставки: адреса не існує",
+      reasons_h: "Причини відмов (поточний статус, заявки)", r_vacancy: "Вакансія більше не доступна", r_cv: "CV не відповідає вакансії",
+      r_qual: "Кваліфікація не відповідає", r_none: "Причину не вказано",
+      quota_h: "Місячний ліміт (спільний для всіх профілів особи)", quota_note: "Числа — спільна квота особи з журналу, для всіх профілів разом. Відсутнє значення показано як «не підтверджено», а не як нуль.",
+      q_counted: "враховано з журналу", q_used: "використано", q_res: "зарезервовано", q_limit: "ліміт", q_not_conf: "не підтверджено",
+      q_unknown_note: "Вільні слоти не показано: лічильники за цей місяць не підтверджено.",
+      q_free_n: "Вільних слотів: {n}", q_full: "Вільних слотів немає: ліміт вичерпано надсиланнями й резервами.",
+      q_over: "Ліміт перевищено на {n}: нові подання CV заблоковано. Показано фактичну кількість.",
+      q_unver: "Заявлено подань, але не підтверджено: {n}. До перевірки вони враховуються як зайняті.",
+      q_manual_yes: "Подання, зроблені вручну поза JobPilot, у цих числах не враховано.",
+      q_manual_num: "Повідомлено подань вручну поза JobPilot: {n}. У цих числах вони не враховані.",
+      quota_val: "використано {u} · зарезервовано {r}",
+      hours_h: "Заощаджений час", hours_total: "Близько {h} год заощаджено на {n} надісланих заявках",
+      hours_note: "Оцінка для людини, яка готувала б кожну заявку вручну у Word. Хвилини у файлі зведення можна змінити відповідно до власної роботи.",
+      assumptions_h: "Припущення (хвилини на одну заявку)", a_cv_adapting: "Адаптація CV до вакансії", a_cover_letter: "Написання супровідного листа",
+      a_email_text: "Написання тексту листа", a_attachments_and_sending: "Прикріплення файлів і надсилання", a_date_and_text_checks: "Перевірка дат і текстів",
+      a_reply_tracking: "Відстеження відповідей", min: "хв", hours_month: "{m}: {h} год",
+      reg_h: "Реєстр: усі заявки", reg_note: "Реєстр за датою надсилання. Статус тут поточний, на момент знімка. Результати за місяці — у звіті за місяць вище.",
+      year: "Рік", month: "Місяць", sort: "Сортування", search: "Пошук", search_ph: "Компанія, місто або посада", result: "Результат", all_years: "Усі роки", all_months: "Усі місяці",
+      sort_new: "Дата: спочатку нові", sort_old: "Дата: спочатку старі", sort_pos: "Результат: спочатку успішні", sort_rej: "Результат: спочатку відмови",
+      grp_all: "Усі", grp_positive: "Успішно", grp_waiting: "Очікування", grp_error: "Помилка доставки", grp_rejected: "Відмова", grp_drafts: "Ще не надіслано",
+      expand: "Розгорнути все", collapse: "Згорнути все", reset: "Скинути фільтри",
+      count: "Записів за фільтрами: {a} із {b}", year_sum: "{y}: надіслано {sent} · успішно {pos} · відмов {rej} · очікують {wait}",
+      month_sum: "надіслано {sent} · успішно {pos} · відмов {rej} · очікують {wait}",
+      th_time: "Час", th_company: "Компанія", th_role: "Посада", th_channel: "Канал", th_status: "Статус", th_thanks: "Подяка", th_note: "Примітка",
+      ch_email: "E-mail", ch_web_form: "Веб-форма", ch_portal: "Портал", ch_other: "Інше",
+      s_prepared: "Підготовлено", s_scheduled: "Заплановано", s_not_sent: "Не надіслано", s_sent_waiting: "Надіслано, очікуємо відповіді",
+      s_waiting_one: "1 день без відповіді", s_waiting_many: "{d} дн. без відповіді", s_waiting_unknown: "Надіслано, відповіді немає",
+      s_email_not_found: "Адреса e-mail не існує (помилка доставки)", s_documents_requested: "Роботодавець запросив документи",
+      s_meeting_invited: "Запрошено на зустріч", s_meeting_in_person: "Особисто", s_meeting_video: "Відеодзвінок", s_meeting_phone: "Телефонний дзвінок",
+      s_rejected_vacancy_unavailable: "Відмова: вакансія недоступна", s_rejected_cv_mismatch: "Відмова: CV не відповідає",
+      s_rejected_qualification_mismatch: "Відмова: кваліфікація не відповідає", s_rejected_no_reason: "Відмова, причину не вказано",
+      thanks_yes: "Надіслано", thanks_no: "Не надіслано", thanks_none: "—", undated: "Без дати", empty: "Немає записів за цими фільтрами.",
+      help_h: "Як читати сторінку",
+      help1: "Роки, місяці й дні відкриваються стрілками. Сортування за датою зберігає календарний порядок; сортування за результатом ставить групи попереду.",
+      help2: "Дні без відповіді рахуються від дати надсилання до часу знімка, а не до сьогодні.",
+      help3: "Подяку надсилають роботодавцю, який відповів, навіть за відмови. «Не надіслано» означає, що вона ще відкрита.",
+      help4: "Заощаджений час — оцінка за хвилинами з файлу зведення, а не вимірювання.",
+      help5: "Сторінка нічого не надсилає, пошту не читає і дані не змінює. Друкуйте функцією друку браузера.",
+      help6: "Результати місяців рахуються за станом на кінець кожного місяця (зріз). Поточний статус показано окремо, і для попередніх місяців він не використовується.",
+      help7: "Відмови й помилки доставки рахуються окремо. Повідомлення про недоставку — не відмова, а автовідповідь — не відповідь.",
+      license: "Код і розмітка: PolyForm Noncommercial 1.0.0. Документація: CC BY-NC 4.0.", top: "Нагору",
+      error_h: "Знімок не показано",
+      error_text: "Статистику не показано, бо файл summary.js поруч із цією сторінкою не пройшов перевірку: {why}. Код: {ref}. Агент запише файл знову. Цифри не показано.",
+      e_missing: "файл відсутній", e_unreadable: "файл неможливо прочитати (синтаксична помилка або неочікуваний вміст)", e_nodata: "об’єкт даних відсутній",
+      e_schema: "версія схеми не 1.4; ця сторінка не інтерпретує інші версії", e_field: "поле {f} відсутнє або некоректне",
+      e_tz: "часовий пояс не є коректною зоною IANA", e_app: "заявка {n}: поле {f} відсутнє або некоректне",
+      e_app_dup: "заявка {n}: ідентифікатор використано двічі", e_app_sent: "заявка {n}: є результат, але немає дати надсилання",
+      e_app_future: "заявка {n}: дата пізніша за час знімка", e_hist: "заявка {n}: історія статусів відсутня, не за порядком або не закінчується поточним статусом",
+      e_resp: "відповідь {n}: поле {f} відсутнє або некоректне", e_resp_dup: "відповідь {n}: ідентифікатор використано двічі",
+      e_resp_app: "відповідь {n} посилається на заявку, якої немає в знімку", e_resp_scope: "відповідь {n} належить іншій особі або іншому профілю",
+      e_resp_early: "відповідь {n} раніша за дату надсилання або її заявка не має дати надсилання", e_quota: "квота за {m} менша за подання цього профілю в цьому місяці"
     }
   };
-  // Status labels are shared by the three languages through T[lang]["s_" + code]; help texts are listed in applyStatic.
+  // Status labels are shared by the four languages through T[lang]["s_" + code]; help texts are listed in applyStatic.
 
   var lang = "en";
   (function pickLanguage() {

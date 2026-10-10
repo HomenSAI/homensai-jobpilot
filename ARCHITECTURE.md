@@ -64,6 +64,8 @@ Instruction files (Markdown, not code; drafts that have not yet been tried in pr
     1_Мои_документы/                # CVs, diplomas, certificates, references (originals, never changed)
     2_Рассказ_о_себе/               # the person's story: voice transcripts, notes, interviews, the questions
     3_Шаблон_отчёта/                # optional report template
+    4_Шаблон_резюме/                # everything about your CVs, any format; read only
+    5_Шаблон_сопроводительного_письма/  # everything about your cover letters; read only
   persons/<person_id>/
     База_знаний/Жизнеописание.md    # the knowledge base: the person's life story as confirmed facts
     journal/transactions-YYYY-MM.jsonl  # sole authoritative journal, monthly segments, split into -pN parts above 500 lines; only the current segment is written
@@ -71,13 +73,13 @@ Instruction files (Markdown, not code; drafts that have not yet been tried in pr
     state/person.json               # person and profile-list view
     state/quota.json                # monthly counters, rebuilt from the journal
     outbox/<send_attempt_id>/            # prepared send package, never edited
-  Resume/                              # resume template: your Word file, or a PDF converted to Word here
-  CoverLetter/                         # cover letter template, same design as the resume
+  Resume/                              # working documents: CV drafts and the Word copy of the template in use
+  CoverLetter/                         # working documents: letter drafts and the Word copy of the template in use
   profiles/<profile_id>/
     profile.json                    # current confirmed configuration
     registry.json                   # targets, applications and the queue (projection)
     runs/                           # work sessions: plans, results, questions
-    reports/<YYYY-MM>/              # report revisions and manifests (in English, Russian or German)
+    reports/<YYYY-MM>/              # report revisions and manifests (in English, Russian, German or Ukrainian)
   Applications/                       # ALL application work of the person, one tree for all years
     2026/                           # year
       10_October/                   # two-digit month number + English month name
@@ -103,7 +105,7 @@ Every journal line carries person_id and, where applicable, its profile; the sha
 
 **Isolation between people and profiles (procedure, F12).** One folder can serve several people, and they are kept apart by procedure:
 
-- Each person has `persons/<person_id>/` and, for originals, a personal subfolder `Положите_сюда/<name>/` with its own three subfolders (ACCEPTANCE_TESTS.md, KB-04). The agent never opens another person's originals, knowledge base, journal, state, outbox, archives or mail.
+- Each person has `persons/<person_id>/` and, for originals, a personal subfolder `Положите_сюда/<name>/` with its own five subfolders (ACCEPTANCE_TESTS.md, KB-04). The agent never opens another person's originals, knowledge base, journal, state, outbox, archives or mail.
 - A second person is added with a new `person_id`, and the whole first setup is run again for that person (Part A of TODO_FOR_AI.md). The progress of that setup is kept per person in `persons/<person_id>/state/person.json` (`setup_progress`). The `stage` in `workspace.json` describes only the folder and does not mean that a new person is ready.
 - Consent is given per person (`consent_granted` carries that person's `person_id`). A refusal or a withdrawal by one person opens nothing of another person's.
 - Before reading originals, opening mail or writing a journal line, the agent names the active person and checks that the profile and the account belong to that person. If the person is unclear, the agent asks before doing anything else.
@@ -409,7 +411,7 @@ The verification scenarios are in ACCEPTANCE_TESTS.md. Acceptance needs recorded
 
 ## 11. Three languages, one project
 
-English is the primary edition at the root; Russian is in `docs/ru`, German in `docs/de`. The three editions share one data contract, event names and behavior. Update all three when a rule changes. The statistics interface supports `en`, `ru` and `de`; switching it changes labels only, not stored records or the independently chosen CV, letter, email and report languages.
+English is the primary edition at the root; Russian is in `docs/ru`, German in `docs/de`. The four editions share one data contract, event names and behavior. Update all three when a rule changes. The statistics interface supports `en`, `ru` and `de`; switching it changes labels only, not stored records or the independently chosen CV, letter, email and report languages.
 
 ## 12. Local archives and recovery (R01)
 

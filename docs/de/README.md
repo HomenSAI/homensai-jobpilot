@@ -2,7 +2,7 @@ Deutsche Fassung. Maßgeblich ist die englische Fassung (Datei im Hauptverzeichn
 
 # HomenS.AI JobPilot
 
-[English](../../README.md) | [Русский](../ru/README.md) | [Deutsch](README.md)
+[English](../../README.md) | [Русский](../ru/README.md) | [Deutsch](README.md) | [Українська](../uk/README.md)
 
 Ein KI-Agent kann dem lokalen, promptbasierten Ablauf folgen, um Stellen zu recherchieren, zugeschnittene Bewerbungspakete vorzubereiten und Antworten zu verfolgen; die Prüfung durch den Nutzer und die Berechtigungen des Kontos bleiben unverzichtbar.
 

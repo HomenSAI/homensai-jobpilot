@@ -1,0 +1,284 @@
+<!doctype html>
+<!-- © 2026 Serhii Khomenko / HomenS.AI · https://homensai.com/ · https://github.com/HomenSAI · https://www.linkedin.com/in/serhii-khomenko-homensai/
+     Code and markup: PolyForm Noncommercial 1.0.0 — https://polyformproject.org/licenses/noncommercial/1.0.0
+     Documentation text: CC BY-NC 4.0 — https://creativecommons.org/licenses/by-nc/4.0/ -->
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Архітектура і дані | HomenS.AI JobPilot</title>
+<meta name="description" content="Як агент, письмові правила, журнал і локальні файли працюють разом. Інтерактивні схеми показують правила, а не виконують дії.">
+<meta name="author" content="Serhii Khomenko">
+<meta name="theme-color" content="#edf1f4" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0f1720" media="(prefers-color-scheme: dark)">
+<script src="../../assets/theme.js"></script>
+<link rel="icon" type="image/svg+xml" href="../../assets/logo.svg">
+<link rel="stylesheet" href="../../assets/site.css">
+<script src="../../assets/site.js" defer></script>
+</head>
+<body>
+<a class="skip-link" href="#main">Перейти до змісту</a>
+<header class="topbar"><div class="wrap">
+<a class="brand" href="PROJECT_OVERVIEW.html" aria-label="HomenS.AI JobPilot"><svg class="brand-mark" focusable="false" viewBox="0 0 100 100" aria-hidden="true"><path d="M50.0 13.0 L48.1 13.1 L46.1 13.2 L44.2 13.5 L42.3 13.8 L42.2 21.0 L40.7 21.5 L39.2 22.0 L37.8 22.6 L36.4 23.3 L31.5 18.0 L29.8 19.0 L28.3 20.1 L26.7 21.2 L25.2 22.5 L28.8 28.8 L27.7 29.9 L26.7 31.1 L25.7 32.4 L24.8 33.7 L18.0 31.5 L17.0 33.2 L16.2 35.0 L15.5 36.7 L14.8 38.6 L21.0 42.2 L20.7 43.8 L20.4 45.3 L20.2 46.9 L20.0 48.4 L13.0 50.0 L13.1 51.9 L13.2 53.9 L13.5 55.8 L13.8 57.7 L21.0 57.8 L21.5 59.3 L22.0 60.8 L22.6 62.2 L23.3 63.6 L18.0 68.5 L19.0 70.2 L20.1 71.7 L21.2 73.3 L22.5 74.8 L28.8 71.2 L29.9 72.3 L31.1 73.3 L32.4 74.3 L33.7 75.2 L31.5 82.0 L33.2 83.0 L35.0 83.8 L36.7 84.5 L38.6 85.2 L42.2 79.0 L43.8 79.3 L45.3 79.6 L46.9 79.8 L48.4 80.0 L50.0 87.0 Z" fill="#c9a24a"/><path d="M50 20 A30 30 0 0 1 50 80" fill="none" stroke="#2bb3c4" stroke-width="5"/><g fill="none" stroke="#2bb3c4" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M50 36 H64 L70 30"/><path d="M50 50 H72"/><path d="M50 64 H62 L68 70"/></g><g fill="#2bb3c4"><circle cx="71" cy="29" r="4"/><circle cx="74" cy="50" r="4"/><circle cx="69" cy="71" r="4"/></g><circle cx="50" cy="50" r="9" fill="currentColor"/><circle cx="50" cy="50" r="3.5" fill="#c9a24a"/></svg><span class="brand-word">HomenS<span class="ai">.AI</span> <span class="sub">JobPilot</span></span></a>
+<nav id="site-nav" class="nav-main" aria-label="Сторінки проєкту">
+<a class="nav-link" href="PROJECT_OVERVIEW.html"><i class="nav-dot" aria-hidden="true"></i>Огляд</a>
+<a class="nav-link" href="overview_install.html"><i class="nav-dot teal" aria-hidden="true"></i>Встановлення</a>
+<a class="nav-link" href="overview_profile.html"><i class="nav-dot gold" aria-hidden="true"></i>Профіль</a>
+<a class="nav-link" href="overview_architecture.html" aria-current="page"><i class="nav-dot" aria-hidden="true"></i>Архітектура</a>
+<a class="nav-link" href="overview_safety.html"><i class="nav-dot teal" aria-hidden="true"></i>Безпека</a>
+<a class="nav-link" href="overview_roadmap.html"><i class="nav-dot" aria-hidden="true"></i>План робіт</a>
+<a class="nav-link" href="overview_author.html"><i class="nav-dot gold" aria-hidden="true"></i>Автор</a>
+<a class="nav-link" href="../../dashboard_template/index.html"><i class="nav-dot teal" aria-hidden="true"></i>Статистика</a>
+</nav>
+<div class="nav-tools">
+<a class="nav-link site-link" href="https://homensai.com/" rel="me noopener">homensai.com</a>
+<span class="langs" role="group" aria-label="Мова"><a href="../../overview_architecture.html" lang="en" hreflang="en">EN</a><a href="../ru/overview_architecture.html" lang="ru" hreflang="ru">RU</a><a href="../de/overview_architecture.html" lang="de" hreflang="de">DE</a><a href="overview_architecture.html" lang="uk" hreflang="uk" class="on" aria-current="true">UK</a></span>
+<button class="icon-btn" id="theme-btn" type="button" aria-label="Перемкнути світлу / темну тему" title="Перемкнути світлу / темну тему"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M12 4v16"/><path d="M12 4a8 8 0 0 1 0 16z" fill="currentColor"/></svg></button>
+<button class="icon-btn menu-btn" id="menu-btn" type="button" aria-expanded="false" aria-controls="site-nav" aria-label="Меню" title="Меню"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+</div>
+</div></header>
+<main id="main" class="wrap">
+<div class="page-head">
+<div class="eyebrow">Архітектура</div>
+<h1>Правила і файли: <span class="accent">агент веде записи</span></h1>
+<p class="lead">Окремого застосунку для пошуку роботи чи надсилання пошти немає. ШІ-агент дотримується письмових правил і веде локальні файли. Сторінка статистики використовує HTML/CSS/JavaScript лише для того, щоб перевіряти, сортувати, фільтрувати й показувати знімок, записаний агентом. Сервер, Docker або SQL-база даних не потрібні.</p>
+<div class="pills"><span class="pill">Архітектура 1.5</span><span class="pill">UTF-8 JSON / JSONL</span><span class="pill">Без SQL</span></div>
+</div>
+
+<section id="diagram">
+<div class="sec-head"><div class="num">01 · Частини</div><h2>Як частини пов’язані між собою</h2><p>Агент виконує робочий процес; локальний перегляд статистики читає знімок і показує його. Поштових дій він не виконує.</p></div>
+<div class="diagram" role="group" aria-label="Архітектура системи">
+<div class="node"><strong>Користувач і чат агента</strong><span>Codex / Claude Code · запитання, дослідження і написання</span></div><div class="arrow" aria-hidden="true">↓</div>
+<div class="node"><strong>Письмові правила</strong><span>AGENTS.md, TODO_FOR_AI.md, специфікація: контрольний список перед кожною дією</span></div><div class="arrow" aria-hidden="true">↓</div>
+<div class="split"><div class="node"><strong>Журнал особи</strong><span>Один рядок на кожну завершену дію; ліміт 44 подання рахується з нього</span></div><div class="node alt"><strong>Gmail</strong><span>Власне авторизоване підключення агента до пошти: читання, надсилання, перевірка</span></div></div>
+<div class="arrow" aria-hidden="true">↓</div><div class="node"><strong>Документи і локальна статистика</strong><span>Записи, черга, DOCX/PDF і HTML-сторінка для кожного профілю</span></div></div>
+<div class="notice"><p>Кожна особа має один авторитетний журнал, <code>persons/&lt;person_id&gt;/journal/transactions-YYYY-MM.jsonl</code> (місячні сегменти), і файл-маркер <code>writer.lock</code>, який існує лише доки один чат пише. Реєстри профілів, черга, <code>Status.txt</code> і статистика можуть бути відновлені з цього журналу. Кілька профілів пошуку мають спільний місячний ліміт, а новий чат може продовжити роботу, не надславши заявку вдруге.</p></div>
+<p style="margin-top:.9rem">Запобіжники — ліміт 44, ніколи не надсилати двічі, один записувач одночасно — це процедури, яких має дотримуватися агент, а не технічні блокування. Тому нове налаштування лише готує чернетки, а автоматичне надсилання потребує явного прийняття користувачем цього обмеження. <a href="../../ARCHITECTURE.md">Докладна архітектура</a> · <a href="../../DATA_CONTRACT.md">Контракт даних</a></p>
+</section>
+
+<section id="data">
+<div class="sec-head"><div class="num">02 · Дані</div><h2>Одна база, упорядкована за місяцями</h2><p>Організації, філії, вакансії, заявки й відповіді — окремі записи зі стабільними ідентифікаторами. Усе, крім журналу, — це перегляд, який можна відновити.</p></div>
+<pre class="tree">HomenSAI-JobPilot/
+  README.md · USER_GUIDE.md · AI_BUILD_SPEC.md
+  ARCHITECTURE.md · DATA_CONTRACT.md · ACCEPTANCE_TESTS.md
+  AGENTS.md · CLAUDE.md · TODO_FOR_AI.md   # інструкції для агента (чернетки)
+  docs/uk/ · docs/ru/ · docs/de/    # мовні редакції
+  assets/                           # спільні стилі сторінок і шрифти
+  dashboard_template/               # сторінка статистики index.html + прикладні дані summary.js
+  Локальные_данные/                 # приватно, ніколи не публікується
+    Положите_сюда/                  # ТУТ ви кладете матеріали
+      1_Мои_документы/              # резюме, дипломи, сертифікати, рекомендації
+      2_Рассказ_о_себе/             # ваша розповідь: розшифровки голосу, нотатки, інтерв’ю
+      3_Шаблон_отчёта/              # необов’язковий шаблон звіту
+      4_Шаблон_резюме/              # ваш макет резюме (DOCX або PDF)
+      5_Шаблон_сопроводительного_письма/ # ваш макет супровідного листа
+    workspace.json                  # етап першого запуску, мова, перевірки інструментів
+    persons/&lt;person_id&gt;/
+      База_знаний/Жизнеописание.md  # база знань: ваша історія життя у вигляді фактів
+      journal/transactions-YYYY-MM.jsonl
+      journal/writer.lock
+    profiles/&lt;profile_id&gt;/
+      profile.json · registry.json
+      runs/ · reports/
+      Resume/ · CoverLetter/  (робочі шаблони Word, зроблені з 4_ і 5_)
+      Applications/2026/10_October/
+        001_Company_City_Role/
+          Company.md · Status.txt
+          Resume_v001.docx/.pdf · CoverLetter_v001.docx/.pdf
+          EmailText_&lt;lang&gt;.txt
+    dashboard/
+      index.html
+      profiles/&lt;profile_id&gt;/
+        summary.js · index.html</pre>
+<p style="margin-top:.6rem"><small>Файли, позначені як «planned» (заплановано), ще не існують. Назва теки <code>Локальные_данные</code> — фіксований технічний шлях у всіх мовних редакціях. Це цільова структура, а не перелік готових модулів.</small></p>
+</section>
+
+<section id="operation">
+<div class="sec-head"><div class="num">03 · Експлуатація</div><h2>Правила експлуатації</h2></div>
+<div class="panel teal"><ul>
+<li>Основна робота відбувається в локальному чаті Codex або Claude Code. Список справ задає порядок завдань; доказ того, що щось зроблено, міститься в журналі.</li>
+<li>Перше налаштування використовує режим чернеток. Черга зберігається в теці, і її обробляє агент.</li>
+<li><strong>Не більше 44 подань резюме на одну особу за календарний місяць</strong>, з усіх профілів і каналів. Повторне подання або заміна після збою доставки використовує слот; пізніший відскок його не повертає.</li>
+<li>JobPilot блокує своє 45-те кероване подання резюме. Незалежні подання користувача не витрачають цю квоту. Ручний запасний варіант для пакета JobPilot — витрачає.</li>
+<li>Звіти показують використані, зарезервовані та залишкові слоти. Підготовлена тека або запланована дата — не доказ надсилання.</li>
+<li>Запрошення, позитивні відповіді та запитання вирішує особа.</li>
+<li>Підтверджені збої доставки зберігаються. За замовчуванням готується не більше однієї відповідної нової компанії як чернетка; автоматична заміна потребує окремого дозволу для цього профілю.</li>
+<li>Запитання про найраніші доступні дати стажування дозволене лише за погодженими правилами профілю — після читання всього листування та перевірки, що його раніше не ставили.</li>
+<li>Місячний звіт нейтральний, обраною мовою, дотримується вашого шаблону, якщо він є, і містить окрему сторінку ринкових рекомендацій.</li>
+<li>Листи Gmail не видаляються і не архівуються, мітки не змінюються.</li>
+<li>Статична HTML-сторінка показує дані й сортує рядки. Особисті документи та облікові дані ніколи не публікуються на GitHub.</li>
+</ul></div>
+</section>
+
+<section id="interactive">
+<div class="sec-head"><div class="num">04 · Інтерактив</div><h2>Як агент працює, крок за кроком</h2><p>Чотири схеми, які можна натискати. Вони показують правила, яких дотримується агент. Ніщо на цій сторінці не надсилає пошту і не змінює файли.</p></div>
+
+<div class="widget" aria-labelledby="t-life">
+<h3 id="t-life">1 · Життя однієї заявки</h3>
+<p class="hint">Натисніть етап, щоб побачити, що агент робить на ньому, яку подію журналу записує і де зупиняється.</p>
+<div class="choice-row" role="group" aria-label="Етапи заявки">
+<button type="button" class="choice-btn" data-stage="0" aria-pressed="true">Пошук</button>
+<button type="button" class="choice-btn" data-stage="1" aria-pressed="false">Картка компанії</button>
+<button type="button" class="choice-btn" data-stage="2" aria-pressed="false">Пакет</button>
+<button type="button" class="choice-btn" data-stage="3" aria-pressed="false">Схвалення</button>
+<button type="button" class="choice-btn" data-stage="4" aria-pressed="false">Надсилання</button>
+<button type="button" class="choice-btn" data-stage="5" aria-pressed="false">Відповідь</button>
+<button type="button" class="choice-btn" data-stage="6" aria-pressed="false">Статус</button>
+<button type="button" class="choice-btn" data-stage="7" aria-pressed="false">Звіт</button>
+</div>
+<div class="out" aria-live="polite"><strong id="life-title"></strong><p id="life-do"></p><p class="ev" id="life-ev"></p><p class="stop" id="life-stop"></p></div>
+</div>
+
+<div class="widget" aria-labelledby="t-gate">
+<h3 id="t-gate">2 · Шлюз надсилання</h3>
+<p class="hint">Оберіть крок, на якому щось не вдається, або жоден. Потім натисніть <em>Наступний крок</em>. Ланцюжок зупиняється на першому збої, і жоден зовнішній виклик не відбувається без рядка наміру.</p>
+<label for="gate-fail">Збій на кроці</label>
+<select id="gate-fail">
+<option value="0">немає</option>
+<option value="1">1 · Незмінний пакет</option>
+<option value="2">2 · Згода, прив’язана до маніфесту</option>
+<option value="3">3 · Резервування і рядок наміру</option>
+<option value="4">4 · Один зовнішній виклик</option>
+<option value="5">5 · Звірка</option>
+<option value="6">6 · Записаний факт</option>
+</select>
+<div class="choice-row"><button type="button" class="choice-btn" id="gate-next">Наступний крок</button><button type="button" class="choice-btn" id="gate-reset">Скинути</button></div>
+<ol class="flow" id="gate-flow"></ol>
+<div class="out" aria-live="polite"><p id="gate-out"></p></div>
+</div>
+
+<div class="widget" aria-labelledby="t-quota">
+<h3 id="t-quota">3 · Денні та місячні ліміти</h3>
+<p class="hint">Денний максимум обирає особа, від 1 до 43. Місячний ліміт 44 ніколи не змінюється.</p>
+<label for="q-day">Денний максимум: <output id="q-count" for="q-day">2</output></label>
+<input type="range" id="q-day" min="1" max="43" value="2">
+<div class="bar" aria-hidden="true"><span id="q-bar"></span></div>
+<div class="out" aria-live="polite"><p id="q-out"></p></div>
+</div>
+
+<div class="widget" aria-labelledby="t-journal">
+<h3 id="t-journal">4 · Частини журналу</h3>
+<p class="hint">Місяць — це один файл, доки він не містить 500 рядків. Далі його продовжують пронумеровані частини. Закрита частина ніколи не редагується.</p>
+<label for="j-lines">Рядків записано цього місяця: <output id="j-count" for="j-lines">620</output></label>
+<input type="range" id="j-lines" min="0" max="1500" step="10" value="620">
+<div class="parts" id="j-parts"></div>
+<div class="out" aria-live="polite"><p id="j-out"></p></div>
+</div>
+</section>
+<script>
+(function () {
+  'use strict';
+  var LIMIT = 44, MONTH = 'transactions-2026-10', SIZE = 500;
+  // Тексти зібрано в одному місці, щоб інші мовні редакції могли їх відтворювати.
+  var L = { event: 'Подія журналу:', stops: 'Зупиняється, якщо:', lastOk: 'Усі шість кроків виконано. Факт записано.', start: 'Натисніть «Наступний крок», щоб запустити ланцюжок.' };
+  var STAGES = [
+    { t: 'Пошук', d: 'Агент шукає вакансії в обраному радіусі, спершу найближчі, і перевіряє реальний час у дорозі обраним транспортом.', ev: 'ще немає', stop: 'Без підтвердженої адреси електронної пошти компанія лишається в реєстрі, але пакет не готується і слот не резервується.' },
+    { t: 'Картка компанії', d: 'Файл Company.md у теці заявки фіксує адресу, її джерело, дату перевірки, вимоги та маршрут.', ev: 'company_registered', stop: 'Друга заявка до тієї самої компанії потребує рішення особи.' },
+    { t: 'Пакет', d: 'Резюме, супровідний лист і текст листа пишуться лише з підтверджених фактів, а потім перевіряються: дати, адресат, вкладення та чутливі дані.', ev: 'package_registered', stop: 'Відсутнє поле або неперевірений чутливий пункт означає, що пакет не реєструється.' },
+    { t: 'Схвалення', d: 'Особа бачить точний пакет на картці надсилання або схвалює місячний план. Попереднє «схвалено» не зараховується.', ev: 'package_approved', stop: 'Будь-яка зміна файла чи адресата після схвалення його анулює.' },
+    { t: 'Надсилання', d: 'Рядок наміру (резервування і send_started) записується і перечитується перед єдиним зовнішнім викликом.', ev: 'quota_reserved, send_started, потім sent_verified і quota_consumed', stop: 'Якщо запис або перечитування не вдалися, нічого не надсилається. Невизначений результат блокує нові надсилання, доки не буде перевірено SENT і Scheduled.' },
+    { t: 'Відповідь', d: 'Читається весь ланцюжок листування. Запрошення, запитання і запити документів передаються особі як needs_user. Автоматичні відповіді лише фіксуються.', ev: 'mail_received, mail_checked', stop: 'Агент ніколи не відповідає роботодавцю автоматично і ніколи не видаляє й не архівує пошту в Gmail.' },
+    { t: 'Статус', d: 'Статус у Status.txt і на сторінці статистики змінюється лише з записаної події, за кодами контракту даних.', ev: 'status_recorded', stop: 'Якщо значення незрозуміле, статус лишається, а випадок передається особі.' },
+    { t: 'Звіт', d: 'Місячні цифри рахуються один раз із фіксованої позиції журналу і показуються однаково на сторінці, у DOCX і в PDF.', ev: 'report_built, statistics_updated', stop: 'Якщо бракує одного з шести значень хвилин, знімок статистики не записується.' }
+  ];
+  var GATE = [
+    { t: 'Незмінний пакет', d: 'Копія точних файлів у outbox, із SHA-256 кожного вкладення, адресатом, обліковим записом, темою, текстом, транспортом і слотом.', out: 'Зупинено на кроці 1. Нічого не надіслано. Схвалення не використовується.' },
+    { t: 'Згода, прив’язана до маніфесту', d: 'Схвалення має відповідати маніфесту. Інакше згода недійсна.', out: 'Зупинено на кроці 2. Нічого не надіслано. Схвалення не відповідає пакету, тому воно недійсне (PACKAGE_CHANGED).' },
+    { t: 'Резервування і рядок наміру', d: 'quota_reserved і send_started записуються одним рядком і перечитуються як останній рядок журналу.', out: 'Зупинено на кроці 3. Зовнішнього виклику не було. Якщо запис або перечитування не вдалися, замок зберігається, а особу інформують.' },
+    { t: 'Один зовнішній виклик', d: 'Рівно один виклик. Без повторів і без «другої копії для певності».', out: 'Зупинено на кроці 4. Виклик не вдався. Повтору немає: що сталося, вирішує звірка на кроці 5.' },
+    { t: 'Звірка', d: 'Точне повідомлення шукають у SENT і Scheduled. Знайдено: далі. Доведено відсутність: failed_before_send. Невідомо: send_uncertain.', out: 'Зупинено на кроці 5. Результат невідомий (send_uncertain). Особа вирішує після перевірки. Новий виклик не здійснюється.' },
+    { t: 'Записаний факт', d: 'sent_verified і quota_consumed, або thank_you_sent, ordinary_reply_sent чи gmail_scheduled_verified — залежно від типу повідомлення.', out: 'Зупинено на кроці 6. Факт не вдалося записати. Перегляди перебудовуються з журналу. Повторного надсилання не буде.' }
+  ];
+  function $(id) { return document.getElementById(id); }
+  function el(tag, cls, text) { var e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
+
+  /* 1 · Життя однієї заявки */
+  var stageButtons = document.querySelectorAll('[data-stage]');
+  function showStage(i) {
+    var s = STAGES[i];
+    stageButtons.forEach(function (b, j) { b.setAttribute('aria-pressed', j === i ? 'true' : 'false'); });
+    $('life-title').textContent = s.t;
+    $('life-do').textContent = s.d;
+    $('life-ev').textContent = L.event + ' ' + s.ev;
+    $('life-stop').textContent = L.stops + ' ' + s.stop;
+  }
+  stageButtons.forEach(function (b, j) { b.addEventListener('click', function () { showStage(j); }); });
+  showStage(0);
+
+  /* 2 · Шлюз надсилання */
+  var failAt = 0, done = 0, stopped = false;
+  function renderGate() {
+    var list = $('gate-flow');
+    list.textContent = '';
+    GATE.forEach(function (g, i) {
+      var k = i + 1, cls = 'idle';
+      if (stopped && k === failAt) cls = 'stopped';
+      else if (k <= done) cls = 'done';
+      else if (!stopped && k === done + 1) cls = 'current';
+      var li = el('li', cls), body = el('span');
+      body.appendChild(el('strong', null, g.t));
+      body.appendChild(document.createTextNode(' — ' + g.d));
+      li.appendChild(el('span', 'n', String(k)));
+      li.appendChild(body);
+      list.appendChild(li);
+    });
+    var msg;
+    if (stopped) msg = GATE[failAt - 1].out;
+    else if (done === 0) msg = L.start;
+    else if (done === GATE.length) msg = L.lastOk;
+    else msg = 'Крок ' + done + ' виконано. Далі: ' + GATE[done].t + '.';
+    $('gate-out').textContent = msg;
+  }
+  function nextGate() {
+    if (stopped || done >= GATE.length) return;
+    if (failAt && done + 1 === failAt) { stopped = true; } else { done++; }
+    renderGate();
+  }
+  function resetGate() {
+    failAt = +$('gate-fail').value; done = 0; stopped = false; renderGate();
+  }
+  $('gate-next').addEventListener('click', nextGate);
+  $('gate-reset').addEventListener('click', resetGate);
+  $('gate-fail').addEventListener('change', resetGate);
+  resetGate();
+
+  /* 3 · Денні та місячні ліміти */
+  function renderQuota() {
+    var n = +$('q-day').value, days = Math.ceil(LIMIT / n);
+    $('q-count').textContent = String(n);
+    $('q-bar').style.width = Math.min(100, (n / LIMIT) * 100).toFixed(1) + '%';
+    $('q-out').textContent = 'За ' + n + ' на день місячні місця (' + LIMIT + ') потребують щонайменше ' + days + ' дн. надсилання. Місячний ліміт не змінюється: сорок п’яте подання відхиляється до підготовки. Нове значення діє з наступного локального дня.';
+  }
+  $('q-day').addEventListener('input', renderQuota);
+  renderQuota();
+
+  /* 4 · Частини журналу */
+  function renderJournal() {
+    var total = +$('j-lines').value, parts = Math.max(1, Math.ceil(total / SIZE)), box = $('j-parts');
+    $('j-count').textContent = String(total);
+    box.textContent = '';
+    for (var i = 0; i < parts; i++) {
+      var last = i === parts - 1;
+      var name = i === 0 ? MONTH + '.jsonl' : MONTH + '-p' + (i + 1) + '.jsonl';
+      var lines = last ? total - SIZE * (parts - 1) : SIZE;
+      var box1 = el('div', 'part ' + (last ? 'current' : 'closed'), name);
+      box1.appendChild(el('small', null, 'записано: ' + lines + ' · ' + (last ? 'поточна' : 'закрита, ніколи не редагується')));
+      box.appendChild(box1);
+    }
+    var next = (total > 0 && total % SIZE === 0) ? MONTH + '-p' + (parts + 1) + '.jsonl' : (parts === 1 ? MONTH + '.jsonl' : MONTH + '-p' + parts + '.jsonl');
+    $('j-out').textContent = 'Наступний рядок записується у ' + next + '.' + (parts > 1 ? ' Відтворення, підрахунки та архіви читають файли за місяцем і номером частини, а не за назвою файлу.' : '');
+  }
+  $('j-lines').addEventListener('input', renderJournal);
+  renderJournal();
+})();
+</script>
+
+<div class="pager"><a href="overview_profile.html">← Профіль</a><a href="overview_safety.html">Безпека →</a></div>
+</main>
+<footer class="site-footer"><div class="wrap">
+<p>© 2026 Serhii Khomenko / HomenS.AI · <a href="https://homensai.com/" rel="me noopener">homensai.com</a> · <a href="https://github.com/HomenSAI" rel="me noopener">GitHub</a> · <a href="https://www.linkedin.com/in/serhii-khomenko-homensai/" rel="me noopener">LinkedIn</a> · <a href="https://orcid.org/0009-0009-5371-9717" rel="me noopener">ORCID</a> · <a href="https://doi.org/10.5281/zenodo.23160031" rel="noopener">DOI</a> · <a href="mailto:info@homensai.com">info@homensai.com</a></p>
+<p>Документи: <a href="../../README.md">README</a> · <a href="../../USER_GUIDE.md">Посібник користувача</a> · <a href="../../AI_BUILD_SPEC.md">Специфікація збирання</a> · <a href="../../ARCHITECTURE.md">Архітектура</a> · <a href="../../DATA_CONTRACT.md">Контракт даних</a> · <a href="../../ACCEPTANCE_TESTS.md">Сценарії приймання</a> · <a href="../../REVIEW.md">Огляд і статус</a></p>
+<p><small>Документація · <a href="../../VERSION">VERSION</a> · 10 жовтня 2026 · без особистих профілів, резюме та облікових даних. Код: PolyForm Noncommercial 1.0.0 · документація: CC BY-NC 4.0 (LICENSE-DOCS). Обов’язкові реквізити авторства — у файлі NOTICE.</small></p>
+</div></footer>
+<a class="to-top" id="to-top" href="#" aria-label="Нагору сторінки"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"/></svg>Нагору</a>
+</body></html>

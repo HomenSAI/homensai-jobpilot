@@ -49,16 +49,57 @@ jobs:
           fi
           printf '%s\n' "$v" > VERSION_NEW
           printf 'VERSION=%s\n' "$v" >> "$GITHUB_ENV"
-      - name: Synchronize VERSION on main
+      - name: Synchronize VERSION and the roadmap history on main
         shell: bash
         run: |
           set -euo pipefail
           mv VERSION_NEW VERSION
-          if ! git ls-files --error-unmatch VERSION >/dev/null 2>&1 || ! git diff --quiet -- VERSION; then
+          gen_history() {
+            # $1 changelog, $2 language label, $3 roadmap page: rewrites the block between the markers
+            local changelog="$1" label="$2" html="$3" list
+            list="$(mktemp)"
+            {
+              printf '<ol class="history">\n'
+              awk -v label="$label" '
+                function esc(s) { gsub(/&/, "\\&amp;", s); gsub(/</, "\\&lt;", s); gsub(/>/, "\\&gt;", s); return s }
+                function clean(s) { gsub(/\*\*/, "", s); gsub(/`/, "", s); sub(/^ +/, "", s); sub(/ +$/, "", s); return s }
+                /^## [0-9]+\.[0-9]+\.[0-9]+ / {
+                  if (count == 6) exit
+                  count++
+                  ver[count] = $2
+                  d = $0; sub(/^## [0-9.]+ — /, "", d); date[count] = d
+                  sum[count] = ""; want = 1; next
+                }
+                want && index($0, "**" label "**") == 1 {
+                  t = substr($0, length(label) + 5)
+                  sum[count] = esc(clean(t)); want = 0
+                }
+                END {
+                  for (i = 1; i <= count; i++) {
+                    printf "<li><strong>%s</strong> · %s", ver[i], date[i]
+                    if (sum[i] != "") printf "<br>%s", sum[i]
+                    print "</li>"
+                  }
+                }
+              ' "$changelog"
+              printf '</ol>\n'
+            } > "$list"
+            awk -v listfile="$list" '
+              /<!-- release-history:start -->/ { print; while ((getline line < listfile) > 0) print line; skip = 1; next }
+              /<!-- release-history:end -->/ { skip = 0 }
+              !skip { print }
+            ' "$html" > "$html.new"
+            mv "$html.new" "$html"
+            rm -f "$list"
+          }
+          gen_history CHANGELOG.md 'English.' overview_roadmap.html
+          gen_history docs/ru/CHANGELOG.md 'Русский.' docs/ru/overview_roadmap.html
+          gen_history CHANGELOG.md 'English.' docs/de/overview_roadmap.html
+          git add -- VERSION overview_roadmap.html docs/ru/overview_roadmap.html docs/de/overview_roadmap.html
+          if ! git diff --cached --quiet; then
             git config user.name 'github-actions[bot]'
             git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-            git add VERSION
-            git commit -m "Version ${VERSION} (written from CHANGELOG.md)"
+            git commit -m "Version ${VERSION} (written from CHANGELOG.md; roadmap history updated)"
             # A normal push rejects a stale checkout; never force or overwrite newer work.
             git push origin HEAD:main
           fi

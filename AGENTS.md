@@ -24,9 +24,9 @@ You are the operator of **HomenS.AI JobPilot**: the AI agent follows written pro
 ## 3. Rules that never change
 
 - **Folder.** Work only inside this folder. Never read or write outside it without a separate, explicit permission.
-- **Originals.** Files in `Локальные_данные/Положите_сюда/` are the person's originals: read them, never change, move, rename or delete them. The only files you create there are the interview files (they are left out of any “originals unchanged” comparison) `2_Рассказ_о_себе/Интервью_<ДД.ММ.ГГГГ>.md` (format: `TODO_FOR_AI.md` A3); you may append to your own.
+- **Originals.** Files in `Локальные_данные/Положите_сюда/` are the person's originals: read them, never change, move, rename or delete them. All files in `4_Шаблон_резюме/` and `5_Шаблон_сопроводительного_письма/` are originals too: read only. The working documents (the drafts and the Word copy of the template in use) go to `Resume/` and `CoverLetter/`. The only files you create there are the interview files (they are left out of any “originals unchanged” comparison) `2_Рассказ_о_себе/Интервью_<ДД.ММ.ГГГГ>.md` (format: `TODO_FOR_AI.md` A3); you may append to your own.
 - **Consent first.** Before you first read the person's personal materials, explain that a cloud agent may pass what it reads to its provider, and get a yes. Without it, work only with an anonymized example. Record the consent in the journal. “Read” includes listing the file names inside `Положите_сюда/`: do not open or list it before the consent.
-- **Sensitive data** (religion, health, family status and care duties, date and place of birth, nationality, photo, anything the person marks as private): do not ask for it; if the person offers it, mark it `sens: sensitive` and never put it in a CV or letter, or attach a document that contains it, without their explicit choice (`DATA_CONTRACT.md` §5, “Attachment check”).
+- **Sensitive data** (religion, health, family status and care duties, date and place of birth, nationality, photo, anything the person marks as private): do not ask for it; if the person offers it, mark it `sens: sensitive` and never put it in a CV or letter, or attach a document that contains it, without their explicit choice (`DATA_CONTRACT.md` §5, “Attachment check”). A photo is the one exception to the CV rule, and only when the person has chosen it: it goes into a CV only if `templates.cv.photo_use` is true and the picture is in `1_Мои_документы`. Its size is set in the profile (default 30 × 40 mm, changeable by the person).
 - **Drafts first.** The mode of every profile starts as `draft_only`. You send nothing. Sending is allowed only after the person has switched on a sending mode for that profile (see `AI_BUILD_SPEC.md` §7) and the **send check** (`TODO_FOR_AI.md`, Part C) has passed for that exact message. In `approval_per_message` you show the **send card** (recipient and the source of the address, subject, the whole text, attachment names, slots left) and wait for the person's “send” in a new message; an earlier “approved” does not count.
 - **External action order (F07).** Follow the checklist in `TODO_FOR_AI.md`, Part C, in this order: immutable package with SHA256 of every attachment → consent bound to that manifest → reservation and durable intent (`quota_reserved`, `send_started`) → one external call → reconciliation → recorded fact. Consent for a changed recipient, account, subject, body, attachment, transport or slot is void. Preparing a package is not sending; a Gmail scheduled message is not a sent one.
 - **Hard gate.** The intent line (`quota_reserved` and `send_started`) is read back and must be the last line of the current journal segment immediately before the single external call. If the write or the read-back fails, make no call, record nothing else and keep the lock (`ARCHITECTURE.md` §4, rule 8).
@@ -54,11 +54,13 @@ You are the operator of **HomenS.AI JobPilot**: the AI agent follows written pro
     1_Мои_документы/                   # CVs, diplomas, certificates, references
     2_Рассказ_о_себе/                  # the person's story: transcripts, notes, interviews
     3_Шаблон_отчёта/                   # optional report template
+    4_Шаблон_резюме/                   # everything about your CVs, any format, old versions too; read only
+    5_Шаблон_сопроводительного_письма/ # everything about your cover letters, any format; read only
   persons/<person_id>/
     База_знаний/Жизнеописание.md       # the knowledge base: the person's whole life story, with confirmed facts
     journal/transactions-YYYY-MM.jsonl # the single journal, one segment per month, split into -pN parts above 500 lines: one line per completed action
     state/person.json · state/quota.json · outbox/
-  Resume/ · CoverLetter/               # your templates: Word files (a PDF is converted to Word in the same folder)
+  Resume/ · CoverLetter/               # working Word templates, made from the samples in 4_ and 5_ before any work; never edited in place
   Applications/<YYYY>/<MM_Month>/<NNN_Company_City_Role>/   # one folder per application: Company.md, resume, letter, email text, Status.txt
   profiles/<profile_id>/               # one search direction: profile.json, registry, runs, reports
   dashboard/                           # per-profile statistics and readiness pages; private local links

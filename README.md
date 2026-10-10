@@ -1,6 +1,6 @@
 # HomenS.AI JobPilot
 
-[English](README.md) | [Русский](docs/ru/README.md) | [Deutsch](docs/de/README.md)
+[English](README.md) | [Русский](docs/ru/README.md) | [Deutsch](docs/de/README.md) | [Українська](docs/uk/README.md)
 
 An AI agent can follow the local, prompt-based workflow to research jobs, prepare tailored application packages and track replies; user review and account permissions remain essential.
 
