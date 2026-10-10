@@ -43,7 +43,7 @@
 <div class="eyebrow">Install</div>
 <h1>Installation, <span class="accent">step by step</span></h1>
 <p class="lead">The setup takes about 30–40 minutes. Do the steps in order. Every step says what you should see on the screen, so you always know whether it worked. No Git, Python or other developer tools are needed on your computer.</p>
-<div class="pills"><span class="pill">Windows · ChatGPT Desktop · Codex</span><span class="pill">Claude Code is an alternative</span><span class="pill">One action per step</span></div>
+<div class="pills"><span class="pill">Windows · ChatGPT Desktop · Codex</span><span class="pill">Claude Code: compatibility not confirmed</span><span class="pill">One action per step</span></div>
 </div>
 
 <section id="order">
@@ -127,7 +127,7 @@
 <p>Official explanations: <a href="https://learn.chatgpt.com/docs/permission-modes">permission modes</a>, <a href="https://learn.chatgpt.com/docs/sandboxing">sandboxing</a>.</p></li>
 <li><h3>Make the first safe start</h3>
 <p>Type this into the new chat (or simply “Start”):</p>
-<pre class="cmd">Start. Read AGENTS.md and TODO_FOR_AI.md and lead me through the first run.</pre>
+<pre class="cmd">Start. Read AGENTS.md, TODO_FOR_AI.md and OPERATING_REQUIREMENTS.md in the project folder and lead me through the first setup. Ask one question at a time and explain in simple words. Work only in the project folder. Until I check the materials and allow sending, do not send anything and do not put anything into Gmail &quot;Scheduled&quot;.</pre>
 <p>The agent loads its rules by itself (Codex reads AGENTS.md, Claude Code reads CLAUDE.md). It introduces itself, confirms the working folder, checks its tools and then asks you, one question at a time: your name and the language you prefer. Then it asks for your consent to read your personal materials and starts the first setup (step 7). Answer in your own words, by voice if your app has the microphone button.</p>
 <p class="see"><b>You should see:</b> the agent names the correct folder, explains in a few lines what will happen, says that it works in draft-only mode and asks its first question.</p>
 <p class="stuck"><b>If the agent does not know what to do, or says that AGENTS.md or TODO_FOR_AI.md is missing:</b> the folder is the wrong one or the archive is incomplete. Check steps 2 and 3. Do not ask the agent to invent the missing files.</p></li>
@@ -195,7 +195,7 @@
 <article><h3>The agent cannot save a result</h3><p>Check the permission mode and access to the project folder. Do not open access to the whole drive.</p></article>
 <article><h3>Gmail or attachments are unavailable</h3><p>For a connector, check its availability, intended account and read/send permissions; for Browser, check Browser and Computer Use permissions. If neither route works, use EMAIL_TO_SEND.txt and the manual fallback. Do not paste credentials into chat. Verify Scheduled or SENT before marking completion.</p></article>
 <article><h3>A rules or template file is missing</h3><p>The archive may be incomplete, or still a design build. Do not ask the agent to invent files.</p></article>
-<article><h3>Statistics will not open</h3><p>Check that the agent generated <code>dashboard/profiles/&lt;profile_id&gt;/index.html</code>; the clean template contains only sample data.</p></article>
+<article><h3>Statistics will not open</h3><p>Check that the agent generated <code>Локальные_данные/dashboard/profiles/&lt;profile_id&gt;/index.html</code>; the clean template contains only sample data.</p></article>
 </div>
 </section>
 

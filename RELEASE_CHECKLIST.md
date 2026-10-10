@@ -14,7 +14,7 @@ Run these checks on synthetic test data and on a candidate release archive. Do n
 The public release may contain only the files below. Any other file stops the release until it is removed or the list is changed in a reviewed commit.
 
 - Root documents: `README.md`, `USER_GUIDE.md`, `OPERATING_REQUIREMENTS.md`, `AGENTS.md`, `CLAUDE.md`, `TODO_FOR_AI.md`, `AI_BUILD_SPEC.md`, `ARCHITECTURE.md`, `DATA_CONTRACT.md`, `ACCEPTANCE_TESTS.md`, `REVIEW.md`, `RELEASE_CHECKLIST.md`, `CHANGELOG.md`, `VERSION`, `LICENSE`, `LICENSE-DOCS`, `NOTICE`, `PROJECT_OVERVIEW.html`, `overview_*.html`, `.gitignore`.
-- Folders: `docs/` (Russian edition and its files), `dashboard_template/` (clean templates and the sample `summary.js`), `examples/` (neutral examples only), `assets/` (shared styles, scripts and IBM Plex fonts), `.github/workflows/`.
+- Folders: `docs/` (the Russian, German and Ukrainian editions), `dashboard_template/` (clean templates and the sample `summary.js`), `examples/` (neutral examples only), `assets/` (shared styles, scripts and IBM Plex fonts), `.github/workflows/`.
 - Under `Локальные_данные/`: only the empty intake folders and their `README.md` files, and `Вопросы_для_рассказа.md`, as `.gitignore` allows. No other file and no data subfolder.
 
 ## 2. Archive and Git index check
@@ -39,7 +39,7 @@ Run the checks by hand. An automated scanner may help, but it is only one check.
 
 - Check `LICENSE` (PolyForm Noncommercial 1.0.0 notices), `LICENSE-DOCS` (CC BY-NC 4.0 link) and `NOTICE` (author notices and the IBM Plex SIL OFL 1.1 notices).
 - New project-authored instructions and interface strings keep the attribution to Serhii Khomenko / HomenS.AI.
-- The English primary text and the Russian edition describe the same rules. A mismatch is fixed in both.
+- The English primary text and the Russian, German and Ukrainian editions describe the same rules. A mismatch is fixed in every edition.
 
 ## 5. Claims and status
 
@@ -71,7 +71,7 @@ Record the date, repository, branch, commit, archive SHA-256 value, reviewer, an
 ## Status for the current package
 
 - Documentation changes were prepared. Sections 1 to 8 were not run on a candidate release archive.
-- Automated fail-closed allowlist and privacy scan: NOT RUN. No such gate is part of this package, and no script is added to it.
+- Automated privacy check: `.github/workflows/privacy-gate.yml` (GitHub automation, not part of the user's package); tested locally, its first run on GitHub must be checked.
 - Statistics VM checks: not repeated for 1.6.0 in this pass.
 - Full browser, agent, Gmail, Gmail Scheduled, and DOCX/LibreOffice checks: NOT RUN.
 

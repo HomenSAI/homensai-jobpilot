@@ -83,7 +83,7 @@ Format of the knowledge base: `DATA_CONTRACT.md` §3a. Journal line format, even
 | Journal, states, quota, recovery? | `ARCHITECTURE.md`, `DATA_CONTRACT.md` |
 | How is my work checked? | `ACCEPTANCE_TESTS.md` |
 
-All three language editions describe the same rules; the English text is primary.
+All four language editions (English at the root; Russian, German and Ukrainian in `docs/`) describe the same rules; the English text is primary.
 
 ---
 

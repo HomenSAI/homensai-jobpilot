@@ -13,7 +13,7 @@ The first version uses UTF-8 JSON for configuration and records, and JSONL for e
 | Path relative to the root | Role |
 |---|---|
 | `Локальные_данные/persons/<person_id>/state/person.json` | Projection of the person's identity, quota time zone, permitted `profile_id` values and the person's `setup_progress` (§17) |
-| `Локальные_данные/workspace.json` | Workspace id, `format_version`, language, `stage` of the first run, `person_ids` and capability checks (`examples/workspace.example.json`) |
+| `Локальные_данные/workspace.json` | Workspace id, `format_version`, language, `stage` of the first run (in order: `new`, `consent_given`, `story_ready`, `documents_ready`, `knowledge_base_draft`, `knowledge_base_confirmed`, `profile_created`, `ready`; TODO_FOR_AI.md, Part A), `progress`, `run_id`, `person_ids` and capability checks (`examples/workspace.example.json`) |
 | `Локальные_данные/Положите_сюда/1_Мои_документы`, `2_Рассказ_о_себе`, `3_Шаблон_отчёта`, `4_Шаблон_резюме`, `5_Шаблон_сопроводительного_письма` | The person's originals, story and optional report template; the agent only reads them and never changes them |
 | `Локальные_данные/persons/<person_id>/База_знаний/Жизнеописание.md` | The knowledge base: the master source of confirmed facts, see §3a |
 | `Локальные_данные/persons/<person_id>/journal/transactions-YYYY-MM.jsonl` | The only primary journal, kept in monthly segments (§3c): applications, profiles, messages, consent, and the shared quota of the person. Only the current month's segment is written |

@@ -6,22 +6,23 @@
 
 ## Verification scope for this revision
 
-The source was reviewed against GitHub main `0b183dda02fdaf7b4e3c13767990d4839bd11936` (release 1.9.0), preserving the newer folder structure, neutral document samples, daily limits and segmented journal. The revised change was prepared through GitHub source and in-memory checks; no Gmail or employer action was performed.
+What was run, by whom and with what, up to this version. Nothing here used a real Gmail account, a real employer, Codex or the user's own Claude Code.
 
-- 24 checks executed the existing statistics snapshot validator on GitHub source: PASS. These are validator checks, not a rendered-browser test.
-- 23 specification/release-policy simulations: PASS. These model the written quota/recipient/version rules; they do not constitute a deterministic mail sender or live GitHub Actions execution.
-- JSON/JSONL and relative document links were checked. Neutral DOCX/PDF binaries are unchanged from main; no new PDF-to-DOCX or Word/LibreOffice render was run in this revision.
-- The revised Release workflow and real-agent acceptance remain NOT RUN until separately executed and recorded. Capability statements are limited to this evidence.
+- **Executable model of the rules** (`examples/simulation/SIMULATION_REPORT.md`): the tester implemented the written rules as a throw-away model with a simulated mailbox. 46 checks passed: five applications with replies, a rejection, a delivery failure and a mail error, double sending, limits, two chats, interrupted work. Two inconsistencies in the rules were found and fixed (1.17.1).
+- **Dry runs of the first setup**: a Claude agent in a sandbox copy of the package followed `CLAUDE.md`, `AGENTS.md` and `TODO_FOR_AI.md` for three made-up people (nothing prepared; folders filled; a long voice story) up to the stage `ready`. Their findings were applied in 1.18.0. LibreOffice was used there to convert and render templates.
+- **Statistics page**: opened in headless Microsoft Edge in Russian and German (the value-of-time block, the quota bars); earlier validator checks of the snapshot (18 in a JavaScript VM). Layout on phones, keyboard use and printing were not tested.
+- **Privacy gate**: `.github/workflows/privacy-gate.yml` was run locally on a clean copy (passed) and on a copy with planted personal data (failed as expected); it has not yet run on GitHub.
+- **Not run**: Codex; the user's Claude Code; real Gmail (reading, SENT and Scheduled proof, attachments); Word; real users; scheduled tasks.
 
 ## Where the project stands
 
 **In this release:** bilingual operating procedures; updated README, author story and separate code/documentation license notices; expanded journal and schedule contracts; and fixes to the statistics snapshot validation, historical counters, empty-month selector, shared quota display and result ordering.
 
-**Verified in this work copy:** 18 targeted statistics-page VM checks passed, including malformed snapshots, duplicate response IDs, late replies, empty-month selection, missing shared quota totals and technical-error sorting. This is not a full browser test or an agent/Gmail acceptance cycle. These checks belong to the 1.5.1 work copy; they were not repeated for 1.6.0.
+**Verified in this work copy:** 18 targeted statistics-page VM checks passed, including malformed snapshots, duplicate response IDs, late replies, empty-month selection, missing shared quota totals and technical-error sorting. This is not a full browser test or an agent/Gmail acceptance cycle. These checks belong to an earlier work copy (1.5.1).
 
 **Development environment:** the project was developed, audited locally and checked virtually in the **Codex** environment. **Anthropic / Claude Code was not tested in this cycle**; its compatibility is not confirmed. The Codex checks are not a full certification of the project, and the independent full acceptance of the source agent remains incomplete.
 
-**Not done yet:** full manual acceptance of the agent workflow; real Codex or Claude Code onboarding; real Gmail scheduled-send and reply processing; DOCX rendering through Word/LibreOffice; the automated GitHub release/privacy gate. Gmail, employers and external AI APIs were not connected.
+**Not done yet:** full manual acceptance of the agent workflow; real Codex or Claude Code onboarding; real Gmail scheduled-send and reply processing; DOCX rendering through Word; the first run of the release and privacy-gate workflows on GitHub. Gmail, employers and external AI APIs were not connected.
 
 The workflow deliberately has no separate job-search or mail-sending application. The statistics view contains HTML/CSS/JavaScript for validating, sorting, filtering and displaying the agent-written snapshot. The safeguards for consent, quota and external mail remain procedures rather than technical locks. Versions 1.2–1.4 established the bilingual architecture, person-scoped journal and agent playbook; version 1.5 expands the monthly workflow, Gmail reconciliation, local archives, reporting, attribution files and statistics validation.
 
@@ -59,20 +60,20 @@ Each capability is marked with one of three labels: **verified in tests** (a rec
 | Capability | Label | Note |
 |---|---|---|
 | Statistics page: validation, sorting and filtering of a sample snapshot | verified in tests | 18 checks in an isolated JavaScript VM on synthetic data (1.5.1 work copy); not a browser test |
-| Statistics page in a real browser (layout, keyboard, mobile width, print, offline) | described, not tested in practice | |
-| Agent first setup, interview, knowledge base and search settings | described, not tested in practice | No agent run recorded |
+| Statistics page in a real browser (layout, keyboard, mobile width, print, offline) | verified in tests | Opened in headless Edge (Russian, German); layout on phones, keyboard and printing not tested |
+| Agent first setup, interview, knowledge base and search settings | verified in tests | A Claude agent in a sandbox, three made-up people (`examples/simulation/SIMULATION_REPORT.md`); not Codex, not the user's installation |
 | Monthly limit of 44 CV submissions and send consent | described, not tested in practice | Procedural only; there is no technical lock |
 | Gmail reading and classification of whole threads | described, not tested in practice | No Gmail account was connected |
 | Gmail Schedule send and verification in Scheduled | described, not tested in practice | Not verified; the package does not claim that scheduled sending works |
 | Gmail sending of any message, by any route | described, not tested in practice | Sending through Gmail is not verified |
 | File upload by the built-in browser | not available | The official Browser documentation (checked 8 October 2026) says the agent cannot automate file uploads there |
-| DOCX/PDF creation and visual rendering | described, not tested in practice | No Word or LibreOffice rendering was run; no DOCX has been visually checked |
+| DOCX/PDF creation and visual rendering | described, not tested in practice | LibreOffice conversion was used in the sandbox dry runs; Word was not tested |
 | Daily 16:00 check as a registered recurring task | described, not tested in practice | Depends on the platform's scheduler; registration must be verified in the installation |
 | Daily report by Gmail to the user (R08) | described, not tested in practice | Requires consent and mock tests before use |
 | Readiness page (static template filled by the agent) | described, not tested in practice | No browser or data test recorded |
 | Local archives and recovery (R01) | described, not tested in practice | |
 | Document review in the agent chat (second way of adding a document) | described, not tested in practice | |
-| Release privacy gate (automated allowlist) | not available | Only the manual `RELEASE_CHECKLIST.md` exists |
+| Release privacy gate (automated check) | verified in tests | `.github/workflows/privacy-gate.yml`; tested locally on a clean copy and on a copy with planted personal data; not yet run on GitHub |
 | Anthropic / Claude Code | described, not tested in practice | Compatibility not confirmed |
 
 ## Work not yet verified or not implemented
@@ -81,10 +82,10 @@ Each capability is marked with one of three labels: **verified in tests** (a rec
 - Gmail connector and built-in-browser capabilities must be checked separately on the user's installed account, including whole-thread reading, Gmail Scheduled, attachments, SENT proof, and interrupted-session recovery. No real Gmail account was connected for this review.
 - DOCX/PDF creation and page-by-page rendering in Word or LibreOffice have not been exercised end-to-end by the agent.
 - A complete step-by-step setup for Claude Code is not written; the detailed installation guide is for Codex on Windows.
-- The automated GitHub release workflow and any fail-closed privacy gate still need an authorized post-publication verification. The manual release checklist is present; it is not a technical enforcement mechanism.
+- The release workflow and the privacy gate (`.github/workflows/privacy-gate.yml`) still need their first run on GitHub. The manual release checklist stays.
 - The shared 44-per-person monthly quota, approvals, Gmail operations, scheduling, archives and report delivery are procedures, not hard locks or guaranteed background services.
-- The daily report by Gmail (R08), the price and plan statements (checked on 8 October 2026 from the official pricing page; not re-verified in the 1.6.0 pass, because the official sites could not be reached from the work environment), and the two-way document review (R19) need a recorded run before they can be called tested.
-- The German edition of the idea section and of the examples follows in a later phase.
+- The daily report by Gmail (R08), the price and plan statements (checked on 8 October 2026 from the official pricing page; not re-verified since), and the two-way document review (R19) need a recorded run before they can be called tested.
+- Neutral CV, cover-letter and report templates exist only in English and Ukrainian; German and Russian are missing.
 
 The `.gitignore`, example settings and statistics template can be inspected locally, but they do not prove the agent workflow works. Agent scenarios are not marked PASS without a recorded manual check and evidence.
 

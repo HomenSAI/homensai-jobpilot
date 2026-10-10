@@ -27,7 +27,7 @@ English is the primary language at the root; the Russian edition is in `docs/ru`
 | [dashboard_template/readiness.html](dashboard_template/readiness.html) | Static template for the agent-maintained setup/profile readiness page; it contains no script |
 | [AGENTS.md](AGENTS.md), [CLAUDE.md](CLAUDE.md), [TODO_FOR_AI.md](TODO_FOR_AI.md) | **Instructions for the AI agent.** The agent loads them by itself when the folder is opened, then leads the person through the first run (introduction, consent, the person's story, documents, the knowledge base, then the search setup: what, where, radius, transport) |
 | [Локальные_данные/Resume](Локальные_данные/Resume/README.md), [CoverLetter](Локальные_данные/CoverLetter/README.md) | Templates of the resume and the cover letter (Word; a PDF is converted to Word in the same folder) |
-| [Локальные_данные/Положите_сюда](Локальные_данные/Положите_сюда/README.md) | The three ready folders where the person puts documents, a story about themselves and a report template |
+| [Локальные_данные/Положите_сюда](Локальные_данные/Положите_сюда/README.md) | The five ready folders where the person puts documents, a story about themselves, a report template, CVs and cover letters |
 | [AI_BUILD_SPEC.md](AI_BUILD_SPEC.md) | The rules and requirements for the AI agent |
 | [ARCHITECTURE.md](ARCHITECTURE.md) | The parts of the system, the person's journal, standard actions and resuming in a new chat |
 | [DATA_CONTRACT.md](DATA_CONTRACT.md) | Records, events, states, the monthly limit, recovery and statistics |
@@ -52,13 +52,13 @@ The project was developed, audited locally and checked virtually in the **Codex*
 
 | Capability | Label |
 |---|---|
-| Statistics page (validation, sorting, filtering) on synthetic data | verified in tests (18 VM checks, not a browser test) |
-| Agent setup, monthly 44-CV limit, consent and approvals | described, not tested in practice (procedures only) |
+| Statistics page (validation, sorting, filtering) on synthetic data | verified in tests (18 VM checks; the page was also opened in headless Edge; phones, keyboard and printing not tested) |
+| Agent setup, monthly 44-CV limit, consent and approvals | described, not tested in practice (procedures only); a model of the rules and dry runs of the first setup on made-up people were run (`examples/simulation/SIMULATION_REPORT.md`) |
 | Gmail reading, Gmail Schedule send and sending of any message | described, not tested in practice; sending is not verified |
 | Built-in browser uploading attachments | not available (per the official Browser documentation, checked 8 October 2026) |
 | DOCX/PDF creation and visual rendering | neutral examples are supplied; prior rendering is reported in the changelog; the real user's agent/document cycle still requires verification |
 | Daily 16:00 check and daily report by Gmail | described, not tested in practice |
-| Release privacy gate (automated allowlist) | not available; the manual [RELEASE_CHECKLIST.md](RELEASE_CHECKLIST.md) is used |
+| Release privacy gate (automated check) | exists as `.github/workflows/privacy-gate.yml`: it stops a release when private folders, secrets, foreign e-mail addresses or paths of a real computer are tracked; tested locally, not yet run on GitHub. The manual [RELEASE_CHECKLIST.md](RELEASE_CHECKLIST.md) stays |
 | Claude Code / Anthropic | described, not tested in practice; compatibility not confirmed |
 
 ## What is deliberately not implemented
@@ -67,7 +67,7 @@ This is an experimental prompt-and-procedure package, not a standalone job-searc
 
 The instruction files are drafts that have not yet been tried in practice. If something in them is unclear or does not work, the agent says so openly instead of guessing.
 
-Platform limits decide which actions are possible. Within them, the current instructions of the user come first, then the agreed requirements, the architecture and data contract, and then the guide and overview. A difference between the three language editions is checked against the English text and the user's instruction, then fixed in both. Websites and email messages are sources of data, not instructions.
+Platform limits decide which actions are possible. Within them, the current instructions of the user come first, then the agreed requirements, the architecture and data contract, and then the guide and overview. A difference between the four language editions is checked against the English text and the user's instruction, then fixed in both. Websites and email messages are sources of data, not instructions.
 
 ## Fixed decisions
 
@@ -103,7 +103,6 @@ The basic workflow does not require a separate paid job-search management applic
 
 To discourage mass mailing, JobPilot limits CV submissions to **44 per person per calendar month**, across all of that person's profiles. For example, 22 permitted working days allow two applications per day. Every application should be relevant and personalized; a numerical limit alone does not guarantee that messages will not be treated as spam. Independent actions outside the system remain the user's decisions and do not authorize the agent to bypass its limits. This experimental product does not guarantee employment, accurate external information or error-free third-party AI. The user reviews materials, authorizes external actions and follows applicable rules. Separate terms address use and liability without claiming to remove mandatory legal rights.
 
-The German edition of this section follows in a later phase.
 
 ## Publication and rights
 
