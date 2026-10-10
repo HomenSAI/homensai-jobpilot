@@ -6,6 +6,16 @@ The project version is in the file [VERSION](VERSION). The project is an AI-agen
 
 Rules: `MAJOR.MINOR.PATCH`. MAJOR changes when data formats or rules change so that old data no longer fits. MINOR is a new feature or a new part of the documentation. PATCH is a fix or a wording change without new capabilities. Every change to `main` adds a line here; the number is raised when a release is made. Each release gets a git tag `vX.Y.Z`. **Language rule (from 1.22.0, for all HomenS.AI repositories):** every entry is written in English first, and the same text in Russian directly below it (`**English.**` block, then `**Русский.**` block, each with its own bullet list). The GitHub release notes are taken from this section, so every release reads English first, Russian below. The same bilingual entry appears in `CHANGELOG.md` and `docs/ru/CHANGELOG.md`. Entries before 1.22.0 are kept as they were written.
 
+## 1.22.2 — 10 October 2026
+
+**English.** The author page shows the author's robot from the HomenS.AI style core to the right of the heading: the gear of the logo turns into a robot head and winks, and the word “HomenS.AI” appears under it; a button replays the animation. On a phone the robot stands above the heading; with “reduce motion” it is shown at once. The robot code is the author's own and is copied unchanged from the style core. Four languages. A page change, so the patch number is raised.
+
+- **Files:** `assets/robot.js`, `assets/logo-word.js`, `assets/author-robot.js`, `assets/site.css`, `overview_author.html` in four languages.
+
+**Русский.** На странице автора справа от заголовка появился робот автора из единого ядра стиля HomenS.AI: шестерёнка логотипа превращается в голову робота и подмигивает, под ним появляется надпись «HomenS.AI»; кнопка повторяет анимацию. На телефоне робот стоит над заголовком; при настройке «меньше движения» он показан сразу. Код робота — собственный код автора, скопирован из ядра стиля без изменений. Четыре языка. Это изменение страницы, поэтому повышен номер исправления.
+
+- **Файлы:** `assets/robot.js`, `assets/logo-word.js`, `assets/author-robot.js`, `assets/site.css`, `overview_author.html` на четырёх языках.
+
 ## 1.22.1 — 10 October 2026
 
 **English.** The Russian, German and Ukrainian editions of the six instruction files are translated anew from the shorter 1.22.0 English text (same headings, tables and technical names in all four languages). Several overview pages are rewritten in plain words for people who are not programmers: the CV and cover-letter templates (steps, two cards and a short explanation of every link), the rules for the facts of the knowledge base, the monthly report and the journal. No rule changed, so the patch number is raised.
