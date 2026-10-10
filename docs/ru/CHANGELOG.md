@@ -6,6 +6,16 @@
 
 Правила: `MAJOR.MINOR.PATCH`. MAJOR меняется, когда формат данных или правила изменились так, что старые данные не подходят. MINOR — новая функция или новая часть документации. PATCH — исправление или правка формулировок без новых возможностей. Каждое изменение в `main` добавляет строку сюда; номер повышается при выпуске. Каждый выпуск получает git-тег `vX.Y.Z`. **Правило языков (с версии 1.22.0, для всех репозиториев HomenS.AI):** каждая запись пишется сначала по-английски, а прямо под ней — тот же текст по-русски (блок `**English.**`, затем блок `**Русский.**`, у каждого свой список). Описание релиза на GitHub берётся из этого раздела, поэтому каждый релиз читается сначала по-английски, ниже по-русски. Одна и та же двуязычная запись есть в `CHANGELOG.md` и `docs/ru/CHANGELOG.md`. Записи до 1.22.0 остаются как были.
 
+## 1.24.1 — 10 October 2026
+
+**English.** The statistics page has the same top menu as the overview pages (overview, installation, profile, architecture, safety, roadmap, author, statistics) in the chosen language, with a menu button on phones. The menu was never there before; it is shown when the page sits in the package (the template or a profile's copy in `Local_Data/dashboard/`). On very narrow phones the header of all pages now fits without a sideways scroll.
+
+- **Files:** `dashboard_template/index.html`, `assets/site.css`, DATA_CONTRACT §9.5 in four languages.
+
+**Русский.** На странице статистики появилось то же верхнее меню, что на страницах обзора (обзор, установка, профиль, архитектура, безопасность, план работ, автор, статистика), на выбранном языке, а на телефоне — кнопка меню. Раньше меню там не было вовсе; оно показывается, когда страница лежит внутри пакета (шаблон или копия профиля в `Local_Data/dashboard/`). На очень узких телефонах шапка всех страниц теперь помещается без прокрутки вбок.
+
+- **Файлы:** `dashboard_template/index.html`, `assets/site.css`, DATA_CONTRACT §9.5 на четырёх языках.
+
 ## 1.24.0 — 10 October 2026
 
 **English.** A daily full archive for safety. During the first setup (A9) the agent creates a daily task that copies the whole `Local_Data` folder into `Local_Data/Archive/<YYYY-MM-DD>_daily/`, checks every file against a manifest, and makes the first archive at once; the person chooses how many daily archives to keep. With such a copy the whole system can be restored after a broken or lost computer. The statistics page now reminds the person to copy the archive to a USB stick: it shows the last archive and its date (with a warning when it is two or more days old), a link that opens the archive folder, a “Copy path” button and three short steps (Win+E, Ctrl+L, Ctrl+V, Enter). The agent writes the folder link and path into the page data. A browser page cannot open File Explorer by itself, so the copied path is the way there. The guide explains the USB copy and gives a prompt for agents without scheduled tasks. Four languages. A new feature, so the minor number is raised.

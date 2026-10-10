@@ -2,6 +2,7 @@
 
 Kurze Zusammenfassung jeder Veröffentlichung in einfachen Worten. Technische Einzelheiten stehen in CHANGELOG.md. Eine Zeile pro Veröffentlichung: `- Version | Datum | Text`.
 
+- 1.24.1 | 10. Oktober 2026 | Die Statistikseite hat oben das Projektmenü wie die anderen Seiten.
 - 1.24.0 | 10. Oktober 2026 | Jeden Tag entsteht ein vollständiges Archiv Ihrer Daten; die Statistikseite erinnert an die Kopie auf einen USB-Stick und verlinkt den Ordner.
 - 1.23.1 | 10. Oktober 2026 | Die Statistikseite zeigt nach dem Herunterladen wieder das Beispiel; eine rote Schaltfläche „Beispiel zurücksetzen“ löscht es einmal und verschwindet dann.
 - 1.23.0 | 10. Oktober 2026 | Alle Ordner haben jetzt englische Namen; eine Tabelle erklärt jeden Namen auf Russisch, Deutsch und Ukrainisch.

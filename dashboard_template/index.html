@@ -126,8 +126,17 @@ td.time { font-family:var(--mono); white-space:nowrap; color:var(--muted); } td 
 .site-footer { border-top:1px solid var(--line); margin-top:2rem; padding:1.25rem 0 2.5rem; color:var(--muted); font-size:.9rem; } .site-footer p { margin:0 0 .4rem; }
 .to-top { position:fixed; right:1rem; bottom:1rem; z-index:40; display:inline-flex; align-items:center; gap:.4rem; height:2.75rem; padding:0 1rem 0 .8rem; color:var(--accent); background:var(--surface); border:1px solid var(--line); border-radius:999px; box-shadow:0 2px 8px rgba(0,0,0,.18); font:600 .85rem var(--mono); text-decoration:none; }
 .to-top svg { width:1rem; height:1rem; fill:none; stroke:currentColor; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
-@media (max-width:1000px) { .nav-main { display:none; } }
+.nav-link { display:flex; align-items:center; gap:.3rem; font-size:.72rem; letter-spacing:.04em; white-space:nowrap; text-transform:uppercase; color:var(--muted); border-radius:9px; padding:.45rem .35rem; text-decoration:none; }
+.nav-link:hover { color:var(--text); background:color-mix(in srgb, var(--text) 7%, transparent); }
+.nav-link[aria-current="page"] { color:var(--text); box-shadow:inset 0 -2px 0 var(--accent); border-radius:0; }
+.nav-dot { width:.45rem; height:.45rem; border-radius:50%; background:var(--accent); flex:none; }
+.nav-dot.teal { background:var(--teal, #147283); } .nav-dot.gold { background:var(--gold, #7d5f16); }
+.menu-btn { display:none; }
+@media (max-width:1000px) { .topbar .wrap { position:relative; } .menu-btn { display:inline-flex; }
+  .nav-main { display:none; position:absolute; left:0; right:0; top:100%; flex-direction:column; align-items:stretch; padding:.4rem 1.25rem 1rem; background:var(--bg); border-bottom:1px solid var(--line); z-index:30; }
+  .nav-main.open { display:flex; } .nav-link { padding:.75rem .25rem; border-bottom:1px solid var(--line); border-radius:0; font-size:.85rem; } }
 @media (max-width:640px) { .wrap { padding:0 1rem; } .brand .sub { display:none; } select, input[type=search] { min-width:0; width:100%; } .ctl-row > label { flex:1 1 100%; } }
+@media (max-width:420px) { .topbar .wrap { gap:.4rem; } .langs button { padding-left:.45rem; padding-right:.45rem; } .icon-btn { width:2.3rem; height:2.3rem; } }
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior:auto; } }
 @media print { .topbar, .controls, .to-top, .help { display:none; } details.year:not([open]) > *:not(summary), details.month:not([open]) > *:not(summary) { display:block; } body { background:#fff; color:#000; } }
 
@@ -165,6 +174,7 @@ td.time { font-family:var(--mono); white-space:nowrap; color:var(--muted); } td 
 <nav class="nav-main" id="demo-nav" aria-label="Project pages" hidden></nav>
 <div class="tools">
 <span class="langs" role="group" aria-label="Language"><button type="button" data-lang="en" aria-pressed="true">EN</button><button type="button" data-lang="ru" aria-pressed="false">RU</button><button type="button" data-lang="de" aria-pressed="false">DE</button><button type="button" data-lang="uk" aria-pressed="false">UK</button></span>
+<button class="icon-btn menu-btn" id="menu-btn" type="button" aria-expanded="false" aria-controls="demo-nav" aria-label="Menu" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
 <button class="icon-btn" id="theme-btn" type="button" aria-label="Theme"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M12 4v16"/><path d="M12 4a8 8 0 0 1 0 16z" fill="currentColor"/></svg></button>
 </div>
 </div></header>
@@ -1215,8 +1225,34 @@ td.time { font-family:var(--mono); white-space:nowrap; color:var(--muted); } td 
     }
     document.getElementById("demo-note").hidden = !(isSample && !cleared);
     renderArchive();
+    buildNav();
     var btn = document.getElementById("clear-sample");
     btn.textContent = t("sample_clear");
+  }
+  // ---- the project menu, as on the overview pages; only where the package pages are next to this page ----
+  var NAV = {"en": ["Overview", "Installation", "Profile", "Architecture", "Safety", "Roadmap", "Author", "Statistics"], "ru": ["Обзор", "Установка", "Профиль", "Архитектура", "Безопасность", "План работ", "Автор", "Статистика"], "de": ["Überblick", "Installation", "Profil", "Architektur", "Sicherheit", "Fahrplan", "Autor", "Statistik"], "uk": ["Огляд", "Встановлення", "Профіль", "Архітектура", "Безпека", "План робіт", "Автор", "Статистика"]};
+  var NAV_PAGES = ["PROJECT_OVERVIEW.html", "overview_install.html", "overview_profile.html", "overview_architecture.html", "overview_safety.html", "overview_roadmap.html", "overview_author.html", null];
+  var NAV_DOTS = ["", "teal", "gold", "", "teal", "", "gold", "teal"];
+  function packageRoot() {
+    var path = decodeURIComponent(location.pathname).replace(/\\/g, "/");
+    if (/\/dashboard_template\/[^\/]*$/.test(path)) return "../";
+    if (/\/Local_Data\/dashboard\/profiles\/[^\/]+\/[^\/]*$/.test(path)) return "../../../../";
+    return null;
+  }
+  function buildNav() {
+    var nav = document.getElementById("demo-nav"), mb = document.getElementById("menu-btn"), root = packageRoot();
+    nav.textContent = "";
+    if (root === null) { nav.hidden = true; mb.hidden = true; return; }
+    var dir = lang === "en" ? root : root + "docs/" + lang + "/";
+    NAV[lang].forEach(function (label, i) {
+      var a = el("a", "nav-link", null);
+      a.href = NAV_PAGES[i] ? dir + NAV_PAGES[i] : "index.html?lang=" + lang;
+      if (!NAV_PAGES[i]) a.setAttribute("aria-current", "page");
+      var dot = el("i", "nav-dot" + (NAV_DOTS[i] ? " " + NAV_DOTS[i] : ""), null); dot.setAttribute("aria-hidden", "true");
+      a.appendChild(dot); a.appendChild(document.createTextNode(label)); nav.appendChild(a);
+    });
+    document.getElementById("brand").href = dir + "PROJECT_OVERVIEW.html";
+    nav.hidden = false; mb.hidden = false;
   }
   // ---- reminder: copy the daily archive to a USB stick (DATA_CONTRACT.md §11.9); a page cannot open File Explorer, so the path is copied ----
   function renderArchive() {
@@ -1287,6 +1323,10 @@ td.time { font-family:var(--mono); white-space:nowrap; color:var(--muted); } td 
   });
   var toTop = document.getElementById("to-top");
   window.addEventListener("scroll", function () { toTop.hidden = window.scrollY < 600; }, { passive: true });
+  document.getElementById("menu-btn").addEventListener("click", function () {
+    var nav = document.getElementById("demo-nav"), open = nav.classList.toggle("open");
+    this.setAttribute("aria-expanded", String(open));
+  });
   document.getElementById("theme-btn").addEventListener("click", function () {
     var root = document.documentElement; var dark = root.getAttribute("data-theme") === "dark" || (!root.getAttribute("data-theme") && matchMedia("(prefers-color-scheme: dark)").matches);
     root.setAttribute("data-theme", dark ? "light" : "dark");

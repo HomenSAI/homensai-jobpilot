@@ -497,6 +497,7 @@ Kein Feld `group` oder `delivery`.
 - Sprache aus dem URL-Parameter `lang`, sonst `default_language`, sonst `en`; Namen und Notizen unübersetzt.
 - Mit `demo` `true`: ein Hinweis mit einer roten, pulsierenden Schaltfläche „Beispiel zurücksetzen“ (ohne Pulsieren bei reduzierter Bewegung); ein Druck löscht das Beispiel für diese Kopie der Seite in diesem Browser, danach verschwinden Hinweis und Schaltfläche dauerhaft; sie löscht das Beispiel nur in diesem Browser löscht; ein echter Snapshot (`demo` `false`) wird nie gelöscht.
 - Mit `archive`: eine Erinnerung „Kopieren Sie Ihr Archiv auf einen USB-Stick“, das letzte tägliche Archiv und sein Datum (eine Warnung, wenn es zwei oder mehr Tage alt ist oder fehlt), ein Link, der den Archivordner im Browser öffnet, eine Schaltfläche, die `folder_path` kopiert, und drei kurze Schritte: den Datei-Explorer öffnen (Win+E), den Pfad in die Adressleiste einfügen (Strg+L, Strg+V, Enter), den neuesten Ordner auf den USB-Stick kopieren. Eine Browserseite kann den Datei-Explorer nicht selbst öffnen; der kopierte Pfad ist daher der Weg dorthin.
+- Das Projektmenü der Übersichtsseiten (Überblick, Installation, Profil, Architektur, Sicherheit, Fahrplan, Autor, Statistik) in der Seitensprache; sichtbar, wenn die Seite im Paket liegt (`dashboard_template/` oder `Local_Data/dashboard/profiles/<profile_id>/`), sonst ausgeblendet.
 - Browserspeicher: nur Farbschema und das Kennzeichen „Beispiel gelöscht“; keine Datei geschrieben, keine Netzwerkanfrage.
 
 ### 9.6 Prüfung und Schreibverfahren des Agenten

@@ -337,3 +337,5 @@ h1 .accent { background-size: 200% 100%; animation: shine 6s ease-in-out infinit
 @keyframes hm-wordglow { 0%, 100% { text-shadow: 0 0 0 transparent; } 40% { text-shadow: 0 0 .6em color-mix(in srgb, var(--teal) 70%, transparent); } }
 @media (prefers-reduced-motion: reduce) { .robo-word .l, .robo-word::after { transition: none; } .robo-word.wait.on .ai .l { animation: none; } }
 @media (max-width: 760px) { .author-hero { grid-template-columns: 1fr; } .author-robot { order: -1; } }
+/* Very narrow phones: the header fits without a sideways scroll */
+@media (max-width: 420px) { .topbar .wrap { gap: .4rem; } .langs button { padding-left: .45rem; padding-right: .45rem; } .icon-btn { width: 2.3rem; height: 2.3rem; } }

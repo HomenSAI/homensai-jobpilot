@@ -495,6 +495,7 @@ No `group` or `delivery` field.
 - Language from the `lang` URL parameter, else `default_language`, else `en`; names and notes untranslated.
 - With `demo` `true`: a notice with a red, pulsing “Reset sample” button (no pulsing with reduced motion); one press clears the sample for this copy of the page in this browser, and the notice and button then disappear for good; a real snapshot (`demo` `false`) is never cleared.
 - With `archive`: a reminder “copy your archive to a USB stick”, the last daily archive and its date (a warning when it is two or more days old or missing), a link that opens the archive folder in the browser, a button that copies `folder_path`, and three short steps: open File Explorer (Win+E), paste the path into the address bar (Ctrl+L, Ctrl+V, Enter), copy the newest folder to the USB stick. A browser page cannot open File Explorer by itself, so the copied path is the way there.
+- The project menu of the overview pages (overview, installation, profile, architecture, safety, roadmap, author, statistics) in the page language, shown when the page sits in the package (`dashboard_template/` or `Local_Data/dashboard/profiles/<profile_id>/`); elsewhere it is hidden.
 - Browser storage: theme and sample-cleared flag only; no file written, no network request.
 
 ### 9.6 Validation and the agent's write procedure
