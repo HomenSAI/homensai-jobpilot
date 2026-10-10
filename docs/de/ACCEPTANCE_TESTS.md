@@ -10,6 +10,8 @@ Autor: Serhii Khomenko / HomenS.AI · https://homensai.com/ · CC BY-NC 4.0.
 
 Zu jedem Szenario werden festgehalten: ID, die Version der Dokumente und des verwendeten Agenten, die Ausgangsbedingungen, das tatsächliche Ergebnis, PASS/FAIL/NOT RUN, Pfade zu den Nachweisen (Journalzeilen, Dateien, Bildschirmfotos) und die beobachteten Einschränkungen. Das Protokoll wird in einem Markdown-Log im Datenordner der Nutzerin oder des Nutzers geführt. Das Lesen der Dokumentation ersetzt das Testen der Mail-Verbindung nicht. Ein Bestehen zeigt, dass dieser Agent diesmal den Regeln gefolgt ist; es ist keine Garantie für spätere Läufe.
 
+**Ein Modelllauf ist kein Abnahmelauf.** `examples/simulation/SIMULATION_REPORT.md` beschreibt einen Lauf der schriftlichen Regeln als ausführbares Modell auf synthetischen Daten, mit einem simulierten Postfach. Er zeigt, dass die Regeln stimmig sind und sich Schritt für Schritt befolgen lassen. Es ist kein Lauf eines Agenten im Chat, es wurde kein echtes Gmail verwendet, und der Status keines der folgenden Szenarien ändert sich dadurch.
+
 ## Grundszenarien
 
 | ID | Bedingungen und Handlung | Erwartetes Ergebnis |

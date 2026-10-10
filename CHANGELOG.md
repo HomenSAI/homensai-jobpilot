@@ -6,6 +6,14 @@ The project version is in the file [VERSION](VERSION). The project is an AI-agen
 
 Rules: `MAJOR.MINOR.PATCH`. MAJOR changes when data formats or rules change so that old data no longer fits. MINOR is a new feature or a new part of the documentation. PATCH is a fix or a wording change without new capabilities. Every change to `main` adds a line here; the number is raised when a release is made. Each release gets a git tag `vX.Y.Z`. Each entry is written in Russian first, with the English text directly below it. The same entry appears in both language files.
 
+## 1.17.1 — 10 October 2026
+
+**English.** Two inconsistencies in the rules are fixed: a refused send is always recorded as `send_blocked` (the playbook said “only if the person asked”, the data contract said “always”), and the line `send_started` of a thank-you or an ordinary reply now carries `reply_to_gmail_message_id`, so that an open attempt can be matched to its repeat key. A new workflow `privacy-gate.yml` stops a publication when private folders, secrets, foreign e-mail addresses or paths of a real computer are tracked; the release now waits for it. Synthetic output of a model run of the rules (journal, replies, statuses, quota) is added under `examples/simulation/`, and the acceptance document says that a model run is not an acceptance run. This is a fix and a new check without new user features, so the patch number is raised.
+
+- **Rules:** TODO_FOR_AI.md (Part C, send check), DATA_CONTRACT.md (§3c `send_started`); all four editions.
+- **Release:** `.github/workflows/privacy-gate.yml`; `release.yml` waits for it.
+- **Examples:** `examples/simulation/` (synthetic, EXAMPLE ONLY).
+
 ## 1.17.0 — 10 October 2026
 
 **English.** The Roadmap page is reorganised. The version history is now a short summary in plain words for each release, kept in `HISTORY.md` (one file per language) and turned into the page by the release workflow; the Ukrainian page is now updated by the workflow too. The “Finished” and “Not done yet” lists are rewritten without technical terms, and the section “What remains to be done” is removed from the page: the list for the developer is now the root file `REMAINING_WORK.md`, and the page points to GitHub for the extended description. The Author page loses its sections “Background” and “Projects” and gets a new introduction; the contact and licence sections stay. This is a new part of the documentation, so the minor number is raised.

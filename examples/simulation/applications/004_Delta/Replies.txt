@@ -1,0 +1,15 @@
+=== MESSAGE gmail_message_id=gb39a179c ===
+Sender: Mail Delivery Subsystem <mailer-daemon@googlemail.example>
+Reply-To: not provided by the mail tool
+To: anna.example@gmail.example
+Message-ID: <ed68e347-85d@employer.example>
+Thread: tb8ba1372
+Date: Tue, 13 Oct 2026 15:09:15 +0200
+Sending IP: not provided by the mail tool
+Received: not provided by the mail tool
+Authentication-Results: spf=pass dkim=pass dmarc=pass
+Subject: Delivery Status Notification (Failure)
+Attachments: no attachments
+--- BODY (verbatim) ---
+550 5.1.1 The email account that you tried to reach does not exist.
+=== END MESSAGE ===

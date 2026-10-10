@@ -1,0 +1,15 @@
+=== MESSAGE gmail_message_id=g9abba551 ===
+Sender: HR Team <hr@beta.example>
+Reply-To: not provided by the mail tool
+To: anna.example@gmail.example
+Message-ID: <37a1c868-24e@employer.example>
+Thread: t217b3276
+Date: Tue, 13 Oct 2026 15:09:15 +0200
+Sending IP: 203.0.113.11
+Received: from mx.employer.example ([203.0.113.11]) by mail.example
+Authentication-Results: spf=pass dkim=pass dmarc=pass
+Subject: Re: Bewerbung Mechatroniker
+Attachments: no attachments
+--- BODY (verbatim) ---
+Vielen Dank für Ihr Interesse. Wir haben uns für andere Bewerber entschieden.
+=== END MESSAGE ===

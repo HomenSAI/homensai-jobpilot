@@ -1,0 +1,15 @@
+=== MESSAGE gmail_message_id=g894bef77 ===
+Sender: Dr. Maria Beispiel <m.beispiel@alpha.example>
+Reply-To: personal@alpha.example
+To: anna.example@gmail.example
+Message-ID: <d7b04976-3d2@employer.example>
+Thread: tb5ffa382
+Date: Tue, 13 Oct 2026 15:09:15 +0200
+Sending IP: 203.0.113.10
+Received: from mx.employer.example ([203.0.113.10]) by mail.example
+Authentication-Results: spf=pass dkim=pass dmarc=pass
+Subject: Re: Bewerbung Mechatroniker
+Attachments: Einladung.pdf (application/pdf, 52341 bytes)
+--- BODY (verbatim) ---
+Guten Tag Frau Example, wir möchten Sie zu einem Gespräch einladen. Bitte bringen Sie Ihre Zeugnisse mit. Termin: Dienstag, 10 Uhr, per Video.
+=== END MESSAGE ===

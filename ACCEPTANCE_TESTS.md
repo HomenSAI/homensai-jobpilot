@@ -8,6 +8,8 @@ Author: Serhii Khomenko / HomenS.AI · https://homensai.com/ · CC BY-NC 4.0.
 
 For each scenario record: ID, the version of the documents and the agent used, the starting conditions, the actual result, PASS/FAIL/NOT RUN, paths to the evidence (journal lines, files, screenshots) and the limitations observed. The record is kept in a Markdown log in the user's data folder. Reading the documentation is not a substitute for testing the mail connection. A pass shows that this agent followed the rules this time; it is not a guarantee for later runs.
 
+**A model run is not an acceptance run.** `examples/simulation/SIMULATION_REPORT.md` describes a run of the written rules as an executable model on synthetic data, with a simulated mailbox. It shows that the rules are consistent and can be followed step by step. It is not a run by an agent in a chat, uses no real Gmail, and changes the status of no scenario below.
+
 ## Basic scenarios
 
 | ID | Conditions and action | Expected result |

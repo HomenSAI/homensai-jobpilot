@@ -2,6 +2,7 @@
 
 Short summary of every release in plain words. Technical details are in CHANGELOG.md. One line per release: `- version | date | text`.
 
+- 1.17.1 | 10 October 2026 | Fixed two inconsistencies in the sending rules and added an automatic check that stops a release if personal data or secrets would be published. Added example output of a simulated run on made-up data.
 - 1.17.0 | 10 October 2026 | Tidied the Roadmap page: the version history is now written in plain language, and the list of remaining developer work moved to a separate file on GitHub. The Author page lost its experience and projects sections and got a warmer introduction.
 - 1.16.3 | 10 October 2026 | Removed an outdated note on the Safety page.
 - 1.16.2 | 10 October 2026 | Safety page: added a clear statement that the AI agent you choose, and its provider, are responsible for where your data goes once the agent has read it.
