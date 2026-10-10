@@ -2,6 +2,7 @@
 
 Kurze Zusammenfassung jeder Veröffentlichung in einfachen Worten. Technische Einzelheiten stehen in CHANGELOG.md. Eine Zeile pro Veröffentlichung: `- Version | Datum | Text`.
 
+- 1.22.3 | 10. Oktober 2026 | Bereit für die Öffentlichkeit: Entwicklernotizen liegen getrennt, und jede Person darf JobPilot für die eigene Stellensuche nutzen.
 - 1.22.2 | 10. Oktober 2026 | Die Autorenseite zeigt den HomenS.AI-Roboter neben der Überschrift.
 - 1.22.1 | 10. Oktober 2026 | Die Anweisungen sind neu ins Russische, Deutsche und Ukrainische übersetzt; mehrere Seiten erklären alles in einfachen Worten.
 - 1.22.0 | 10. Oktober 2026 | Die Anweisungen für den Agenten sind halb so lang und nennen jede Regel einmal; Fehler in den Journal-Befehlen, der Limit-Zählung und der Ersteinrichtung sind behoben.

@@ -1,5 +1,7 @@
 # Handoff for the next AI session
 
+> **Developer notes, not for users and not for the agent that runs a job search** (see `dev/README.md`).
+
 For the AI agent that continues the work on this repository. Written 10 October 2026, version 1.19.2. Not for users. Read `REMAINING_WORK.md` too. The owner reads Russian; report to the owner in Russian.
 
 ## Rules of work (from the owner)

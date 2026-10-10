@@ -110,7 +110,7 @@ Two mistakes were made by the testers themselves (a directory listing of the who
 - A contradiction between an attachment and the confirmed facts is shown to the person.
 - Smaller points: the age counts as sensitive; `quota.json` is created in A9; private facts are shown for confirmation by category; skipped topics need no knowledge-base line; one `knowledge_base_updated` line per write; `uuidgen` alternatives and a unique tail of the last line are allowed; example settings gained `holiday_source` and `dst_rule`; the README of the materials folder lists all five folders; the version badge of every page is now kept equal to `VERSION` by the workflow (its pattern did not match badges with a `style` attribute, so the pages showed an old version).
 
-### Still open (see `REMAINING_WORK.md`)
+### Still open (see `dev/REMAINING_WORK.md`)
 
 - Neutral CV, letter and report templates exist only in English and Ukrainian; German and Russian are missing.
 - A lock file that is empty because its owner stopped between creating and writing it.

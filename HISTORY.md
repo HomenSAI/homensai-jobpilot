@@ -2,6 +2,7 @@
 
 Short summary of every release in plain words. Technical details are in CHANGELOG.md. One line per release: `- version | date | text`.
 
+- 1.22.3 | 10 October 2026 | Ready for public access: developer notes moved aside, and anyone may use JobPilot for their own job search.
 - 1.22.2 | 10 October 2026 | The author page shows the HomenS.AI robot next to the heading.
 - 1.22.1 | 10 October 2026 | The instructions are translated anew into Russian, German and Ukrainian; several pages now explain things in plain words.
 - 1.22.0 | 10 October 2026 | The instructions for the agent are half as long and say each rule once; errors in the journal commands, the limit count and the first setup are fixed.

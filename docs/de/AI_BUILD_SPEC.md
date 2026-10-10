@@ -262,7 +262,7 @@ Für jedes Kriterium werden die entsprechenden Szenarien aus ACCEPTANCE_TESTS.md
 
 ## 12. Arbeitsschritte
 
-Die offenen Arbeiten stehen in [REMAINING_WORK.md](../../REMAINING_WORK.md). Bereitschaft zeigen nur die von Hand ausgeführten Szenarien aus [ACCEPTANCE_TESTS.md](ACCEPTANCE_TESTS.md), zuerst mit synthetischen Daten und erst dann mit Gmail im Lesemodus. Der Versand wird erst nach diesen Prüfungen eingeschaltet.
+Die offenen Arbeiten stehen in [REMAINING_WORK.md](../../dev/REMAINING_WORK.md). Bereitschaft zeigen nur die von Hand ausgeführten Szenarien aus [ACCEPTANCE_TESTS.md](ACCEPTANCE_TESTS.md), zuerst mit synthetischen Daten und erst dann mit Gmail im Lesemodus. Der Versand wird erst nach diesen Prüfungen eingeschaltet.
 
 ## 13. Quellen zu den Anforderungen an Profil und Plattform
 

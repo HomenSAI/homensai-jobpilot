@@ -6,6 +6,16 @@
 
 Правила: `MAJOR.MINOR.PATCH`. MAJOR меняется, когда формат данных или правила изменились так, что старые данные не подходят. MINOR — новая функция или новая часть документации. PATCH — исправление или правка формулировок без новых возможностей. Каждое изменение в `main` добавляет строку сюда; номер повышается при выпуске. Каждый выпуск получает git-тег `vX.Y.Z`. **Правило языков (с версии 1.22.0, для всех репозиториев HomenS.AI):** каждая запись пишется сначала по-английски, а прямо под ней — тот же текст по-русски (блок `**English.**`, затем блок `**Русский.**`, у каждого свой список). Описание релиза на GitHub берётся из этого раздела, поэтому каждый релиз читается сначала по-английски, ниже по-русски. Одна и та же двуязычная запись есть в `CHANGELOG.md` и `docs/ru/CHANGELOG.md`. Записи до 1.22.0 остаются как были.
 
+## 1.22.3 — 10 October 2026
+
+**English.** Preparation for opening the repository to the public. The developer's working notes moved into the new folder `dev/` with a note that they are not for users and not for the agent that runs a job search. `NOTICE` and the README now give an additional permission: any person may use JobPilot for their own job search, also for paid work; offering it to others as a paid service still needs the author's permission. The guide says plainly that the developer uses this way of working for his own job search and it works well for him, while the standardized package is new and not yet tested with other people's accounts. Two releases can no longer run at the same time on GitHub.
+
+- **Files:** `dev/README.md`, `dev/NEXT_SESSION.md`, `dev/REMAINING_WORK.md`, `NOTICE`, README and USER_GUIDE in four languages, `AI_BUILD_SPEC.md` links, `index.html`, `.github/workflows/release.yml`.
+
+**Русский.** Подготовка к открытию репозитория для всех. Рабочие заметки разработчика перенесены в новую папку `dev/` с пометкой, что они не для пользователей и не для агента, который ведёт поиск работы. В `NOTICE` и README добавлено дополнительное разрешение: любой человек может использовать JobPilot для собственного поиска работы, в том числе оплачиваемой; предлагать его другим как платную услугу по-прежнему можно только с разрешения автора. Руководство прямо говорит, что разработчик сам ищет работу таким способом и у него это работает хорошо, а стандартный пакет новый и с чужими аккаунтами ещё не проверялся. Два выпуска на GitHub больше не могут идти одновременно.
+
+- **Файлы:** `dev/README.md`, `dev/NEXT_SESSION.md`, `dev/REMAINING_WORK.md`, `NOTICE`, README и USER_GUIDE на четырёх языках, ссылки в `AI_BUILD_SPEC.md`, `index.html`, `.github/workflows/release.yml`.
+
 ## 1.22.2 — 10 October 2026
 
 **English.** The author page shows the author's robot from the HomenS.AI style core to the right of the heading: the gear of the logo turns into a robot head and winks, and the word “HomenS.AI” appears under it; a button replays the animation. On a phone the robot stands above the heading; with “reduce motion” it is shown at once. The robot code is the author's own and is copied unchanged from the style core. Four languages. A page change, so the patch number is raised.

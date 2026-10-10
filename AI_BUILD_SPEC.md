@@ -260,7 +260,7 @@ For every criterion the corresponding scenarios of ACCEPTANCE_TESTS.md are run a
 
 ## 12. Stages of work
 
-The open work is listed in [REMAINING_WORK.md](REMAINING_WORK.md). Readiness is shown only by the hand-run scenarios of [ACCEPTANCE_TESTS.md](ACCEPTANCE_TESTS.md), first on synthetic data and only then with Gmail in read mode. Sending is enabled only after those checks.
+The open work is listed in [dev/REMAINING_WORK.md](dev/REMAINING_WORK.md). Readiness is shown only by the hand-run scenarios of [ACCEPTANCE_TESTS.md](ACCEPTANCE_TESTS.md), first on synthetic data and only then with Gmail in read mode. Sending is enabled only after those checks.
 
 ## 13. Sources for the profile and platform requirements
 

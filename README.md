@@ -35,7 +35,7 @@ English is the primary language at the root; the Russian edition is in `docs/ru`
 | [RELEASE_CHECKLIST.md](RELEASE_CHECKLIST.md) | Manual privacy, license and verification checks before a release |
 | [REVIEW.md](REVIEW.md) | Project status, verified checks and work that remains |
 | [VERSION](VERSION), [CHANGELOG.md](CHANGELOG.md) | The current version and the history of changes |
-| [HISTORY.md](HISTORY.md), [REMAINING_WORK.md](REMAINING_WORK.md) | The history in plain words; the work that remains (for the developer) |
+| [HISTORY.md](HISTORY.md), [dev/REMAINING_WORK.md](dev/REMAINING_WORK.md) | The history in plain words; the work that remains (for the developer) |
 | [examples/settings.example.json](examples/settings.example.json) | A neutral settings example without personal data. Not an active configuration |
 | [assets/](assets/) | Shared styles, scripts and IBM Plex fonts used by the pages |
 | [LICENSE](LICENSE), [LICENSE-DOCS](LICENSE-DOCS), [NOTICE](NOTICE) | Separate terms and author notices for code and documentation |
@@ -108,7 +108,7 @@ To discourage mass mailing, JobPilot limits CV submissions to **44 per person pe
 
 Working data stays in `Локальные_данные/` and is not part of the public package. `.gitignore` helps to exclude it but does not stop tracking of files that are already in Git, so both the release archive and the Git index are checked before publication. Before any public release the manual checks in [RELEASE_CHECKLIST.md](RELEASE_CHECKLIST.md) are run: a file allowlist, the archive and index check, and a content check for personal data, secrets, real documents and fake-looking real data. These checks are manual; passing them is not proof that no personal data exists.
 
-**Project code**, including the statistics page, is licensed under the [PolyForm Noncommercial License 1.0.0](LICENSE). **Project documentation** is licensed under [CC BY-NC 4.0](LICENSE-DOCS). Both require the stated attribution and noncommercial use; commercial use needs separate permission from the author. This is source-available, not OSI-defined open-source software. These licenses do not cover users' personal documents or third-party materials. IBM Plex fonts retain their separate SIL OFL 1.1 terms in `assets/fonts`. See [NOTICE](NOTICE).
+**Project code**, including the statistics page, is licensed under the [PolyForm Noncommercial License 1.0.0](LICENSE). **Project documentation** is licensed under [CC BY-NC 4.0](LICENSE-DOCS). Both require the stated attribution and noncommercial use; commercial use needs separate permission from the author. As an additional permission (see [NOTICE](NOTICE)), any person may use JobPilot for their own job search, also when they look for paid work; offering it to others as a paid service is not covered. This is source-available, not OSI-defined open-source software. These licenses do not cover users' personal documents or third-party materials. IBM Plex fonts retain their separate SIL OFL 1.1 terms in `assets/fonts`. See [NOTICE](NOTICE).
 
 The product is experimental. Searching and assessing are done by the external agent you choose; the accuracy of information and getting a job are not guaranteed. “Stored locally” does not mean that information read by a cloud agent stays on the computer.
 

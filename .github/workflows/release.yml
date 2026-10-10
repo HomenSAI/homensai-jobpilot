@@ -11,6 +11,11 @@ on:
 permissions:
   contents: write
 
+# Two quick pushes never run two releases at the same time.
+concurrency:
+  group: release
+  cancel-in-progress: false
+
 jobs:
   gate:
     # The release waits for the privacy gate (.github/workflows/privacy-gate.yml).
