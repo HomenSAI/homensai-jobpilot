@@ -35,6 +35,7 @@ English is the primary language at the root; the Russian edition is in `docs/ru`
 | [RELEASE_CHECKLIST.md](RELEASE_CHECKLIST.md) | Manual privacy, license and verification checks before a release |
 | [REVIEW.md](REVIEW.md) | Project status, verified checks and work that remains |
 | [VERSION](VERSION), [CHANGELOG.md](CHANGELOG.md) | The current version and the history of changes |
+| [HISTORY.md](HISTORY.md), [REMAINING_WORK.md](REMAINING_WORK.md) | The history in plain words; the work that remains (for the developer) |
 | [examples/settings.example.json](examples/settings.example.json) | A neutral settings example without personal data. Not an active configuration |
 | [assets/](assets/) | Shared styles, scripts and IBM Plex fonts used by the pages |
 | [LICENSE](LICENSE), [LICENSE-DOCS](LICENSE-DOCS), [NOTICE](NOTICE) | Separate terms and author notices for code and documentation |

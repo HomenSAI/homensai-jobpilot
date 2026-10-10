@@ -50,46 +50,62 @@
 <div class="sec-head"><div class="num">01 · Heute</div><h2>Was vorhanden ist</h2></div>
 <div class="grid2">
 <article class="panel teal"><h3>Fertig</h3><ul>
-<li>Die Regeln für den Agenten: Spezifikation, Architektur, Datenvertrag und Abnahmeszenarien, auf Englisch, Russisch und Deutsch.</li>
-<li>Die Anweisungsdateien für den Agenten als Entwürfe (AGENTS.md, CLAUDE.md, TODO_FOR_AI.md), die fertigen Ordner für Ihre Unterlagen und das Format der Wissensbasis.</li>
-<li>Diese bebilderte Übersicht und die Schritt-für-Schritt-Anleitung zur Installation.</li>
-<li>Die Statistikseite: geprüfte Snapshots, historische Stichtage, leere Monate, Anzeige des gemeinsamen Kontingents und Sortierung nach Ergebnis. Ein lokaler VM-Regressionslauf meldet 18 gezielte Prüfungen als bestanden; das ist kein vollständiger Browser- oder Agententest.</li>
-<li>Betriebsanforderungen für die Monatsvorbereitung, die Terminierung in Gmail mit manuellem Ersatzweg, Archive, tägliche Prüfungen und Berichte, Bereitschaft und Berichtswesen; getrennte Lizenzhinweise für Code und Dokumentation.</li>
+<li>Regeln für den KI-Agenten in vier Sprachen: Englisch, Russisch, Deutsch und Ukrainisch.</li>
+<li>Anweisungsdateien für den Agenten und fertige Ordner für Ihre Unterlagen.</li>
+<li>Eine bebilderte Übersicht und eine Schritt-für-Schritt-Installationsanleitung.</li>
+<li>Die Statistikseite: Ihre Bewerbungen, Antworten, Anteile und gesparte Zeit, mit Sortierung und Filtern.</li>
+<li>Monatsplanung, tägliche Postprüfung, zeitversetztes Senden über Gmail mit manueller Alternative, lokale Sicherungen und Berichte.</li>
+<li>Antworten von Arbeitgebern werden vollständig im Ordner der jeweiligen Bewerbung gespeichert.</li>
+<li>Neutrale Vorlagen für Lebenslauf, Anschreiben und Bericht in Word und PDF.</li>
 </ul></article>
 <article class="panel blue"><h3>Noch nicht erledigt</h3><ul>
-<li>Die Anweisungsdateien für den Agenten (AGENTS.md, CLAUDE.md, TODO_FOR_AI.md) in der Praxis erproben: mit jemandem, der nichts vorbereitet hat, mit jemandem, der die Ordner gefüllt hat, und mit einem Sprachinterview.</li>
-<li>Eine Gmail-Verbindung und ihre genaue Einrichtung prüfen.</li>
-<li>Die Abnahmeszenarien von Hand auf synthetischen Daten durchführen.</li>
-<li>Vollständige Abnahme des Agenten-Ablaufs, von Gmail, Dokumentenrendering und Terminierung mit echten Nutzern.</li>
-<li>Automatisierte Freigabe- und Datenschutzprüfung sowie vollständige Einrichtungsprüfung in Claude Code.</li>
+<li>Den Agenten mit echten Menschen erproben: mit jemandem, der nichts vorbereitet hat, mit jemandem, der die Ordner gefüllt hat, und mit einem Sprachinterview.</li>
+<li>Gmail verbinden und die genaue Einrichtung prüfen.</li>
+<li>Ein vollständiger Test durch einen echten Nutzer: Agent, Gmail, Dokumente und Zeitplan.</li>
+<li>Die englischen, deutschen und ukrainischen Texte von Muttersprachlern prüfen lassen.</li>
+<li>Die Dokumente in Microsoft Word prüfen.</li>
+<li>Echte Quellen für Stellen und Wege verwenden.</li>
+<li>Eine Rechteprüfung aller enthaltenen Materialien vor einer Veröffentlichung.</li>
 </ul></article>
 </div>
 </section>
 
 <section id="history">
-<div class="sec-head"><div class="num">Verlauf</div><h2>Versionsverlauf</h2><p>Wird bei jeder Veröffentlichung aus dem <a href="../../CHANGELOG.md">Änderungsprotokoll</a> erzeugt. Die vollständige Historie steht im Änderungsprotokoll.</p></div>
+<div class="sec-head"><div class="num">Verlauf</div><h2>Versionsverlauf</h2><p>Eine kurze Zusammenfassung jeder Veröffentlichung in einfachen Worten. Die ausführliche technische Beschreibung steht auf <a href="https://github.com/HomenSAI/homensai-jobpilot" rel="noopener">GitHub</a>.</p></div>
 <!-- release-history:start -->
 <ol class="history">
-<li><strong>1.16.3</strong> · 10 October 2026<br>The note at the end of the “Authorship and license” section of the Safety page is removed in all four languages. It said that LICENSE-DOCS and NOTICE were still to be added, which is no longer true: both files are in the repository. This is a wording change without new capabilities, so the patch number is raised.</li>
-<li><strong>1.16.2</strong> · 10 October 2026<br>The Safety page now states plainly who answers for the data: JobPilot works only through a cloud AI agent that the person chooses; where the data goes after the agent reads it, and what the agent's provider does with it, is the responsibility of that agent and its provider. Anyone who is worried that their data may go on beyond their control should not use the product. This is a wording change without new capabilities, so the patch number is raised.</li>
-<li><strong>1.16.1</strong> · 10 October 2026<br>The fourth diagram on the architecture page, “Journal segments”, is removed in all four languages. It showed how the internal journal is split into files, which means nothing to the person using JobPilot. The page now has three diagrams: the path of one application, the six checks before sending, and the daily and monthly limits. This is a text and layout change without new capabilities, so the patch number is raised.</li>
-<li><strong>1.16.0</strong> · 10 October 2026<br>Every employer reply is now saved in full into the application folder, in a new file Replies.txt («Ответы»). For each incoming message the agent writes the sender name and address, Reply-To, Message-ID, date and time with the time zone, the sending IP address and the Received chain, authentication results, subject, recipients, the full text verbatim, and the attachments (name, type, size) or “no attachments”. What the mail tool does not provide is written as “not provided by the mail tool”, nothing is guessed. Earlier blocks are never rewritten, and a message is added once. The journal line mail_received carries the file path and the checksums of the headers and of the text. This is a new capability, so the minor number is raised. On the architecture page, diagram 2 is renamed “Six checks before sending” and rewritten in plain words (what each check does and what happens when it fails), and diagram 3 now says that the daily maximum is only a ceiling, not a minimum number of sending days; all four languages.</li>
-<li><strong>1.15.1</strong> · 10 October 2026<br>The templates block in the Prepare section is redesigned in the site style: four numbered steps, two cards (“No template yet?” and “A photo on the CV”) and a note that the originals are never changed. The block is taken out of a nested card where it sat untidily. This is a layout change without new capabilities, so the patch number is raised.</li>
-<li><strong>1.15.0</strong> · 10 October 2026<br>An index page index.html is added at the root: all pages and documents in one place, with a block for each language edition (EN, RU, DE, UK). It is the page to open first, so it is clear where to start. This is a new part of the documentation, so the minor number is raised.</li>
+<li><strong>1.17.0</strong> · 10. Oktober 2026<br>Die Seite „Fahrplan“ wurde aufgeräumt: Der Versionsverlauf ist jetzt in einfacher Sprache geschrieben, und die Liste der verbleibenden Entwicklerarbeit steht in einer eigenen Datei auf GitHub. Auf der Autorenseite entfielen die Abschnitte zu Erfahrung und Projekten, und die Einleitung wurde lebendiger.</li>
+<li><strong>1.16.3</strong> · 10. Oktober 2026<br>Ein veralteter Hinweis auf der Sicherheitsseite wurde entfernt.</li>
+<li><strong>1.16.2</strong> · 10. Oktober 2026<br>Sicherheitsseite: Es steht nun klar da, dass der von Ihnen gewählte KI-Agent und sein Anbieter dafür verantwortlich sind, wohin Ihre Daten gelangen, nachdem der Agent sie gelesen hat.</li>
+<li><strong>1.16.1</strong> · 10. Oktober 2026<br>Ein verwirrendes technisches Schaubild wurde von der Architekturseite entfernt.</li>
+<li><strong>1.16.0</strong> · 10. Oktober 2026<br>Antworten von Arbeitgebern werden jetzt vollständig im Ordner der jeweiligen Bewerbung gespeichert: wer geschrieben hat, wann, der ganze Text und die Anhänge. Zwei Schaubilder auf der Architekturseite wurden in einfachen Worten neu geschrieben.</li>
+<li><strong>1.15.1</strong> · 10. Oktober 2026<br>Der Abschnitt zu Lebenslauf- und Anschreiben-Vorlagen wurde neu gestaltet und ist nun übersichtlicher.</li>
+<li><strong>1.15.0</strong> · 10. Oktober 2026<br>Eine Startseite, index.html, wurde ergänzt; sie verlinkt alle Seiten und Dokumente in allen vier Sprachen.</li>
+<li><strong>1.14.5</strong> · 10. Oktober 2026<br>Jede Seite zeigt nun oben links die Versionsnummer, damit erkennbar ist, welche Version Sie heruntergeladen haben.</li>
+<li><strong>1.14.4</strong> · 10. Oktober 2026<br>Eine klare Erklärung wurde ergänzt, was in die Vorlagenordner für Lebenslauf und Anschreiben gehört.</li>
+<li><strong>1.14.3</strong> · 10. Oktober 2026<br>Die Sprachschaltflächen wurden korrigiert; sie wurden auf schmalen Bildschirmen gequetscht oder abgeschnitten.</li>
+<li><strong>1.14.2</strong> · 10. Oktober 2026<br>Lücken und Unterschiede zwischen den vier Sprachfassungen wurden gefunden und beseitigt.</li>
+<li><strong>1.14.1</strong> · 10. Oktober 2026<br>Missverständliche Formulierungen zu den Vorlagenordnern wurden korrigiert.</li>
+<li><strong>1.14.0</strong> · 10. Oktober 2026<br>Ukrainisch wurde als vierte Sprache ergänzt, mit neutralen Vorlagen für Lebenslauf, Anschreiben und Bericht. Die Übersetzung muss noch von einer Muttersprachlerin oder einem Muttersprachler geprüft werden.</li>
+<li><strong>1.13.0</strong> · 10. Oktober 2026<br>Die Foto-Regel wurde ergänzt: Ein Foto kommt nur auf Ihren Wunsch in den Lebenslauf und nie in das Anschreiben. Eine Seite, die andere Projekte verglich und nicht hierher gehörte, wurde entfernt.</li>
+<li><strong>1.12.0</strong> · 10. Oktober 2026<br>Die Autorenseite wurde ergänzt, die Links zur offiziellen Dokumentation der Werkzeuge stehen jetzt auf der Sicherheitsseite, und einige ungenaue Aussagen wurden korrigiert.</li>
+<li><strong>1.11.0</strong> · 10. Oktober 2026<br>Das Website-Symbol und interaktive Schaubilder auf der Architekturseite wurden ergänzt.</li>
+<li><strong>1.10.0</strong> · 10. Oktober 2026<br>Das Limit wurde präzisiert: Auf die 44 pro Monat zählen nur Nachrichten, die über JobPilot gesendet werden, nicht Ihre eigene Post. Zwei Bewerbungen hintereinander an dieselbe Adresse werden nun gesperrt. Die Auswahl der Vorlagen für Lebenslauf und Anschreiben wurde abgeschlossen.</li>
+<li><strong>1.9.0</strong> · 10. Oktober 2026<br>Die Aufzeichnung der Aktionen wird jetzt monatsweise geführt, damit sie überschaubar bleibt.</li>
+<li><strong>1.8.0</strong> · 10. Oktober 2026<br>Sie können nun selbst wählen, wie viele Bewerbungen pro Tag hinausgehen dürfen (1 bis 43). Das Monatslimit von 44 bleibt.</li>
+<li><strong>1.7.0</strong> · 10. Oktober 2026<br>Umfassende Sicherheitsprüfung: strengere Kontrollen vor jedem E-Mail-Versand, Schutz vor doppeltem Senden, eine deutsche Fassung und eine zuverlässigere Statistikseite. Noch nicht mit echtem Gmail getestet.</li>
+<li><strong>1.6.0</strong> · 9. Oktober 2026<br>Jede Bewerbung hat nun einen eigenen, übersichtlichen Ordner. Die Status wurden klarer (wartend, eingeladen, abgelehnt und warum), die Statistikseite zeigt Anteile und gesparte Zeit, und Versionsnummern werden automatisch vergeben.</li>
+<li><strong>1.5.x</strong> · 9. Oktober 2026<br>Ergänzt wurden die Monatsplanung, eine tägliche Postprüfung, zeitversetztes Senden über Gmail mit manueller Alternative, eine Bereitschaftsseite und das Limit von 44 pro Monat.</li>
+<li><strong>1.4.x</strong> · 7.–8. Oktober 2026<br>Der Agent kann nun selbstständig starten: Anweisungsdateien, fertige Ordner für Ihre Unterlagen und eine Ersteinrichtung, die mit Ihrer eigenen Geschichte beginnt. Eine unterbrochene Einrichtung wird dort fortgesetzt, wo sie aufgehört hat.</li>
+<li><strong>1.3.x</strong> · 7. Oktober 2026<br>Klargestellt, dass JobPilot nur aus Regeln und Dateien besteht, ohne Programmcode. Die Statistikdaten liegen jetzt in einer eigenen Datei.</li>
+<li><strong>1.2.0</strong> · 7. Oktober 2026<br>Erste Veröffentlichung: Übersichtsseiten, Installationsanleitung und Statistikseite.</li>
+<li><strong>1.0–1.1</strong> · vor dem 7. Oktober 2026<br>Frühere Entwürfe vor der Veröffentlichung des Projekts.</li>
 </ol>
 <!-- release-history:end -->
 </section>
 <section id="todo">
-<div class="sec-head"><div class="num">05 · Als Nächstes</div><h2>Was noch zu tun ist</h2></div>
-<div class="panel"><ul>
-<li>Die Anweisungsdateien in Codex und in Claude Code erproben und korrigieren, was die Agenten falsch verstehen.</li>
-<li>Ein erster vollständiger Test auf synthetischen Daten, von Hand in einem Chat: Profil → Ziel → Paket → Plan → simulierte Antwort → Bericht und Offline-HTML.</li>
-<li>Prüfungen unterbrochener Arbeit und von zwei gleichzeitig schreibenden Chats.</li>
-<li>Danach Gmail-Lesen und kontrollierter Versand mit Nachweisprüfungen. Jedes Profil wählt den Entwurfsmodus, die Freigabe jeder Nachricht oder — mit akzeptierter Einschränkung — eine automatische Warteschlange.</li>
-<li>Quellen für Stellen und Wege sowie deren Nutzungsbedingungen.</li>
-<li>Geplante Agentenläufe, wo verfügbar; die manuelle Wiederaufnahme muss für sich allein funktionieren.</li>
-<li>Rechte- und Datenschutzprüfungen vor der Veröffentlichung.</li>
-</ul></div>
+<div class="sec-head"><div class="num">05 · Entwickler</div><h2>Für Entwickler</h2></div>
+<div class="panel"><p>Die ausführliche Beschreibung, das vollständige Änderungsprotokoll und die Liste der verbleibenden Entwicklungsarbeit stehen auf <a href="https://github.com/HomenSAI/homensai-jobpilot" rel="noopener">GitHub</a>.</p></div>
 </section>
 
 <div class="pager"><a href="overview_safety.html">← Sicherheit</a><span></span></div>

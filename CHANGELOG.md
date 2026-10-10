@@ -6,6 +6,14 @@ The project version is in the file [VERSION](VERSION). The project is an AI-agen
 
 Rules: `MAJOR.MINOR.PATCH`. MAJOR changes when data formats or rules change so that old data no longer fits. MINOR is a new feature or a new part of the documentation. PATCH is a fix or a wording change without new capabilities. Every change to `main` adds a line here; the number is raised when a release is made. Each release gets a git tag `vX.Y.Z`. Each entry is written in Russian first, with the English text directly below it. The same entry appears in both language files.
 
+## 1.17.0 — 10 October 2026
+
+**English.** The Roadmap page is reorganised. The version history is now a short summary in plain words for each release, kept in `HISTORY.md` (one file per language) and turned into the page by the release workflow; the Ukrainian page is now updated by the workflow too. The “Finished” and “Not done yet” lists are rewritten without technical terms, and the section “What remains to be done” is removed from the page: the list for the developer is now the root file `REMAINING_WORK.md`, and the page points to GitHub for the extended description. The Author page loses its sections “Background” and “Projects” and gets a new introduction; the contact and licence sections stay. This is a new part of the documentation, so the minor number is raised.
+
+- **Files:** `HISTORY.md`, `docs/ru/HISTORY.md`, `docs/de/HISTORY.md`, `docs/uk/HISTORY.md`, `REMAINING_WORK.md`; links in `index.html` and `README.md`.
+- **Release:** the workflow reads `HISTORY.md` instead of `CHANGELOG.md` for the page, includes the Ukrainian page, and warns when `HISTORY.md` has no line for the newest version.
+- **Pages:** roadmap and author pages (EN, RU, DE, UK).
+
 ## 1.16.3 — 10 October 2026
 
 **English.** The note at the end of the “Authorship and license” section of the Safety page is removed in all four languages. It said that LICENSE-DOCS and NOTICE were still to be added, which is no longer true: both files are in the repository. This is a wording change without new capabilities, so the patch number is raised.

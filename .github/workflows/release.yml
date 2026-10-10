@@ -49,39 +49,30 @@ jobs:
           fi
           printf '%s\n' "$v" > VERSION_NEW
           printf 'VERSION=%s\n' "$v" >> "$GITHUB_ENV"
+          for h in HISTORY.md docs/ru/HISTORY.md docs/de/HISTORY.md docs/uk/HISTORY.md; do
+            first="$(awk -F ' [|] ' '/^- / { print substr($1, 3); exit }' "$h")"
+            if [ "$first" != "$v" ]; then
+              echo "::warning file=$h::The newest line of $h is $first, but the newest release is $v. Add a one-line summary for $v."
+            fi
+          done
       - name: Synchronize VERSION and the roadmap history on main
         shell: bash
         run: |
           set -euo pipefail
           mv VERSION_NEW VERSION
           gen_history() {
-            # $1 changelog, $2 language label, $3 roadmap page: rewrites the block between the markers
-            local changelog="$1" label="$2" html="$3" list
+            # $1 history file (lines "- version | date | text"), $2 roadmap page: rewrites the block between the markers
+            local history="$1" html="$2" list
             list="$(mktemp)"
             {
               printf '<ol class="history">\n'
-              awk -v label="$label" '
+              awk -F ' [|] ' '
                 function esc(s) { gsub(/&/, "\\&amp;", s); gsub(/</, "\\&lt;", s); gsub(/>/, "\\&gt;", s); return s }
-                function clean(s) { gsub(/\*\*/, "", s); gsub(/`/, "", s); sub(/^ +/, "", s); sub(/ +$/, "", s); return s }
-                /^## [0-9]+\.[0-9]+\.[0-9]+ / {
-                  if (count == 6) exit
-                  count++
-                  ver[count] = $2
-                  d = $0; sub(/^## [0-9.]+ — /, "", d); date[count] = d
-                  sum[count] = ""; want = 1; next
+                /^- / {
+                  v = substr($1, 3)
+                  printf "<li><strong>%s</strong> · %s<br>%s</li>\n", esc(v), esc($2), esc($3)
                 }
-                want && index($0, "**" label "**") == 1 {
-                  t = substr($0, length(label) + 5)
-                  sum[count] = esc(clean(t)); want = 0
-                }
-                END {
-                  for (i = 1; i <= count; i++) {
-                    printf "<li><strong>%s</strong> · %s", ver[i], date[i]
-                    if (sum[i] != "") printf "<br>%s", sum[i]
-                    print "</li>"
-                  }
-                }
-              ' "$changelog"
+              ' "$history"
               printf '</ol>\n'
             } > "$list"
             awk -v listfile="$list" '
@@ -92,14 +83,15 @@ jobs:
             mv "$html.new" "$html"
             rm -f "$list"
           }
-          gen_history CHANGELOG.md 'English.' overview_roadmap.html
-          gen_history docs/ru/CHANGELOG.md 'Русский.' docs/ru/overview_roadmap.html
-          gen_history CHANGELOG.md 'English.' docs/de/overview_roadmap.html
+          gen_history HISTORY.md overview_roadmap.html
+          gen_history docs/ru/HISTORY.md docs/ru/overview_roadmap.html
+          gen_history docs/de/HISTORY.md docs/de/overview_roadmap.html
+          gen_history docs/uk/HISTORY.md docs/uk/overview_roadmap.html
           # Keep the version badge on every page equal to VERSION (see data-app-version in the HTML).
           while IFS= read -r page; do
             sed -i -E "s#(data-app-version>)v[0-9]+\.[0-9]+\.[0-9]+<#\1v${VERSION}<#" "$page"
           done < <(grep -rl 'data-app-version' --include='*.html' . || true)
-          git add -- VERSION overview_roadmap.html docs/ru/overview_roadmap.html docs/de/overview_roadmap.html
+          git add -- VERSION overview_roadmap.html docs/ru/overview_roadmap.html docs/de/overview_roadmap.html docs/uk/overview_roadmap.html
           git add -u -- '*.html'
           if ! git diff --cached --quiet; then
             git config user.name 'github-actions[bot]'

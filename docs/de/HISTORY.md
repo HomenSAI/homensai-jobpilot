@@ -1,0 +1,30 @@
+# Versionsverlauf
+
+Kurze Zusammenfassung jeder Veröffentlichung in einfachen Worten. Technische Einzelheiten stehen in CHANGELOG.md. Eine Zeile pro Veröffentlichung: `- Version | Datum | Text`.
+
+- 1.17.0 | 10. Oktober 2026 | Die Seite „Fahrplan“ wurde aufgeräumt: Der Versionsverlauf ist jetzt in einfacher Sprache geschrieben, und die Liste der verbleibenden Entwicklerarbeit steht in einer eigenen Datei auf GitHub. Auf der Autorenseite entfielen die Abschnitte zu Erfahrung und Projekten, und die Einleitung wurde lebendiger.
+- 1.16.3 | 10. Oktober 2026 | Ein veralteter Hinweis auf der Sicherheitsseite wurde entfernt.
+- 1.16.2 | 10. Oktober 2026 | Sicherheitsseite: Es steht nun klar da, dass der von Ihnen gewählte KI-Agent und sein Anbieter dafür verantwortlich sind, wohin Ihre Daten gelangen, nachdem der Agent sie gelesen hat.
+- 1.16.1 | 10. Oktober 2026 | Ein verwirrendes technisches Schaubild wurde von der Architekturseite entfernt.
+- 1.16.0 | 10. Oktober 2026 | Antworten von Arbeitgebern werden jetzt vollständig im Ordner der jeweiligen Bewerbung gespeichert: wer geschrieben hat, wann, der ganze Text und die Anhänge. Zwei Schaubilder auf der Architekturseite wurden in einfachen Worten neu geschrieben.
+- 1.15.1 | 10. Oktober 2026 | Der Abschnitt zu Lebenslauf- und Anschreiben-Vorlagen wurde neu gestaltet und ist nun übersichtlicher.
+- 1.15.0 | 10. Oktober 2026 | Eine Startseite, index.html, wurde ergänzt; sie verlinkt alle Seiten und Dokumente in allen vier Sprachen.
+- 1.14.5 | 10. Oktober 2026 | Jede Seite zeigt nun oben links die Versionsnummer, damit erkennbar ist, welche Version Sie heruntergeladen haben.
+- 1.14.4 | 10. Oktober 2026 | Eine klare Erklärung wurde ergänzt, was in die Vorlagenordner für Lebenslauf und Anschreiben gehört.
+- 1.14.3 | 10. Oktober 2026 | Die Sprachschaltflächen wurden korrigiert; sie wurden auf schmalen Bildschirmen gequetscht oder abgeschnitten.
+- 1.14.2 | 10. Oktober 2026 | Lücken und Unterschiede zwischen den vier Sprachfassungen wurden gefunden und beseitigt.
+- 1.14.1 | 10. Oktober 2026 | Missverständliche Formulierungen zu den Vorlagenordnern wurden korrigiert.
+- 1.14.0 | 10. Oktober 2026 | Ukrainisch wurde als vierte Sprache ergänzt, mit neutralen Vorlagen für Lebenslauf, Anschreiben und Bericht. Die Übersetzung muss noch von einer Muttersprachlerin oder einem Muttersprachler geprüft werden.
+- 1.13.0 | 10. Oktober 2026 | Die Foto-Regel wurde ergänzt: Ein Foto kommt nur auf Ihren Wunsch in den Lebenslauf und nie in das Anschreiben. Eine Seite, die andere Projekte verglich und nicht hierher gehörte, wurde entfernt.
+- 1.12.0 | 10. Oktober 2026 | Die Autorenseite wurde ergänzt, die Links zur offiziellen Dokumentation der Werkzeuge stehen jetzt auf der Sicherheitsseite, und einige ungenaue Aussagen wurden korrigiert.
+- 1.11.0 | 10. Oktober 2026 | Das Website-Symbol und interaktive Schaubilder auf der Architekturseite wurden ergänzt.
+- 1.10.0 | 10. Oktober 2026 | Das Limit wurde präzisiert: Auf die 44 pro Monat zählen nur Nachrichten, die über JobPilot gesendet werden, nicht Ihre eigene Post. Zwei Bewerbungen hintereinander an dieselbe Adresse werden nun gesperrt. Die Auswahl der Vorlagen für Lebenslauf und Anschreiben wurde abgeschlossen.
+- 1.9.0 | 10. Oktober 2026 | Die Aufzeichnung der Aktionen wird jetzt monatsweise geführt, damit sie überschaubar bleibt.
+- 1.8.0 | 10. Oktober 2026 | Sie können nun selbst wählen, wie viele Bewerbungen pro Tag hinausgehen dürfen (1 bis 43). Das Monatslimit von 44 bleibt.
+- 1.7.0 | 10. Oktober 2026 | Umfassende Sicherheitsprüfung: strengere Kontrollen vor jedem E-Mail-Versand, Schutz vor doppeltem Senden, eine deutsche Fassung und eine zuverlässigere Statistikseite. Noch nicht mit echtem Gmail getestet.
+- 1.6.0 | 9. Oktober 2026 | Jede Bewerbung hat nun einen eigenen, übersichtlichen Ordner. Die Status wurden klarer (wartend, eingeladen, abgelehnt und warum), die Statistikseite zeigt Anteile und gesparte Zeit, und Versionsnummern werden automatisch vergeben.
+- 1.5.x | 9. Oktober 2026 | Ergänzt wurden die Monatsplanung, eine tägliche Postprüfung, zeitversetztes Senden über Gmail mit manueller Alternative, eine Bereitschaftsseite und das Limit von 44 pro Monat.
+- 1.4.x | 7.–8. Oktober 2026 | Der Agent kann nun selbstständig starten: Anweisungsdateien, fertige Ordner für Ihre Unterlagen und eine Ersteinrichtung, die mit Ihrer eigenen Geschichte beginnt. Eine unterbrochene Einrichtung wird dort fortgesetzt, wo sie aufgehört hat.
+- 1.3.x | 7. Oktober 2026 | Klargestellt, dass JobPilot nur aus Regeln und Dateien besteht, ohne Programmcode. Die Statistikdaten liegen jetzt in einer eigenen Datei.
+- 1.2.0 | 7. Oktober 2026 | Erste Veröffentlichung: Übersichtsseiten, Installationsanleitung und Statistikseite.
+- 1.0–1.1 | vor dem 7. Oktober 2026 | Frühere Entwürfe vor der Veröffentlichung des Projekts.
