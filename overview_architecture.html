@@ -131,17 +131,17 @@
 </div>
 
 <div class="widget" aria-labelledby="t-gate">
-<h3 id="t-gate">2 · The send gate</h3>
-<p class="hint">Choose the step where something fails, or none. Then press <em>Next step</em>. The chain stops at the first failure, and no external call happens without the intent line.</p>
-<label for="gate-fail">Failure at step</label>
+<h3 id="t-gate">2 · Six checks before sending</h3>
+<p class="hint">Before an application leaves your mailbox, the agent goes through six checks, one after another. If any check fails, the agent stops and sends nothing. Choose a step where something goes wrong (or “none”), press <em>Next step</em> and watch what the agent does. This is only a demonstration: nothing is sent.</p>
+<label for="gate-fail">Where does it go wrong?</label>
 <select id="gate-fail">
-<option value="0">none</option>
-<option value="1">1 · Immutable package</option>
-<option value="2">2 · Consent bound to the manifest</option>
-<option value="3">3 · Reservation and intent line</option>
-<option value="4">4 · One external call</option>
-<option value="5">5 · Reconciliation</option>
-<option value="6">6 · Recorded fact</option>
+<option value="0">nowhere, all goes well</option>
+<option value="1">1 · Freeze the package</option>
+<option value="2">2 · Your approval fits this letter</option>
+<option value="3">3 · Note the plan first</option>
+<option value="4">4 · Send once</option>
+<option value="5">5 · Check that it left</option>
+<option value="6">6 · Record the result</option>
 </select>
 <div class="choice-row"><button type="button" class="choice-btn" id="gate-next">Next step</button><button type="button" class="choice-btn" id="gate-reset">Reset</button></div>
 <ol class="flow" id="gate-flow"></ol>
@@ -150,7 +150,7 @@
 
 <div class="widget" aria-labelledby="t-quota">
 <h3 id="t-quota">3 · Daily and monthly limits</h3>
-<p class="hint">The daily maximum is chosen by the person, from 1 to 43. The monthly limit of 44 never changes.</p>
+<p class="hint">Two separate limits. The monthly limit of 44 CV submissions never changes. The daily maximum is a ceiling that the person chooses, from 1 to 43: it says how many may go out on one day at most, not how many have to. Move the slider to see what it means.</p>
 <label for="q-day">Daily maximum: <output id="q-count" for="q-day">2</output></label>
 <input type="range" id="q-day" min="1" max="43" value="2">
 <div class="bar" aria-hidden="true"><span id="q-bar"></span></div>
@@ -171,7 +171,7 @@
   'use strict';
   var LIMIT = 44, MONTH = 'transactions-2026-10', SIZE = 500;
   // Labels and texts are kept in one place so that the other language editions can mirror them.
-  var L = { event: 'Journal event:', stops: 'Stops if:', lastOk: 'All six steps are done. The fact is recorded.', start: 'Press Next step to start the chain.' };
+  var L = { event: 'Journal event:', stops: 'Stops if:', lastOk: 'All six checks passed. The letter is sent once and the result is written down.', start: 'Press Next step to begin.' };
   var STAGES = [
     { t: 'Search', d: 'The agent looks for vacancies within the chosen radius, nearest first, and checks the real commute by the chosen transport.', ev: 'none yet', stop: 'Without a confirmed e-mail address the company stays in the registry, but no package is made and no slot is reserved.' },
     { t: 'Company card', d: 'A Company.md file in the application folder records the address, its source, the check date, the requirements and the route.', ev: 'company_registered', stop: 'A second application to the same company needs the person\'s decision.' },
@@ -183,12 +183,12 @@
     { t: 'Report', d: 'The monthly numbers are counted once from a fixed journal position and shown the same way on the page, in DOCX and in PDF.', ev: 'report_built, statistics_updated', stop: 'If one of the six minute values is missing, no statistics snapshot is written.' }
   ];
   var GATE = [
-    { t: 'Immutable package', d: 'A copy of the exact files in outbox, with the SHA-256 of every attachment, the recipient, the account, the subject, the body, the transport and the slot.', out: 'Stopped at step 1. Nothing was sent. The approval is not used.' },
-    { t: 'Consent bound to the manifest', d: 'The approval must match the manifest. Otherwise the consent is void.', out: 'Stopped at step 2. Nothing was sent. The approval does not match the package, so it is void (PACKAGE_CHANGED).' },
-    { t: 'Reservation and intent line', d: 'quota_reserved and send_started are written in one line and read back as the last line of the journal.', out: 'Stopped at step 3. No external call was made. If the write or the read-back failed, the lock is kept and the person is told.' },
-    { t: 'One external call', d: 'Exactly one call. No retry, and no “second copy to be safe”.', out: 'Stopped at step 4. The call failed. Nothing is retried: the reconciliation in step 5 decides what happened.' },
-    { t: 'Reconciliation', d: 'SENT and Scheduled are searched for the exact message. Found: go on. Proven absent: failed_before_send. Unknown: send_uncertain.', out: 'Stopped at step 5. The result is unknown (send_uncertain). The person decides after a check. No new call is made.' },
-    { t: 'Recorded fact', d: 'sent_verified and quota_consumed, or thank_you_sent, ordinary_reply_sent or gmail_scheduled_verified, depending on the kind of message.', out: 'Stopped at step 6. The fact could not be recorded. The views are rebuilt from the journal. No second send follows.' }
+    { t: 'Freeze the package', d: 'The agent makes a locked copy of exactly what will go out: the letter, the attachments, the address and the sender account. After this, nothing can be swapped by accident.', out: 'Stopped at check 1. Nothing was sent. The agent could not make a safe copy, so it does not go on.' },
+    { t: 'Your approval fits this letter', d: 'Your “yes” counts only for exactly this letter. If a file, the address or the text changed after you said yes, the approval no longer applies and you are asked again.', out: 'Stopped at check 2. Nothing was sent. Something changed after your approval, so the old “yes” is void and you are asked again.' },
+    { t: 'Note the plan first', d: 'The agent writes in its journal “I am about to send this one” and takes one of your 44 places of the month. It reads the line back to be sure it is saved.', out: 'Stopped at check 3. Nothing was sent. If the note could not be saved, the agent does not send at all and tells you.' },
+    { t: 'Send once', d: 'The letter is sent exactly one time. If something fails, the agent does not try again on its own, and does not send “a second copy to be safe”.', out: 'Stopped at check 4. The sending failed. The agent does not retry; the next check finds out what really happened.' },
+    { t: 'Check that it left', d: 'The agent looks in the Sent (or Scheduled) folder for this exact letter. Found: all is well. Not there: the place is given back. Cannot tell: the agent stops and asks you.', out: 'Stopped at check 5. The agent cannot tell whether the letter left. It sends nothing more and asks you to look.' },
+    { t: 'Record the result', d: 'Only now the journal says “sent”, the place counts as used and the statistics page changes. A scheduled letter is not yet “sent”.', out: 'Stopped at check 6. The result could not be written down. The records are rebuilt from the journal, and no second copy is sent.' }
   ];
   function $(id) { return document.getElementById(id); }
   function el(tag, cls, text) { var e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
@@ -227,7 +227,7 @@
     if (stopped) msg = GATE[failAt - 1].out;
     else if (done === 0) msg = L.start;
     else if (done === GATE.length) msg = L.lastOk;
-    else msg = 'Step ' + done + ' is done. Next: ' + GATE[done].t + '.';
+    else msg = 'Check ' + done + ' passed. Next: ' + GATE[done].t + '.';
     $('gate-out').textContent = msg;
   }
   function nextGate() {
@@ -248,7 +248,7 @@
     var n = +$('q-day').value, days = Math.ceil(LIMIT / n);
     $('q-count').textContent = String(n);
     $('q-bar').style.width = Math.min(100, (n / LIMIT) * 100).toFixed(1) + '%';
-    $('q-out').textContent = 'At ' + n + ' per day, the ' + LIMIT + ' monthly places need at least ' + days + ' sending day' + (days === 1 ? '' : 's') + '. The monthly limit does not change: the 45th is refused before it is prepared. A new value takes effect from the next local day.';
+    $('q-out').textContent = 'A daily maximum of ' + n + ' means at most ' + n + ' on one day. With it, all ' + LIMIT + ' places of the month could be used in as few as ' + days + ' day' + (days === 1 ? '' : 's') + ', or spread out as you wish: over working days, weekends or any rhythm you set in the schedule. Nothing forces you to send the maximum. Whatever the daily value, the 45th submission of a month is refused. A new value takes effect from the next local day.';
   }
   $('q-day').addEventListener('input', renderQuota);
   renderQuota();

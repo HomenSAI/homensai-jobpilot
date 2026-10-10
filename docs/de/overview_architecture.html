@@ -131,17 +131,17 @@
 </div>
 
 <div class="widget" aria-labelledby="t-gate">
-<h3 id="t-gate">2 · Das Sendetor</h3>
-<p class="hint">Wählen Sie den Schritt, bei dem etwas fehlschlägt, oder „keiner“. Drücken Sie dann <em>Nächster Schritt</em>. Die Kette bricht beim ersten Fehler ab, und ohne Absichtszeile findet kein externer Aufruf statt.</p>
-<label for="gate-fail">Fehler bei Schritt</label>
+<h3 id="t-gate">2 · Sechs Prüfungen vor dem Senden</h3>
+<p class="hint">Bevor eine Bewerbung Ihr Postfach verlässt, geht der Agent sechs Prüfungen nacheinander durch. Besteht eine Prüfung nicht, hält der Agent an und sendet nichts. Wählen Sie einen Schritt, an dem etwas schiefgeht (oder „nirgends“), drücken Sie <em>Nächster Schritt</em> und sehen Sie, was der Agent tut. Das ist nur eine Vorführung: Es wird nichts gesendet.</p>
+<label for="gate-fail">Wo geht etwas schief?</label>
 <select id="gate-fail">
-<option value="0">keiner</option>
-<option value="1">1 · Unveränderliches Paket</option>
-<option value="2">2 · Zustimmung, an das Manifest gebunden</option>
-<option value="3">3 · Reservierung und Absichtszeile</option>
-<option value="4">4 · Ein externer Aufruf</option>
-<option value="5">5 · Abgleich</option>
-<option value="6">6 · Festgehaltener Fakt</option>
+<option value="0">nirgends, alles gut</option>
+<option value="1">1 · Das Paket einfrieren</option>
+<option value="2">2 · Ihre Zustimmung passt zu diesem Brief</option>
+<option value="3">3 · Zuerst den Plan notieren</option>
+<option value="4">4 · Einmal senden</option>
+<option value="5">5 · Prüfen, ob die Mail raus ist</option>
+<option value="6">6 · Das Ergebnis festhalten</option>
 </select>
 <div class="choice-row"><button type="button" class="choice-btn" id="gate-next">Nächster Schritt</button><button type="button" class="choice-btn" id="gate-reset">Zurücksetzen</button></div>
 <ol class="flow" id="gate-flow"></ol>
@@ -150,7 +150,7 @@
 
 <div class="widget" aria-labelledby="t-quota">
 <h3 id="t-quota">3 · Tages- und Monatslimit</h3>
-<p class="hint">Das Tagesmaximum wählt die Person, von 1 bis 43. Das Monatslimit von 44 ändert sich nie.</p>
+<p class="hint">Zwei getrennte Limits. Das Monatslimit von 44 Bewerbungen mit Lebenslauf ändert sich nie. Das Tagesmaximum ist eine Obergrenze, die die Person wählt, von 1 bis 43: Es sagt, wie viele an einem Tag höchstens hinausgehen dürfen, nicht wie viele hinausgehen müssen. Bewegen Sie den Regler, um zu sehen, was das heißt.</p>
 <label for="q-day">Tagesmaximum: <output id="q-count" for="q-day">2</output></label>
 <input type="range" id="q-day" min="1" max="43" value="2">
 <div class="bar" aria-hidden="true"><span id="q-bar"></span></div>
@@ -171,7 +171,7 @@
   'use strict';
   var LIMIT = 44, MONTH = 'transactions-2026-10', SIZE = 500;
   // Labels and texts are kept in one place so that the other language editions can mirror them.
-  var L = { event: 'Journalereignis:', stops: 'Hält an, wenn:', lastOk: 'Alle sechs Schritte sind erledigt. Der Fakt ist festgehalten.', start: 'Drücken Sie „Nächster Schritt“, um die Kette zu starten.' };
+  var L = { event: 'Journalereignis:', stops: 'Hält an, wenn:', lastOk: 'Alle sechs Prüfungen bestanden. Der Brief wurde einmal gesendet, das Ergebnis ist festgehalten.', start: 'Drücken Sie „Nächster Schritt“, um zu beginnen.' };
   var STAGES = [
     { t: 'Suche', d: 'Der Agent sucht Stellen im gewählten Umkreis, zuerst die nächsten, und prüft die tatsächliche Fahrzeit mit dem gewählten Verkehrsmittel.', ev: 'noch keines', stop: 'Ohne bestätigte E-Mail-Adresse bleibt die Firma im Register, aber es wird kein Paket erstellt und kein Platz reserviert.' },
     { t: 'Firmenkarte', d: 'Eine Datei Company.md im Bewerbungsordner hält Adresse, Quelle, Prüfdatum, Anforderungen und Route fest.', ev: 'company_registered', stop: 'Eine zweite Bewerbung bei derselben Firma braucht die Entscheidung der Person.' },
@@ -183,12 +183,12 @@
     { t: 'Bericht', d: 'Die Monatszahlen werden einmal ab einer festen Journalposition gezählt und auf der Seite, in DOCX und in PDF gleich dargestellt.', ev: 'report_built, statistics_updated', stop: 'Fehlt einer der sechs Minutenwerte, wird kein Statistik-Snapshot geschrieben.' }
   ];
   var GATE = [
-    { t: 'Unveränderliches Paket', d: 'Eine Kopie der genauen Dateien in outbox, mit SHA-256 jedes Anhangs, Empfänger, Konto, Betreff, Text, Übertragungsweg und Versandtermin.', out: 'Angehalten bei Schritt 1. Nichts wurde gesendet. Die Freigabe wird nicht verwendet.' },
-    { t: 'Zustimmung, an das Manifest gebunden', d: 'Die Freigabe muss mit dem Manifest übereinstimmen. Sonst ist die Zustimmung ungültig.', out: 'Angehalten bei Schritt 2. Nichts wurde gesendet. Die Freigabe passt nicht zum Paket und ist deshalb ungültig (PACKAGE_CHANGED).' },
-    { t: 'Reservierung und Absichtszeile', d: 'quota_reserved und send_started werden in einer Zeile geschrieben und als letzte Zeile des Journals zurückgelesen.', out: 'Angehalten bei Schritt 3. Kein externer Aufruf erfolgte. Schlug das Schreiben oder das Zurücklesen fehl, bleibt die Sperre bestehen, und die Person wird informiert.' },
-    { t: 'Ein externer Aufruf', d: 'Genau ein Aufruf. Kein Wiederholen und kein „zweites Exemplar zur Sicherheit“.', out: 'Angehalten bei Schritt 4. Der Aufruf ist fehlgeschlagen. Es wird nichts wiederholt: Der Abgleich in Schritt 5 entscheidet, was geschehen ist.' },
-    { t: 'Abgleich', d: 'In SENT und Scheduled wird nach der genauen Nachricht gesucht. Gefunden: weiter. Sicher nicht vorhanden: failed_before_send. Unbekannt: send_uncertain.', out: 'Angehalten bei Schritt 5. Das Ergebnis ist unbekannt (send_uncertain). Die Person entscheidet nach einer Prüfung. Es wird kein neuer Aufruf gemacht.' },
-    { t: 'Festgehaltener Fakt', d: 'sent_verified und quota_consumed oder thank_you_sent, ordinary_reply_sent oder gmail_scheduled_verified, je nach Art der Nachricht.', out: 'Angehalten bei Schritt 6. Der Fakt konnte nicht festgehalten werden. Die Ansichten werden aus dem Journal neu aufgebaut. Ein zweiter Versand folgt nicht.' }
+    { t: 'Das Paket einfrieren', d: 'Der Agent legt eine verschlossene Kopie von allem an, was hinausgeht: Brief, Anhänge, Adresse und Absenderkonto. Danach kann nichts versehentlich ausgetauscht werden.', out: 'Angehalten bei Prüfung 1. Nichts wurde gesendet. Der Agent konnte keine sichere Kopie anlegen und macht nicht weiter.' },
+    { t: 'Ihre Zustimmung passt zu diesem Brief', d: 'Ihr „Ja“ gilt nur für genau diesen Brief. Hat sich nach dem Ja eine Datei, die Adresse oder der Text geändert, gilt die Zustimmung nicht mehr, und Sie werden erneut gefragt.', out: 'Angehalten bei Prüfung 2. Nichts wurde gesendet. Nach Ihrer Zustimmung hat sich etwas geändert, das alte „Ja“ ist ungültig, und Sie werden erneut gefragt.' },
+    { t: 'Zuerst den Plan notieren', d: 'Der Agent schreibt ins Journal „Ich sende gleich genau dieses“ und belegt einen Ihrer 44 Plätze des Monats. Dann liest er die Zeile zurück, um sicher zu sein, dass sie gespeichert ist.', out: 'Angehalten bei Prüfung 3. Nichts wurde gesendet. Konnte die Notiz nicht gespeichert werden, sendet der Agent gar nicht und sagt es Ihnen.' },
+    { t: 'Einmal senden', d: 'Der Brief wird genau einmal gesendet. Geht etwas schief, versucht der Agent es nicht von selbst erneut und sendet keine „zweite Kopie zur Sicherheit“.', out: 'Angehalten bei Prüfung 4. Das Senden ist fehlgeschlagen. Der Agent wiederholt nichts; die nächste Prüfung klärt, was wirklich geschah.' },
+    { t: 'Prüfen, ob die Mail raus ist', d: 'Der Agent sucht diesen Brief im Ordner „Gesendet“ (oder „Geplant“). Gefunden: alles gut. Nicht da: Der Platz wird zurückgegeben. Unklar: Der Agent hält an und fragt Sie.', out: 'Angehalten bei Prüfung 5. Der Agent kann nicht sagen, ob der Brief raus ist. Er sendet nichts mehr und bittet Sie nachzusehen.' },
+    { t: 'Das Ergebnis festhalten', d: 'Erst jetzt steht im Journal „gesendet“, der Platz zählt als verbraucht, und die Statistikseite ändert sich. Ein geplanter Brief ist noch nicht „gesendet“.', out: 'Angehalten bei Prüfung 6. Das Ergebnis konnte nicht festgehalten werden. Die Aufzeichnungen werden aus dem Journal neu aufgebaut, eine zweite Kopie wird nicht gesendet.' }
   ];
   function $(id) { return document.getElementById(id); }
   function el(tag, cls, text) { var e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
@@ -227,7 +227,7 @@
     if (stopped) msg = GATE[failAt - 1].out;
     else if (done === 0) msg = L.start;
     else if (done === GATE.length) msg = L.lastOk;
-    else msg = 'Schritt ' + done + ' ist erledigt. Als Nächstes: ' + GATE[done].t + '.';
+    else msg = 'Prüfung ' + done + ' bestanden. Als Nächstes: ' + GATE[done].t + '.';
     $('gate-out').textContent = msg;
   }
   function nextGate() {
@@ -248,7 +248,7 @@
     var n = +$('q-day').value, days = Math.ceil(LIMIT / n);
     $('q-count').textContent = String(n);
     $('q-bar').style.width = Math.min(100, (n / LIMIT) * 100).toFixed(1) + '%';
-    $('q-out').textContent = 'Bei ' + n + ' pro Tag brauchen die ' + LIMIT + ' Monatsplätze mindestens ' + days + ' Versandtag' + (days === 1 ? '' : 'e') + '. Das Monatslimit ändert sich nicht: Die 45. Bewerbung wird abgelehnt, bevor sie vorbereitet wird. Ein neuer Wert gilt ab dem nächsten lokalen Tag.';
+    $('q-out').textContent = 'Ein Tagesmaximum von ' + n + ' heißt: höchstens ' + n + ' an einem Tag. Damit lassen sich alle ' + LIMIT + ' Plätze des Monats schon in ' + days + ' Tag' + (days === 1 ? '' : 'en') + ' nutzen, oder beliebig verteilen: auf Werktage, Wochenenden oder jeden Rhythmus, den Sie im Zeitplan festlegen. Niemand zwingt Sie, das Maximum zu senden. Bei jedem Tageswert wird die 45. Bewerbung eines Monats abgelehnt. Ein neuer Wert gilt ab dem nächsten lokalen Tag.';
   }
   $('q-day').addEventListener('input', renderQuota);
   renderQuota();

@@ -93,6 +93,7 @@ Anweisungsdateien (Markdown, kein Code; Entwürfe, die in der Praxis noch nicht 
           CoverLetter_v001.pdf
           EmailText_de.txt          # the e-mail text in the chosen language
           Status.txt                # append-only history of this application
+          Replies.txt               # every reply and delivery notice in full, in thread order (Ответы)
   dashboard/
     index.html                      # local menu: statistics and readiness per profile
     profiles/<profile_id>/

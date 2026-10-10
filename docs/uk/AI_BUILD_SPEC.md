@@ -52,7 +52,7 @@
 Робочі папки кількох користувачів уже містять корисні, але нерівнозначні практики:
 
 - папки за місяцями та пронумеровані папки роботодавців;
-- **Company.md** і **Status.txt** у кожній папці заявки, тексти листів, заплановані дати та дані Gmail;
+- **Company.md**, **Status.txt** і **Replies.txt** (кожна відповідь повністю) у кожній папці заявки, тексти листів, заплановані дати та дані Gmail;
 - різні набори документів і назв файлів: Anschreiben, Lebenslauf/CV, PDF/DOCX, дані про надсилання;
 - окремі промпти з різними правилами, персональними даними, Gmail і дозволами.
 
@@ -241,6 +241,7 @@ AI agent ↔ allowed project folder (the single source of data)
             EMAIL_TO_SEND.txt         # manual-send file: account, recipient, subject, body block, attachments, slot, status
             ReviewTranslation_ru.txt  # optional review translation; labelled "not for the employer", never attached
             Status.txt                # append-only history of this application
+            Replies.txt               # every reply and delivery notice in full (Відповіді)
     dashboard\index.html             # menu of local profiles
     dashboard\profiles\<profile_id>\summary.js
     dashboard\profiles\<profile_id>\index.html  # snapshot of one profile

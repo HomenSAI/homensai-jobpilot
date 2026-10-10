@@ -50,7 +50,7 @@ The key principle of the profile: the system keeps the person's complete confirm
 The working folders of several users already contain useful but unequal practices:
 
 - month directories and numbered employer folders;
-- **Company.md** and **Status.txt** in each application folder, email texts, planned dates and Gmail information;
+- **Company.md**, **Status.txt** and **Replies.txt** (every reply in full) in each application folder, email texts, planned dates and Gmail information;
 - different sets of documents and file names: Anschreiben, Lebenslauf/CV, PDF/DOCX, sending details;
 - separate prompts with different rules, personal data, Gmail and permissions.
 
@@ -239,6 +239,7 @@ The user downloads the GitHub ZIP, chooses a convenient place and extracts it. T
             EMAIL_TO_SEND.txt         # manual-send file: account, recipient, subject, body block, attachments, slot, status
             ReviewTranslation_ru.txt  # optional review translation; labelled "not for the employer", never attached
             Status.txt                # append-only history of this application
+            Replies.txt               # every reply and delivery notice in full (Ответы)
     dashboard\index.html             # menu of local profiles
     dashboard\profiles\<profile_id>\summary.js
     dashboard\profiles\<profile_id>\index.html  # snapshot of one profile

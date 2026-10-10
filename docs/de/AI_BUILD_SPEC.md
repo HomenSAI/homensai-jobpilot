@@ -52,7 +52,7 @@ Das zentrale Prinzip des Profils: Das System bewahrt die vollständige, bestäti
 Die Arbeitsordner mehrerer Nutzer enthalten bereits nützliche, aber ungleichartige Praktiken:
 
 - Monatsverzeichnisse und nummerierte Arbeitgeberordner;
-- **Company.md** und **Status.txt** in jedem Bewerbungsordner, E-Mail-Texte, geplante Termine und Gmail-Angaben;
+- **Company.md**, **Status.txt** und **Replies.txt** (jede Antwort vollständig) in jedem Bewerbungsordner, E-Mail-Texte, geplante Termine und Gmail-Angaben;
 - unterschiedliche Dokumentensätze und Dateinamen: Anschreiben, Lebenslauf/CV, PDF/DOCX, Versanddetails;
 - getrennte Prompts mit unterschiedlichen Regeln, personenbezogenen Daten, Gmail und Berechtigungen.
 
@@ -241,6 +241,7 @@ Die Nutzerin oder der Nutzer lädt das GitHub-ZIP herunter, wählt einen passend
             EMAIL_TO_SEND.txt         # manual-send file: account, recipient, subject, body block, attachments, slot, status
             ReviewTranslation_ru.txt  # optional review translation; labelled "not for the employer", never attached
             Status.txt                # append-only history of this application
+            Replies.txt               # every reply and delivery notice in full (Ответы)
     dashboard\index.html             # menu of local profiles
     dashboard\profiles\<profile_id>\summary.js
     dashboard\profiles\<profile_id>\index.html  # snapshot of one profile

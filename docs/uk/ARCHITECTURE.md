@@ -93,6 +93,7 @@ HTML-сторінка нікому не дає команд; дані оновл
           CoverLetter_v001.pdf
           EmailText_de.txt          # the e-mail text in the chosen language
           Status.txt                # append-only history of this application
+          Replies.txt               # every reply and delivery notice in full, in thread order (Відповіді)
   dashboard/
     index.html                      # local menu: statistics and readiness per profile
     profiles/<profile_id>/
