@@ -6,6 +6,12 @@ The project version is in the file [VERSION](VERSION). The project is an AI-agen
 
 Rules: `MAJOR.MINOR.PATCH`. MAJOR changes when data formats or rules change so that old data no longer fits. MINOR is a new feature or a new part of the documentation. PATCH is a fix or a wording change without new capabilities. Every change to `main` adds a line here; the number is raised when a release is made. Each release gets a git tag `vX.Y.Z`. Each entry is written in Russian first, with the English text directly below it. The same entry appears in both language files.
 
+## 1.18.1 — 10 October 2026
+
+**English.** The Safety page now links the author's name to his website, homensai.com, in the sentence about the visible author link on every page. This is a wording change without new capabilities, so the patch number is raised.
+
+- **Pages:** the safety page (EN, RU, DE, UK).
+
 ## 1.18.0 — 10 October 2026
 
 **English.** The instructions for the agent were tried on three made-up people (nothing prepared, folders filled, a long voice story) by an agent in a sandbox, and the rules were corrected from the findings, in all four editions. A fact the person does not confirm stays `proposed` and the stage does not advance; before the time zone is known the UTC month is used; a person-level session note is created at the start so that the lock is recognised; the readiness page starts at the end of the search setup and the template shows its row markup; holidays without a web search are named by the person; a person who declined mail tracking gets no daily mail check; the rules for templates (DOCX, Markdown and PDF sources, an unapproved working copy, the photo slot) are one; a contradiction between an attachment and the confirmed facts is shown to the person; the age counts as sensitive; recursive listing of the workspace before the consent is forbidden. Example settings gained `holiday_source` and `dst_rule`. The release workflow now updates the version badge on every page (it did not match badges with a `style` attribute, so pages showed an old version). The results of the simulation and the dry runs are in `examples/simulation/SIMULATION_REPORT.md`. The Roadmap page lists what is done and what is not in plain words. This is a change of rules, so the minor number is raised.

@@ -2,6 +2,7 @@
 
 Short summary of every release in plain words. Technical details are in CHANGELOG.md. One line per release: `- version | date | text`.
 
+- 1.18.1 | 10 October 2026 | Safety page: the author's name now links to his website.
 - 1.18.0 | 10 October 2026 | Tried the first setup on three made-up people and corrected the rules where the instructions were unclear (for example what to do when a fact is not confirmed). Fixed the version number shown in the corner of the pages, which had stayed old.
 - 1.17.1 | 10 October 2026 | Fixed two inconsistencies in the sending rules and added an automatic check that stops a release if personal data or secrets would be published. Added example output of a simulated run on made-up data.
 - 1.17.0 | 10 October 2026 | Tidied the Roadmap page: the version history is now written in plain language, and the list of remaining developer work moved to a separate file on GitHub. The Author page lost its experience and projects sections and got a warmer introduction.
