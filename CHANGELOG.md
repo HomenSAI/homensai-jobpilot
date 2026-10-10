@@ -4,7 +4,7 @@
 
 The project version is in the file [VERSION](VERSION). The project is an AI-agent workflow package, not a standalone job-search or mail-sending application. Its local statistics view contains HTML/CSS/JavaScript for displaying and sorting a snapshot.
 
-Rules: `MAJOR.MINOR.PATCH`. MAJOR changes when data formats or rules change so that old data no longer fits. MINOR is a new feature or a new part of the documentation. PATCH is a fix or a wording change without new capabilities. Every change to `main` adds a line here; the number is raised when a release is made. Each release gets a git tag `vX.Y.Z`. Each entry is written in Russian first, with the English text directly below it. The same entry appears in both language files.
+Rules: `MAJOR.MINOR.PATCH`. MAJOR changes when data formats or rules change so that old data no longer fits. MINOR is a new feature or a new part of the documentation. PATCH is a fix or a wording change without new capabilities. Every change to `main` adds a line here; the number is raised when a release is made. Each release gets a git tag `vX.Y.Z`. **Language rule (from 1.22.0, for all HomenS.AI repositories):** every entry is written in English first, and the same text in Russian directly below it (`**English.**` block, then `**Русский.**` block, each with its own bullet list). The GitHub release notes are taken from this section, so every release reads English first, Russian below. The same bilingual entry appears in `CHANGELOG.md` and `docs/ru/CHANGELOG.md`. Entries before 1.22.0 are kept as they were written.
 
 ## 1.21.0 — 10 October 2026
 

@@ -49,7 +49,7 @@ Run the checks by hand. An automated scanner may help, but it is only one check.
 
 ## 6. Version and changelog
 
-- `CHANGELOG.md` has a new top section with the version and date. After the workflow runs, `VERSION` equals that version.
+- `CHANGELOG.md` has a new top section with the version and date. Its text is in English first and the same text in Russian directly below (`**English.**`, then `**Русский.**`); the same entry is in `docs/ru/CHANGELOG.md`. The GitHub release notes are taken from this section. After the workflow runs, `VERSION` equals that version.
 - Every push to `main` starts the release workflow. Do not push such a change until sections 1 to 5 are complete.
 
 ## 7. Links and rendering
