@@ -6,6 +6,12 @@ The project version is in the file [VERSION](VERSION). The project is an AI-agen
 
 Rules: `MAJOR.MINOR.PATCH`. MAJOR changes when data formats or rules change so that old data no longer fits. MINOR is a new feature or a new part of the documentation. PATCH is a fix or a wording change without new capabilities. Every change to `main` adds a line here; the number is raised when a release is made. Each release gets a git tag `vX.Y.Z`. Each entry is written in Russian first, with the English text directly below it. The same entry appears in both language files.
 
+## 1.19.1 — 10 October 2026
+
+**English.** The value of the saved time on the statistics page now uses one rate, the German statutory minimum wage for 2026 (13.90 EUR gross per hour), for every month, and says so; the 2025 and 2027 rates are removed. The sources stay linked and the rate is not updated automatically. This is a simplification without new capabilities, so the patch number is raised.
+
+- **Pages:** the statistics page (`dashboard_template/index.html`), four languages.
+
 ## 1.19.0 — 10 October 2026
 
 **English.** The statistics page has a new block, “What the saved time is worth (Germany)”: the hours saved, multiplied by the statutory minimum wage in Germany (13.90 EUR gross per hour from 1 January 2026, 14.60 EUR from 1 January 2027, 12.82 EUR in 2025), shown as a total, for the latest month and for each year, as bars on the page and as a table by month with the rate used. It is marked with an asterisk as a rough estimate, not income. The rates were checked on 10 October 2026 against the BMAS press release of 27 June 2025 and the Fünfte Mindestlohnanpassungsverordnung (both linked on the page); they are not updated automatically. This is a new part of the page, so the minor number is raised.
