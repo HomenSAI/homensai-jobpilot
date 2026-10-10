@@ -2,6 +2,7 @@
 
 Kurze Zusammenfassung jeder Veröffentlichung in einfachen Worten. Technische Einzelheiten stehen in CHANGELOG.md. Eine Zeile pro Veröffentlichung: `- Version | Datum | Text`.
 
+- 1.21.0 | 10. Oktober 2026 | Sie entscheiden, wie die 44 Bewerbungen eines Monats hinausgehen, auch alle an einem Tag, und sagen es dem Agenten mit eigenen Worten. Die Seiten haben Pfeile, sanfte Scroll-Effekte und eine Lesefortschrittsleiste bekommen.
 - 1.20.0 | 10. Oktober 2026 | Vorbereitung auf die öffentliche Veröffentlichung: ein klarer Startbefehl und bessere Prompts in der Anleitung, eine ehrliche Beschreibung dessen, was getestet wurde, und die vier Sprachfassungen abgeglichen.
 - 1.19.2 | 10. Oktober 2026 | Die Übersetzungen wurden teilweise mit den englischen Texten abgeglichen; eine Übergabenotiz für die nächste Arbeitssitzung wurde ergänzt.
 - 1.19.1 | 10. Oktober 2026 | Der Wert der gesparten Zeit nutzt einen Satz, den deutschen Mindestlohn für 2026, mit Quelle.

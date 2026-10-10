@@ -26,6 +26,8 @@ In the English root (commit "Английский оригинал: …"), and t
 - stage names listed in `DATA_CONTRACT.md` §1 (workspace.json row).
 Released as 1.20.0; the editions were mirrored and the parity check (headings, table rows, tokens, links) is clean apart from known false positives (date lines counted as numbered items). Items 1, 2, 4, 5, 6, 7, 8 and 9 below are done; 3 is done in REVIEW (check the roadmap page wording once more); still open: 10 (step numbering of USER_GUIDE tables vs TODO order, schema-version table, one quota sentence), 11, 12.
 
+Version 1.21.0 added: the sending rule stated by the person (1–44 per day) and motion on the overview pages (`assets/site.css`, `assets/site.js`: arrows, reveal on scroll, reading progress, scroll cue; reduced-motion respected). The statistics and readiness pages have their own styles and did not get the motion.
+
 ## Do next, in this order
 1. **Edition sync.** Compare each file of `docs/ru|de|uk` with English (headings, table rows, backticked tokens, numbers). Fix leftovers: "three editions" must be four (AGENTS.md, README.md line ~70, AI_BUILD_SPEC.md line ~11 "all three"), "three folders" must be five folders `1_`..`5_` (README table, AI_BUILD_SPEC.md lines ~98 and ~456, installation texts), `docs/uk` missing from the German README and AI_BUILD_SPEC lists of editions, README row count differs by one, an extra link in `docs/de/overview_architecture.html`, one bullet in `docs/ru/AI_BUILD_SPEC.md`, one numbered item in `docs/de/ARCHITECTURE.md` and `docs/de/REVIEW.md`. Natural wording, one term per concept, no Russian words in the Ukrainian text.
 2. **Privacy gate status.** README "Capability" table, REVIEW.md and RELEASE_CHECKLIST.md say it is not available; it exists (`privacy-gate.yml`) but has never run on GitHub. Use one wording: "exists, not yet run on GitHub". Check its first run in the Actions tab for false positives.
@@ -45,7 +47,7 @@ Released as 1.20.0; the editions were mirrored and the parity check (headings, t
 12. **Re-run the checks** after the edits: the parity/links audit, `privacy-gate.yml` logic (it ran clean locally), JSON validity of `examples/*.json`, headless Edge `--dump-dom` of `dashboard_template/index.html?lang=ru|de|uk|en`.
 
 ## Open decisions for the owner
-- Allow `max_per_day` 44, or keep 1 to 43.
+- (Decided in 1.21.0: `max_per_day` 1 to 44, the person states the sending rule in their own words, `schedule.sending_rule_statement`.)
 - Whether `CLAUDE.md` needs language editions.
 - The Author page: keep, shorten, or replace by the contact page of homensai.com.
 
