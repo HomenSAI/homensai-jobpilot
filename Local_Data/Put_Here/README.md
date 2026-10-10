@@ -12,6 +12,7 @@ This is the only place where you put anything by hand. The folder names are in E
 | `4_CV_Templates` | CV templates | Шаблоны резюме | Lebenslauf-Vorlagen | Шаблони резюме | Everything about your CVs, current and old, any format |
 | `5_Cover_Letter_Templates` | Cover-letter templates | Шаблоны сопроводительных писем | Anschreiben-Vorlagen | Шаблони супровідних листів | All your cover letters, any format |
 | `Resume`, `CoverLetter` | CV, cover letter | Резюме, сопроводительное письмо | Lebenslauf, Anschreiben | Резюме, супровідний лист | Working folders of the agent (drafts and the Word copy of your template); you put nothing here |
+| `Archive` | Archive | Архив | Archiv | Архів | Made by the agent every day: a full copy of your data; copy it to a USB stick regularly |
 | `Knowledge_Base` | Knowledge base | База знаний | Wissensbasis | База знань | Made by the agent: `Life_Story.md`, your life story as facts you confirm |
 
 The agent reads these folders but **never changes or deletes anything in them**. The only file it creates here is the interview file `2_My_Story/Interview_<YYYY-MM-DD>.md` with your own words. You may fill the folders before the first run or leave them empty: the agent then asks you everything it needs, by voice or in text.

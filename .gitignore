@@ -16,6 +16,9 @@
 !/Local_Data/CoverLetter/
 /Local_Data/CoverLetter/*
 !/Local_Data/CoverLetter/README.md
+!/Local_Data/Archive/
+/Local_Data/Archive/*
+!/Local_Data/Archive/README.md
 .env
 .env.*
 !.env.example

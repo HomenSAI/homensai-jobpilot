@@ -13,7 +13,8 @@ UTF-8 JSON records, JSONL events; no SQL, servers, scripts or libraries. Every r
 | Path relative to the root | Role |
 |---|---|
 | `Local_Data/persons/<person_id>/state/person.json` | Identity, quota time zone, permitted `profile_id` values, `setup_progress` (§17) |
-| `Local_Data/workspace.json` | Workspace id, `format_version`, language, first-run `stage` and `progress` (TODO_FOR_AI.md, Part A), `run_id`, `person_ids`, capability checks |
+| `Local_Data/workspace.json` | Workspace id, `format_version`, language, first-run `stage` and `progress` (TODO_FOR_AI.md, Part A), `run_id`, `person_ids`, capability checks, the daily archive settings `archive` (§11.9) |
+| `Local_Data/Archive/<YYYY-MM-DD>_daily/` | The daily full archive of the whole `Local_Data` (§11.9): the copy the person carries to a USB stick; never published |
 | `Local_Data/Put_Here/1_My_Documents`, `2_My_Story`, `3_Report_Template`, `4_CV_Templates`, `5_Cover_Letter_Templates` | The person's originals, story, optional report template; read only |
 | `Local_Data/persons/<person_id>/Knowledge_Base/Life_Story.md` | Knowledge base (§3a) |
 | `Local_Data/persons/<person_id>/journal/transactions-YYYY-MM.jsonl` | The only primary journal, in monthly segments (§3c), with the person's shared quota |
@@ -430,6 +431,7 @@ The report calendar runs from `history_start_month` (local month of `person_crea
 | `history_start_month` | `YYYY-MM` | yes | not after the snapshot month |
 | `quota`, `minutes_per_application`, `applications` | object, object, array | yes | 9.2–9.4 |
 | `responses` | array | no | absent = `[]` |
+| `archive` | object | no | the daily archive (§11.9): `folder_href` (link to `Local_Data/Archive/` relative to the page, for example `../../../Archive/`), `folder_path` (the absolute path, shown and copied), `last_daily_at` (ISO time or null), `last_daily_name` (text or null) |
 
 ### 9.2 Quota
 
@@ -492,6 +494,7 @@ No `group` or `delivery` field.
 - A freshness warning when the snapshot is two or more days old; 1.4 does not show `last_mail_check_at`, so §16.3 mail freshness is not yet visible.
 - Language from the `lang` URL parameter, else `default_language`, else `en`; names and notes untranslated.
 - With `demo` `true`: a notice with a red, pulsing “Reset sample” button (no pulsing with reduced motion); one press clears the sample for this copy of the page in this browser, and the notice and button then disappear for good; a real snapshot (`demo` `false`) is never cleared.
+- With `archive`: a reminder “copy your archive to a USB stick”, the last daily archive and its date (a warning when it is two or more days old or missing), a link that opens the archive folder in the browser, a button that copies `folder_path`, and three short steps: open File Explorer (Win+E), paste the path into the address bar (Ctrl+L, Ctrl+V, Enter), copy the newest folder to the USB stick. A browser page cannot open File Explorer by itself, so the copied path is the way there.
 - Browser storage: theme and sample-cleared flag only; no file written, no network request.
 
 ### 9.6 Validation and the agent's write procedure
@@ -499,7 +502,7 @@ No `group` or `delivery` field.
 Codes appear as “Reference: <code>”; messages name a field or item number, never a person, company, address or message text.
 - `FILE-missing`, `FILE-syntax`, `FILE-empty` (no data assigned), `DATA` (`window.JP_DATA` not an object), `INTERNAL`.
 - `SCHEMA`; `FIELD-<name>` (missing or wrong type, or `history_start_month` after the snapshot month); `FIELD-timezone`.
-- `QUOTA-limit`, `QUOTA-used`, `QUOTA-reserved`, `QUOTA-unverified`, `QUOTA-manual`, `QUOTA-conflict`; `MINUTES-<key>`.
+- `QUOTA-limit`, `QUOTA-used`, `QUOTA-reserved`, `QUOTA-unverified`, `QUOTA-manual`, `QUOTA-conflict`; `MINUTES-<key>`; `ARCHIVE` (`archive` not an object, or a field of the wrong type).
 - `APP#<n>-<check>`, `RESP#<n>-<check>`: missing or duplicate `id`, unknown `status`, `channel`, `meeting_type` or `kind`, invalid date, missing or future `sent_at`, broken history, unknown `application_id`, mismatched profile or person, `received_at` before `sent_at`.
 
 **The agent's write procedure**
@@ -593,6 +596,17 @@ Gmail is the evidence. Losing archives never means nothing was sent and never al
 7. Used quota from proven CV sends, reservations from confirmed Scheduled items, across all accounts; follow-ups are not CVs. Unclear messages, gaps or an unavailable account make the quota “not confirmed”, never zero. Monthly figures from event dates, current statuses separately.
 8. Report accounts and periods checked, what was restored, documents extracted, what is unavailable, open conflicts; then a new verified archive.
 9. External actions resume only with conflicts settled, quota confirmed and a valid permission. Messages already in Gmail Scheduled may send meanwhile: check them against SENT before finishing; never cancel them without permission or promise a local block stops them.
+
+### 11.9 Daily full archive (for a USB stick)
+
+Besides the operation archives above, the agent makes **one full archive every day**, so that the person can rebuild the whole system after a broken or lost computer.
+- **Task.** Set up in TODO_FOR_AI.md, A9, as a real scheduled task of the agent at `archive.daily_time` in `workspace.json` (default: 30 minutes after `schedule.daily_check_time`, or 16:30 local without mail tracking), every day, weekends included; verified and noted like the daily check (§15.1). Without a scheduler the person is told and starts it by hand (“make today's archive”).
+- **What.** A copy of the whole `Local_Data/` except `Archive/` itself: `workspace.json`, `Put_Here/` (the originals), `persons/` (knowledge base, journal, state, outbox, operation archives), `profiles/`, `Applications/`, `Resume/`, `CoverLetter/`, `dashboard/`. No secrets (§11.2). Plain folders, so a person can open them without tools.
+- **Where.** `Local_Data/Archive/<YYYY-MM-DD>_daily/` (local date of the person; a second run on the same day is skipped if that day's archive is complete). Written as `Archive/_tmp_<UUID>/`, then checked and renamed, as in §11.4: the journal is copied under the writer lock; `manifest.json` lists every file with relative path, size and SHA-256 and the `source_revision` of each person; every checksum is read back before the rename. A failure leaves `_tmp_` marked incomplete, is told to the person and is never shown as an archive.
+- **Record.** `backup_created` (or `backup_failed`) for each person in the archive, with the `archive_id` `<YYYY-MM-DD>_daily`; `archive.last_daily_at` and `archive.last_daily_name` in `workspace.json`; the statistics snapshot then shows it (§9.1 `archive`).
+- **Retention.** As in §11.5: the person chooses how many daily archives stay (`archive.keep_last`, for example 14); until then none is deleted, and the person is told when the disk fills up.
+- **To a USB stick.** The person copies the newest `<YYYY-MM-DD>_daily` folder (or the whole `Archive` folder) to a USB stick or another disk regularly; the statistics page reminds them and links the folder (§9.5).
+- **Restore.** A daily archive is restored like any archive (§11.7): into a separate copy first, checked by the manifest, journal replayed, sending disabled until Scheduled and SENT are reconciled. Then the person replaces the damaged `Local_Data` with the checked copy.
 
 Tests: ACCEPTANCE_TESTS.md.
 

@@ -45,6 +45,12 @@ window.JP_DATA = {
    "2026-11": 1
   }
  },
+ "archive": {
+  "folder_href": "../Local_Data/Archive/",
+  "folder_path": "C:\\Users\\YourName\\JobPilot\\Local_Data\\Archive",
+  "last_daily_at": "2026-10-07T14:30:00Z",
+  "last_daily_name": "2026-10-07_daily"
+ },
  "minutes_per_application": {
   "cv_adapting": 10,
   "cover_letter": 8,

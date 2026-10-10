@@ -490,6 +490,10 @@ A separate PDF page contains a market recommendation with its date, search radiu
 
 After each confirmed send/scheduling or incoming-mail processing, the agent creates a private versioned archive. Before updating, make a separate backup of `Local_Data/`. Download the new ZIP into a new folder and never publish personal data. If local archives are lost, pause new external actions and ask the agent to reconcile Gmail history; Gmail cannot restore unsent local-only documents.
 
+**Daily archive and USB stick.** During the first setup the agent creates a daily task that copies all your JobPilot data into `Local_Data\Archive\<date>_daily`. With it you can restore everything if the computer breaks. Copy the newest folder to a USB stick regularly, for example once a week: on the statistics page, click **Copy path**, press Win+E, then Ctrl+L, Ctrl+V and Enter, and copy the folder to the stick. If your agent cannot create scheduled tasks, start the archive yourself with this prompt:
+
+> Make today's full archive of my JobPilot data in `Local_Data/Archive/` as described in `DATA_CONTRACT.md` §11.9, check it and tell me the folder path. Do not send or change anything else.
+
 **You should see:** a backup folder with a copy of `Local_Data/` made before the update.
 
 ## What is verified and what is not (R09)

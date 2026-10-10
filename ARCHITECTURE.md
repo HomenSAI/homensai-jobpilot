@@ -62,6 +62,7 @@ Local_Data/
   dashboard/
     index.html  # local menu: statistics and readiness per profile
     profiles/<profile_id>/summary.js · index.html · readiness.html  # data; unchanged template copy; readiness page
+  Archive/<YYYY-MM-DD>_daily/  # daily full archive of Local_Data, for a USB stick (DATA_CONTRACT.md §11.9)
 ```
 
 `Local_Data` is the technical path in every language edition; the dashboard has one path, `Local_Data/dashboard/`; profile ids are unique. Every journal line carries `person_id` and, where it applies, its profile; before acting, the agent checks that the profile belongs to the person and the account.

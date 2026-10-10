@@ -516,6 +516,10 @@ Eine separate PDF-Seite enthält eine Marktempfehlung mit Datum, Suchradius, Ver
 
 Nach jeder bestätigten Sendung oder Terminplanung und nach der Verarbeitung eingehender Post erstellt der Agent ein privates, versioniertes Archiv. Vor einer Aktualisierung machen Sie eine separate Sicherungskopie von `Local_Data/`. Laden Sie das neue ZIP in einen neuen Ordner herunter und veröffentlichen Sie nie persönliche Daten. Gehen lokale Archive verloren, pausieren Sie neue externe Aktionen und bitten Sie den Agenten, den Gmail-Verlauf abzugleichen; Gmail kann nicht ungesendete, nur lokal vorhandene Unterlagen wiederherstellen.
 
+**Tägliches Archiv und USB-Stick.** Bei der Ersteinrichtung legt der Agent eine tägliche Aufgabe an, die alle Ihre JobPilot-Daten nach `Local_Data\Archive\<Datum>_daily` kopiert. Damit lässt sich alles wiederherstellen, wenn der Computer kaputtgeht. Kopieren Sie den neuesten Ordner regelmäßig, etwa einmal pro Woche, auf einen USB-Stick: Klicken Sie auf der Statistikseite auf **Pfad kopieren**, drücken Sie Win+E, dann Strg+L, Strg+V und Enter und kopieren Sie den Ordner auf den Stick. Kann Ihr Agent keine geplanten Aufgaben anlegen, starten Sie das Archiv selbst mit diesem Prompt:
+
+> Make today's full archive of my JobPilot data in `Local_Data/Archive/` as described in `DATA_CONTRACT.md` §11.9, check it and tell me the folder path. Do not send or change anything else.
+
 **Sie sollten sehen:** einen Sicherungsordner mit einer Kopie von `Local_Data/`, die vor der Aktualisierung angefertigt wurde.
 
 ## Was geprüft ist und was nicht (R09)

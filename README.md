@@ -57,6 +57,7 @@ All folder names are in English, so that they are the same on every computer and
 | `CoverLetter` | Cover letter (working folder) |
 | `Knowledge_Base` | Knowledge base |
 | `Applications` | Applications |
+| `Archive` | Archive: the daily full copy for your USB stick |
 
 ## How to start
 

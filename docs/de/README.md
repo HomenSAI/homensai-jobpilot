@@ -58,6 +58,7 @@ Alle Ordner haben englische Namen, damit sie auf jedem Computer und für jeden A
 | `CoverLetter` | Anschreiben (Arbeitsordner) |
 | `Knowledge_Base` | Wissensbasis |
 | `Applications` | Bewerbungen |
+| `Archive` | Archiv: tägliche vollständige Kopie für den USB-Stick |
 
 ## So beginnen Sie
 

@@ -85,6 +85,12 @@ select, input[type=search] { font:inherit; font-weight:400; padding:.45rem .6rem
 .btn { font:inherit; font-size:.9rem; padding:.4rem .9rem; border-radius:8px; border:1px solid var(--accent); background:transparent; color:var(--accent); cursor:pointer; }
 .btn:disabled { opacity:.6; cursor:default; }
 .reset-note { border-left-color:#b3261e; }
+.archive-note { border-left-color:var(--accent); }
+.archive-note h2 { font-size:1.05rem; margin:0 0 .35rem; }
+.archive-note .arc-path { display:flex; flex-wrap:wrap; gap:.5rem; align-items:center; margin:.5rem 0; }
+.archive-note code { font-size:.85rem; padding:.2rem .45rem; border:1px solid var(--line); border-radius:6px; background:var(--bg); word-break:break-all; }
+.archive-note ol { margin:.4rem 0 0; padding-left:1.3rem; }
+.archive-note .warn { color:var(--warn); font-weight:600; }
 .btn-reset { background:#b3261e; border-color:#b3261e; color:#fff; font-weight:600; padding:.55rem 1.2rem; animation:jp-pulse 1.4s ease-in-out infinite; }
 .btn-reset:hover { background:#8f1d17; }
 @keyframes jp-pulse { 0%,100% { box-shadow:0 0 0 0 rgba(179,38,30,.55); } 50% { box-shadow:0 0 0 .55rem rgba(179,38,30,0); opacity:.85; } }
@@ -170,6 +176,7 @@ td.time { font-family:var(--mono); white-space:nowrap; color:var(--muted); } td 
 <p class="lead" data-i="lead"></p>
 <div class="pills" id="meta"></div>
 <div class="notice reset-note" id="demo-note" hidden><p data-i="demo"></p><p><button type="button" class="btn btn-reset" id="clear-sample" data-i="sample_clear"></button></p></div>
+<div class="notice archive-note" id="archive-note" hidden></div>
 </div>
 
 <section class="empty" id="err" role="alert" hidden></section>
@@ -292,6 +299,17 @@ td.time { font-family:var(--mono); white-space:nowrap; color:var(--muted); } td 
       lead: "All applications and employer answers, grouped by year, month and day, with monthly results at a cutoff. Sort, filter and search. The page only shows a snapshot; the agent updates the data.",
       demo: "This page shows an invented example so you can see how it works. Before you start using the statistics, press the red “Reset sample” button once: the example disappears and the page is ready for your own data. After that the button is gone.",
       sample_clear: "Reset sample", sample_cleared: "Sample data cleared",
+      arc_title: "Don’t forget: copy your archive to a USB stick",
+      arc_text: "Every day the agent saves a full copy of your data in the archive folder. Copy it to a USB stick or another disk regularly, for example once a week, so that your results are safe if something happens to this computer.",
+      arc_last: "Last archive: {n} ({d})",
+      arc_none: "No daily archive yet. Ask the agent to make one.",
+      arc_old: "The newest archive is {d} days old. Ask the agent to check the daily archive.",
+      arc_open: "Open the archive folder",
+      arc_copy: "Copy path",
+      arc_copied: "Path copied",
+      arc_s1: "Click “Copy path”, then press Win+E to open File Explorer.",
+      arc_s2: "Press Ctrl+L, then Ctrl+V and Enter: the archive folder opens.",
+      arc_s3: "Copy the newest folder (or the whole folder) to your USB stick.",
       meta_profile: "Profile", meta_tz: "Time zone", meta_snapshot: "Snapshot", meta_old: "Snapshot is {d} days old",
       period_h: "Monthly report (results by the state at the cutoff)", period_sel: "Report month",
       cutoff_line: "{m} · Cutoff: {c} · source revision {r} · time zone {tz}", cut_end: "end of the month", cut_snap: "snapshot time {t}",
@@ -368,6 +386,17 @@ td.time { font-family:var(--mono); white-space:nowrap; color:var(--muted); } td 
       lead: "Все заявки и ответы работодателей по годам, месяцам и дням, с результатами месяцев на срез. Сортировка, фильтры и поиск. Страница только показывает снимок; данные обновляет агент.",
       demo: "Сейчас на странице придуманный пример, чтобы было видно, как она работает. Перед тем как пользоваться статистикой, один раз нажмите красную кнопку «Сбросить пример»: пример исчезнет, и страница будет готова для ваших данных. После этого кнопка пропадёт.",
       sample_clear: "Сбросить пример", sample_cleared: "Примеры очищены",
+      arc_title: "Не забудьте перенести архив на флешку",
+      arc_text: "Каждый день агент сохраняет полную копию ваших данных в папку архива. Регулярно, например раз в неделю, копируйте её на флешку или другой диск — тогда результаты не пропадут, если с компьютером что-то случится.",
+      arc_last: "Последний архив: {n} ({d})",
+      arc_none: "Ежедневного архива ещё нет. Попросите агента сделать его.",
+      arc_old: "Самому свежему архиву уже {d} дн. Попросите агента проверить ежедневный архив.",
+      arc_open: "Открыть папку архива",
+      arc_copy: "Скопировать путь",
+      arc_copied: "Путь скопирован",
+      arc_s1: "Нажмите «Скопировать путь», затем Win+E — откроется Проводник.",
+      arc_s2: "Нажмите Ctrl+L, потом Ctrl+V и Enter — откроется папка архива.",
+      arc_s3: "Скопируйте самую свежую папку (или всю папку) на флешку.",
       meta_profile: "Профиль", meta_tz: "Часовой пояс", meta_snapshot: "Снимок", meta_old: "Снимку {d} дн.",
       period_h: "Отчёт за месяц (результаты по состоянию на срез)", period_sel: "Отчётный месяц",
       cutoff_line: "{m} · Срез: {c} · ревизия источника {r} · часовой пояс {tz}", cut_end: "конец месяца", cut_snap: "время снимка {t}",
@@ -444,6 +473,17 @@ td.time { font-family:var(--mono); white-space:nowrap; color:var(--muted); } td 
       lead: "Alle Bewerbungen und Antworten der Arbeitgeber, gegliedert nach Jahr, Monat und Tag, mit Monatsergebnissen zum Stichtag. Sortierung, Filter und Suche. Die Seite zeigt nur einen Snapshot; die Daten aktualisiert der Agent.",
       demo: "Diese Seite zeigt ein erfundenes Beispiel, damit Sie sehen, wie sie funktioniert. Bevor Sie die Statistik nutzen, drücken Sie einmal die rote Schaltfläche „Beispiel zurücksetzen“: Das Beispiel verschwindet, und die Seite ist bereit für Ihre Daten. Danach ist die Schaltfläche weg.",
       sample_clear: "Beispiel zurücksetzen", sample_cleared: "Beispieldaten gelöscht",
+      arc_title: "Nicht vergessen: Archiv auf einen USB-Stick kopieren",
+      arc_text: "Jeden Tag speichert der Agent eine vollständige Kopie Ihrer Daten im Archivordner. Kopieren Sie sie regelmäßig, etwa einmal pro Woche, auf einen USB-Stick oder eine andere Festplatte – dann sind Ihre Ergebnisse sicher, falls mit diesem Computer etwas passiert.",
+      arc_last: "Letztes Archiv: {n} ({d})",
+      arc_none: "Noch kein tägliches Archiv. Bitten Sie den Agenten, eines anzulegen.",
+      arc_old: "Das neueste Archiv ist {d} Tage alt. Bitten Sie den Agenten, das tägliche Archiv zu prüfen.",
+      arc_open: "Archivordner öffnen",
+      arc_copy: "Pfad kopieren",
+      arc_copied: "Pfad kopiert",
+      arc_s1: "Klicken Sie auf „Pfad kopieren“ und drücken Sie Win+E: Der Explorer öffnet sich.",
+      arc_s2: "Drücken Sie Strg+L, dann Strg+V und Enter: Der Archivordner öffnet sich.",
+      arc_s3: "Kopieren Sie den neuesten Ordner (oder den ganzen Ordner) auf Ihren USB-Stick.",
       meta_profile: "Profil", meta_tz: "Zeitzone", meta_snapshot: "Snapshot", meta_old: "Snapshot ist {d} Tage alt",
       period_h: "Monatsbericht (Ergebnisse nach dem Stand zum Stichtag)", period_sel: "Berichtsmonat",
       cutoff_line: "{m} · Stichtag: {c} · Quellrevision {r} · Zeitzone {tz}", cut_end: "Monatsende", cut_snap: "Snapshot-Zeit {t}",
@@ -520,6 +560,17 @@ td.time { font-family:var(--mono); white-space:nowrap; color:var(--muted); } td 
       lead: "Усі заявки й відповіді роботодавців за роками, місяцями та днями, з результатами місяців на момент зрізу. Сортування, фільтри та пошук. Сторінка показує лише знімок; дані оновлює агент.",
       demo: "Зараз на сторінці вигаданий приклад, щоб було видно, як вона працює. Перш ніж користуватися статистикою, один раз натисніть червону кнопку «Скинути приклад»: приклад зникне, і сторінка буде готова для ваших даних. Після цього кнопка зникне.",
       sample_clear: "Скинути приклад", sample_cleared: "Зразкові дані очищено",
+      arc_title: "Не забудьте перенести архів на флешку",
+      arc_text: "Щодня агент зберігає повну копію ваших даних у теці архіву. Регулярно, наприклад раз на тиждень, копіюйте її на флешку чи інший диск — тоді результати не пропадуть, якщо з комп’ютером щось станеться.",
+      arc_last: "Останній архів: {n} ({d})",
+      arc_none: "Щоденного архіву ще немає. Попросіть агента зробити його.",
+      arc_old: "Найсвіжішому архіву вже {d} дн. Попросіть агента перевірити щоденний архів.",
+      arc_open: "Відкрити теку архіву",
+      arc_copy: "Скопіювати шлях",
+      arc_copied: "Шлях скопійовано",
+      arc_s1: "Натисніть «Скопіювати шлях», потім Win+E — відкриється Провідник.",
+      arc_s2: "Натисніть Ctrl+L, потім Ctrl+V та Enter — відкриється тека архіву.",
+      arc_s3: "Скопіюйте найсвіжішу теку (або всю теку) на флешку.",
       meta_profile: "Профіль", meta_tz: "Часовий пояс", meta_snapshot: "Знімок", meta_old: "Знімку {d} дн.",
       period_h: "Звіт за місяць (результати на момент зрізу)", period_sel: "Звітний місяць",
       cutoff_line: "{m} · Зріз: {c} · ревізія джерела {r} · часовий пояс {tz}", cut_end: "кінець місяця", cut_snap: "час знімка {t}",
@@ -655,6 +706,11 @@ td.time { font-family:var(--mono); white-space:nowrap; color:var(--muted); } td 
       ["responses", d.responses === undefined || Array.isArray(d.responses)]
     ];
     for (var s = 0; s < scalars.length; s++) if (!scalars[s][1]) return bad("FIELD-" + scalars[s][0], "e_field", { f: scalars[s][0] });
+    if (d.archive !== undefined) {
+      var ar = d.archive, strOrNull = function (v) { return v === undefined || v === null || typeof v === "string"; };
+      if (!isRec(ar) || typeof ar.folder_href !== "string" || /^[a-z][a-z0-9+.-]*:/i.test(ar.folder_href) || !strOrNull(ar.folder_path) ||
+          !(ar.last_daily_at === undefined || ar.last_daily_at === null || isIso(ar.last_daily_at)) || !strOrNull(ar.last_daily_name)) return bad("ARCHIVE", "e_field", { f: "archive" });
+    }
     if (!isTz(d.timezone)) return bad("FIELD-timezone", "e_tz");
     var gen = Date.parse(d.generated_at);
     var snapM = pm(d.generated_at, d.timezone).mkey;
@@ -1158,8 +1214,38 @@ td.time { font-family:var(--mono); white-space:nowrap; color:var(--muted); } td 
       if (age >= 2) meta.appendChild(el("span", "pill warn", t("meta_old", { d: age })));
     }
     document.getElementById("demo-note").hidden = !(isSample && !cleared);
+    renderArchive();
     var btn = document.getElementById("clear-sample");
     btn.textContent = t("sample_clear");
+  }
+  // ---- reminder: copy the daily archive to a USB stick (DATA_CONTRACT.md §11.9); a page cannot open File Explorer, so the path is copied ----
+  function renderArchive() {
+    var box = document.getElementById("archive-note"); box.textContent = "";
+    var ar = SNAP && SNAP.archive;
+    if (!ar) { box.hidden = true; return; }
+    box.hidden = false;
+    box.appendChild(el("h2", "", t("arc_title")));
+    box.appendChild(el("p", "", t("arc_text")));
+    var age = ar.last_daily_at ? Math.floor((Date.now() - Date.parse(ar.last_daily_at)) / DAY) : null;
+    if (age === null) box.appendChild(el("p", "warn", t("arc_none")));
+    else {
+      box.appendChild(el("p", "", t("arc_last", { n: ar.last_daily_name || "", d: stamp(ar.last_daily_at) })));
+      if (age >= 2) box.appendChild(el("p", "warn", t("arc_old", { d: age })));
+    }
+    var row = el("div", "arc-path", null);
+    var a = document.createElement("a"); a.href = ar.folder_href; a.target = "_blank"; a.rel = "noopener"; a.textContent = t("arc_open"); row.appendChild(a);
+    if (ar.folder_path) {
+      row.appendChild(el("code", "", ar.folder_path));
+      var b = el("button", "btn", t("arc_copy")); b.type = "button";
+      b.addEventListener("click", function () {
+        var done = function () { b.textContent = t("arc_copied"); };
+        var fallback = function () { var ta = document.createElement("textarea"); ta.value = ar.folder_path; document.body.appendChild(ta); ta.select(); try { document.execCommand("copy"); done(); } catch (e) { /* select by hand */ } ta.remove(); };
+        if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(ar.folder_path).then(done, fallback); else fallback();
+      });
+      row.appendChild(b);
+    }
+    box.appendChild(row);
+    var ol = el("ol", "", null); ["arc_s1", "arc_s2", "arc_s3"].forEach(function (k) { ol.appendChild(el("li", "", t(k))); }); box.appendChild(ol);
   }
   function showError() {
     document.getElementById("data-area").hidden = true;
