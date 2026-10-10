@@ -4,7 +4,7 @@ Deutsche Fassung. Maßgeblich ist die englische Fassung (Datei im Hauptverzeichn
 
 [English](../../REVIEW.md) | [Русский](../ru/REVIEW.md) | [Deutsch](REVIEW.md)
 
-9. Oktober 2026 · Version 1.7.0 (die Datei `VERSION`) · Autor der Idee und Entwickler: Serhii Khomenko / HomenS.AI · [homensai.com](https://homensai.com/) · CC BY-NC 4.0
+10. Oktober 2026 · Version 1.8.0 (die Datei `VERSION`) · Autor der Idee und Entwickler: Serhii Khomenko / HomenS.AI · [homensai.com](https://homensai.com/) · CC BY-NC 4.0
 
 ## Stand des Projekts
 
