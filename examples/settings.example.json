@@ -1,16 +1,17 @@
 {
   "schema_version": "1.4",
   "example_only": true,
-  "_notice": "Copyright (c) 2026 Serhii Khomenko. HomenS.AI JobPilot. https://homensai.com/ . Documentation example: CC BY-NC 4.0. Not active settings. This is the structure of profiles/<profile_id>/profile.json; the agent fills it in during the first setup (TODO_FOR_AI.md, A7).",
+  "_notice": "Copyright (c) 2026 Serhii Khomenko. HomenS.AI JobPilot. https://homensai.com/ . Documentation example: CC BY-NC 4.0. Not active settings. This is the structure of profiles/<profile_id>/profile.json; the agent fills it in during the first setup (TODO_FOR_AI.md, A7) and removes example_only and every key that starts with _. Values the person must answer are null or empty here.",
   "person_id": "example-person",
   "profile_id": "example-direction",
-  "timezone": "Europe/Berlin",
+  "timezone": null,
   "localization": {
     "default_language": "en",
     "supported_languages": [
       "en",
       "ru",
-      "de"
+      "de",
+      "uk"
     ],
     "ui_language": "en",
     "document_languages_inherit_ui": false
@@ -56,35 +57,24 @@
     "max_travel_minutes": null,
     "max_transfers": null,
     "max_walk_minutes": null,
-    "evening_return_required": true,
+    "evening_return_required": null,
     "priority_cities": [],
     "expand_radius_without_consent": false
   },
   "schedule": {
-    "prepare_month_at_start": true,
+    "prepare_month_at_start": null,
     "monthly_reminder_local_time": null,
-    "cadence": "allowed_workdays",
+    "cadence": null,
     "interval_days": null,
-    "allowed_weekdays": [
-      1,
-      2,
-      3,
-      4,
-      5
-    ],
-    "local_send_times": [
-      "10:00"
-    ],
+    "allowed_weekdays": [],
+    "local_send_times": [],
     "sending_rule_statement": null,
-    "max_per_run": 1,
-    "max_per_day": 2,
-    "_note_max_per_day": "integer 1 to 44, taken from the person's own sending rule (sending_rule_statement); no default value; 44 means the whole month may go out on one day; the most cv_submission sends per local calendar day, counted at send_started, failed attempts included; applies in every mode; 0 and 45 or more are refused; a change takes effect from the next local day; the monthly limit of 44 is fixed",
+    "max_per_run": null,
+    "max_per_day": null,
+    "_note_max_per_day": "integer 1 to 44, taken from the person's own sending rule (sending_rule_statement); no default value; 44 means the whole month may go out on one day. A cv_submission is refused with DAILY_LIMIT when the number of cv_submission send_started lines already recorded for that local day (failed attempts included) has reached max_per_day (so with max_per_day 1 exactly one send per day is possible). For transport gmail_scheduled the day that counts is the local date of the slot (the day Gmail will send), not the day the scheduling was done; so a whole month can be scheduled in Gmail in one session. Applies in every mode; 0 and 45 or more are refused; a change takes effect from the next local day; the monthly limit of 44 is fixed (DATA_CONTRACT.md §13.2, item 9)",
     "inter_message_delay_minutes": null,
     "daily_check_time": "16:00",
-    "excluded_weekdays": [
-      6,
-      7
-    ],
+    "excluded_weekdays": [],
     "weekday_numbering": "ISO: Monday=1, Sunday=7",
     "holiday_region": null,
     "holiday_source": null,
@@ -94,13 +84,13 @@
     "missed_send_policy": "needs_reschedule"
   },
   "minutes_per_application": {
-    "_note": "estimate, change to your own values (asked in TODO_FOR_AI.md, A7); used only for the time-saved figure of the statistics (DATA_CONTRACT.md §9.3)",
-    "cv_adapting": 10,
-    "cover_letter": 8,
-    "email_text": 3,
-    "attachments_and_sending": 4,
-    "date_and_text_checks": 3,
-    "reply_tracking": 2
+    "_note": "null until the person answers (TODO_FOR_AI.md, A7): their own values, or the example estimates of _allowed_values if the person accepts them; used only for the time-saved figure of the statistics (DATA_CONTRACT.md §9.3)",
+    "cv_adapting": null,
+    "cover_letter": null,
+    "email_text": null,
+    "attachments_and_sending": null,
+    "date_and_text_checks": null,
+    "reply_tracking": null
   },
   "quota": {
     "max_cv_submissions_per_person_month": 44,
@@ -162,10 +152,10 @@
     "schedule.monthly_reminder_local_time": "null until agreed in setup, then HH:MM local time (24 h); never assumed",
     "schedule.daily_check_time": "HH:MM local time (24 h); default 16:00 in the person's time zone",
     "schedule.local_send_times": "one HH:MM local time (24 h) per message of a run, or one time with inter_message_delay_minutes; an empty list with on_request",
-    "schedule.max_per_run": "integer from 1 up to max_per_day; null with on_request",
+    "schedule.max_per_run": "integer from 1 up to max_per_day; null until asked and with on_request",
     "schedule.max_per_run_note": "the number of slots in one run of a scheduled cadence; null with on_request",
     "schedule.sending_rule_statement": "the person's own words on how the month's CV submissions are spread; required before any plan; never filled in by the agent",
-    "schedule.max_per_day": "integer 1–44 from the person's sending rule (no default; the monthly limit 44 is fixed)",
+    "schedule.max_per_day": "integer 1–44 from the person's sending rule; null until stated (no default; the monthly limit 44 is fixed)",
     "schedule.inter_message_delay_minutes": "null, or an integer of 1 or more; used when max_per_run is more than 1 and only one local time is given",
     "schedule.interval_days": "null, or an integer of 1 or more; used only by every_n_calendar_days (calendar days) and every_n_allowed_workdays (permitted working days)",
     "schedule.missed_send_policy": [
@@ -190,6 +180,20 @@
       "draft_only",
       "approval_per_message",
       "scheduled_send_with_profile_consent"
-    ]
+    ],
+    "minutes_per_application.example_estimates": {
+      "_note": "example estimates (30 minutes in all); used only when the person says so, and to be replaced by their own values",
+      "cv_adapting": 10,
+      "cover_letter": 8,
+      "email_text": 3,
+      "attachments_and_sending": 4,
+      "date_and_text_checks": 3,
+      "reply_tracking": 2
+    },
+    "search.evening_return_required": [
+      true,
+      false
+    ],
+    "timezone": "IANA name derived from the place of residence (A7); null until then"
   }
 }
