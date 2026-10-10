@@ -2,7 +2,7 @@
 
 [English](USER_GUIDE.md) | [Русский](docs/ru/USER_GUIDE.md)
 
-**Version 1.9.0 · 2026-10-10** · The same guide is available as a web page with a menu: [overview_install.html](overview_install.html).
+**Version: [VERSION](VERSION)** · 2026-10-10 · The same guide is available as a web page with a menu: [overview_install.html](overview_install.html).
 **For:** Windows and ChatGPT Desktop with Codex. The project was checked virtually in the Codex environment only. **Anthropic / Claude Code: compatibility not confirmed**; this guide is not written for it, and a Claude Code user must first complete the mock acceptance checklist in [REVIEW.md](REVIEW.md).
 
 The setup takes about 30–40 minutes. Do the steps in order. Every step says what you should see on the screen, so you always know whether it worked. No Git, Python or other developer tools are needed on your computer.
@@ -152,8 +152,11 @@ The project ZIP contains a ready folder `Локальные_данные\Пол�
 | `3_Шаблон_отчёта` (report template) | Only if you have your own report sample. Otherwise leave it empty |
 
 Two more folders, next to `Положите_сюда`, hold your **templates**:
-- `Локальные_данные\Resume` — your resume. Put a Word (.docx) or PDF file here. A PDF is converted by the agent into a Word file saved in the same folder. No file yet? The agent creates a neutral resume during the first setup.
-- `Локальные_данные\CoverLetter` — your cover letter, in the same design as the resume. The same rules apply.
+- `Локальные_данные\Resume` — your resume. Put a Word (.docx) or PDF file here. A PDF is converted by the agent into a Word file saved in the same folder. No file yet? The agent offers the neutral example, prepares it with the available document tools and asks you to approve the layout.
+- `Локальные_данные\CoverLetter` — your cover-letter template. The approved CV design can be reused if you agree; the same conversion and verification rules apply.
+
+Template handling: keep the source unchanged, save a distinct editable DOCX beside a PDF, visually compare every page and approve the result before use. If conversion is unavailable, the agent reports it and asks for manual conversion or an approved reconstruction. Selected source/DOCX paths, hashes and verification times are stored per profile; each vacancy receives its own files. See [Application templates](OPERATING_REQUIREMENTS.md#application-templates).
+
 
 Every application the agent prepares gets its own folder, `Локальные_данные\Applications\<year>\<NN_Month>\<NNN_Company_City_Role>`, with the company data, the resume and letter, the e-mail text and a status file (`Status.txt`) that records each step: prepared, sent, waiting, rejected, invited.
 
@@ -454,7 +457,7 @@ The project was developed, audited locally and checked virtually in the **Codex*
 | Gmail reading and classification of threads | described, not tested in practice |
 | Gmail Schedule send, verification in Scheduled, sending of any message | described, not tested in practice; sending is not verified |
 | Built-in browser uploading attachments | not available (the official Browser documentation, checked 8 October 2026, says the agent cannot automate file uploads there) |
-| DOCX/PDF creation and visual rendering | described, not tested in practice; no rendering was run |
+| DOCX/PDF creation and visual rendering | neutral examples are supplied; their prior rendering is reported in the changelog; the real user's agent/document cycle still requires verification |
 | Daily 16:00 check and daily report by Gmail | described, not tested in practice |
 | Claude Code / Anthropic | described, not tested in practice; compatibility not confirmed |
 

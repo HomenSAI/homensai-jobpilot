@@ -131,7 +131,7 @@ Rules for the agent:
 7. **Count with the system's own tool, not by eye.** The slots used, reserved or unverified in a month are read from all journal segments by text search for the month fields of the quota events (formulas in DATA_CONTRACT.md §3c and the free count in §5; commands in §4a below). The agent shows the number and how it was found. It compares the result with `quota.json`; if they differ or the file is missing, the journal is right and `quota.json` is rebuilt (`examples/quota.example.json`). The same applies to checksums of files. No script is added to the package for this.
 8. **Writing a line (one append method, monthly segments).** The journal is kept per month: the current segment is `journal/transactions-YYYY-MM.jsonl`, or its numbered part `journal/transactions-YYYY-MM-pN.jsonl` once the month has 500 lines (DATA_CONTRACT.md §3c). Only the current segment is written; a closed segment is never edited. If no journal exists, the first line has `sequence` 1. Only the following method is used. JSON is not joined by hand, and text is not written with shell redirection or heredocs. The file tool's exact-replace operation is used for one purpose only: to append a line after the segment's last line, as steps 3 and 4 describe.
    1. Under the writer lock, determine the current local month M and its current segment. If that segment already has 500 lines, the new line goes to the next numbered part (`-p2`, `-p3` …), which counts as a new segment in step 3(b). Read the last line of the current segment, which must be a complete line. If the segment is new or empty, read the last line of the newest earlier segment instead; for the very first line there is none and `n` is 0. Take `n`, the `sequence` of that last journal line. Check that the new `action_id` is not in any segment (rule 2). Record in the run note: the line count of the segment; the last line `L` without its line break (it is unique, because it carries its own `sequence` and `action_id`); and `C0`, the SHA-256 of the whole segment file (for a new segment, the SHA-256 of an empty file, `e3b0c442…b855`). Check that the file ends with a line break.
-   2. Build the new line in the key order of DATA_CONTRACT.md §3c with `sequence` n+1. Check that it is one JSON object on one line and that every identifier is a UUID in the UUID form. A failed check stops writing (step 5).
+   2. Build the new line in the key order of DATA_CONTRACT.md §3c with `sequence` n+1. Check that it is one JSON object on one line and that identifiers follow their declared forms in DATA_CONTRACT.md §2. A failed check stops writing (step 5).
    3. Append. (a) If the segment has lines: with the file tool's exact replacement, replace `L` by `L`, a line break and `N`. If `L` is not found exactly once, stop (step 5). The file then ends with `N` and its line break. (b) If the segment is new: check that the file does not exist, then create it with the file tool, containing exactly `N` and its line break. (c) For a segment of fewer than 300 lines, the segment may instead be written whole with the file tool, from the text read in step 1: the same lines, then `N` with its line break. Variant (c) is the only whole-segment rewrite, and only for a small segment.
    4. Read back. (a) `N` parses as JSON with `sequence` n+1; the line before it, if there is one, is byte-identical to `L` and parses as JSON with `sequence` n. (b) The line count has grown by exactly one. (c) The SHA-256 of the segment without its last line equals `C0`, so every byte before `N` is unchanged (for example `head -n -1 <segment> | sha256sum`, section 4a). The read-back values are recorded in the run note.
    5. A failed check stops writing. The segment file is kept as it is, no view is updated, no external action is taken, the lock is kept and the person is told (rule 4). Nothing is repaired by rewriting earlier lines. The lock file has a fixed format (DATA_CONTRACT.md §3c). A check that no lock exists, followed by a separate creation, is not enough by itself (4b).
@@ -395,9 +395,9 @@ The journal grows by a few lines a day, which plain files handle easily. No inde
 ## 10. Format changes and the first release boundary
 
 **Version labels (each number has one meaning; other documents refer to these names).**
-- The documentation version is the file `VERSION`: now 1.9.0.
+- The documentation version is defined by [VERSION](VERSION).
 - `schema_version` of a statistics snapshot (`summary.js`) is 1.4 (DATA_CONTRACT.md §9.1).
-- `schema_version` of settings (`profile.json`) is 1.3, and of `workspace.json` 1.3 (`examples/settings.example.json`, `examples/workspace.example.json`); `schema_version` of `quota.json` is 1.3 (`examples/quota.example.json`).
+- `schema_version` of settings (`profile.json`) is 1.4, and of `workspace.json` 1.3 (`examples/settings.example.json`, `examples/workspace.example.json`); `schema_version` of `quota.json` is 1.3 (`examples/quota.example.json`).
 - `format_version` of `workspace.json` is 1.4: the layout of the workspace file (DATA_CONTRACT.md §1).
 - `schema_version` of a journal line is 1.2 (the line layout, DATA_CONTRACT.md §3c); `registry.json` uses 1.2 as well.
 
@@ -407,11 +407,9 @@ The first trial is a full pass on synthetic data, done by hand in a chat: profil
 
 The verification scenarios are in ACCEPTANCE_TESTS.md. Acceptance needs recorded evidence that the rules work in practice, not just the existence of this document.
 
-## 11. Two languages, one project
+## 11. Three languages, one project
 
-English is the primary edition at the project root. The complete Russian edition lives in docs/ru; each page links to its counterpart. The same section structure, action names, examples and requirements apply to both. A wording difference is fixed in both editions against the user's requirement and the English base; it is not a second set of rules.
-
-The statistics page uses `en` by default and supports `ru` and `de`. The label dictionaries have identical keys and are embedded in the page, so switching languages needs no network and no server. A missing translation falls back to English. Date formatting changes only the display; sorting uses the original timestamps. Company names and recorded evidence are not rewritten when the interface language changes. CV, cover letter, email and report languages stay separately selected and are not limited to en/ru by the documentation interface.
+English is the primary edition at the root; Russian is in `docs/ru`, German in `docs/de`. The three editions share one data contract, event names and behavior. Update all three when a rule changes. The statistics interface supports `en`, `ru` and `de`; switching it changes labels only, not stored records or the independently chosen CV, letter, email and report languages.
 
 ## 12. Local archives and recovery (R01)
 

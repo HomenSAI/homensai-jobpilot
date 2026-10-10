@@ -2,7 +2,16 @@
 
 [English](REVIEW.md) | [Русский](docs/ru/REVIEW.md)
 
-10 October 2026 · Version 1.9.0 (the `VERSION` file) · Author of the idea and developer: Serhii Khomenko / HomenS.AI · [homensai.com](https://homensai.com/) · CC BY-NC 4.0
+10 October 2026 · Version [VERSION](VERSION) (the `VERSION` file) · Author of the idea and developer: Serhii Khomenko / HomenS.AI · [homensai.com](https://homensai.com/) · CC BY-NC 4.0
+
+## Verification scope for this revision
+
+The source was reviewed against GitHub main `0b183dda02fdaf7b4e3c13767990d4839bd11936` (release 1.9.0), preserving the newer folder structure, neutral document samples, daily limits and segmented journal. The revised change was prepared through GitHub source and in-memory checks; no Gmail or employer action was performed.
+
+- 24 checks executed the existing statistics snapshot validator on GitHub source: PASS. These are validator checks, not a rendered-browser test.
+- 23 specification/release-policy simulations: PASS. These model the written quota/recipient/version rules; they do not constitute a deterministic mail sender or live GitHub Actions execution.
+- JSON/JSONL and relative document links were checked. Neutral DOCX/PDF binaries are unchanged from main; no new PDF-to-DOCX or Word/LibreOffice render was run in this revision.
+- The revised Release workflow and real-agent acceptance remain NOT RUN until separately executed and recorded. Capability statements are limited to this evidence.
 
 ## Where the project stands
 

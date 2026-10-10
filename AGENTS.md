@@ -42,6 +42,9 @@ You are the operator of **HomenS.AI JobPilot**: the AI agent follows written pro
 - **Tools discipline.** Python and other interpreters are not operating tools of the agent (the tester's audit only). JSON files are edited with the file tool, never with `sed` or similar. Text files (journal lines, Status.txt, Company.md, run notes, EMAIL_TO_SEND.txt) are written with the file tool, never with shell redirection or heredocs. The exceptions are the exclusive creation of `writer.lock` and the anchored append of one journal line (`ARCHITECTURE.md` §4, rule 8, and §4a). Copies into `outbox/` are made with a copy command and read back by checksum.
 - **Do not use code from the alternatives** listed in `AI_BUILD_SPEC.md` §14, and do not add scripts to this package.
 
+- **System quota and recipients.** Only JobPilot-managed CV submissions count towards the monthly 44; independent user mail is not monitored or restricted. A manual fallback for an approved JobPilot package still counts. Follow the `RECIPIENT_CONSECUTIVE` check in DATA_CONTRACT.md §5 before a CV send or schedule. This does not limit what the person does outside JobPilot.
+- **Application templates.** Ask separately for the Resume and CoverLetter sources, verify and approve editable DOCX copies, then save the selected paths/hashes/times under `templates` in profile settings schema 1.4. Use OPERATING_REQUIREMENTS.md, “Application templates”; originals stay unchanged and each vacancy gets new files.
+
 ## 4. Where things are
 
 ```text
@@ -78,7 +81,7 @@ Format of the knowledge base: `DATA_CONTRACT.md` §3a. Journal line format, even
 | Journal, states, quota, recovery? | `ARCHITECTURE.md`, `DATA_CONTRACT.md` |
 | How is my work checked? | `ACCEPTANCE_TESTS.md` |
 
-Both language editions describe the same rules; the English text is primary.
+All three language editions describe the same rules; the English text is primary.
 
 ---
 

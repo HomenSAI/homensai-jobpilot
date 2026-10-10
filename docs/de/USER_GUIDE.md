@@ -4,7 +4,7 @@ Deutsche Fassung. Maßgeblich ist die englische Fassung (Datei im Hauptverzeichn
 
 [English](../../USER_GUIDE.md) | [Русский](../ru/USER_GUIDE.md) | [Deutsch](USER_GUIDE.md)
 
-**Version 1.9.0 · 2026-10-10** · Dieselbe Anleitung gibt es als Webseite mit Menü: [overview_install.html](../../overview_install.html).
+**Version: [VERSION](../../VERSION)** · 2026-10-10 · Dieselbe Anleitung gibt es als Webseite mit Menü: [overview_install.html](overview_install.html).
 **Für:** Windows und ChatGPT Desktop mit Codex. Das Projekt wurde nur virtuell in der Codex-Umgebung geprüft. **Anthropic / Claude Code: Kompatibilität nicht bestätigt**; diese Anleitung ist dafür nicht geschrieben, und ein Claude-Code-Nutzer muss zuerst die Checkliste der Probeabnahme in [REVIEW.md](REVIEW.md) durchlaufen.
 
 Die Einrichtung dauert etwa 30–40 Minuten. Gehen Sie die Schritte der Reihe nach durch. Jeder Schritt sagt, was Sie auf dem Bildschirm sehen sollten, damit Sie immer wissen, ob es funktioniert hat. Auf Ihrem Computer werden kein Git, kein Python und keine anderen Entwicklerwerkzeuge benötigt.
@@ -153,8 +153,11 @@ Das Projekt-ZIP enthält einen fertigen Ordner `Локальные_данные\
 | `3_Шаблон_отчёта` (Berichtsvorlage) | Nur wenn Sie ein eigenes Berichtsmuster haben. Sonst leer lassen |
 
 Zwei weitere Ordner neben `Положите_сюда` enthalten Ihre **Vorlagen**:
-- `Локальные_данные\Resume` — Ihr Lebenslauf. Legen Sie hier eine Word-Datei (.docx) oder eine PDF-Datei ab. Eine PDF-Datei wandelt der Agent in eine Word-Datei um, die im selben Ordner gespeichert wird. Noch keine Datei? Der Agent erstellt bei der Ersteinrichtung einen neutralen Lebenslauf.
-- `Локальные_данные\CoverLetter` — Ihr Anschreiben im selben Design wie der Lebenslauf. Dieselben Regeln gelten.
+- `Локальные_данные\Resume` — Ihr Lebenslauf. Legen Sie hier eine Word-Datei (.docx) oder eine PDF-Datei ab. Eine PDF-Datei wandelt der Agent in eine Word-Datei um, die im selben Ordner gespeichert wird. Noch keine Datei? Der Agent bietet das neutrale Beispiel an, bereitet es mit verfügbaren Dokumentwerkzeugen vor und bittet um Freigabe des Layouts.
+- `Локальные_данные\CoverLetter` — Ihre Anschreibenvorlage. Das freigegebene CV-Design kann mit Ihrer Zustimmung übernommen werden; dieselben Konvertierungs- und Prüfregeln gelten.
+
+Vorlagen: Die Quelle bleibt unverändert; neben der PDF entsteht eine eigene bearbeitbare DOCX, jede Seite wird visuell verglichen und vor Verwendung freigegeben. Ist die Konvertierung nicht verfügbar, meldet der Agent dies und bietet manuelle Konvertierung oder einen freigegebenen Neuaufbau an. Quell-/DOCX-Pfade, Hashes und Prüfzeiten werden pro Profil gespeichert; jede Stelle erhält eigene Dateien. Siehe „Vorlagen für Lebenslauf und Anschreiben“ in den [Arbeitsregeln](OPERATING_REQUIREMENTS.md).
+
 
 Jede Bewerbung, die der Agent vorbereitet, bekommt einen eigenen Ordner, `Локальные_данные\Applications\<Jahr>\<NN_Monat>\<NNN_Firma_Ort_Stelle>`, mit den Firmendaten, Lebenslauf und Anschreiben, dem E-Mail-Text und einer Statusdatei (`Status.txt`), die jeden Schritt festhält: prepared, sent, waiting, rejected, invited. [Die Statuswerte bleiben englisch, wie in der Statusdatei.]
 

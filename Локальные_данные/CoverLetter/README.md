@@ -1,7 +1,11 @@
-# Cover letter / Anschreiben / Сопроводительное письмо
+# Cover-letter layout template / Шаблон сопроводительного письма / Anschreibenvorlage
 
-**RU.** Сюда кладём шаблон сопроводительного письма — свой образец в Word (.docx) или PDF. Если шаблон в PDF, агент переводит его в Word-документ и сохраняет в эту же папку. Дизайн письма такой же, как у резюме (одна фирменная шапка, одинаковые шрифты и поля). Без шаблона агент создаёт нейтральный шаблон при первой настройке.
+**RU.** Сохраните здесь свой образец DOCX или PDF. Исходный файл не перезаписывается. Для PDF агент создаёт рядом отдельный редактируемый DOCX, сравнивает каждую страницу с источником и просит утвердить результат. Недоступная или непроверенная конвертация не считается готовым шаблоном. Письмо персонализируется под вакансию; по вашему согласию используется дизайн резюме. Если образца нет, предлагается нейтральный шаблон из `examples/templates/`. Для разных людей выбираются отдельные подпапки по `person_id`; активные пути и хеши сохраняются в профиле.
 
-**EN.** Put your cover letter template here: your own sample as Word (.docx) or PDF. A PDF is converted by the agent into a Word document saved in this folder. The letter uses the same design as the resume (same header, fonts and margins). Without a template the agent creates a neutral one during the first setup.
+**EN.** Put your DOCX or PDF sample here. The source is never overwritten. For PDF, the agent creates a separate editable DOCX beside it, compares every page with the source and asks you to approve it. An unavailable or unchecked conversion is not a usable template. Each letter is tailored to the vacancy; the CV design is reused with your agreement. Without a sample, the neutral template from `examples/templates/` is offered. Different people use separate `person_id` subfolders; active paths and hashes are saved in the profile.
 
-**DE.** Legen Sie hier Ihre Anschreiben-Vorlage ab: Ihr Muster als Word (.docx) oder PDF. Eine PDF-Datei wandelt der Agent in ein Word-Dokument um und speichert es in diesem Ordner. Das Anschreiben hat dasselbe Design wie der Lebenslauf (gleicher Kopf, gleiche Schrift und Ränder). Ohne Vorlage erstellt der Agent bei der Ersteinrichtung eine neutrale Vorlage.
+**DE.** Legen Sie hier Ihr DOCX- oder PDF-Muster ab. Die Quelle wird nie überschrieben. Aus PDF erstellt der Agent eine eigene bearbeitbare DOCX daneben, vergleicht jede Seite mit der Quelle und bittet um Freigabe. Eine nicht verfügbare oder ungeprüfte Konvertierung ist keine nutzbare Vorlage. Jedes Anschreiben wird an die Stelle angepasst; das CV-Design wird mit Ihrer Zustimmung übernommen. Ohne Muster wird die neutrale Vorlage aus `examples/templates/` angeboten. Verschiedene Personen nutzen getrennte `person_id`-Unterordner; aktive Pfade und Hashes werden im Profil gespeichert.
+
+Personal files remain private; only this README is included in the public package.
+
+© 2026 Serhii Khomenko / HomenS.AI · https://homensai.com/ · CC BY-NC 4.0

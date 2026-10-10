@@ -4,7 +4,16 @@ Deutsche Fassung. Maßgeblich ist die englische Fassung (Datei im Hauptverzeichn
 
 [English](../../REVIEW.md) | [Русский](../ru/REVIEW.md) | [Deutsch](REVIEW.md)
 
-10. Oktober 2026 · Version 1.9.0 (die Datei `VERSION`) · Autor der Idee und Entwickler: Serhii Khomenko / HomenS.AI · [homensai.com](https://homensai.com/) · CC BY-NC 4.0
+10. Oktober 2026 · Version [VERSION](../../VERSION) (die Datei `VERSION`) · Autor der Idee und Entwickler: Serhii Khomenko / HomenS.AI · [homensai.com](https://homensai.com/) · CC BY-NC 4.0
+
+## Prüfumfang dieser Revision
+
+Die Quellen wurden gegen GitHub main `0b183dda02fdaf7b4e3c13767990d4839bd11936` (Release 1.9.0) geprüft. Neue Ordnerstruktur, neutrale Dokumentbeispiele, Tageslimits und segmentiertes Journal bleiben erhalten. Änderungen wurden aus GitHub-Quellen mit Prüfungen im Speicher vorbereitet; keine Gmail- oder Arbeitgeberaktion erfolgte.
+
+- 24 Prüfungen führten den vorhandenen Snapshot-Validator aus den GitHub-Quellen aus: PASS. Dies sind Validatorprüfungen, kein visueller Browsertest.
+- 23 Simulationen der Kontingent-, Empfänger- und Releaseregeln: PASS. Sie modellieren schriftliche Regeln und sind weder Maildienst noch tatsächlicher GitHub-Actions-Lauf.
+- JSON/JSONL und relative Dokumentlinks wurden geprüft. DOCX/PDF-Beispiele sind unverändert aus main; keine neue PDF-zu-DOCX-Konvertierung oder Word-/LibreOffice-Darstellung wurde hier ausgeführt.
+- Der überarbeitete Release-Workflow und die Abnahme mit einem tatsächlichen Agenten bleiben bis zur gesonderten Ausführung NOT RUN. Aussagen über Fähigkeiten sind auf diese Belege begrenzt.
 
 ## Stand des Projekts
 

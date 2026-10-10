@@ -5,7 +5,7 @@
 Author and developer: Serhii Khomenko / HomenS.AI  
 Applies to: HomenS.AI JobPilot source and documentation releases.
 
-This is a manual pre-release control (F10). The release workflow (`.github/workflows/release.yml`) runs when `CHANGELOG.md` or `VERSION` changes on `main`. It reads the version from the newest section of `CHANGELOG.md`, commits `VERSION` back to `main` and creates the GitHub release. It does not check the public file list, personal data or secrets. The maintainer completes this checklist **before** the change reaches `main`, because the workflow publishes automatically.
+This is a manual pre-release control (F10). The release workflow (`.github/workflows/release.yml`) runs on every push to `main`. It reads the version from the newest section of `CHANGELOG.md`, commits `VERSION` back to `main` and creates the GitHub release. It does not check the public file list, personal data or secrets. The maintainer completes this checklist **before** the change reaches `main`, because the workflow publishes automatically.
 
 Run these checks on synthetic test data and on a candidate release archive. Do not run a real release to test the checks.
 
@@ -50,7 +50,7 @@ Run the checks by hand. An automated scanner may help, but it is only one check.
 ## 6. Version and changelog
 
 - `CHANGELOG.md` has a new top section with the version and date. After the workflow runs, `VERSION` equals that version.
-- Every change to `CHANGELOG.md` or `VERSION` on `main` starts the release workflow. Do not push such a change until sections 1 to 5 are complete.
+- Every push to `main` starts the release workflow. Do not push such a change until sections 1 to 5 are complete.
 
 ## 7. Links and rendering
 
@@ -68,7 +68,7 @@ Record the date, repository, branch, commit, archive SHA-256 value, reviewer, an
 - Full Codex agent acceptance, Gmail connector/browser, real Scheduled verification and DOCX/LibreOffice report cycle: not run.
 - The release workflow has no automated fail-closed privacy allowlist; this checklist is manual and must be completed by the maintainer.
 
-## Status for 1.6.0 (current VERSION; not released in this pass)
+## Status for the current package
 
 - Documentation changes were prepared. Sections 1 to 8 were not run on a candidate release archive.
 - Automated fail-closed allowlist and privacy scan: NOT RUN. No such gate is part of this package, and no script is added to it.
@@ -76,6 +76,10 @@ Record the date, repository, branch, commit, archive SHA-256 value, reviewer, an
 - Full browser, agent, Gmail, Gmail Scheduled, and DOCX/LibreOffice checks: NOT RUN.
 
 A release must not be described as fully accepted while any required check remains NOT RUN.
+
+## Version on main
+
+`CHANGELOG.md` is the release-version source. On every push to `main` or manual Release run, GitHub Actions reads its newest `MAJOR.MINOR.PATCH` heading and writes `VERSION` automatically when needed. A repeated run keeps an existing release/tag. Invalid, duplicated, out-of-order or downgrade versions stop publication. A normal Git push cannot overwrite a newer main; rerun the workflow if main advanced during synchronization. Current document labels link to `VERSION` instead of carrying independent numbers. A commit SHA identifies a particular commit; `VERSION` identifies the package release, not each commit. GitHub Actions is release automation and adds no sender or background application to the user's package.
 
 ---
 

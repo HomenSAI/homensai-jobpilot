@@ -1,12 +1,11 @@
-# Keeps VERSION equal to the newest version in CHANGELOG.md and creates the GitHub release.
-# Not part of the product: it only runs on GitHub's servers, never on the user's computer.
+# Synchronizes VERSION from the newest CHANGELOG section on every main push.
+# GitHub release automation only; it does not run on the user's computer.
 # © 2026 Serhii Khomenko / HomenS.AI · https://homensai.com/ · PolyForm Noncommercial 1.0.0
 name: Release
 
 on:
   push:
     branches: [main]
-    paths: [CHANGELOG.md, VERSION]
   workflow_dispatch:
 
 permissions:
@@ -19,40 +18,71 @@ jobs:
       - uses: actions/checkout@v4
         with:
           ref: main
-      - name: Read the version from the newest CHANGELOG section
+          fetch-depth: 0
+      - name: Validate the changelog version
+        shell: bash
         run: |
-          v="$(grep -m1 -E '^## [0-9]+\.[0-9]+\.[0-9]+ ' CHANGELOG.md | awk '{print $2}')"
-          if ! echo "$v" | grep -Eq '^[0-9]+\.[0-9]+\.[0-9]+$'; then
-            echo "CHANGELOG.md has no version section X.Y.Z at the top." >&2
+          set -euo pipefail
+          versions="$(awk '/^## [0-9]+\.[0-9]+\.[0-9]+([[:space:]]|$)/ {print $2}' CHANGELOG.md)"
+          v="$(printf '%s\n' "$versions" | head -n 1)"
+          if ! printf '%s\n' "$v" | grep -Eq '^(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)$'; then
+            echo 'CHANGELOG.md must start its release history with MAJOR.MINOR.PATCH.' >&2
             exit 1
           fi
-          echo "$v" > VERSION_NEW
-          echo "VERSION=$v" >> "$GITHUB_ENV"
-      - name: Write VERSION and commit it when it changed
-        run: |
-          mv VERSION_NEW VERSION
-          if git diff --quiet -- VERSION; then
-            echo "VERSION is already ${VERSION}."
-            exit 0
+          newest="$(printf '%s\n' "$versions" | sort -V | tail -n 1)"
+          duplicates="$(printf '%s\n' "$versions" | sort | uniq -d)"
+          if [ "$v" != "$newest" ] || [ -n "$duplicates" ]; then
+            echo 'Release headings are duplicated or the newest version is not first.' >&2
+            exit 1
           fi
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add VERSION
-          git commit -m "Version ${VERSION} (written from CHANGELOG.md)"
-          git push origin HEAD:main
-      - name: Create the release if this version has none yet
+          if [ -f VERSION ]; then
+            current="$(tr -d '[:space:]' < VERSION)"
+            if ! printf '%s\n' "$current" | grep -Eq '^(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)$'; then
+              echo 'The existing VERSION is invalid; repair it explicitly.' >&2
+              exit 1
+            fi
+            highest="$(printf '%s\n%s\n' "$current" "$v" | sort -V | tail -n 1)"
+            if [ "$highest" != "$v" ]; then
+              echo 'Refusing a VERSION downgrade.' >&2
+              exit 1
+            fi
+          fi
+          printf '%s\n' "$v" > VERSION_NEW
+          printf 'VERSION=%s\n' "$v" >> "$GITHUB_ENV"
+      - name: Synchronize VERSION on main
+        shell: bash
+        run: |
+          set -euo pipefail
+          mv VERSION_NEW VERSION
+          if ! git ls-files --error-unmatch VERSION >/dev/null 2>&1 || ! git diff --quiet -- VERSION; then
+            git config user.name 'github-actions[bot]'
+            git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+            git add VERSION
+            git commit -m "Version ${VERSION} (written from CHANGELOG.md)"
+            # A normal push rejects a stale checkout; never force or overwrite newer work.
+            git push origin HEAD:main
+          fi
+          printf 'RELEASE_TARGET_SHA=%s\n' "$(git rev-parse HEAD)" >> "$GITHUB_ENV"
+      - name: Create the release once
         env:
           GH_TOKEN: ${{ github.token }}
+        shell: bash
         run: |
+          set -euo pipefail
           tag="v${VERSION}"
-          if gh release view "$tag" > /dev/null 2>&1; then
-            echo "Release $tag already exists. Nothing to do."
+          if gh release view "$tag" >/dev/null 2>&1; then
+            echo "Release $tag already exists; keeping its tag and assets."
             exit 0
           fi
-          # Release notes = the section of CHANGELOG.md that belongs to this version
-          awk -v v="$VERSION" 'index($0, "## " v " ") == 1 { f = 1; next } /^## / { f = 0 } f' CHANGELOG.md > notes.md
-          if [ ! -s notes.md ]; then
-            echo "See CHANGELOG.md" > notes.md
+          # An existing tag must target this immutable release commit; it is never moved.
+          if git show-ref --verify --quiet "refs/tags/$tag"; then
+            tagged="$(git rev-parse "refs/tags/$tag^{commit}")"
+            if [ "$tagged" != "$RELEASE_TARGET_SHA" ]; then
+              echo 'The version tag already points to another commit; review or choose a new version.' >&2
+              exit 1
+            fi
           fi
+          awk -v v="$VERSION" 'index($0, "## " v " ") == 1 { f = 1; next } /^## / { f = 0 } f' CHANGELOG.md > notes.md
+          if [ ! -s notes.md ]; then echo 'See CHANGELOG.md' > notes.md; fi
           printf '\nFull history: https://github.com/%s/blob/main/CHANGELOG.md\n' "$GITHUB_REPOSITORY" >> notes.md
-          gh release create "$tag" --target "$(git rev-parse HEAD)" --title "HomenS.AI JobPilot ${VERSION}" --notes-file notes.md
+          gh release create "$tag" --target "$RELEASE_TARGET_SHA" --title "HomenS.AI JobPilot ${VERSION}" --notes-file notes.md

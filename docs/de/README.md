@@ -10,9 +10,11 @@ Ein KI-Agent kann dem lokalen, promptbasierten Ablauf folgen, um Stellen zu rech
 
 **Produkt:** HomenS.AI JobPilot · **Repository:** [HomenSAI/homensai-jobpilot](https://github.com/HomenSAI/homensai-jobpilot)
 
+Das JobPilot-Kontingent gilt nur für von JobPilot verwaltete Bewerbungen: höchstens 44 CV-Einreichungen je Person und Kalendermonat über ihre JobPilot-Profile. Eigenständige Bewerbungen außerhalb von JobPilot entscheidet die Person selbst; der Agent begrenzt sie nicht und übernimmt sie nicht allein wegen eines Gmail-Funds ins JobPilot-Kontingent. Das manuelle Senden eines freigegebenen JobPilot-Pakets über `EMAIL_TO_SEND.txt` bleibt eine verwaltete Einreichung und verbraucht einen Slot. Antworten und Berichte ohne CV behalten ihre eigenen Regeln. Nur unklare verwaltete Versuche beeinflussen das Systemkontingent; andere persönliche E-Mails tun dies nicht.
+
 ## Inhalt dieses Repositoriums
 
-Projektdokumentation **Version 1.9.0**, Anweisungen für den KI-Agenten, eine illustrierte Übersicht und eine lokale Statistikseite. Das Projekt hat keine eigenständige Anwendung zur Stellensuche oder zum Versenden von E-Mails: Ein KI-Agent folgt den schriftlichen Verfahren und pflegt lokale Dateien. Die Statistikansicht ist die Ausnahme: Sie nutzt HTML, CSS und JavaScript, um einen vom Agenten vorbereiteten Schnappschuss anzuzeigen, zu sortieren und zu filtern. Sie sucht nicht, versendet keine E-Mails, ändert keine Dateien und ruft keine Mail-Schnittstelle auf. Die Anweisungen für den Agenten bleiben experimentell und erfordern die Prüfung durch den Nutzer; das Repository verbindet selbst keine Konten und erteilt keine Berechtigung zum Senden.
+Projektdokumentation **Version [VERSION](../../VERSION)**, Anweisungen für den KI-Agenten, eine illustrierte Übersicht und eine lokale Statistikseite. Das Projekt hat keine eigenständige Anwendung zur Stellensuche oder zum Versenden von E-Mails: Ein KI-Agent folgt den schriftlichen Verfahren und pflegt lokale Dateien. Die Statistikansicht ist die Ausnahme: Sie nutzt HTML, CSS und JavaScript, um einen vom Agenten vorbereiteten Schnappschuss anzuzeigen, zu sortieren und zu filtern. Sie sucht nicht, versendet keine E-Mails, ändert keine Dateien und ruft keine Mail-Schnittstelle auf. Die Anweisungen für den Agenten bleiben experimentell und erfordern die Prüfung durch den Nutzer; das Repository verbindet selbst keine Konten und erteilt keine Berechtigung zum Senden.
 
 Englisch ist die maßgebliche Sprachfassung und liegt im Hauptverzeichnis des Repositoriums; die vollständige russische Fassung liegt in `docs/ru`. [Anmerkung: Diese deutsche Fassung liegt in `docs/de`.] Beide Fassungen teilen dieselben Regeln, Datenformate und technischen Kennungen. Die Sprachen für Lebenslauf, Anschreiben, E-Mail und Bericht werden getrennt von der Oberflächensprache gewählt.
 
@@ -110,6 +112,10 @@ Arbeitsdaten bleiben in `Локальные_данные/` und sind nicht Teil d
 **Projektcode**, einschließlich der Statistikseite, steht unter der [PolyForm Noncommercial License 1.0.0](../../LICENSE). **Projektdokumentation** steht unter [CC BY-NC 4.0](../../LICENSE-DOCS). Beide verlangen die genannte Namensnennung und nichtkommerzielle Nutzung; kommerzielle Nutzung braucht die gesonderte Genehmigung des Autors. Das ist „source-available“ (quelloffen im Sinne der Einsehbarkeit), nicht Open Source im Sinne der OSI-Definition. Diese Lizenzen erstrecken sich nicht auf persönliche Unterlagen der Nutzer oder auf Materialien Dritter. Die IBM-Plex-Schriften behalten ihre gesonderten Bedingungen SIL OFL 1.1 in `assets/fonts`. Siehe [NOTICE](../../NOTICE).
 
 Das Produkt ist experimentell. Suche und Bewertung erfolgen durch den von Ihnen gewählten externen Agenten; die Genauigkeit der Informationen und eine Anstellung sind nicht garantiert. „Lokal gespeichert“ bedeutet nicht, dass Informationen, die ein Cloud-Agent liest, auf dem Computer bleiben.
+
+## Version auf main
+
+`CHANGELOG.md` ist die Quelle der Release-Version. Bei jedem Push auf `main` oder manuellen Release-Lauf liest GitHub Actions die neueste Überschrift `MAJOR.MINOR.PATCH` und schreibt bei Bedarf `VERSION` automatisch. Wiederholungen erhalten bestehende Releases/Tags. Ungültige, doppelte, falsch geordnete oder herabstufende Versionen stoppen die Veröffentlichung. Ein normaler Git-Push überschreibt kein neueres main; bei zwischenzeitlicher Änderung den Workflow erneut ausführen. Aktuelle Dokumentlabels verlinken `VERSION`, statt eigene Zahlen zu führen. Eine SHA bezeichnet einen Commit; `VERSION` bezeichnet den Paketrelease, nicht jeden Commit. GitHub Actions dient nur der Veröffentlichung und ergänzt keinen Maildienst auf dem Rechner der Person.
 
 ---
 

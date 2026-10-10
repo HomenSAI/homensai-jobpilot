@@ -70,7 +70,7 @@ Halten Sie Datum, Repository, Branch, Commit, SHA-256-Wert des Archivs, Prüfer 
 - Vollständige Abnahme des Codex-Agenten, Gmail-Connector/Browser, echte Prüfung von Scheduled und der DOCX-/LibreOffice-Berichtsablauf: nicht durchgeführt.
 - Der Release-Workflow hat keine automatische Allowlist für den Datenschutz mit Ausfallsicherung (fail closed); diese Checkliste ist manuell und muss vom Maintainer durchgeführt werden.
 
-## Status für 1.6.0 (aktuelle VERSION; in diesem Durchgang nicht freigegeben)
+## Status des aktuellen Pakets
 
 - Dokumentationsänderungen wurden vorbereitet. Die Abschnitte 1 bis 8 wurden an keinem Kandidaten-Release-Archiv durchgeführt.
 - Automatische Allowlist mit Ausfallsicherung und Datenschutzscan: NOT RUN. Ein solches Gate ist nicht Teil dieses Pakets, und es wird kein Skript hinzugefügt.
@@ -78,6 +78,10 @@ Halten Sie Datum, Repository, Branch, Commit, SHA-256-Wert des Archivs, Prüfer 
 - Vollständige Prüfungen von Browser, Agent, Gmail, Gmail Scheduled und DOCX/LibreOffice: NOT RUN.
 
 Ein Release darf nicht als vollständig abgenommen beschrieben werden, solange eine erforderliche Prüfung NOT RUN ist.
+
+## Version auf main
+
+`CHANGELOG.md` ist die Quelle der Release-Version. Bei jedem Push auf `main` oder manuellen Release-Lauf liest GitHub Actions die neueste Überschrift `MAJOR.MINOR.PATCH` und schreibt bei Bedarf `VERSION` automatisch. Wiederholungen erhalten bestehende Releases/Tags. Ungültige, doppelte, falsch geordnete oder herabstufende Versionen stoppen die Veröffentlichung. Ein normaler Git-Push überschreibt kein neueres main; bei zwischenzeitlicher Änderung den Workflow erneut ausführen. Aktuelle Dokumentlabels verlinken `VERSION`, statt eigene Zahlen zu führen. Eine SHA bezeichnet einen Commit; `VERSION` bezeichnet den Paketrelease, nicht jeden Commit. GitHub Actions dient nur der Veröffentlichung und ergänzt keinen Maildienst auf dem Rechner der Person.
 
 ---
 

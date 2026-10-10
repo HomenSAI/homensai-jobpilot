@@ -6,6 +6,22 @@ The project version is in the file [VERSION](VERSION). The project is an AI-agen
 
 Rules: `MAJOR.MINOR.PATCH`. MAJOR changes when data formats or rules change so that old data no longer fits. MINOR is a new feature or a new part of the documentation. PATCH is a fix or a wording change without new capabilities. Every change to `main` adds a line here; the number is raised when a release is made. Each release gets a git tag `vX.Y.Z`. Each entry is written in Russian first, with the English text directly below it. The same entry appears in both language files.
 
+## 1.10.0 — 10.10.2026
+
+**Русский.** Завершён выбор шаблонов и уточнена область квоты по указанию владельца. Самостоятельные отправки пользователя не занимают 44 CV-слота JobPilot; ручной запасной способ для пакета JobPilot учитывается. Две подряд управляемые CV-подачи на один нормализованный адрес запрещены; допустимые ответы без CV сохраняют собственные правила.
+
+- Схема профиля 1.4 хранит выбранные источники CV/письма и пути редактируемых DOCX, хеши и время проверки. PDF сохраняется неизменным, конверсия требует сравнения страниц и утверждения; недоступная конвертация явно сообщается. Существующие нейтральные образцы DOCX/PDF и папки Resume/CoverLetter сохранены.
+- Существующий Release проверяет каждый push main, записывает VERSION по новому допустимому заголовку changelog, отклоняет дубли/понижение и использует фиксированную SHA выпуска. Текущие подписи документов ссылаются на VERSION; второй workflow версий не добавляется.
+- Немецкая инструкция журнала приведена к актуальным частям по 500 строк и процедуре дописывания/перечитывания. Три редакции используют общие правила шаблонов, квоты и адресатов.
+- Добавлены сценарии конвертации/утверждения, независимой почты и ручного пакета JobPilot, повторного адресата и восстановления выпуска. Исполнение агентом/GitHub остаётся NOT RUN до фиксации доказательств. Реальная почта и работодатели в этой доработке не используются.
+
+**English.** Completes application-template selection and clarifies the owner's quota scope. Independent user submissions do not consume JobPilot's 44 managed CV slots; a manual fallback for a JobPilot package does. Consecutive managed CV submissions to the same normalized recipient are refused; legitimate CV-free thread replies keep their own rules.
+
+- Profile settings schema 1.4 stores selected CV/cover-letter sources and editable DOCX paths, hashes and verification times. PDF conversion preserves the original and requires page comparison and approval; unavailable conversion is reported. Existing neutral DOCX/PDF samples and the Resume/CoverLetter folder layout are retained.
+- The existing Release workflow checks every main push, derives VERSION from the newest valid changelog heading, rejects duplicates/downgrades and uses an immutable release target. Current document version labels link to VERSION; no second version workflow is added.
+- German journal append instructions now match the current 500-line monthly-part rule and anchored append/read-back procedure. Three language editions share template, quota and recipient rules.
+- Adds acceptance scenarios for template failure/approval, independent mail versus managed fallback, consecutive recipients and release recovery. Their agent/GitHub execution status remains NOT RUN until evidence is recorded. No real Gmail or employer interaction is part of this change.
+
 ## 1.9.0 — 10 October 2026
 
 **Русский.** Журнал ведётся помесячными сегментами, а месяц, который дошёл до 500 строк, продолжается в пронумерованных частях (`transactions-ГГГГ-ММ-p2.jsonl`, `-p3` и так далее). Закрытая часть никогда не редактируется. Пересборка, подсчёты и архивы читают части по порядку месяца и номера части, а не по имени файла. Это новое правило журнала, поэтому номер минорной версии повышен. Перенос существующих журналов не нужен: месяц меньше 500 строк остаётся одним файлом.

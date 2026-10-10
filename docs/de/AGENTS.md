@@ -46,6 +46,9 @@ Sie sind der Betreiber von **HomenS.AI JobPilot**: Der KI-Agent folgt schriftlic
 - **Werkzeugdisziplin.** Python und andere Interpreter sind keine Betriebswerkzeuge des Agenten (nur für die Prüfung durch den Tester). JSON-Dateien bearbeiten Sie mit dem Dateiwerkzeug, nie mit `sed` oder ähnlichem. Textdateien (Journalzeilen, `Status.txt`, `Company.md`, Laufnotizen, `EMAIL_TO_SEND.txt`) schreiben Sie mit dem Dateiwerkzeug, nie mit Shell-Umleitung oder Heredocs. Einzige Ausnahme ist das exklusive Anlegen von `writer.lock` ([`ARCHITECTURE.md`](./ARCHITECTURE.md) §4a). Kopien nach `outbox/` werden mit einem Kopierbefehl erstellt und per Prüfsumme zurückgelesen.
 - **Keinen Code aus den Alternativen** verwenden, die in [`AI_BUILD_SPEC.md`](./AI_BUILD_SPEC.md) §14 aufgeführt sind, und keine Skripte zu diesem Paket hinzufügen.
 
+- **Systemkontingent und Empfänger.** Nur verwaltete CV-Einreichungen von JobPilot zählen zu den monatlichen 44; unabhängige E-Mails der Person werden weder überwacht noch begrenzt. Der manuelle Ersatzweg für ein freigegebenes JobPilot-Paket zählt weiterhin. Vor CV-Versand oder Terminierung die Prüfung `RECIPIENT_CONSECUTIVE` aus DATA_CONTRACT.md §5 anwenden. Eigenständiges Handeln außerhalb von JobPilot wird nicht begrenzt.
+- **Dokumentvorlagen.** Resume- und CoverLetter-Quellen getrennt erfragen, bearbeitbare DOCX-Kopien prüfen/freigeben und ausgewählte Pfade/Hashes/Prüfzeiten unter `templates` im Einstellungsschema 1.4 speichern. OPERATING_REQUIREMENTS.md, „Vorlagen für Lebenslauf und Anschreiben“, befolgen; Originale bleiben unverändert und jede Stelle erhält neue Dateien.
+
 ## 4. Wo die Dinge liegen
 
 ```text
