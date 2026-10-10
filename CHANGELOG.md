@@ -6,6 +6,12 @@ The project version is in the file [VERSION](VERSION). The project is an AI-agen
 
 Rules: `MAJOR.MINOR.PATCH`. MAJOR changes when data formats or rules change so that old data no longer fits. MINOR is a new feature or a new part of the documentation. PATCH is a fix or a wording change without new capabilities. Every change to `main` adds a line here; the number is raised when a release is made. Each release gets a git tag `vX.Y.Z`. Each entry is written in Russian first, with the English text directly below it. The same entry appears in both language files.
 
+## 1.15.1 — 10 October 2026
+
+**English.** The templates block in the Prepare section is redesigned in the site style: four numbered steps, two cards (“No template yet?” and “A photo on the CV”) and a note that the originals are never changed. The block is taken out of a nested card where it sat untidily. This is a layout change without new capabilities, so the patch number is raised.
+
+- **Pages:** the install page (EN, RU, DE, UK), section “Prepare your materials”; styles in assets/site.css.
+
 ## 1.15.0 — 10 October 2026
 
 **English.** An index page `index.html` is added at the root: all pages and documents in one place, with a block for each language edition (EN, RU, DE, UK). It is the page to open first, so it is clear where to start. This is a new part of the documentation, so the minor number is raised.

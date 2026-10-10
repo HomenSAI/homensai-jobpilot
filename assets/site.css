@@ -247,3 +247,11 @@ table.cmp td:first-child code { white-space: nowrap; overflow-wrap: normal; }
 /* Version badge: fixed in the top-left corner so a screenshot shows which version is open */
 .ver-badge { position: fixed; top: 0; left: 0; z-index: 1000; font: 600 .68rem/1 var(--font-mono); letter-spacing: .02em; padding: .3rem .5rem; background: var(--accent); color: var(--accent-text); border-radius: 0 0 8px 0; pointer-events: none; opacity: .92; }
 @media print { .ver-badge { display: none; } }
+
+/* Templates block (install page, Prepare section) */
+.tpl-block { margin-top: 1.5rem; }
+.tpl-block > h3 { font-size: 1.15rem; margin: 0 0 .25rem; }
+.tpl-lead { color: var(--muted); margin: 0 0 1rem; max-width: 70ch; }
+.tpl-block .guide > li h3 { font-size: 1rem; margin: 0 0 .3rem; }
+.tpl-block .guide > li p { margin: 0; color: var(--muted); }
+.tpl-block .split .panel ul { margin-top: .4rem; }
