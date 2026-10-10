@@ -19,7 +19,7 @@ Die Schutzmaßnahmen (das Limit von 44, nie zweimal senden, ein Schreiber, nicht
 | Teil | Was der Agent tut | Abgelegt in |
 |---|---|---|
 | Arbeitsbereich, Fähigkeiten | Ordner, Format, Person, Profil; testet jedes Werkzeug (Abschnitt 7) | `workspace.json` |
-| Profil und Wissensbasis | Unterlagen und Interview → vorgeschlagene → bestätigte Fakten mit Quellen; das Suchprofil | `Жизнеописание.md`, `profile.json` |
+| Profil und Wissensbasis | Unterlagen und Interview → vorgeschlagene → bestätigte Fakten mit Quellen; das Suchprofil | `Life_Story.md`, `profile.json` |
 | Suche, Planung | Zielfirmen (Dubletten, Aktualität, Radius, Wege); Slots, Reservierungen, Verschiebungen | `registry.json`, Journal |
 | Dokumente | Pakete aus Anforderungen und bestätigten Fakten, Fassungen, Sichtprüfung | Bewerbungsordner |
 | Post | Ganze Threads, Versandnachweis, Meldungen, Antworten | Journal, `Status.txt` |
@@ -32,16 +32,16 @@ Zustandsänderungen werden zuerst im Journal festgehalten. Welche Datei der Agen
 `person_id` fasst die Suchrichtungen einer Person zusammen. Jede Richtung hat ihre eigene `profile_id`, Dokumentsprachen, ihr Konto, ihre Dokumente und Einwilligungen. Kontingent und Prüfungen auf wiederholte Bewerbungen werden über `person_id` geteilt; verschiedene Personen haben getrennte Journale.
 
 ```text
-Локальные_данные/
+Local_Data/
   workspace.json  # workspace_id, format, language, stage of the first run, capabilities
-  Положите_сюда/  # the ONLY place where the person puts things; the agent only reads it
-    1_Мои_документы/  # CVs, diplomas, certificates, references (originals)
-    2_Рассказ_о_себе/  # the person's story: transcripts, notes, interviews, the questions
-    3_Шаблон_отчёта/  # optional report template
-    4_Шаблон_резюме/  # everything about the CVs, any format; read only
-    5_Шаблон_сопроводительного_письма/  # everything about the cover letters; read only
+  Put_Here/  # the ONLY place where the person puts things; the agent only reads it
+    1_My_Documents/  # CVs, diplomas, certificates, references (originals)
+    2_My_Story/  # the person's story: transcripts, notes, interviews, the questions
+    3_Report_Template/  # optional report template
+    4_CV_Templates/  # everything about the CVs, any format; read only
+    5_Cover_Letter_Templates/  # everything about the cover letters; read only
   persons/<person_id>/
-    База_знаний/Жизнеописание.md  # the knowledge base: confirmed facts of the life story
+    Knowledge_Base/Life_Story.md  # the knowledge base: confirmed facts of the life story
     journal/transactions-YYYY-MM.jsonl  # the only authoritative journal; monthly segments, -pN parts above 500 lines
     journal/writer.lock  # exists only while one chat is writing
     state/person.json  # person, profile list, setup_progress
@@ -60,15 +60,15 @@ Zustandsänderungen werden zuerst im Journal festgehalten. Welche Datei der Agen
     001_Muster-Maschinenbau_Stuttgart_Maintenance-technician/  # number, company, city, role
       Company.md · Resume_v001.docx/.pdf · CoverLetter_v001.docx/.pdf · EmailText_de.txt · EMAIL_TO_SEND.txt
       Status.txt  # append-only history of this application
-      Replies.txt  # every reply and delivery notice in full (Ответы)
+      Replies.txt  # every reply and delivery notice in full
   dashboard/
     index.html  # local menu: statistics and readiness per profile
     profiles/<profile_id>/summary.js · index.html · readiness.html  # data; unchanged template copy; readiness page
 ```
 
-`Локальные_данные` ist in jeder Sprachfassung der technische Pfad; das Dashboard hat einen Pfad, `Локальные_данные/dashboard/`; Profilkennungen sind eindeutig. Jede Journalzeile trägt `person_id` und, wo zutreffend, ihr Profil; vor dem Handeln prüft der Agent, dass das Profil zur Person und zum Konto gehört.
+`Local_Data` ist in jeder Sprachfassung der technische Pfad; das Dashboard hat einen Pfad, `Local_Data/dashboard/`; Profilkennungen sind eindeutig. Jede Journalzeile trägt `person_id` und, wo zutreffend, ihr Profil; vor dem Handeln prüft der Agent, dass das Profil zur Person und zum Konto gehört.
 
-**Trennung zwischen Personen und Profilen (Verfahren, F12).** Jede Person hat `persons/<person_id>/` und Originale in `Положите_сюда/<name>/`; der Agent öffnet nie die Originale, Wissensbasis, das Journal, den Zustand, den Postausgang, die Archive oder die Post einer anderen Person. Eine neue Person durchläuft TODO_FOR_AI.md Teil A ab A2 (A1, die Prüfung des Arbeitsbereichs, wird nicht wiederholt); ihr Fortschritt ist `setup_progress` in `persons/<person_id>/state/person.json` mit denselben Stufenwörtern, und `stage` in `workspace.json` beschreibt nur die Einrichtung des Arbeitsbereichs durch die erste Person. Einwilligungen, Kontingent, Konten und Ansichten je Person: DATA_CONTRACT.md §17. Das ist eine Trennung durch Verfahren, keine Grenze des Betriebssystems.
+**Trennung zwischen Personen und Profilen (Verfahren, F12).** Jede Person hat `persons/<person_id>/` und Originale in `Put_Here/<name>/`; der Agent öffnet nie die Originale, Wissensbasis, das Journal, den Zustand, den Postausgang, die Archive oder die Post einer anderen Person. Eine neue Person durchläuft TODO_FOR_AI.md Teil A ab A2 (A1, die Prüfung des Arbeitsbereichs, wird nicht wiederholt); ihr Fortschritt ist `setup_progress` in `persons/<person_id>/state/person.json` mit denselben Stufenwörtern, und `stage` in `workspace.json` beschreibt nur die Einrichtung des Arbeitsbereichs durch die erste Person. Einwilligungen, Kontingent, Konten und Ansichten je Person: DATA_CONTRACT.md §17. Das ist eine Trennung durch Verfahren, keine Grenze des Betriebssystems.
 
 ## 4. Eine Zeile pro abgeschlossene Aktion
 

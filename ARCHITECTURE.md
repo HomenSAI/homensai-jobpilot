@@ -17,7 +17,7 @@ The safeguards (the limit of 44, never send twice, one writer, nothing sent with
 | Part | What the agent does | Kept in |
 |---|---|---|
 | Workspace, capabilities | Folder, format, person, profile; tests each tool (section 7) | `workspace.json` |
-| Profile and knowledge base | Materials and interview → proposed → confirmed facts with sources; the search profile | `Жизнеописание.md`, `profile.json` |
+| Profile and knowledge base | Materials and interview → proposed → confirmed facts with sources; the search profile | `Life_Story.md`, `profile.json` |
 | Discovery, planning | Targets (duplicates, freshness, radius, routes); slots, reservations, moves | `registry.json`, journal |
 | Documents | Packages from requirements and confirmed facts, versions, visual check | application folder |
 | Mail | Whole threads, proof of sending, notices, replies | journal, `Status.txt` |
@@ -30,16 +30,16 @@ State changes are recorded in the journal first. Which file the agent reads when
 `person_id` groups one person's search directions. Each direction has its own `profile_id`, document languages, account, documents and consents. Quota and repeat-application checks are shared by `person_id`; different people have separate journals.
 
 ```text
-Локальные_данные/
+Local_Data/
   workspace.json  # workspace_id, format, language, stage of the first run, capabilities
-  Положите_сюда/  # the ONLY place where the person puts things; the agent only reads it
-    1_Мои_документы/  # CVs, diplomas, certificates, references (originals)
-    2_Рассказ_о_себе/  # the person's story: transcripts, notes, interviews, the questions
-    3_Шаблон_отчёта/  # optional report template
-    4_Шаблон_резюме/  # everything about the CVs, any format; read only
-    5_Шаблон_сопроводительного_письма/  # everything about the cover letters; read only
+  Put_Here/  # the ONLY place where the person puts things; the agent only reads it
+    1_My_Documents/  # CVs, diplomas, certificates, references (originals)
+    2_My_Story/  # the person's story: transcripts, notes, interviews, the questions
+    3_Report_Template/  # optional report template
+    4_CV_Templates/  # everything about the CVs, any format; read only
+    5_Cover_Letter_Templates/  # everything about the cover letters; read only
   persons/<person_id>/
-    База_знаний/Жизнеописание.md  # the knowledge base: confirmed facts of the life story
+    Knowledge_Base/Life_Story.md  # the knowledge base: confirmed facts of the life story
     journal/transactions-YYYY-MM.jsonl  # the only authoritative journal; monthly segments, -pN parts above 500 lines
     journal/writer.lock  # exists only while one chat is writing
     state/person.json  # person, profile list, setup_progress
@@ -58,15 +58,15 @@ State changes are recorded in the journal first. Which file the agent reads when
     001_Muster-Maschinenbau_Stuttgart_Maintenance-technician/  # number, company, city, role
       Company.md · Resume_v001.docx/.pdf · CoverLetter_v001.docx/.pdf · EmailText_de.txt · EMAIL_TO_SEND.txt
       Status.txt  # append-only history of this application
-      Replies.txt  # every reply and delivery notice in full (Ответы)
+      Replies.txt  # every reply and delivery notice in full
   dashboard/
     index.html  # local menu: statistics and readiness per profile
     profiles/<profile_id>/summary.js · index.html · readiness.html  # data; unchanged template copy; readiness page
 ```
 
-`Локальные_данные` is the technical path in every language edition; the dashboard has one path, `Локальные_данные/dashboard/`; profile ids are unique. Every journal line carries `person_id` and, where it applies, its profile; before acting, the agent checks that the profile belongs to the person and the account.
+`Local_Data` is the technical path in every language edition; the dashboard has one path, `Local_Data/dashboard/`; profile ids are unique. Every journal line carries `person_id` and, where it applies, its profile; before acting, the agent checks that the profile belongs to the person and the account.
 
-**Isolation between people and profiles (procedure, F12).** Each person has `persons/<person_id>/` and originals in `Положите_сюда/<name>/`; the agent never opens another person's originals, knowledge base, journal, state, outbox, archives or mail. A new person goes through TODO_FOR_AI.md Part A from A2 onward (A1, the workspace check, is not repeated); their progress is `setup_progress` in `persons/<person_id>/state/person.json` with the same stage words, and `stage` in `workspace.json` describes only the first person's setup of the workspace. Consents, quota, accounts and views per person: DATA_CONTRACT.md §17. This is procedural isolation, not an operating-system boundary.
+**Isolation between people and profiles (procedure, F12).** Each person has `persons/<person_id>/` and originals in `Put_Here/<name>/`; the agent never opens another person's originals, knowledge base, journal, state, outbox, archives or mail. A new person goes through TODO_FOR_AI.md Part A from A2 onward (A1, the workspace check, is not repeated); their progress is `setup_progress` in `persons/<person_id>/state/person.json` with the same stage words, and `stage` in `workspace.json` describes only the first person's setup of the workspace. Consents, quota, accounts and views per person: DATA_CONTRACT.md §17. This is procedural isolation, not an operating-system boundary.
 
 ## 4. One line per completed action
 

@@ -1,7 +1,0 @@
-# 2_Рассказ_о_себе / Your story
-
-**RU.** Сюда кладётся рассказ о себе — всё, что не уместилось в резюме. Самый простой способ: **продиктовать голосом**. Откройте чат с Claude или ChatGPT, включите голосовой режим (значок микрофона), возьмите вопросы из файла `Вопросы_для_рассказа.md` и рассказывайте. Потом попросите: «Запиши мой рассказ дословно, ничего не добавляя, в текстовый файл» и сохраните файл сюда (например, `Рассказ_2026-10-07.txt`). Можно рассказывать частями, в разные дни, и не по порядку.
-
-Либо проще: ничего не готовьте заранее. Запустите агента (Codex или Claude Code) в этой папке проекта и скажите, что хотите рассказать о себе голосом, — агент сам задаст вопросы по темам, запишет ваши ответы дословно в файл `Интервью_<дата>.md` здесь и составит из них «Базу знаний».
-
-**EN.** Put here your story about yourself, everything that does not fit in a CV. The easiest way is **by voice**: open a chat with Claude or ChatGPT, switch on voice mode (the microphone icon), use the questions from `Вопросы_для_рассказа.md` and talk. Then ask: “Write down my story word for word, adding nothing, as a text file” and save the file here (for example `Story_2026-10-07.txt`). You can talk in parts, on different days and in any order. Or prepare nothing: start the agent (Codex or Claude Code) in this project folder and say that you want to tell about yourself by voice: it asks the questions topic by topic, saves your answers word for word in `Интервью_<date>.md` here and builds the knowledge base from them.

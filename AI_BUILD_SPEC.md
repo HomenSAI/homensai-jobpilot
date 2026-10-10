@@ -54,7 +54,7 @@ GitHub ZIP → extracted folder → open it locally in Codex / Claude Code
             README + AGENTS.md/CLAUDE.md + TODO_FOR_AI.md
                                             ↓
 AI agent ↔ allowed project folder (the single source of data)
-  ├─ materials in Положите_сюда + interview → knowledge base (confirmed facts) → profiles
+  ├─ materials in Put_Here + interview → knowledge base (confirmed facts) → profiles
   ├─ search → verified companies/vacancies/routes → unique records
   ├─ documents and plan → CV/Anschreiben → preparation / permitted sending
   ├─ mail → replies/DSN → journal → daily and monthly report
@@ -70,7 +70,7 @@ AI agent ↔ allowed project folder (the single source of data)
 1. **The agent** searches, keeps records, prepares documents and reports and performs permitted mail actions, visibly in its chat.
 2. **The folder** is the only data store: one JSONL journal per person in monthly segments holds the events, including the shared quota; JSON files are views rebuilt from it (ARCHITECTURE.md, DATA_CONTRACT.md).
 3. **Instructions**: `README.md` for the person, `AGENTS.md`, `CLAUDE.md` and `TODO_FOR_AI.md` for the agent, which never assumes an earlier chat is available.
-4. **The knowledge base**: one Markdown file per person, `База_знаний/Жизнеописание.md` (section 4.6), readable and correctable by the person.
+4. **The knowledge base**: one Markdown file per person, `Knowledge_Base/Life_Story.md` (section 4.6), readable and correctable by the person.
 5. **The statistics page**: a template copied unchanged per profile; the agent writes only its data file (section 10.5).
 6. **Scheduling**: a scheduled task of the agent, if offered, or a new chat; the page never starts the agent.
 7. **Access**: folder, web search, Gmail and Computer Use are switched on separately and only when needed.
@@ -99,21 +99,21 @@ Europass is one reference for completeness: education, experience, languages, di
 
 ### 4.6 Where the person puts materials, and the knowledge base file
 
-The package contains a ready folder `Локальные_данные/Положите_сюда/` (“put here”) with five subfolders and a short README in each. It is the only place where the person has to put anything by hand:
+The package contains a ready folder `Local_Data/Put_Here/` (“put here”) with five subfolders and a short README in each. It is the only place where the person has to put anything by hand:
 
 | Folder | What the person puts there |
 |---|---|
-| `1_Мои_документы` (my documents) | CVs of any version, diplomas, certificates, references, official letters, a portfolio, samples of own letters; PDF, DOCX, TXT, photos and scans; no sorting or renaming |
-| `2_Рассказ_о_себе` (my story) | The person's story in their own words: a transcript of a voice recording, notes, answers to the questions of `Вопросы_для_рассказа.md` (shipped in this folder); the agent also saves interviews here word for word as `Интервью_<date>.md` |
-| `3_Шаблон_отчёта` (report template) | Only if the person has their own report sample |
-| `4_Шаблон_резюме` (CV material) | Everything about the person's CVs in any format, current and old; read only; the agent prepares drafts from it and the template the person names |
-| `5_Шаблон_сопроводительного_письма` (cover letter material) | Everything about the person's cover letters in any format; read only; the same rule as folder 4 |
+| `1_My_Documents` (my documents) | CVs of any version, diplomas, certificates, references, official letters, a portfolio, samples of own letters; PDF, DOCX, TXT, photos and scans; no sorting or renaming |
+| `2_My_Story` (my story) | The person's story in their own words: a transcript of a voice recording, notes, answers to the questions of `Story_Questions.md` (shipped in this folder); the agent also saves interviews here word for word as `Interview_<YYYY-MM-DD>.md` |
+| `3_Report_Template` (report template) | Only if the person has their own report sample |
+| `4_CV_Templates` (CV material) | Everything about the person's CVs in any format, current and old; read only; the agent prepares drafts from it and the template the person names |
+| `5_Cover_Letter_Templates` (cover letter material) | Everything about the person's cover letters in any format; read only; the same rule as folder 4 |
 
-The folders can be filled before the first run or left empty; the agent only reads them. A second person gets a subfolder with their name in `Положите_сюда`, with the same five subfolders.
+The folders can be filled before the first run or left empty; the agent only reads them. A second person gets a subfolder with their name in `Put_Here`, with the same five subfolders.
 
-**Preparing the story by voice.** Either outside the project, in any Claude or ChatGPT voice chat using `Вопросы_для_рассказа.md` and asking for a word-for-word text file for `2_Рассказ_о_себе`, or inside the project, where the agent holds the interview and saves every answer word for word.
+**Preparing the story by voice.** Either outside the project, in any Claude or ChatGPT voice chat using `Story_Questions.md` and asking for a word-for-word text file for `2_My_Story`, or inside the project, where the agent holds the interview and saves every answer word for word.
 
-**The knowledge base.** From the folders and the interview the agent writes `Локальные_данные/persons/<person_id>/База_знаний/Жизнеописание.md` in a fixed format (DATA_CONTRACT.md §3a), shown section by section for confirmation. It is in the person's language and is the single source for all of that person's search profiles.
+**The knowledge base.** From the folders and the interview the agent writes `Local_Data/persons/<person_id>/Knowledge_Base/Life_Story.md` in a fixed format (DATA_CONTRACT.md §3a), shown section by section for confirmation. It is in the person's language and is the single source for all of that person's search profiles.
 
 **The first setup in order** — story, documents, knowledge base, gaps, confirmation, search settings (`profiles/<profile_id>/profile.json`), mail if wanted — is in TODO_FOR_AI.md, Part A. Templates: the sources stay unchanged and a checked Word working copy is used only after approval ([Application templates](OPERATING_REQUIREMENTS.md#application-templates)).
 
@@ -125,7 +125,7 @@ Sources are employers' websites, official job portals and services whose terms a
 
 ## 6. Folders and the application package
 
-All working data stays inside the extracted folder, in `Локальные_данные/`, which Git ignores; the full tree is in ARCHITECTURE.md §3. The package root holds `README.md`, `USER_GUIDE.md`, `AGENTS.md`, `CLAUDE.md`, `TODO_FOR_AI.md`, `OPERATING_REQUIREMENTS.md`, `AI_BUILD_SPEC.md`, `ARCHITECTURE.md`, `DATA_CONTRACT.md`, `ACCEPTANCE_TESTS.md`, `PROJECT_OVERVIEW.html`, the `overview_*.html` pages, `docs/`, `assets/`, `dashboard_template/`, `examples/` and `.gitignore`.
+All working data stays inside the extracted folder, in `Local_Data/`, which Git ignores; the full tree is in ARCHITECTURE.md §3. The package root holds `README.md`, `USER_GUIDE.md`, `AGENTS.md`, `CLAUDE.md`, `TODO_FOR_AI.md`, `OPERATING_REQUIREMENTS.md`, `AI_BUILD_SPEC.md`, `ARCHITECTURE.md`, `DATA_CONTRACT.md`, `ACCEPTANCE_TESTS.md`, `PROJECT_OVERVIEW.html`, the `overview_*.html` pages, `docs/`, `assets/`, `dashboard_template/`, `examples/` and `.gitignore`.
 
 Each application has its own folder `Applications/<YYYY>/<MM_Month>/<NNN_Company_City_Role>/` with `Company.md`, the CV and cover letter as DOCX and PDF (`Resume_v001`, `CoverLetter_v001`), `EmailText_<language>.txt`, `EMAIL_TO_SEND.txt`, an optional `ReviewTranslation_<language>.txt` (“not for the employer”), `Status.txt` and `Replies.txt`. The folder is not moved when the plan changes; paths stay relative and inside the root (DATA_CONTRACT.md §2). A non-e-mail vacancy gets a package for its channel; no address is ever invented.
 
@@ -177,7 +177,7 @@ Mail is checked daily (default 16:00 local); each month a neutral DOCX and PDF r
 
 ## 9. Data and GitHub safety
 
-The public repository holds only original documents, neutral templates, synthetic examples and instructions; real CVs, documents, addresses, Gmail data, employer history, tokens, backups and reports are never committed (`.gitignore` excludes `Локальные_данные/`). No code or material of the reviewed alternatives is used; any third-party library, font or tool is agreed first with its purpose, version and licence. Other people's templates and adverts are not copied whole; requirements are stored as short facts with URL and date. Logs hold no message bodies, documents or secrets.
+The public repository holds only original documents, neutral templates, synthetic examples and instructions; real CVs, documents, addresses, Gmail data, employer history, tokens, backups and reports are never committed (`.gitignore` excludes `Local_Data/`). No code or material of the reviewed alternatives is used; any third-party library, font or tool is agreed first with its purpose, version and licence. Other people's templates and adverts are not copied whole; requirements are stored as short facts with URL and date. Logs hold no message bodies, documents or secrets.
 
 ### 9.1 Experimental status, AI sources and limits of liability
 
@@ -216,14 +216,14 @@ The step-by-step guide exists as `USER_GUIDE.md` and `overview_install.html` (Ru
 ### 10.1 Installation order: the agent, then the archive, then the connection
 
 1. **The agent.** Install ChatGPT Desktop, sign in and check that Codex is available. The basic configuration is a paid ChatGPT Plus plan or a suitable higher plan with Codex; Codex is also listed for the Free and Go plans, but work on those plans is not confirmed here. At the check of 8 October 2026 the official [pricing page](https://learn.chatgpt.com/docs/pricing) showed 20 USD per month for Plus; prices, limits and access change, so check them and [Using Codex with your ChatGPT plan](https://help.openai.com/en/articles/11369540-using-codex-with-your-chatgpt-plan) before paying. Claude Code compatibility is not confirmed.
-2. **The project folder.** Extract the ZIP into its own folder; `README.md`, `AGENTS.md`, `TODO_FOR_AI.md`, `dashboard_template` and `Локальные_данные\Положите_сюда` must lie directly in it.
+2. **The project folder.** Extract the ZIP into its own folder; `README.md`, `AGENTS.md`, `TODO_FOR_AI.md`, `dashboard_template` and `Local_Data\Put_Here` must lie directly in it.
 3. **Connection and the first start.** Open the folder as a local project, create a chat in the local environment, switch on `Ask for approval` and run the starting prompt in draft-only mode.
 
 A cloud ChatGPT Project is not a local project: a path written in a chat gives no file access. Codex and Claude Code are alternatives with their own permission and mail settings; links and menu names are checked before every release. An agent guiding the installation names the step and the expected result, waits for confirmation, and never proposes installing development tools.
 
 ### 10.2 Codex permissions and folder access
 
-Access is granted only to the extracted root, with `Ask for approval` or an equivalent safe mode; never administrator rights or the whole disk. All data goes into `Локальные_данные/`; if write access is missing, the agent names the narrow permission it needs. Network, accounts, files and computer control are separate permissions, checked in the interface or with `/status`.
+Access is granted only to the extracted root, with `Ask for approval` or an equivalent safe mode; never administrator rights or the whole disk. All data goes into `Local_Data/`; if write access is missing, the agent names the narrow permission it needs. Network, accounts, files and computer control are separate permissions, checked in the interface or with `/status`.
 
 ### 10.3 Connect Gmail through an approved connector or the built-in browser
 
@@ -235,7 +235,7 @@ The daily mail check (default 16:00 local) and the monthly reminder are real sch
 
 ### 10.5 The mandatory static statistics page
 
-`dashboard_template/index.html` ships with a synthetic `summary.js` (a demo), so it opens with a double click. For a real profile the agent copies the page **unchanged** next to a `summary.js` it writes (`window.JP_DATA = {…}`, `demo: false`), so a data mistake cannot break the page; the menu `Локальные_данные/dashboard/index.html` links to `dashboard/profiles/<profile_id>/index.html`. The page needs no server or external library and reports a missing or damaged data file instead of showing wrong numbers. It shows **year → month → day** with summaries (sent, replies, results, delivery errors, quota “used / reserved / left out of 44”) and daily event tables, sorts by date or result using real timestamps (not `DD.MM.YYYY` strings), filters by year, month, result, company, city and role, and switches language with the switch or `?lang=ru`. It saves nothing but the theme, sends nothing and changes no records; no message bodies, CVs or addresses go into it. Format and write procedure: DATA_CONTRACT.md §9.
+`dashboard_template/index.html` ships with a synthetic `summary.js` (a demo), so it opens with a double click. For a real profile the agent copies the page **unchanged** next to a `summary.js` it writes (`window.JP_DATA = {…}`, `demo: false`), so a data mistake cannot break the page; the menu `Local_Data/dashboard/index.html` links to `dashboard/profiles/<profile_id>/index.html`. The page needs no server or external library and reports a missing or damaged data file instead of showing wrong numbers. It shows **year → month → day** with summaries (sent, replies, results, delivery errors, quota “used / reserved / left out of 44”) and daily event tables, sorts by date or result using real timestamps (not `DD.MM.YYYY` strings), filters by year, month, result, company, city and role, and switches language with the switch or `?lang=ru`. It saves nothing but the theme, sends nothing and changes no records; no message bodies, CVs or addresses go into it. Format and write procedure: DATA_CONTRACT.md §9.
 
 ### 10.6 Computer Use
 
@@ -249,7 +249,7 @@ Computer Use is enabled only when a task needs the screen, and only for the need
 - The dates and text of the package match; DOCX/PDF render without clipping and with correct fonts.
 - The import of source archives is read-only first and provides a mapping / error report.
 - Gmail does not change labels / archive / deletion; deduplication is checked by a repeated run.
-- The static `Локальные_данные/dashboard/index.html` opens with a double click without a server and network; sorting by years / dates / results, month and day groups, the stale-data marker and the absence of writes and network requests are verified.
+- The static `Local_Data/dashboard/index.html` opens with a double click without a server and network; sorting by years / dates / results, month and day groups, the stale-data marker and the absence of writes and network requests are verified.
 - No real email is sent in tests; sending needs an approved profile mode, the exact recipient and attachments.
 - An automatic reply to a rejection and automatic preparation of a replacement do not fire on automatic, temporary or ambiguous messages.
 - All events and report results can be linked to the original Gmail Message-ID and to the vacancy sources.

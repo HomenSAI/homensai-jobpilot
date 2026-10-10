@@ -14,25 +14,25 @@ UTF-8-JSON-Datensätze, JSONL-Ereignisse; kein SQL, keine Server, Skripte oder B
 
 | Pfad relativ zum Stammverzeichnis | Aufgabe |
 |---|---|
-| `Локальные_данные/persons/<person_id>/state/person.json` | Identität, Zeitzone des Kontingents, zulässige `profile_id`-Werte, `setup_progress` (§17) |
-| `Локальные_данные/workspace.json` | Workspace-Kennung, `format_version`, Sprache, `stage` und `progress` der Erstinstallation (TODO_FOR_AI.md, Teil A), `run_id`, `person_ids`, Fähigkeitsprüfungen |
-| `Локальные_данные/Положите_сюда/1_Мои_документы`, `2_Рассказ_о_себе`, `3_Шаблон_отчёта`, `4_Шаблон_резюме`, `5_Шаблон_сопроводительного_письма` | Die Originale der Person, ihre Geschichte, optionale Berichtsvorlage; nur lesen |
-| `Локальные_данные/persons/<person_id>/База_знаний/Жизнеописание.md` | Wissensbasis (§3a) |
-| `Локальные_данные/persons/<person_id>/journal/transactions-YYYY-MM.jsonl` | Das einzige primäre Journal, in Monatssegmenten (§3c), mit dem gemeinsamen Kontingent der Person |
-| `Локальные_данные/persons/<person_id>/journal/writer.lock` | Sperre, solange ein Chat schreibt (Format §3c, Protokoll ARCHITECTURE.md §4b) |
-| `Локальные_данные/persons/<person_id>/outbox/<send_attempt_id>/` | Unveränderliche Paketkopie und Manifest eines Versuchs (ARCHITECTURE.md §6) |
-| `Локальные_данные/persons/<person_id>/archives/<archive_id>/` | Lokale Archive (§11) |
-| `Локальные_данные/persons/<person_id>/state/quota.json` | Neu aufbaubare Ansicht des Kontingents (limit, used, reserved, unverified, remaining, source_revision, cutoff) (§5) |
-| `Локальные_данные/profiles/<profile_id>/profile.json` | Einstellungen einer Suchrichtung (§3b) |
-| `Локальные_данные/profiles/<profile_id>/registry.json` | Neu aufbaubare Ansicht der Ziele (Firmen, Niederlassungen, Stellen), Bewerbungen, Plan-Slots, Warteschlange |
-| `Локальные_данные/profiles/<profile_id>/plans/<plan_id>/plan_v<N>.json` | Unveränderliche Planversionen (§14) |
-| `Локальные_данные/profiles/<profile_id>/runs/` | Laufprotokolle (§18) |
-| `Локальные_данные/profiles/<profile_id>/reports/<YYYY-MM>/` | Berichte und Manifeste des Profils |
+| `Local_Data/persons/<person_id>/state/person.json` | Identität, Zeitzone des Kontingents, zulässige `profile_id`-Werte, `setup_progress` (§17) |
+| `Local_Data/workspace.json` | Workspace-Kennung, `format_version`, Sprache, `stage` und `progress` der Erstinstallation (TODO_FOR_AI.md, Teil A), `run_id`, `person_ids`, Fähigkeitsprüfungen |
+| `Local_Data/Put_Here/1_My_Documents`, `2_My_Story`, `3_Report_Template`, `4_CV_Templates`, `5_Cover_Letter_Templates` | Die Originale der Person, ihre Geschichte, optionale Berichtsvorlage; nur lesen |
+| `Local_Data/persons/<person_id>/Knowledge_Base/Life_Story.md` | Wissensbasis (§3a) |
+| `Local_Data/persons/<person_id>/journal/transactions-YYYY-MM.jsonl` | Das einzige primäre Journal, in Monatssegmenten (§3c), mit dem gemeinsamen Kontingent der Person |
+| `Local_Data/persons/<person_id>/journal/writer.lock` | Sperre, solange ein Chat schreibt (Format §3c, Protokoll ARCHITECTURE.md §4b) |
+| `Local_Data/persons/<person_id>/outbox/<send_attempt_id>/` | Unveränderliche Paketkopie und Manifest eines Versuchs (ARCHITECTURE.md §6) |
+| `Local_Data/persons/<person_id>/archives/<archive_id>/` | Lokale Archive (§11) |
+| `Local_Data/persons/<person_id>/state/quota.json` | Neu aufbaubare Ansicht des Kontingents (limit, used, reserved, unverified, remaining, source_revision, cutoff) (§5) |
+| `Local_Data/profiles/<profile_id>/profile.json` | Einstellungen einer Suchrichtung (§3b) |
+| `Local_Data/profiles/<profile_id>/registry.json` | Neu aufbaubare Ansicht der Ziele (Firmen, Niederlassungen, Stellen), Bewerbungen, Plan-Slots, Warteschlange |
+| `Local_Data/profiles/<profile_id>/plans/<plan_id>/plan_v<N>.json` | Unveränderliche Planversionen (§14) |
+| `Local_Data/profiles/<profile_id>/runs/` | Laufprotokolle (§18) |
+| `Local_Data/profiles/<profile_id>/reports/<YYYY-MM>/` | Berichte und Manifeste des Profils |
 | Bewerbungsordner `Applications/<YYYY>/<MM_Month>/<NNN_…>/`: `Company.md` | Firmendaten mit Quelle und Prüfdatum; Ansicht von `company_registered`, `company_updated` |
-| derselbe Ordner: `Replies.txt` (Ответы) | Nur Anhängen, ein Block je `gmail_message_id` (nur wenn noch nicht vorhanden), in der Reihenfolge des Threads: Name und Adresse des Absenders, Reply-To, Message-ID, Datum und Uhrzeit mit Zone, sendende IP und Received-Kette, Authentifizierungsergebnisse, Betreff, Empfänger, vollständiger Text wörtlich, Anlagen (Name, Typ, Größe) oder „keine Anlagen“; ein fehlendes Feld lautet „vom Mail-Werkzeug nicht geliefert“, nichts wird erschlossen |
+| derselbe Ordner: `Replies.txt` | Nur Anhängen, ein Block je `gmail_message_id` (nur wenn noch nicht vorhanden), in der Reihenfolge des Threads: Name und Adresse des Absenders, Reply-To, Message-ID, Datum und Uhrzeit mit Zone, sendende IP und Received-Kette, Authentifizierungsergebnisse, Betreff, Empfänger, vollständiger Text wörtlich, Anlagen (Name, Typ, Größe) oder „keine Anlagen“; ein fehlendes Feld lautet „vom Mail-Werkzeug nicht geliefert“, nichts wird erschlossen |
 | derselbe Ordner: `Status.txt` | Nur Anhängen: eine Zeile je `status_recorded`, Ortszeit und `event_id` |
-| `Локальные_данные/Resume/`, `CoverLetter/` | Entwürfe aus `4_Шаблон_резюме/` und `5_Шаблон_сопроводительного_письма/` und die geprüfte Word-Kopie der benannten Vorlage (§3b `templates`); Quellen ändern sich nie, Versionen sind neue Dateien. Bei mehreren Personen erhalten `Resume/` und `CoverLetter/` je einen Unterordner pro `person_id`; bei einer Person werden sie direkt verwendet |
-| `Локальные_данные/dashboard/profiles/<profile_id>/summary.js`, `index.html`, `readiness.html` | Snapshot (§9), unveränderte Kopie der Vorlage, Bereitschaftsseite (§10); `Локальные_данные/dashboard/index.html` ist das Menü. Der einzige Dashboard-Pfad |
+| `Local_Data/Resume/`, `CoverLetter/` | Entwürfe aus `4_CV_Templates/` und `5_Cover_Letter_Templates/` und die geprüfte Word-Kopie der benannten Vorlage (§3b `templates`); Quellen ändern sich nie, Versionen sind neue Dateien. Bei mehreren Personen erhalten `Resume/` und `CoverLetter/` je einen Unterordner pro `person_id`; bei einer Person werden sie direkt verwendet |
+| `Local_Data/dashboard/profiles/<profile_id>/summary.js`, `index.html`, `readiness.html` | Snapshot (§9), unveränderte Kopie der Vorlage, Bereitschaftsseite (§10); `Local_Data/dashboard/index.html` ist das Menü. Der einzige Dashboard-Pfad |
 
 Zuerst wird ein Ereignis ins Journal geschrieben, dann werden die Ansichten aktualisiert; eine Datei, die der Agent ganz erstellt (`profile.json`, ein Paket, `summary.js`), wird zuerst geschrieben und geprüft, ihr Ereignis folgt. Keine Ansicht ändert sich ohne Ereignis; eine Korrektur ist ein neues Ereignis mit `supersedes_event_id`. Ein Fehler zwischen Zeile und Ansicht wird durch Neuaufbau behoben (§3d). Kontingent- und Bewerbungsänderungen einer Aktion stehen in einer Zeile. Artefakte (Pakete, Pläne, Outbox-Kopien, Archive) werden zuerst unveränderlich gespeichert und dann mit Namen, Größen und SHA-256 registriert.
 
@@ -91,7 +91,7 @@ Archivmanifest: §11.3; Laufprotokoll: §18. Ein unbekannter Wert ist `null` mit
 
 ## 3a. Die Wissensbasis: die Lebensgeschichte der Person
 
-**Eine Markdown-Datei pro Person**, `persons/<person_id>/База_знаний/Жизнеописание.md`, in der Sprache der Person: die maßgebliche Quelle der Fakten (ein Lebenslauf ist eine Projektion davon). Die Person darf sie bearbeiten; jeder Chat vergleicht ihre Prüfsumme mit dem letzten `knowledge_base_updated`, und eine geänderte oder neue Zeile ohne Status gilt als `proposed` und wird zur Bestätigung gezeigt.
+**Eine Markdown-Datei pro Person**, `persons/<person_id>/Knowledge_Base/Life_Story.md`, in der Sprache der Person: die maßgebliche Quelle der Fakten (ein Lebenslauf ist eine Projektion davon). Die Person darf sie bearbeiten; jeder Chat vergleicht ihre Prüfsumme mit dem letzten `knowledge_base_updated`, und eine geänderte oder neue Zeile ohne Status gilt als `proposed` und wird zur Bestätigung gezeigt.
 
 Abschnitte (Überschrift in der Sprache der Person, dann die Kennung in geschweiften Klammern): `identity` (Name, Ort, Zeitzone, erlaubte Kontaktdaten) · `goals` · `experience` (ein `###` je Position) · `education` · `certificates` · `languages` · `skills` · `projects` · `strengths` (Aufgabe, Handlung, Ergebnis) · `conditions` (Umkreis, Verkehrsmittel, Zeitplan, Startdatum) · `private_notes` (nicht für einen Arbeitgeber).
 
@@ -102,12 +102,12 @@ Abschnitte (Überschrift in der Sprache der Person, dann die Kennung in geschwei
 | Teil | Bedeutung |
 |---|---|
 | `[F012]` | `fact_id`; ein Fakt pro Zeile |
-| `source:` | eine Datei in `Положите_сюда/` mit der Stelle, `interview 07.10.2026` oder `self-reported` |
+| `source:` | eine Datei in `Put_Here/` mit der Stelle, `interview 2026-10-07` oder `self-reported` |
 | `status:` | `proposed`, `confirmed <date>` oder `rejected` (immer Englisch); `rejected (replaced by F031)` |
 | `use:` | `cv` (in Bewerbungsunterlagen erlaubt) oder `internal` |
 | `sens:` | `normal` oder `sensitive` (nie in Unterlagen ohne die ausdrückliche Wahl der Person) |
 
-Ein übersprungenes Thema: eine Zeile `(skipped by the person)` ohne Kennung. Geburtsdatum, Geburtsort und Alter sind immer `sens: sensitive`, `use: internal`; ein Fakt mit `sens: normal`, der sich später als sensibel erweist, wird an Ort und Stelle geändert, wenn die Person es entscheidet (TODO_FOR_AI.md, A6). Fakten werden nie gelöscht; eine Korrektur fügt eine Zeile hinzu und lehnt die alte ab. Nur `confirmed`-Fakten mit `use: cv` kommen in einen Lebenslauf oder ein Anschreiben. Die Originalworte bleiben in `Положите_сюда/2_Рассказ_о_себе/` (`Интервью_<date>.md`). Jeder Schreibvorgang ist eine Zeile `knowledge_base_updated`. Jede Anlage wird gegen sensible Fakten geprüft (§5, „Anlagenprüfung“).
+Ein übersprungenes Thema: eine Zeile `(skipped by the person)` ohne Kennung. Geburtsdatum, Geburtsort und Alter sind immer `sens: sensitive`, `use: internal`; ein Fakt mit `sens: normal`, der sich später als sensibel erweist, wird an Ort und Stelle geändert, wenn die Person es entscheidet (TODO_FOR_AI.md, A6). Fakten werden nie gelöscht; eine Korrektur fügt eine Zeile hinzu und lehnt die alte ab. Nur `confirmed`-Fakten mit `use: cv` kommen in einen Lebenslauf oder ein Anschreiben. Die Originalworte bleiben in `Put_Here/2_My_Story/` (`Interview_<YYYY-MM-DD>.md`). Jeder Schreibvorgang ist eine Zeile `knowledge_base_updated`. Jede Anlage wird gegen sensible Fakten geprüft (§5, „Anlagenprüfung“).
 
 ## 3b. `profile.json`: die Einstellungen einer Suchrichtung (Erstinstallation)
 
@@ -145,7 +145,7 @@ Die Wissensbasis wird von allen Profilen einer Person geteilt. Ein unbekannter W
 | `consent_granted` / `consent_revoked` | **consent_id**, **scope** (`cloud_processing`, `mail_reading`, `mail_sending_profile`, `send_once`, `follow_up`, `daily_report_email`), **person_id**, profile_id, account_id, **text_shown** (oder sein SHA-256); **binding** für `send_once`/`gmail_scheduled` (§5), `follow_up` (§4) | Ja oder Widerruf; ein Widerruf bricht in Gmail Scheduled nichts ab |
 | `story_saved` | **file** | A3 |
 | `documents_listed` | **count**, **files** | A4 (leer: 0) |
-| `knowledge_base_updated` | **file**, **section**, **fact_ids**, **sha256** | jeder Schreibvorgang in `Жизнеописание.md` |
+| `knowledge_base_updated` | **file**, **section**, **fact_ids**, **sha256** | jeder Schreibvorgang in `Life_Story.md` |
 | `profile_created` / `profile_changed` | **profile_id**, **file**, changed_fields; **reason** für `profile_changed` (Pflicht für abweichende `daily_check_time`, Takt, Zeiten, `max_per_run`, `max_per_day`) | `profile.json` geschrieben oder geändert |
 | `company_registered` | **company_id**, **branch_id**, **name**, Ort/Adresse, Domain, Kanäle, source_refs mit checked_at | beginnt `Company.md` |
 | `company_updated` | **application_id**, **field**, **source**, **checked_at** | ein Feld von `Company.md` |
@@ -754,7 +754,7 @@ Tests: ACCEPTANCE_TESTS.md.
 
 **Fortschritt der Einrichtung.** Eine neue Person durchläuft TODO_FOR_AI.md, Teil A, ab A2; A1, die Prüfung des Workspace, wird nicht wiederholt. Ihr Fortschritt steht in `setup_progress` von `persons/<person_id>/state/person.json` (Stufe, mit den Wörtern von `stage` aus `workspace.json`; Schritt, erledigte Themen, fehlende Punkte; `updated_at`). `stage` in `workspace.json` beschreibt nur die Einrichtung des Workspace durch die erste Person. Jede Person setzt an ihrem eigenen Fortschritt fort.
 
-**Aktive Person.** Eine je Chat, benannt, bevor die Originale dieser Person (Unterordner `Положите_сюда/<name>/`) oder ihre Mail gelesen werden; ohne sie kein Zugriff (`ACTIVE_PERSON_MISMATCH`).
+**Aktive Person.** Eine je Chat, benannt, bevor die Originale dieser Person (Unterordner `Put_Here/<name>/`) oder ihre Mail gelesen werden; ohne sie kein Zugriff (`ACTIVE_PERSON_MISMATCH`).
 
 **Einwilligungen und Konten.** Eine Einwilligung trägt `person_id` und, wo zutreffend, `profile_id` und `account_id`; sie berechtigt nie eine andere Person; eine Konto-Einwilligung deckt nur Profile, die dieses Konto aufführen. Eine `account_id` gehört zu einer Person; ein Profil nutzt nur die Konten seiner Person.
 

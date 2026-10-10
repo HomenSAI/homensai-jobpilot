@@ -15,7 +15,7 @@
 
 - Корневые документы: `README.md`, `USER_GUIDE.md`, `OPERATING_REQUIREMENTS.md`, `AGENTS.md`, `CLAUDE.md`, `TODO_FOR_AI.md`, `AI_BUILD_SPEC.md`, `ARCHITECTURE.md`, `DATA_CONTRACT.md`, `ACCEPTANCE_TESTS.md`, `REVIEW.md`, `RELEASE_CHECKLIST.md`, `CHANGELOG.md`, `VERSION`, `LICENSE`, `LICENSE-DOCS`, `NOTICE`, `PROJECT_OVERVIEW.html`, `overview_*.html`, `.gitignore`.
 - Папки: `docs/` (русская, немецкая и украинская редакции), `dashboard_template/` (чистые шаблоны и пример `summary.js`), `examples/` (только нейтральные примеры), `assets/` (общие стили, скрипты и шрифты IBM Plex), `.github/workflows/`.
-- Внутри `Локальные_данные/`: только пустые папки для материалов и их файлы `README.md`, а также `Вопросы_для_рассказа.md`, как разрешает `.gitignore`. Никаких других файлов и подпапок с данными.
+- Внутри `Local_Data/`: только пустые папки для материалов и их файлы `README.md`, а также `Story_Questions.md`, как разрешает `.gitignore`. Никаких других файлов и подпапок с данными.
 
 ## 2. Проверка архива и индекса Git
 

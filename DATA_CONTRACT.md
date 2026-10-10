@@ -12,25 +12,25 @@ UTF-8 JSON records, JSONL events; no SQL, servers, scripts or libraries. Every r
 
 | Path relative to the root | Role |
 |---|---|
-| `Локальные_данные/persons/<person_id>/state/person.json` | Identity, quota time zone, permitted `profile_id` values, `setup_progress` (§17) |
-| `Локальные_данные/workspace.json` | Workspace id, `format_version`, language, first-run `stage` and `progress` (TODO_FOR_AI.md, Part A), `run_id`, `person_ids`, capability checks |
-| `Локальные_данные/Положите_сюда/1_Мои_документы`, `2_Рассказ_о_себе`, `3_Шаблон_отчёта`, `4_Шаблон_резюме`, `5_Шаблон_сопроводительного_письма` | The person's originals, story, optional report template; read only |
-| `Локальные_данные/persons/<person_id>/База_знаний/Жизнеописание.md` | Knowledge base (§3a) |
-| `Локальные_данные/persons/<person_id>/journal/transactions-YYYY-MM.jsonl` | The only primary journal, in monthly segments (§3c), with the person's shared quota |
-| `Локальные_данные/persons/<person_id>/journal/writer.lock` | Lock while one chat writes (format §3c, protocol ARCHITECTURE.md §4b) |
-| `Локальные_данные/persons/<person_id>/outbox/<send_attempt_id>/` | Immutable package copy and manifest of one attempt (ARCHITECTURE.md §6) |
-| `Локальные_данные/persons/<person_id>/archives/<archive_id>/` | Local archives (§11) |
-| `Локальные_данные/persons/<person_id>/state/quota.json` | Rebuildable quota view (limit, used, reserved, unverified, remaining, source_revision, cutoff) (§5) |
-| `Локальные_данные/profiles/<profile_id>/profile.json` | Settings of one search direction (§3b) |
-| `Локальные_данные/profiles/<profile_id>/registry.json` | Rebuildable view of targets (companies, branches, vacancies), applications, plan slots, queue |
-| `Локальные_данные/profiles/<profile_id>/plans/<plan_id>/plan_v<N>.json` | Immutable plan versions (§14) |
-| `Локальные_данные/profiles/<profile_id>/runs/` | Run records (§18) |
-| `Локальные_данные/profiles/<profile_id>/reports/<YYYY-MM>/` | Reports and manifests of the profile |
+| `Local_Data/persons/<person_id>/state/person.json` | Identity, quota time zone, permitted `profile_id` values, `setup_progress` (§17) |
+| `Local_Data/workspace.json` | Workspace id, `format_version`, language, first-run `stage` and `progress` (TODO_FOR_AI.md, Part A), `run_id`, `person_ids`, capability checks |
+| `Local_Data/Put_Here/1_My_Documents`, `2_My_Story`, `3_Report_Template`, `4_CV_Templates`, `5_Cover_Letter_Templates` | The person's originals, story, optional report template; read only |
+| `Local_Data/persons/<person_id>/Knowledge_Base/Life_Story.md` | Knowledge base (§3a) |
+| `Local_Data/persons/<person_id>/journal/transactions-YYYY-MM.jsonl` | The only primary journal, in monthly segments (§3c), with the person's shared quota |
+| `Local_Data/persons/<person_id>/journal/writer.lock` | Lock while one chat writes (format §3c, protocol ARCHITECTURE.md §4b) |
+| `Local_Data/persons/<person_id>/outbox/<send_attempt_id>/` | Immutable package copy and manifest of one attempt (ARCHITECTURE.md §6) |
+| `Local_Data/persons/<person_id>/archives/<archive_id>/` | Local archives (§11) |
+| `Local_Data/persons/<person_id>/state/quota.json` | Rebuildable quota view (limit, used, reserved, unverified, remaining, source_revision, cutoff) (§5) |
+| `Local_Data/profiles/<profile_id>/profile.json` | Settings of one search direction (§3b) |
+| `Local_Data/profiles/<profile_id>/registry.json` | Rebuildable view of targets (companies, branches, vacancies), applications, plan slots, queue |
+| `Local_Data/profiles/<profile_id>/plans/<plan_id>/plan_v<N>.json` | Immutable plan versions (§14) |
+| `Local_Data/profiles/<profile_id>/runs/` | Run records (§18) |
+| `Local_Data/profiles/<profile_id>/reports/<YYYY-MM>/` | Reports and manifests of the profile |
 | Application folder `Applications/<YYYY>/<MM_Month>/<NNN_…>/`: `Company.md` | Company data with source and check date; view of `company_registered`, `company_updated` |
-| same folder: `Replies.txt` (Ответы) | Append-only, one block per `gmail_message_id` (only if absent), in thread order: sender name and address, Reply-To, Message-ID, date and time with zone, sending IP and Received chain, authentication results, subject, recipients, full body verbatim, attachments (name, type, size) or “no attachments”; a missing field reads “not provided by the mail tool”, nothing inferred |
+| same folder: `Replies.txt` | Append-only, one block per `gmail_message_id` (only if absent), in thread order: sender name and address, Reply-To, Message-ID, date and time with zone, sending IP and Received chain, authentication results, subject, recipients, full body verbatim, attachments (name, type, size) or “no attachments”; a missing field reads “not provided by the mail tool”, nothing inferred |
 | same folder: `Status.txt` | Append-only: one line per `status_recorded`, local time and `event_id` |
-| `Локальные_данные/Resume/`, `CoverLetter/` | Drafts from `4_Шаблон_резюме/` and `5_Шаблон_сопроводительного_письма/` and the checked Word copy of the named template (§3b `templates`); sources never change, versions are new files. With several people, `Resume/` and `CoverLetter/` get one subfolder per `person_id`; with one person they are used directly |
-| `Локальные_данные/dashboard/profiles/<profile_id>/summary.js`, `index.html`, `readiness.html` | Snapshot (§9), unchanged template copy, readiness page (§10); `Локальные_данные/dashboard/index.html` is the menu. The only dashboard path |
+| `Local_Data/Resume/`, `CoverLetter/` | Drafts from `4_CV_Templates/` and `5_Cover_Letter_Templates/` and the checked Word copy of the named template (§3b `templates`); sources never change, versions are new files. With several people, `Resume/` and `CoverLetter/` get one subfolder per `person_id`; with one person they are used directly |
+| `Local_Data/dashboard/profiles/<profile_id>/summary.js`, `index.html`, `readiness.html` | Snapshot (§9), unchanged template copy, readiness page (§10); `Local_Data/dashboard/index.html` is the menu. The only dashboard path |
 
 An event is journaled first, then views are updated; a file the agent creates whole (`profile.json`, a package, `summary.js`) is written and checked first, its event follows. No view changes without an event; a correction is a new event with `supersedes_event_id`. A failure between line and view is fixed by rebuilding (§3d). Quota and application changes of one action are one line. Artifacts (packages, plans, outbox copies, archives) are saved immutable first, then registered by names, sizes and SHA-256.
 
@@ -89,7 +89,7 @@ Archive manifest: §11.3; run record: §18. An unknown value is `null` with a re
 
 ## 3a. The knowledge base: the person's life story
 
-**One Markdown file per person**, `persons/<person_id>/База_знаний/Жизнеописание.md`, in the person's language: the master source of facts (a CV is a projection of it). The person may edit it; each chat compares its checksum with the last `knowledge_base_updated`, and a changed or new line without status is treated as `proposed` and shown for confirmation.
+**One Markdown file per person**, `persons/<person_id>/Knowledge_Base/Life_Story.md`, in the person's language: the master source of facts (a CV is a projection of it). The person may edit it; each chat compares its checksum with the last `knowledge_base_updated`, and a changed or new line without status is treated as `proposed` and shown for confirmation.
 
 Sections (heading in the person's language, then the id in braces): `identity` (name, place, time zone, allowed contact details) · `goals` · `experience` (one `###` per position) · `education` · `certificates` · `languages` · `skills` · `projects` · `strengths` (task, action, result) · `conditions` (radius, transport, schedule, start date) · `private_notes` (not for an employer).
 
@@ -100,12 +100,12 @@ Sections (heading in the person's language, then the id in braces): `identity` (
 | Part | Meaning |
 |---|---|
 | `[F012]` | `fact_id`; one fact per line |
-| `source:` | a file in `Положите_сюда/` with the place, `interview 07.10.2026`, or `self-reported` |
+| `source:` | a file in `Put_Here/` with the place, `interview 2026-10-07`, or `self-reported` |
 | `status:` | `proposed`, `confirmed <date>` or `rejected` (always English); `rejected (replaced by F031)` |
 | `use:` | `cv` (allowed in application documents) or `internal` |
 | `sens:` | `normal` or `sensitive` (never in documents without the person's explicit choice) |
 
-A skipped topic: one line `(skipped by the person)` without id. Date and place of birth and age are always `sens: sensitive`, `use: internal`; a `sens: normal` fact later found sensitive is changed in place when the person decides (TODO_FOR_AI.md, A6). Facts are never deleted; a correction adds a line and rejects the old one. Only `confirmed` facts with `use: cv` go into a CV or letter. Raw words stay in `Положите_сюда/2_Рассказ_о_себе/` (`Интервью_<date>.md`). Each write is a `knowledge_base_updated` line. Every attachment is checked against sensitive facts (§5, “Attachment check”).
+A skipped topic: one line `(skipped by the person)` without id. Date and place of birth and age are always `sens: sensitive`, `use: internal`; a `sens: normal` fact later found sensitive is changed in place when the person decides (TODO_FOR_AI.md, A6). Facts are never deleted; a correction adds a line and rejects the old one. Only `confirmed` facts with `use: cv` go into a CV or letter. Raw words stay in `Put_Here/2_My_Story/` (`Interview_<YYYY-MM-DD>.md`). Each write is a `knowledge_base_updated` line. Every attachment is checked against sensitive facts (§5, “Attachment check”).
 
 ## 3b. `profile.json`: the settings of one search direction (the first setup)
 
@@ -143,7 +143,7 @@ The knowledge base is shared by all profiles of a person. An unknown value stays
 | `consent_granted` / `consent_revoked` | **consent_id**, **scope** (`cloud_processing`, `mail_reading`, `mail_sending_profile`, `send_once`, `follow_up`, `daily_report_email`), **person_id**, profile_id, account_id, **text_shown** (or its SHA-256); **binding** for `send_once`/`gmail_scheduled` (§5), `follow_up` (§4) | yes or withdrawal; a withdrawal cancels nothing in Gmail Scheduled |
 | `story_saved` | **file** | A3 |
 | `documents_listed` | **count**, **files** | A4 (empty: 0) |
-| `knowledge_base_updated` | **file**, **section**, **fact_ids**, **sha256** | each write to `Жизнеописание.md` |
+| `knowledge_base_updated` | **file**, **section**, **fact_ids**, **sha256** | each write to `Life_Story.md` |
 | `profile_created` / `profile_changed` | **profile_id**, **file**, changed_fields; **reason** for `profile_changed` (required for non-default `daily_check_time`, cadence, times, `max_per_run`, `max_per_day`) | `profile.json` written or changed |
 | `company_registered` | **company_id**, **branch_id**, **name**, city/address, domain, channels, source_refs with checked_at | starts `Company.md` |
 | `company_updated` | **application_id**, **field**, **source**, **checked_at** | a `Company.md` field |
@@ -752,7 +752,7 @@ Tests: ACCEPTANCE_TESTS.md.
 
 **Setup progress.** A new person goes through TODO_FOR_AI.md, Part A, from A2 on; A1, the workspace check, is not repeated. Their progress is kept in `persons/<person_id>/state/person.json` `setup_progress` (stage, in the words of `workspace.json` `stage`; step, topics done, missing items; `updated_at`). `workspace.json` `stage` describes only the first person's setup of the workspace. Each person resumes from their own progress.
 
-**Active person.** One per chat, named before reading that person's originals (subfolders `Положите_сюда/<name>/`) or mail; without one, no access (`ACTIVE_PERSON_MISMATCH`).
+**Active person.** One per chat, named before reading that person's originals (subfolders `Put_Here/<name>/`) or mail; without one, no access (`ACTIVE_PERSON_MISMATCH`).
 
 **Consents and accounts.** A consent carries `person_id` and, where it applies, `profile_id` and `account_id`; it never authorizes another person; an account consent covers only profiles listing that account. An `account_id` belongs to one person; a profile uses only its person's accounts.
 

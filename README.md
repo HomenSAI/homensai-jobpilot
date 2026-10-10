@@ -26,8 +26,8 @@ English is the primary language at the root; the Russian edition is in `docs/ru`
 | [dashboard_template/index.html](dashboard_template/index.html) | The statistics page: years, months and days, sorting by date and result. The data is in `summary.js` next to it (sample data here) |
 | [dashboard_template/readiness.html](dashboard_template/readiness.html) | Static template for the agent-maintained setup/profile readiness page; it contains no script |
 | [AGENTS.md](AGENTS.md), [CLAUDE.md](CLAUDE.md), [TODO_FOR_AI.md](TODO_FOR_AI.md) | **Instructions for the AI agent.** The agent loads them by itself when the folder is opened, then leads the person through the first run (introduction, consent, the person's story, documents, the knowledge base, then the search setup: what, where, radius, transport) |
-| [Локальные_данные/Resume](Локальные_данные/Resume/README.md), [CoverLetter](Локальные_данные/CoverLetter/README.md) | Templates of the resume and the cover letter (Word; a PDF is converted to Word in the same folder) |
-| [Локальные_данные/Положите_сюда](Локальные_данные/Положите_сюда/README.md) | The five ready folders where the person puts documents, a story about themselves, a report template, CVs and cover letters |
+| [Local_Data/Resume](Local_Data/Resume/README.md), [CoverLetter](Local_Data/CoverLetter/README.md) | Templates of the resume and the cover letter (Word; a PDF is converted to Word in the same folder) |
+| [Local_Data/Put_Here](Local_Data/Put_Here/README.md) | The five ready folders where the person puts documents, a story about themselves, a report template, CVs and cover letters |
 | [AI_BUILD_SPEC.md](AI_BUILD_SPEC.md) | The rules and requirements for the AI agent |
 | [ARCHITECTURE.md](ARCHITECTURE.md) | The parts of the system, the person's journal, standard actions and resuming in a new chat |
 | [DATA_CONTRACT.md](DATA_CONTRACT.md) | Records, events, states, the monthly limit, recovery and statistics |
@@ -40,9 +40,27 @@ English is the primary language at the root; the Russian edition is in `docs/ru`
 | [assets/](assets/) | Shared styles, scripts and IBM Plex fonts used by the pages |
 | [LICENSE](LICENSE), [LICENSE-DOCS](LICENSE-DOCS), [NOTICE](NOTICE) | Separate terms and author notices for code and documentation |
 
+## Folder names
+
+All folder names are in English, so that they are the same on every computer and for every agent. The table says what they mean; the agent also gives the meaning in your language when it names a folder.
+
+| Folder | Meaning |
+|---|---|
+| `Local_Data` | Local data |
+| `Put_Here` | Put here |
+| `1_My_Documents` | My documents |
+| `2_My_Story` | My story |
+| `3_Report_Template` | Report template |
+| `4_CV_Templates` | CV templates |
+| `5_Cover_Letter_Templates` | Cover-letter templates |
+| `Resume` | CV (working folder) |
+| `CoverLetter` | Cover letter (working folder) |
+| `Knowledge_Base` | Knowledge base |
+| `Applications` | Applications |
+
 ## How to start
 
-**As a person:** open `PROJECT_OVERVIEW.html`, then the *Install* page. Do the steps in the order given there: first the agent, then the project archive, then connect the two. Before you pay for anything, read the first step in [USER_GUIDE.md](USER_GUIDE.md): the basic configuration requires a paid ChatGPT Plus subscription or a suitable higher plan with access to Codex, and the conditions must be checked on the official pages. You can prepare your materials first: put your CV and documents into `Локальные_данные/Положите_сюда/1_Мои_документы`, your story (for example a transcript of a voice recording) into `2_Рассказ_о_себе`. If you prepare nothing, the agent will interview you, by voice or in text. Then open the project folder in Codex and say “Start”: the agent loads its instructions by itself and asks you what it needs, one question at a time. Claude Code is an alternative whose compatibility is not confirmed (see *Capability status* below).
+**As a person:** open `PROJECT_OVERVIEW.html`, then the *Install* page. Do the steps in the order given there: first the agent, then the project archive, then connect the two. Before you pay for anything, read the first step in [USER_GUIDE.md](USER_GUIDE.md): the basic configuration requires a paid ChatGPT Plus subscription or a suitable higher plan with access to Codex, and the conditions must be checked on the official pages. You can prepare your materials first: put your CV and documents into `Local_Data/Put_Here/1_My_Documents`, your story (for example a transcript of a voice recording) into `2_My_Story`. If you prepare nothing, the agent will interview you, by voice or in text. Then open the project folder in Codex and say “Start”: the agent loads its instructions by itself and asks you what it needs, one question at a time. Claude Code is an alternative whose compatibility is not confirmed (see *Capability status* below).
 
 **As an AI agent:** read `AGENTS.md` and `TODO_FOR_AI.md` and follow them. They are your rules and your playbook. Details are in `AI_BUILD_SPEC.md`, `ARCHITECTURE.md` and `DATA_CONTRACT.md`.
 
@@ -106,7 +124,7 @@ To discourage mass mailing, JobPilot limits CV submissions to **44 per person pe
 
 ## Publication and rights
 
-Working data stays in `Локальные_данные/` and is not part of the public package. `.gitignore` helps to exclude it but does not stop tracking of files that are already in Git, so both the release archive and the Git index are checked before publication. Before any public release the manual checks in [RELEASE_CHECKLIST.md](RELEASE_CHECKLIST.md) are run: a file allowlist, the archive and index check, and a content check for personal data, secrets, real documents and fake-looking real data. These checks are manual; passing them is not proof that no personal data exists.
+Working data stays in `Local_Data/` and is not part of the public package. `.gitignore` helps to exclude it but does not stop tracking of files that are already in Git, so both the release archive and the Git index are checked before publication. Before any public release the manual checks in [RELEASE_CHECKLIST.md](RELEASE_CHECKLIST.md) are run: a file allowlist, the archive and index check, and a content check for personal data, secrets, real documents and fake-looking real data. These checks are manual; passing them is not proof that no personal data exists.
 
 **Project code**, including the statistics page, is licensed under the [PolyForm Noncommercial License 1.0.0](LICENSE). **Project documentation** is licensed under [CC BY-NC 4.0](LICENSE-DOCS). Both require the stated attribution and noncommercial use; commercial use needs separate permission from the author. As an additional permission (see [NOTICE](NOTICE)), any person may use JobPilot for their own job search, also when they look for paid work; offering it to others as a paid service is not covered. This is source-available, not OSI-defined open-source software. These licenses do not cover users' personal documents or third-party materials. IBM Plex fonts retain their separate SIL OFL 1.1 terms in `assets/fonts`. See [NOTICE](NOTICE).
 

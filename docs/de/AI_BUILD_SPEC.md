@@ -56,7 +56,7 @@ GitHub ZIP → extracted folder → open it locally in Codex / Claude Code
             README + AGENTS.md/CLAUDE.md + TODO_FOR_AI.md
                                             ↓
 AI agent ↔ allowed project folder (the single source of data)
-  ├─ materials in Положите_сюда + interview → knowledge base (confirmed facts) → profiles
+  ├─ materials in Put_Here + interview → knowledge base (confirmed facts) → profiles
   ├─ search → verified companies/vacancies/routes → unique records
   ├─ documents and plan → CV/Anschreiben → preparation / permitted sending
   ├─ mail → replies/DSN → journal → daily and monthly report
@@ -72,7 +72,7 @@ AI agent ↔ allowed project folder (the single source of data)
 1. **Der Agent** sucht, führt Aufzeichnungen, bereitet Dokumente und Berichte vor und führt erlaubte Mail-Aktionen aus, sichtbar in seinem Chat.
 2. **Der Ordner** ist der einzige Datenspeicher: Ein JSONL-Journal je Person in monatlichen Abschnitten hält die Ereignisse, einschließlich des gemeinsamen Kontingents; JSON-Dateien sind daraus neu aufgebaute Ansichten (ARCHITECTURE.md, DATA_CONTRACT.md).
 3. **Anleitungen**: `README.md` für die Person, `AGENTS.md`, `CLAUDE.md` und `TODO_FOR_AI.md` für den Agenten, der nie annimmt, dass ein früherer Chat verfügbar ist.
-4. **Die Wissensbasis**: eine Markdown-Datei je Person, `База_знаний/Жизнеописание.md` (Abschnitt 4.6), von der Person lesbar und korrigierbar.
+4. **Die Wissensbasis**: eine Markdown-Datei je Person, `Knowledge_Base/Life_Story.md` (Abschnitt 4.6), von der Person lesbar und korrigierbar.
 5. **Die Statistikseite**: eine Vorlage, unverändert je Profil kopiert; der Agent schreibt nur ihre Datendatei (Abschnitt 10.5).
 6. **Planung**: eine geplante Aufgabe des Agenten, falls angeboten, oder ein neuer Chat; die Seite startet den Agenten nie.
 7. **Zugriff**: Ordner, Websuche, Gmail und Computer Use werden getrennt und nur bei Bedarf eingeschaltet.
@@ -101,21 +101,21 @@ Europass ist ein Bezugspunkt für Vollständigkeit: Ausbildung, Berufserfahrung,
 
 ### 4.6 Wohin die Person Materialien legt und die Datei der Wissensbasis
 
-Das Paket enthält einen fertigen Ordner `Локальные_данные/Положите_сюда/` („hier ablegen“) mit fünf Unterordnern und einer kurzen README in jedem. Es ist der einzige Ort, an dem die Person etwas von Hand ablegen muss:
+Das Paket enthält einen fertigen Ordner `Local_Data/Put_Here/` („hier ablegen“) mit fünf Unterordnern und einer kurzen README in jedem. Es ist der einzige Ort, an dem die Person etwas von Hand ablegen muss:
 
 | Ordner | Was die Person dort ablegt |
 |---|---|
-| `1_Мои_документы` (meine Dokumente) | Lebensläufe in jeder Fassung, Diplome, Zertifikate, Referenzen, offizielle Schreiben, ein Portfolio, Muster eigener Schreiben; PDF, DOCX, TXT, Fotos und Scans; ohne Sortieren oder Umbenennen |
-| `2_Рассказ_о_себе` (meine Geschichte) | Die Geschichte der Person in eigenen Worten: eine Abschrift einer Sprachaufnahme, Notizen, Antworten auf die Fragen aus `Вопросы_для_рассказа.md` (liegt in diesem Ordner bei); der Agent speichert Interviews hier außerdem wortwörtlich als `Интервью_<date>.md` |
-| `3_Шаблон_отчёта` (Berichtsvorlage) | Nur, wenn die Person ein eigenes Berichtsmuster hat |
-| `4_Шаблон_резюме` (Material zum Lebenslauf) | Alles zu den Lebensläufen der Person in jedem Format, aktuell und alt; nur lesen; der Agent bereitet daraus Entwürfe und die von der Person genannte Vorlage vor |
-| `5_Шаблон_сопроводительного_письма` (Material zum Anschreiben) | Alles zu den Anschreiben der Person in jedem Format; nur lesen; dieselbe Regel wie für Ordner 4 |
+| `1_My_Documents` (meine Dokumente) | Lebensläufe in jeder Fassung, Diplome, Zertifikate, Referenzen, offizielle Schreiben, ein Portfolio, Muster eigener Schreiben; PDF, DOCX, TXT, Fotos und Scans; ohne Sortieren oder Umbenennen |
+| `2_My_Story` (meine Geschichte) | Die Geschichte der Person in eigenen Worten: eine Abschrift einer Sprachaufnahme, Notizen, Antworten auf die Fragen aus `Story_Questions.md` (liegt in diesem Ordner bei); der Agent speichert Interviews hier außerdem wortwörtlich als `Interview_<YYYY-MM-DD>.md` |
+| `3_Report_Template` (Berichtsvorlage) | Nur, wenn die Person ein eigenes Berichtsmuster hat |
+| `4_CV_Templates` (Material zum Lebenslauf) | Alles zu den Lebensläufen der Person in jedem Format, aktuell und alt; nur lesen; der Agent bereitet daraus Entwürfe und die von der Person genannte Vorlage vor |
+| `5_Cover_Letter_Templates` (Material zum Anschreiben) | Alles zu den Anschreiben der Person in jedem Format; nur lesen; dieselbe Regel wie für Ordner 4 |
 
-Die Ordner können vor dem ersten Lauf gefüllt oder leer gelassen werden; der Agent liest sie nur. Eine zweite Person erhält in `Положите_сюда` einen Unterordner mit ihrem Namen, mit denselben fünf Unterordnern.
+Die Ordner können vor dem ersten Lauf gefüllt oder leer gelassen werden; der Agent liest sie nur. Eine zweite Person erhält in `Put_Here` einen Unterordner mit ihrem Namen, mit denselben fünf Unterordnern.
 
-**Die Geschichte per Sprache vorbereiten.** Entweder außerhalb des Projekts, in einem beliebigen Sprachchat von Claude oder ChatGPT mit `Вопросы_для_рассказа.md`, mit der Bitte um eine wortwörtliche Textdatei für `2_Рассказ_о_себе`, oder innerhalb des Projekts, wo der Agent das Interview führt und jede Antwort wortwörtlich speichert.
+**Die Geschichte per Sprache vorbereiten.** Entweder außerhalb des Projekts, in einem beliebigen Sprachchat von Claude oder ChatGPT mit `Story_Questions.md`, mit der Bitte um eine wortwörtliche Textdatei für `2_My_Story`, oder innerhalb des Projekts, wo der Agent das Interview führt und jede Antwort wortwörtlich speichert.
 
-**Die Wissensbasis.** Aus den Ordnern und dem Interview schreibt der Agent `Локальные_данные/persons/<person_id>/База_знаний/Жизнеописание.md` in einem festen Format (DATA_CONTRACT.md §3a), Abschnitt für Abschnitt zur Bestätigung gezeigt. Sie ist in der Sprache der Person und die einzige Quelle für alle Suchprofile dieser Person.
+**Die Wissensbasis.** Aus den Ordnern und dem Interview schreibt der Agent `Local_Data/persons/<person_id>/Knowledge_Base/Life_Story.md` in einem festen Format (DATA_CONTRACT.md §3a), Abschnitt für Abschnitt zur Bestätigung gezeigt. Sie ist in der Sprache der Person und die einzige Quelle für alle Suchprofile dieser Person.
 
 **Die Ersteinrichtung in Reihenfolge** — Geschichte, Unterlagen, Wissensbasis, Lücken, Bestätigung, Sucheinstellungen (`profiles/<profile_id>/profile.json`), E-Mail auf Wunsch — steht in TODO_FOR_AI.md, Teil A. Vorlagen: Die Quellen bleiben unverändert, und eine geprüfte Word-Arbeitskopie wird erst nach der Freigabe verwendet ([Vorlagen für Lebenslauf und Anschreiben](OPERATING_REQUIREMENTS.md#vorlagen-für-lebenslauf-und-anschreiben)).
 
@@ -127,7 +127,7 @@ Quellen sind Websites der Arbeitgeber, offizielle Jobportale und Dienste, deren 
 
 ## 6. Ordner und das Bewerbungspaket
 
-Alle Arbeitsdaten bleiben im entpackten Ordner, in `Локальные_данные/`, das Git ignoriert; der vollständige Baum steht in ARCHITECTURE.md §3. Das Hauptverzeichnis des Pakets enthält `README.md`, `USER_GUIDE.md`, `AGENTS.md`, `CLAUDE.md`, `TODO_FOR_AI.md`, `OPERATING_REQUIREMENTS.md`, `AI_BUILD_SPEC.md`, `ARCHITECTURE.md`, `DATA_CONTRACT.md`, `ACCEPTANCE_TESTS.md`, `PROJECT_OVERVIEW.html`, die Seiten `overview_*.html`, `docs/`, `assets/`, `dashboard_template/`, `examples/` und `.gitignore`.
+Alle Arbeitsdaten bleiben im entpackten Ordner, in `Local_Data/`, das Git ignoriert; der vollständige Baum steht in ARCHITECTURE.md §3. Das Hauptverzeichnis des Pakets enthält `README.md`, `USER_GUIDE.md`, `AGENTS.md`, `CLAUDE.md`, `TODO_FOR_AI.md`, `OPERATING_REQUIREMENTS.md`, `AI_BUILD_SPEC.md`, `ARCHITECTURE.md`, `DATA_CONTRACT.md`, `ACCEPTANCE_TESTS.md`, `PROJECT_OVERVIEW.html`, die Seiten `overview_*.html`, `docs/`, `assets/`, `dashboard_template/`, `examples/` und `.gitignore`.
 
 Jede Bewerbung hat ihren eigenen Ordner `Applications/<YYYY>/<MM_Month>/<NNN_Company_City_Role>/` mit `Company.md`, Lebenslauf und Anschreiben als DOCX und PDF (`Resume_v001`, `CoverLetter_v001`), `EmailText_<language>.txt`, `EMAIL_TO_SEND.txt`, einer optionalen `ReviewTranslation_<language>.txt` („nicht für den Arbeitgeber“), `Status.txt` und `Replies.txt`. Der Ordner wird nicht verschoben, wenn sich der Plan ändert; Pfade bleiben relativ und innerhalb des Hauptverzeichnisses (DATA_CONTRACT.md §2). Eine Stelle ohne E-Mail-Bewerbung erhält ein Paket für ihren Kanal; eine Adresse wird nie erfunden.
 
@@ -179,7 +179,7 @@ Die Post wird täglich geprüft (Standard 16:00 Ortszeit); jeden Monat entsteht 
 
 ## 9. Datensicherheit und GitHub
 
-Das öffentliche Repository enthält nur eigene Dokumente, neutrale Vorlagen, synthetische Beispiele und Anleitungen; echte Lebensläufe, Dokumente, Adressen, Gmail-Daten, Bewerbungsverläufe, Tokens, Sicherungen und Berichte werden nie committet (`.gitignore` schließt `Локальные_данные/` aus). Kein Code und kein Material der betrachteten Alternativen wird verwendet; jede Bibliothek, Schrift oder jedes Werkzeug von Dritten wird zuvor mit Zweck, Version und Lizenz abgestimmt. Vorlagen und Anzeigen anderer werden nicht vollständig kopiert; Anforderungen werden als kurze Fakten mit URL und Datum gespeichert. Protokolle enthalten keine Nachrichtentexte, Dokumente oder Geheimnisse.
+Das öffentliche Repository enthält nur eigene Dokumente, neutrale Vorlagen, synthetische Beispiele und Anleitungen; echte Lebensläufe, Dokumente, Adressen, Gmail-Daten, Bewerbungsverläufe, Tokens, Sicherungen und Berichte werden nie committet (`.gitignore` schließt `Local_Data/` aus). Kein Code und kein Material der betrachteten Alternativen wird verwendet; jede Bibliothek, Schrift oder jedes Werkzeug von Dritten wird zuvor mit Zweck, Version und Lizenz abgestimmt. Vorlagen und Anzeigen anderer werden nicht vollständig kopiert; Anforderungen werden als kurze Fakten mit URL und Datum gespeichert. Protokolle enthalten keine Nachrichtentexte, Dokumente oder Geheimnisse.
 
 ### 9.1 Versuchsstatus, KI-Quellen und Grenzen der Haftung
 
@@ -218,14 +218,14 @@ Die Schritt-für-Schritt-Anleitung gibt es als `USER_GUIDE.md` und `overview_ins
 ### 10.1 Reihenfolge der Installation: der Agent, dann das Archiv, dann die Verbindung
 
 1. **Der Agent.** Installieren Sie ChatGPT Desktop, melden Sie sich an und prüfen Sie, dass Codex verfügbar ist. Die Grundkonfiguration ist ein bezahlter Tarif ChatGPT Plus oder ein passender höherer Tarif mit Codex; Codex wird auch für die Tarife Free und Go angegeben, die Arbeit damit ist hier aber nicht bestätigt. Bei der Prüfung am 8. Oktober 2026 zeigte die offizielle [Preisseite](https://learn.chatgpt.com/docs/pricing) 20 USD pro Monat für Plus; Preise, Grenzen und Zugang ändern sich, prüfen Sie sie daher und [Using Codex with your ChatGPT plan](https://help.openai.com/en/articles/11369540-using-codex-with-your-chatgpt-plan) vor dem Bezahlen. Die Kompatibilität mit Claude Code ist nicht bestätigt.
-2. **Der Projektordner.** Entpacken Sie die ZIP-Datei in einen eigenen Ordner; `README.md`, `AGENTS.md`, `TODO_FOR_AI.md`, `dashboard_template` und `Локальные_данные\Положите_сюда` müssen direkt darin liegen.
+2. **Der Projektordner.** Entpacken Sie die ZIP-Datei in einen eigenen Ordner; `README.md`, `AGENTS.md`, `TODO_FOR_AI.md`, `dashboard_template` und `Local_Data\Put_Here` müssen direkt darin liegen.
 3. **Verbindung und erster Start.** Öffnen Sie den Ordner als lokales Projekt, legen Sie einen Chat in der lokalen Umgebung an, schalten Sie `Ask for approval` ein und starten Sie die Startanweisung im Modus nur Entwürfe.
 
 Ein ChatGPT-Projekt in der Cloud ist kein lokales Projekt: Ein in einen Chat geschriebener Pfad gibt keinen Dateizugriff. Codex und Claude Code sind Alternativen mit eigenen Berechtigungs- und Mail-Einstellungen; Links und Menünamen werden vor jedem Release geprüft. Ein Agent, der durch die Installation führt, nennt den Schritt und das erwartete Ergebnis, wartet auf Bestätigung und schlägt nie vor, Entwicklungswerkzeuge zu installieren.
 
 ### 10.2 Codex-Berechtigungen und Ordnerzugriff
 
-Zugriff wird nur auf das entpackte Hauptverzeichnis gewährt, mit `Ask for approval` oder einem gleichwertigen sicheren Modus; nie Administratorrechte oder die ganze Festplatte. Alle Daten kommen nach `Локальные_данные/`; fehlt der Schreibzugriff, nennt der Agent die enge Berechtigung, die er braucht. Netzwerk, Konten, Dateien und Computersteuerung sind getrennte Berechtigungen, geprüft in der Oberfläche oder mit `/status`.
+Zugriff wird nur auf das entpackte Hauptverzeichnis gewährt, mit `Ask for approval` oder einem gleichwertigen sicheren Modus; nie Administratorrechte oder die ganze Festplatte. Alle Daten kommen nach `Local_Data/`; fehlt der Schreibzugriff, nennt der Agent die enge Berechtigung, die er braucht. Netzwerk, Konten, Dateien und Computersteuerung sind getrennte Berechtigungen, geprüft in der Oberfläche oder mit `/status`.
 
 ### 10.3 Gmail über einen freigegebenen Connector oder den eingebauten Browser verbinden
 
@@ -237,7 +237,7 @@ Die tägliche Postfachprüfung (Standard 16:00 Ortszeit) und die monatliche Erin
 
 ### 10.5 Die verbindliche statische Statistikseite
 
-`dashboard_template/index.html` wird mit einer synthetischen `summary.js` (eine Demo) ausgeliefert und öffnet sich daher per Doppelklick. Für ein echtes Profil kopiert der Agent die Seite **unverändert** neben eine `summary.js`, die er schreibt (`window.JP_DATA = {…}`, `demo: false`), sodass ein Datenfehler die Seite nicht zerstören kann; das Menü `Локальные_данные/dashboard/index.html` verlinkt auf `dashboard/profiles/<profile_id>/index.html`. Die Seite braucht keinen Server und keine externe Bibliothek und meldet eine fehlende oder beschädigte Datendatei, statt falsche Zahlen zu zeigen. Sie zeigt **Jahr → Monat → Tag** mit Zusammenfassungen (gesendet, Antworten, Ergebnisse, Zustellfehler, Kontingent „verbraucht / reserviert / übrig von 44“) und Tabellen der Tagesereignisse, sortiert nach Datum oder Ergebnis anhand echter Zeitstempel (nicht nach Zeichenketten `DD.MM.YYYY`), filtert nach Jahr, Monat, Ergebnis, Firma, Ort und Beruf und wechselt die Sprache mit dem Umschalter oder `?lang=ru`. Sie speichert nichts außer dem Design, sendet nichts und ändert keine Einträge; keine Nachrichtentexte, Lebensläufe oder Adressen kommen hinein. Format und Schreibverfahren: DATA_CONTRACT.md §9.
+`dashboard_template/index.html` wird mit einer synthetischen `summary.js` (eine Demo) ausgeliefert und öffnet sich daher per Doppelklick. Für ein echtes Profil kopiert der Agent die Seite **unverändert** neben eine `summary.js`, die er schreibt (`window.JP_DATA = {…}`, `demo: false`), sodass ein Datenfehler die Seite nicht zerstören kann; das Menü `Local_Data/dashboard/index.html` verlinkt auf `dashboard/profiles/<profile_id>/index.html`. Die Seite braucht keinen Server und keine externe Bibliothek und meldet eine fehlende oder beschädigte Datendatei, statt falsche Zahlen zu zeigen. Sie zeigt **Jahr → Monat → Tag** mit Zusammenfassungen (gesendet, Antworten, Ergebnisse, Zustellfehler, Kontingent „verbraucht / reserviert / übrig von 44“) und Tabellen der Tagesereignisse, sortiert nach Datum oder Ergebnis anhand echter Zeitstempel (nicht nach Zeichenketten `DD.MM.YYYY`), filtert nach Jahr, Monat, Ergebnis, Firma, Ort und Beruf und wechselt die Sprache mit dem Umschalter oder `?lang=ru`. Sie speichert nichts außer dem Design, sendet nichts und ändert keine Einträge; keine Nachrichtentexte, Lebensläufe oder Adressen kommen hinein. Format und Schreibverfahren: DATA_CONTRACT.md §9.
 
 ### 10.6 Computer Use
 
@@ -251,7 +251,7 @@ Computer Use wird nur eingeschaltet, wenn eine Aufgabe den Bildschirm braucht, u
 - Daten und Text des Pakets stimmen überein; DOCX/PDF werden ohne Abschneiden und mit korrekten Schriften gerendert.
 - Der Import von Quellarchiven ist zunächst nur lesend und liefert eine Zuordnung / einen Fehlerbericht.
 - Gmail ändert keine Labels / archiviert nicht / löscht nicht; die Dublettenvermeidung wird durch einen wiederholten Lauf geprüft.
-- Die statische `Локальные_данные/dashboard/index.html` öffnet sich per Doppelklick ohne Server und Netzwerk; Sortierung nach Jahren / Daten / Ergebnissen, Monats- und Tagesgruppen, die Markierung veralteter Daten und das Fehlen von Schreibvorgängen und Netzwerkanfragen sind geprüft.
+- Die statische `Local_Data/dashboard/index.html` öffnet sich per Doppelklick ohne Server und Netzwerk; Sortierung nach Jahren / Daten / Ergebnissen, Monats- und Tagesgruppen, die Markierung veralteter Daten und das Fehlen von Schreibvorgängen und Netzwerkanfragen sind geprüft.
 - In Tests wird keine echte E-Mail gesendet; Versand braucht einen freigegebenen Profilmodus, den genauen Empfänger und die Anhänge.
 - Eine automatische Antwort auf eine Absage und die automatische Vorbereitung einer Ersatzbewerbung lösen bei automatischen, vorübergehenden oder mehrdeutigen Nachrichten nicht aus.
 - Alle Ereignisse und Berichtsergebnisse lassen sich mit der ursprünglichen Gmail-Message-ID und den Quellen der Stellen verknüpfen.

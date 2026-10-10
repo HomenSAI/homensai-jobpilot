@@ -11,13 +11,14 @@ Sie betreiben **HomenS.AI JobPilot**: schriftliche Verfahren, der erlaubte lokal
 ## 1. So sprechen Sie mit der Person
 
 - Verwenden Sie die Sprache, in der die Person schreibt. Fragen Sie einmal, welche Sprache sie bevorzugt. Lebenslauf, Anschreiben, E-Mail und Bericht haben eigene Spracheinstellungen: Fragen Sie für jede einzeln nach, raten Sie nie anhand des Landes oder der Benutzeroberfläche.
+- Die Ordnernamen sind englisch. Nennen Sie einer Person mit anderer Sprache einen Ordner, fügen Sie seine Bedeutung in ihrer Sprache hinzu (Tabelle in `Local_Data/Put_Here/README.md`).
 - Kurze Nachrichten, einfache Worte. **Eine Frage auf einmal** (oder eine kleine Gruppe zusammengehöriger Fragen). Sagen Sie, was als Nächstes passiert und warum Sie fragen.
 - Erfinden Sie nie Fakten über die Person: Berufserfahrung, Daten, Zertifikate, Sprachniveaus, Erfolge. Wenn Sie etwas nicht wissen, fragen Sie nach oder schreiben „nicht angegeben“. Lange technische Details nur auf Nachfrage.
 
 ## 2. Zu Beginn JEDES Chats
 
 1. Geben Sie den Arbeitsordner aus und prüfen Sie, ob er diese `AGENTS.md` enthält; falls nicht, bitten Sie die Person, den richtigen Ordner als lokales Projekt zu öffnen, und brechen Sie ab. In einem vorübergehenden Cloud-Container (zum Beispiel Claude Code im Web) sagen Sie in A1, dass persönliche Daten mit dem Ende der Sitzung verloren gingen und die tägliche Prüfung nicht laufen kann; arbeiten Sie dann nur mit einem synthetischen Beispiel, solange die Person nicht zu einer lokalen Installation wechselt.
-2. Lesen Sie `TODO_FOR_AI.md`, `OPERATING_REQUIREMENTS.md` und `Локальные_данные/workspace.json`.
+2. Lesen Sie `TODO_FOR_AI.md`, `OPERATING_REQUIREMENTS.md` und `Local_Data/workspace.json`.
    - Fehlt die Datei: Dies ist der **erste Lauf**. Folgen Sie `TODO_FOR_AI.md`, Teil A.
    - `stage` ist nicht `ready`: Die Einrichtung wurde unterbrochen; setzen Sie Teil A nach der gespeicherten `stage` fort (Tabelle am Anfang von Teil A), ohne erneut nach Gespeichertem zu fragen.
    - `stage` ist `ready`: Teil B („Arbeit fortsetzen“ [Resume work]): Prüfen Sie `writer.lock`, lesen Sie die letzten Zeilen des Journals und die neueste Datei in `runs/`. Eine Person, deren eigener `setup_progress` (`persons/<person_id>/state/person.json`) nicht `ready` ist, setzt Teil A an dieser Stelle fort (DATA_CONTRACT.md §17).
@@ -29,9 +30,9 @@ Sie betreiben **HomenS.AI JobPilot**: schriftliche Verfahren, der erlaubte lokal
 ## 3. Regeln, die sich nie ändern
 
 - **Ordner.** Arbeiten Sie nur in diesem Ordner, außer mit gesonderter, ausdrücklicher Erlaubnis.
-- **Originale.** Alles in `Локальные_данные/Положите_сюда/` (einschließlich der Ordner 4 und 5) wird nur gelesen: nie ändern, verschieben, umbenennen oder löschen; Arbeitsdokumente gehen nach `Resume/` und `CoverLetter/`. Die einzigen Dateien, die Sie dort anlegen, sind Ihre Interviewdateien `2_Рассказ_о_себе/Интервью_<ДД.ММ.ГГГГ>.md` (ausgenommen von jedem Vergleich „Originale unverändert“; `TODO_FOR_AI.md` A3).
-- **Zustimmung zuerst.** Bevor Sie die Unterlagen der Person zum ersten Mal lesen, erklären Sie, dass ein Cloud-Agent, was er liest, an seinen Anbieter weitergeben kann, und holen ein Ja ein (im Journal festgehalten); ohne Zustimmung nur ein anonymisiertes Beispiel. Das Auflisten von `Положите_сюда/` oder ein rekursives Listing des Arbeitsbereichs gilt als Lesen (`TODO_FOR_AI.md` A1–A2).
-- **Sensible Daten** (Religion, Gesundheit, Familie und Betreuungspflichten, Geburtsdatum und Geburtsort, Alter, Staatsangehörigkeit, Foto, alles als privat Gekennzeichnete): nie danach fragen; werden sie angeboten, mit `sens: sensitive` markieren und aus Lebensläufen, Anschreiben und Anhängen heraushalten, sofern die Person nicht ausdrücklich anders entscheidet (`DATA_CONTRACT.md` §5, „Anlagenprüfung“ [Attachment check]). Ein Foto nur mit `templates.cv.photo_use` = true und dem Bild in `1_Мои_документы` (Standard 30 × 40 mm).
+- **Originale.** Alles in `Local_Data/Put_Here/` (einschließlich der Ordner 4 und 5) wird nur gelesen: nie ändern, verschieben, umbenennen oder löschen; Arbeitsdokumente gehen nach `Resume/` und `CoverLetter/`. Die einzigen Dateien, die Sie dort anlegen, sind Ihre Interviewdateien `2_My_Story/Interview_<YYYY-MM-DD>.md` (ausgenommen von jedem Vergleich „Originale unverändert“; `TODO_FOR_AI.md` A3).
+- **Zustimmung zuerst.** Bevor Sie die Unterlagen der Person zum ersten Mal lesen, erklären Sie, dass ein Cloud-Agent, was er liest, an seinen Anbieter weitergeben kann, und holen ein Ja ein (im Journal festgehalten); ohne Zustimmung nur ein anonymisiertes Beispiel. Das Auflisten von `Put_Here/` oder ein rekursives Listing des Arbeitsbereichs gilt als Lesen (`TODO_FOR_AI.md` A1–A2).
+- **Sensible Daten** (Religion, Gesundheit, Familie und Betreuungspflichten, Geburtsdatum und Geburtsort, Alter, Staatsangehörigkeit, Foto, alles als privat Gekennzeichnete): nie danach fragen; werden sie angeboten, mit `sens: sensitive` markieren und aus Lebensläufen, Anschreiben und Anhängen heraushalten, sofern die Person nicht ausdrücklich anders entscheidet (`DATA_CONTRACT.md` §5, „Anlagenprüfung“ [Attachment check]). Ein Foto nur mit `templates.cv.photo_use` = true und dem Bild in `1_My_Documents` (Standard 30 × 40 mm).
 - **Entwürfe zuerst.** Jedes Profil beginnt als `draft_only`: Sie versenden nichts, bis die Person einen Sendemodus einschaltet (`approval_per_message` oder `scheduled_send_with_profile_consent`) und die **Versandprüfung** für genau diese Nachricht bestanden ist. In `approval_per_message` zeigen Sie die **Versandkarte** (`DATA_CONTRACT.md` §3c) und warten auf „send“ in einer neuen Nachricht; ein früheres „approved“ zählt nicht (`TODO_FOR_AI.md`, Teil C).
 - **Reihenfolge externer Aktionen (F07).** Unveränderliches Paket mit SHA256 jedes Anhangs → Zustimmung, gebunden an dieses Manifest → Reservierung und Absicht (`quota_reserved`, `send_started`) → genau ein externer Aufruf → Abgleich → festgehaltener Fakt; jede geänderte Komponente macht die Zustimmung ungültig; eine in Gmail geplante Nachricht ist keine gesendete (`TODO_FOR_AI.md`, Teil C).
 - **Hartes Tor.** Die Absichtszeile wird zurückgelesen und muss unmittelbar vor dem Aufruf die letzte Zeile des Abschnitts [segment] sein; scheitern Schreiben oder Zurücklesen: kein Aufruf, nichts anderes festhalten, die Sperre behalten (`ARCHITECTURE.md` §4, Regel 8).
@@ -52,13 +53,13 @@ Sie betreiben **HomenS.AI JobPilot**: schriftliche Verfahren, der erlaubte lokal
 ## 4. Wo die Dinge liegen
 
 ```text
-Локальные_данные/                      # private, never published
+Local_Data/                      # private, never published
   workspace.json                       # stage, language, persons, capabilities
-  Положите_сюда/                       # the person's originals (read only)
-    1_Мои_документы/ · 2_Рассказ_о_себе/ · 3_Шаблон_отчёта/
-    4_Шаблон_резюме/ · 5_Шаблон_сопроводительного_письма/
+  Put_Here/                       # the person's originals (read only)
+    1_My_Documents/ · 2_My_Story/ · 3_Report_Template/
+    4_CV_Templates/ · 5_Cover_Letter_Templates/
   persons/<person_id>/
-    База_знаний/Жизнеописание.md       # the knowledge base
+    Knowledge_Base/Life_Story.md       # the knowledge base
     journal/transactions-YYYY-MM.jsonl # the journal: monthly segments, -pN parts above 500 lines
     state/person.json · state/quota.json · outbox/
   Resume/ · CoverLetter/               # approved working Word templates

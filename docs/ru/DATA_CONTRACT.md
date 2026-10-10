@@ -12,25 +12,25 @@
 
 | Путь от корня | Роль |
 |---|---|
-| `Локальные_данные/persons/<person_id>/state/person.json` | Личность, часовой пояс квоты, разрешённые значения `profile_id`, `setup_progress` (§17) |
-| `Локальные_данные/workspace.json` | Id рабочей папки, `format_version`, язык, `stage` и `progress` первого запуска (TODO_FOR_AI.md, часть A), `run_id`, `person_ids`, проверки возможностей |
-| `Локальные_данные/Положите_сюда/1_Мои_документы`, `2_Рассказ_о_себе`, `3_Шаблон_отчёта`, `4_Шаблон_резюме`, `5_Шаблон_сопроводительного_письма` | Оригиналы человека, его рассказ, необязательный шаблон отчёта; только чтение |
-| `Локальные_данные/persons/<person_id>/База_знаний/Жизнеописание.md` | База знаний (§3a) |
-| `Локальные_данные/persons/<person_id>/journal/transactions-YYYY-MM.jsonl` | Единственный первичный журнал, по месячным сегментам (§3c), с общей квотой человека |
-| `Локальные_данные/persons/<person_id>/journal/writer.lock` | Блокировка, пока пишет один чат (формат §3c, протокол ARCHITECTURE.md §4b) |
-| `Локальные_данные/persons/<person_id>/outbox/<send_attempt_id>/` | Неизменяемая копия пакета и манифест одной попытки (ARCHITECTURE.md §6) |
-| `Локальные_данные/persons/<person_id>/archives/<archive_id>/` | Локальные архивы (§11) |
-| `Локальные_данные/persons/<person_id>/state/quota.json` | Пересобираемое представление квоты (limit, used, reserved, unverified, remaining, source_revision, cutoff) (§5) |
-| `Локальные_данные/profiles/<profile_id>/profile.json` | Настройки одного направления поиска (§3b) |
-| `Локальные_данные/profiles/<profile_id>/registry.json` | Пересобираемое представление целей (компании, филиалы, вакансии), заявок, слотов плана, очереди |
-| `Локальные_данные/profiles/<profile_id>/plans/<plan_id>/plan_v<N>.json` | Неизменяемые версии плана (§14) |
-| `Локальные_данные/profiles/<profile_id>/runs/` | Записи запусков (§18) |
-| `Локальные_данные/profiles/<profile_id>/reports/<YYYY-MM>/` | Отчёты и манифесты профиля |
+| `Local_Data/persons/<person_id>/state/person.json` | Личность, часовой пояс квоты, разрешённые значения `profile_id`, `setup_progress` (§17) |
+| `Local_Data/workspace.json` | Id рабочей папки, `format_version`, язык, `stage` и `progress` первого запуска (TODO_FOR_AI.md, часть A), `run_id`, `person_ids`, проверки возможностей |
+| `Local_Data/Put_Here/1_My_Documents`, `2_My_Story`, `3_Report_Template`, `4_CV_Templates`, `5_Cover_Letter_Templates` | Оригиналы человека, его рассказ, необязательный шаблон отчёта; только чтение |
+| `Local_Data/persons/<person_id>/Knowledge_Base/Life_Story.md` | База знаний (§3a) |
+| `Local_Data/persons/<person_id>/journal/transactions-YYYY-MM.jsonl` | Единственный первичный журнал, по месячным сегментам (§3c), с общей квотой человека |
+| `Local_Data/persons/<person_id>/journal/writer.lock` | Блокировка, пока пишет один чат (формат §3c, протокол ARCHITECTURE.md §4b) |
+| `Local_Data/persons/<person_id>/outbox/<send_attempt_id>/` | Неизменяемая копия пакета и манифест одной попытки (ARCHITECTURE.md §6) |
+| `Local_Data/persons/<person_id>/archives/<archive_id>/` | Локальные архивы (§11) |
+| `Local_Data/persons/<person_id>/state/quota.json` | Пересобираемое представление квоты (limit, used, reserved, unverified, remaining, source_revision, cutoff) (§5) |
+| `Local_Data/profiles/<profile_id>/profile.json` | Настройки одного направления поиска (§3b) |
+| `Local_Data/profiles/<profile_id>/registry.json` | Пересобираемое представление целей (компании, филиалы, вакансии), заявок, слотов плана, очереди |
+| `Local_Data/profiles/<profile_id>/plans/<plan_id>/plan_v<N>.json` | Неизменяемые версии плана (§14) |
+| `Local_Data/profiles/<profile_id>/runs/` | Записи запусков (§18) |
+| `Local_Data/profiles/<profile_id>/reports/<YYYY-MM>/` | Отчёты и манифесты профиля |
 | Папка заявки `Applications/<YYYY>/<MM_Month>/<NNN_…>/`: `Company.md` | Данные компании с источником и датой проверки; представление `company_registered`, `company_updated` |
-| та же папка: `Replies.txt` (Ответы) | Только дописывание, один блок на `gmail_message_id` (только если его ещё нет), в порядке цепочки: имя и адрес отправителя, Reply-To, Message-ID, дата и время с поясом, IP отправки и цепочка Received, результаты аутентификации, тема, получатели, полный текст дословно, вложения (имя, тип, размер) или «вложений нет»; отсутствующее поле пишется как «не предоставлено почтовым инструментом», ничего не домысливается |
+| та же папка: `Replies.txt` | Только дописывание, один блок на `gmail_message_id` (только если его ещё нет), в порядке цепочки: имя и адрес отправителя, Reply-To, Message-ID, дата и время с поясом, IP отправки и цепочка Received, результаты аутентификации, тема, получатели, полный текст дословно, вложения (имя, тип, размер) или «вложений нет»; отсутствующее поле пишется как «не предоставлено почтовым инструментом», ничего не домысливается |
 | та же папка: `Status.txt` | Только дописывание: одна строка на `status_recorded`, местное время и `event_id` |
-| `Локальные_данные/Resume/`, `CoverLetter/` | Черновики из `4_Шаблон_резюме/` и `5_Шаблон_сопроводительного_письма/` и проверенная Word-копия названного шаблона (§3b `templates`); источники не меняются, версии — новые файлы. Если людей несколько, в `Resume/` и `CoverLetter/` по одной подпапке на `person_id`; если человек один, папки используются напрямую |
-| `Локальные_данные/dashboard/profiles/<profile_id>/summary.js`, `index.html`, `readiness.html` | Снимок (§9), неизменённая копия шаблона, страница готовности (§10); `Локальные_данные/dashboard/index.html` — меню. Единственный путь панели |
+| `Local_Data/Resume/`, `CoverLetter/` | Черновики из `4_CV_Templates/` и `5_Cover_Letter_Templates/` и проверенная Word-копия названного шаблона (§3b `templates`); источники не меняются, версии — новые файлы. Если людей несколько, в `Resume/` и `CoverLetter/` по одной подпапке на `person_id`; если человек один, папки используются напрямую |
+| `Local_Data/dashboard/profiles/<profile_id>/summary.js`, `index.html`, `readiness.html` | Снимок (§9), неизменённая копия шаблона, страница готовности (§10); `Local_Data/dashboard/index.html` — меню. Единственный путь панели |
 
 Сначала событие записывается в журнал, потом обновляются представления; файл, который агент создаёт целиком (`profile.json`, пакет, `summary.js`), сначала пишется и проверяется, его событие идёт следом. Ни одно представление не меняется без события; исправление — новое событие с `supersedes_event_id`. Сбой между строкой и представлением исправляется пересборкой (§3d). Изменения квоты и заявки в одном действии — одна строка. Артефакты (пакеты, планы, копии в outbox, архивы) сначала сохраняются неизменяемыми, потом регистрируются по именам, размерам и SHA-256.
 
@@ -89,7 +89,7 @@ UUID: `company_id`, `branch_id`, `vacancy_id`, `target_id`, `application_id`, `p
 
 ## 3a. База знаний: жизнеописание человека
 
-**Один Markdown-файл на человека**, `persons/<person_id>/База_знаний/Жизнеописание.md`, на языке человека: главный источник фактов (резюме — его проекция). Человек может его править; каждый чат сравнивает контрольную сумму файла с последней `knowledge_base_updated`, и изменённая или новая строка без статуса считается `proposed` и показывается для подтверждения.
+**Один Markdown-файл на человека**, `persons/<person_id>/Knowledge_Base/Life_Story.md`, на языке человека: главный источник фактов (резюме — его проекция). Человек может его править; каждый чат сравнивает контрольную сумму файла с последней `knowledge_base_updated`, и изменённая или новая строка без статуса считается `proposed` и показывается для подтверждения.
 
 Разделы (заголовок на языке человека, затем id в фигурных скобках): `identity` (имя, место, часовой пояс, разрешённые контакты) · `goals` · `experience` (по одному `###` на должность) · `education` · `certificates` · `languages` · `skills` · `projects` · `strengths` (задача, действие, результат) · `conditions` (радиус, транспорт, график, дата начала) · `private_notes` (не для работодателя).
 
@@ -100,12 +100,12 @@ UUID: `company_id`, `branch_id`, `vacancy_id`, `target_id`, `application_id`, `p
 | Часть | Значение |
 |---|---|
 | `[F012]` | `fact_id`; один факт на строку |
-| `source:` | файл в `Положите_сюда/` с местом, `interview 07.10.2026` или `self-reported` |
+| `source:` | файл в `Put_Here/` с местом, `interview 2026-10-07` или `self-reported` |
 | `status:` | `proposed`, `confirmed <date>` или `rejected` (всегда по-английски); `rejected (replaced by F031)` |
 | `use:` | `cv` (разрешено в документах заявки) или `internal` |
 | `sens:` | `normal` или `sensitive` (никогда в документах без явного выбора человека) |
 
-Пропущенная тема: одна строка `(skipped by the person)` без id. Дата и место рождения и возраст всегда `sens: sensitive`, `use: internal`; факт `sens: normal`, позже признанный чувствительным, меняется на месте, когда так решает человек (TODO_FOR_AI.md, A6). Факты никогда не удаляются; исправление добавляет строку и отклоняет старую. В резюме или письмо попадают только факты `confirmed` с `use: cv`. Сырые слова остаются в `Положите_сюда/2_Рассказ_о_себе/` (`Интервью_<date>.md`). Каждая запись — строка `knowledge_base_updated`. Каждое вложение проверяется на чувствительные факты (§5, «Проверка вложений»).
+Пропущенная тема: одна строка `(skipped by the person)` без id. Дата и место рождения и возраст всегда `sens: sensitive`, `use: internal`; факт `sens: normal`, позже признанный чувствительным, меняется на месте, когда так решает человек (TODO_FOR_AI.md, A6). Факты никогда не удаляются; исправление добавляет строку и отклоняет старую. В резюме или письмо попадают только факты `confirmed` с `use: cv`. Сырые слова остаются в `Put_Here/2_My_Story/` (`Interview_<YYYY-MM-DD>.md`). Каждая запись — строка `knowledge_base_updated`. Каждое вложение проверяется на чувствительные факты (§5, «Проверка вложений»).
 
 ## 3b. `profile.json`: настройки одного направления поиска (первая настройка)
 
@@ -143,7 +143,7 @@ UUID: `company_id`, `branch_id`, `vacancy_id`, `target_id`, `application_id`, `p
 | `consent_granted` / `consent_revoked` | **consent_id**, **scope** (`cloud_processing`, `mail_reading`, `mail_sending_profile`, `send_once`, `follow_up`, `daily_report_email`), **person_id**, profile_id, account_id, **text_shown** (или его SHA-256); **binding** для `send_once`/`gmail_scheduled` (§5), `follow_up` (§4) | «да» или отзыв; отзыв ничего не отменяет в «Запланированных» Gmail |
 | `story_saved` | **file** | A3 |
 | `documents_listed` | **count**, **files** | A4 (пусто: 0) |
-| `knowledge_base_updated` | **file**, **section**, **fact_ids**, **sha256** | каждая запись в `Жизнеописание.md` |
+| `knowledge_base_updated` | **file**, **section**, **fact_ids**, **sha256** | каждая запись в `Life_Story.md` |
 | `profile_created` / `profile_changed` | **profile_id**, **file**, changed_fields; **reason** для `profile_changed` (обязательна для нестандартного `daily_check_time`, цикла, времени, `max_per_run`, `max_per_day`) | `profile.json` записан или изменён |
 | `company_registered` | **company_id**, **branch_id**, **name**, город/адрес, domain, каналы, source_refs с checked_at | начинает `Company.md` |
 | `company_updated` | **application_id**, **field**, **source**, **checked_at** | поле `Company.md` |
@@ -752,7 +752,7 @@ Gmail — это доказательство. Утрата архивов ни�
 
 **Ход настройки.** Новый человек проходит TODO_FOR_AI.md, часть A, начиная с A2; A1, проверка рабочей папки, не повторяется. Его ход хранится в `setup_progress` файла `persons/<person_id>/state/person.json` (этап — теми же словами, что `stage` в `workspace.json`; шаг, пройденные темы, недостающие пункты; `updated_at`). `stage` в `workspace.json` описывает только настройку рабочей папки первым человеком. Каждый человек продолжает со своего хода.
 
-**Активный человек.** Один на чат, называется до чтения оригиналов этого человека (подпапки `Положите_сюда/<name>/`) или его почты; без него доступа нет (`ACTIVE_PERSON_MISMATCH`).
+**Активный человек.** Один на чат, называется до чтения оригиналов этого человека (подпапки `Put_Here/<name>/`) или его почты; без него доступа нет (`ACTIVE_PERSON_MISMATCH`).
 
 **Согласия и аккаунты.** Согласие несёт `person_id` и, где применимо, `profile_id` и `account_id`; оно никогда не даёт полномочий для другого человека; согласие на аккаунт покрывает только профили, в которых этот аккаунт указан. `account_id` принадлежит одному человеку; профиль использует только аккаунты своего человека.
 

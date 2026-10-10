@@ -17,7 +17,7 @@ Das öffentliche Release darf nur die unten genannten Dateien enthalten. Jede an
 
 - Dokumente im Hauptverzeichnis: `README.md`, `USER_GUIDE.md`, `OPERATING_REQUIREMENTS.md`, `AGENTS.md`, `CLAUDE.md`, `TODO_FOR_AI.md`, `AI_BUILD_SPEC.md`, `ARCHITECTURE.md`, `DATA_CONTRACT.md`, `ACCEPTANCE_TESTS.md`, `REVIEW.md`, `RELEASE_CHECKLIST.md`, `CHANGELOG.md`, `VERSION`, `LICENSE`, `LICENSE-DOCS`, `NOTICE`, `PROJECT_OVERVIEW.html`, `overview_*.html`, `.gitignore`.
 - Ordner: `docs/` (die russische, deutsche und ukrainische Fassung), `dashboard_template/` (saubere Vorlagen und die Beispieldatei `summary.js`), `examples/` (nur neutrale Beispiele), `assets/` (gemeinsame Stile, Skripte und IBM-Plex-Schriften), `.github/workflows/`.
-- Unter `Локальные_данные/`: nur die leeren Eingangsordner und ihre `README.md`-Dateien sowie `Вопросы_для_рассказа.md`, soweit `.gitignore` es zulässt. Keine andere Datei und kein Datenunterordner.
+- Unter `Local_Data/`: nur die leeren Eingangsordner und ihre `README.md`-Dateien sowie `Story_Questions.md`, soweit `.gitignore` es zulässt. Keine andere Datei und kein Datenunterordner.
 
 ## 2. Prüfung von Archiv und Git-Index
 

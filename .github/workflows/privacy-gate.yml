@@ -31,10 +31,10 @@ jobs:
           if [ -n "$bad" ]; then problem "Private paths are tracked: $(printf '%s' "$bad" | tr '\n' ' ')"; fi
 
           # 2. The person's materials folder may contain only the README files and the questions file.
-          bad="$(git ls-files 'Локальные_данные/Положите_сюда/*' | grep -vE '/(README\.md|Вопросы_для_рассказа\.md)$' || true)"
+          bad="$(git ls-files 'Local_Data/Put_Here/*' | grep -vE '/(README\.md|Story_Questions\.md)$' || true)"
           if [ -n "$bad" ]; then problem "Personal materials are tracked: $(printf '%s' "$bad" | tr '\n' ' ')"; fi
-          bad="$(git ls-files 'Локальные_данные/*' | grep -vE '^Локальные_данные/(Положите_сюда/|Resume/README\.md$|CoverLetter/README\.md$)' || true)"
-          if [ -n "$bad" ]; then problem "Unexpected files under Локальные_данные: $(printf '%s' "$bad" | tr '\n' ' ')"; fi
+          bad="$(git ls-files 'Local_Data/*' | grep -vE '^Local_Data/(Put_Here/|Resume/README\.md$|CoverLetter/README\.md$)' || true)"
+          if [ -n "$bad" ]; then problem "Unexpected files under Local_Data: $(printf '%s' "$bad" | tr '\n' ' ')"; fi
 
           # 3. Secrets (only the file, the line and the kind are printed, never the value).
           check_pattern() { # $1 kind, $2 regex

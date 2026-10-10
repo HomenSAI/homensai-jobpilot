@@ -1,22 +1,21 @@
 # HomenS.AI JobPilot — Serhii Khomenko — https://homensai.com/
 # Personal data and secrets must not enter a public repository.
 # Personal data folder: everything inside is private and ignored by Git,
-# except the empty intake folders (Положите_сюда, Resume, CoverLetter) and their short instructions (so that the folders exist after "Download ZIP").
-/Локальные_данные/*
-!/Локальные_данные/Положите_сюда/
-/Локальные_данные/Положите_сюда/*
-!/Локальные_данные/Положите_сюда/README.md
-!/Локальные_данные/Положите_сюда/*/
-/Локальные_данные/Положите_сюда/*/*
-!/Локальные_данные/Положите_сюда/*/README.md
-!/Локальные_данные/Положите_сюда/2_Рассказ_о_себе/Вопросы_для_рассказа.md
-!/Локальные_данные/Resume/
-/Локальные_данные/Resume/*
-!/Локальные_данные/Resume/README.md
-!/Локальные_данные/CoverLetter/
-/Локальные_данные/CoverLetter/*
-!/Локальные_данные/CoverLetter/README.md
-/local_data/
+# except the empty intake folders (Put_Here, Resume, CoverLetter) and their short instructions (so that the folders exist after "Download ZIP").
+/Local_Data/*
+!/Local_Data/Put_Here/
+/Local_Data/Put_Here/*
+!/Local_Data/Put_Here/README.md
+!/Local_Data/Put_Here/*/
+/Local_Data/Put_Here/*/*
+!/Local_Data/Put_Here/*/README.md
+!/Local_Data/Put_Here/2_My_Story/Story_Questions.md
+!/Local_Data/Resume/
+/Local_Data/Resume/*
+!/Local_Data/Resume/README.md
+!/Local_Data/CoverLetter/
+/Local_Data/CoverLetter/*
+!/Local_Data/CoverLetter/README.md
 .env
 .env.*
 !.env.example

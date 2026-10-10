@@ -10,7 +10,7 @@ These files are neutral starting points. They contain no personal data, no logos
 
 ## How to use
 
-1. The person may replace these with their own template. The resume and letter go into `Локальные_данные/Resume/` or `Локальные_данные/CoverLetter/` (the agent makes a Word working copy from the template you name). A report template goes into `Локальные_данные/Положите_сюда/3_Шаблон_отчёта/`. The person's own CV and cover-letter samples go into `Локальные_данные/Положите_сюда/4_Шаблон_резюме/` and `5_Шаблон_сопроводительного_письма/`; the working Word files are in `Локальные_данные/Resume/` and `CoverLetter/`.
+1. The person may replace these with their own template. The resume and letter go into `Local_Data/Resume/` or `Local_Data/CoverLetter/` (the agent makes a Word working copy from the template you name). A report template goes into `Local_Data/Put_Here/3_Report_Template/`. The person's own CV and cover-letter samples go into `Local_Data/Put_Here/4_CV_Templates/` and `5_Cover_Letter_Templates/`; the working Word files are in `Local_Data/Resume/` and `CoverLetter/`.
 2. Replace every text in square brackets, and delete the lines that are not needed. Enter only facts that are confirmed; do not add date of birth, photo or family data unless the person chooses to.
 3. The cover letter subject line must not exceed 50 characters.
 4. The texts are in English. The resume, cover letter, e-mail and report languages are chosen separately during setup; for another language the agent prepares a neutral template in that language.

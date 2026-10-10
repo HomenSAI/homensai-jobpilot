@@ -27,8 +27,8 @@ Englisch ist die maßgebliche Sprache und liegt im Hauptverzeichnis des Reposito
 | [dashboard_template/index.html](../../dashboard_template/index.html) | Die Statistikseite: Jahre, Monate und Tage, Sortierung nach Datum und Ergebnis. Die Daten stehen in `summary.js` daneben (hier Beispieldaten) |
 | [dashboard_template/readiness.html](../../dashboard_template/readiness.html) | Statische Vorlage für die vom Agenten gepflegte Bereitschaftsseite der Einrichtung und des Profils; sie enthält kein Skript |
 | [AGENTS.md](AGENTS.md), [CLAUDE.md](../../CLAUDE.md), [TODO_FOR_AI.md](TODO_FOR_AI.md) | **Anweisungen für den KI-Agenten.** Der Agent lädt sie beim Öffnen des Ordners selbst und führt die Person durch den ersten Lauf (Vorstellung, Zustimmung, die Lebensgeschichte, Dokumente, die Wissensbasis, dann die Sucheinrichtung: was, wo, Radius, Verkehrsmittel) |
-| [Локальные_данные/Resume](../../Локальные_данные/Resume/README.md), [CoverLetter](../../Локальные_данные/CoverLetter/README.md) | Vorlagen für Lebenslauf und Anschreiben (Word; ein PDF wird im selben Ordner in Word umgewandelt) |
-| [Локальные_данные/Положите_сюда](../../Локальные_данные/Положите_сюда/README.md) | Die fünf fertigen Ordner, in die die Person Dokumente, eine Geschichte über sich, eine Berichtsvorlage sowie die Vorlagen und früheren Fassungen von Lebenslauf und Anschreiben legt |
+| [Local_Data/Resume](../../Local_Data/Resume/README.md), [CoverLetter](../../Local_Data/CoverLetter/README.md) | Vorlagen für Lebenslauf und Anschreiben (Word; ein PDF wird im selben Ordner in Word umgewandelt) |
+| [Local_Data/Put_Here](../../Local_Data/Put_Here/README.md) | Die fünf fertigen Ordner, in die die Person Dokumente, eine Geschichte über sich, eine Berichtsvorlage sowie die Vorlagen und früheren Fassungen von Lebenslauf und Anschreiben legt |
 | [AI_BUILD_SPEC.md](AI_BUILD_SPEC.md) | Die Regeln und Anforderungen an den KI-Agenten |
 | [ARCHITECTURE.md](ARCHITECTURE.md) | Die Teile des Systems, das Journal der Person, Standardaktionen und das Fortsetzen in einem neuen Chat |
 | [DATA_CONTRACT.md](DATA_CONTRACT.md) | Datensätze, Ereignisse, Zustände, das Monatslimit, Wiederherstellung und Statistik |
@@ -41,9 +41,27 @@ Englisch ist die maßgebliche Sprache und liegt im Hauptverzeichnis des Reposito
 | [assets/](../../assets/) | Gemeinsame Stile, Skripte und IBM-Plex-Schriften für die Seiten |
 | [LICENSE](../../LICENSE), [LICENSE-DOCS](../../LICENSE-DOCS), [NOTICE](../../NOTICE) | Gesonderte Bedingungen und Hinweise des Autors für Code und Dokumentation |
 
+## Ordnernamen
+
+Alle Ordner haben englische Namen, damit sie auf jedem Computer und für jeden Agenten gleich sind. Die Tabelle sagt, was jeder Name bedeutet; nennt der Agent einen Ordner, sagt er die Bedeutung auch in Ihrer Sprache.
+
+| Ordner | Bedeutung |
+|---|---|
+| `Local_Data` | Lokale Daten |
+| `Put_Here` | Hier ablegen |
+| `1_My_Documents` | Meine Dokumente |
+| `2_My_Story` | Meine Geschichte |
+| `3_Report_Template` | Berichtsvorlage |
+| `4_CV_Templates` | Lebenslauf-Vorlagen |
+| `5_Cover_Letter_Templates` | Anschreiben-Vorlagen |
+| `Resume` | Lebenslauf (Arbeitsordner) |
+| `CoverLetter` | Anschreiben (Arbeitsordner) |
+| `Knowledge_Base` | Wissensbasis |
+| `Applications` | Bewerbungen |
+
 ## So beginnen Sie
 
-**Als Mensch:** Öffnen Sie `PROJECT_OVERVIEW.html` und dann die Seite *Install*. Gehen Sie die Schritte in der dort angegebenen Reihenfolge durch: zuerst der Agent, dann das Projektarchiv, danach die Verbindung der beiden. Lesen Sie vor jeder Zahlung den ersten Schritt in [USER_GUIDE.md](USER_GUIDE.md): Die Grundkonfiguration setzt ein kostenpflichtiges ChatGPT-Plus-Abonnement oder einen geeigneten höheren Tarif mit Codex-Zugang voraus, und die Bedingungen müssen auf den offiziellen Seiten geprüft werden. Sie können Ihre Unterlagen vorab bereitstellen: Legen Sie Ihren Lebenslauf und Ihre Dokumente in `Локальные_данные/Положите_сюда/1_Мои_документы` und Ihre Geschichte (zum Beispiel eine Abschrift einer Sprachaufnahme) in `2_Рассказ_о_себе`. Wenn Sie nichts vorbereiten, interviewt Sie der Agent, per Sprache oder als Text. Öffnen Sie dann den Projektordner in Codex und sagen Sie „Start“: Der Agent lädt seine Anweisungen selbst und fragt Sie, was er braucht, jeweils eine Frage nach der anderen. Claude Code ist eine Alternative, deren Kompatibilität nicht bestätigt ist (siehe *Status der Fähigkeiten* unten).
+**Als Mensch:** Öffnen Sie `PROJECT_OVERVIEW.html` und dann die Seite *Install*. Gehen Sie die Schritte in der dort angegebenen Reihenfolge durch: zuerst der Agent, dann das Projektarchiv, danach die Verbindung der beiden. Lesen Sie vor jeder Zahlung den ersten Schritt in [USER_GUIDE.md](USER_GUIDE.md): Die Grundkonfiguration setzt ein kostenpflichtiges ChatGPT-Plus-Abonnement oder einen geeigneten höheren Tarif mit Codex-Zugang voraus, und die Bedingungen müssen auf den offiziellen Seiten geprüft werden. Sie können Ihre Unterlagen vorab bereitstellen: Legen Sie Ihren Lebenslauf und Ihre Dokumente in `Local_Data/Put_Here/1_My_Documents` und Ihre Geschichte (zum Beispiel eine Abschrift einer Sprachaufnahme) in `2_My_Story`. Wenn Sie nichts vorbereiten, interviewt Sie der Agent, per Sprache oder als Text. Öffnen Sie dann den Projektordner in Codex und sagen Sie „Start“: Der Agent lädt seine Anweisungen selbst und fragt Sie, was er braucht, jeweils eine Frage nach der anderen. Claude Code ist eine Alternative, deren Kompatibilität nicht bestätigt ist (siehe *Status der Fähigkeiten* unten).
 
 **Als KI-Agent:** Lesen Sie `AGENTS.md` und `TODO_FOR_AI.md` und folgen Sie ihnen. Sie sind Ihre Regeln und Ihr Leitfaden. Details stehen in `AI_BUILD_SPEC.md`, `ARCHITECTURE.md` und `DATA_CONTRACT.md`.
 
@@ -106,7 +124,7 @@ Um Massenversand zu erschweren, begrenzt JobPilot Bewerbungen mit Lebenslauf auf
 
 ## Veröffentlichung und Rechte
 
-Arbeitsdaten bleiben in `Локальные_данные/` und sind nicht Teil des öffentlichen Pakets. `.gitignore` hilft beim Ausschluss, verhindert aber nicht, dass bereits in Git enthaltene Dateien weiter verfolgt werden. Deshalb werden vor jeder Veröffentlichung sowohl das Release-Archiv als auch der Git-Index geprüft. Vor jeder öffentlichen Freigabe werden die manuellen Prüfungen in [RELEASE_CHECKLIST.md](RELEASE_CHECKLIST.md) durchgeführt: eine Liste erlaubter Dateien (Allowlist), die Prüfung von Archiv und Index sowie eine Inhaltsprüfung auf persönliche Daten, Geheimnisse, echte Unterlagen und echt wirkende Daten. Diese Prüfungen sind manuell; ihr Bestehen ist kein Beweis, dass keine persönlichen Daten vorhanden sind.
+Arbeitsdaten bleiben in `Local_Data/` und sind nicht Teil des öffentlichen Pakets. `.gitignore` hilft beim Ausschluss, verhindert aber nicht, dass bereits in Git enthaltene Dateien weiter verfolgt werden. Deshalb werden vor jeder Veröffentlichung sowohl das Release-Archiv als auch der Git-Index geprüft. Vor jeder öffentlichen Freigabe werden die manuellen Prüfungen in [RELEASE_CHECKLIST.md](RELEASE_CHECKLIST.md) durchgeführt: eine Liste erlaubter Dateien (Allowlist), die Prüfung von Archiv und Index sowie eine Inhaltsprüfung auf persönliche Daten, Geheimnisse, echte Unterlagen und echt wirkende Daten. Diese Prüfungen sind manuell; ihr Bestehen ist kein Beweis, dass keine persönlichen Daten vorhanden sind.
 
 **Projektcode**, einschließlich der Statistikseite, steht unter der [PolyForm Noncommercial License 1.0.0](../../LICENSE). **Projektdokumentation** steht unter [CC BY-NC 4.0](../../LICENSE-DOCS). Beide verlangen die genannte Namensnennung und nichtkommerzielle Nutzung; kommerzielle Nutzung braucht die gesonderte Genehmigung des Autors. Als zusätzliche Erlaubnis (siehe [NOTICE](../../NOTICE)) darf jede Person JobPilot für ihre eigene Stellensuche nutzen, auch wenn sie bezahlte Arbeit sucht; es anderen als bezahlte Dienstleistung anzubieten, ist davon nicht gedeckt. Das ist „source-available“ (quelloffen im Sinne der Einsehbarkeit), nicht Open Source im Sinne der OSI-Definition. Diese Lizenzen erstrecken sich nicht auf persönliche Unterlagen der Nutzer oder auf Materialien Dritter. Die IBM-Plex-Schriften behalten ihre gesonderten Bedingungen SIL OFL 1.1 in `assets/fonts`. Siehe [NOTICE](../../NOTICE).
 

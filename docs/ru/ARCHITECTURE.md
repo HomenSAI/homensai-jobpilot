@@ -17,7 +17,7 @@
 | Часть | Что делает агент | Где хранится |
 |---|---|---|
 | Рабочая папка, возможности | Папка, формат, человек, профиль; проверяет каждый инструмент (раздел 7) | `workspace.json` |
-| Профиль и база знаний | Материалы и интервью → предложенные → подтверждённые факты с источниками; профиль поиска | `Жизнеописание.md`, `profile.json` |
+| Профиль и база знаний | Материалы и интервью → предложенные → подтверждённые факты с источниками; профиль поиска | `Life_Story.md`, `profile.json` |
 | Поиск, планирование | Цели (дубликаты, свежесть, радиус, маршруты); слоты, резервы, переносы | `registry.json`, журнал |
 | Документы | Пакеты из требований и подтверждённых фактов, версии, визуальная проверка | папка заявки |
 | Почта | Треды целиком, доказательство отправки, уведомления, ответы | журнал, `Status.txt` |
@@ -30,16 +30,16 @@
 `person_id` объединяет направления поиска одного человека. У каждого направления свой `profile_id`, языки документов, учётная запись, документы и согласия. Квота и проверки повторных заявок общие по `person_id`; у разных людей отдельные журналы.
 
 ```text
-Локальные_данные/
+Local_Data/
   workspace.json  # workspace_id, format, language, stage of the first run, capabilities
-  Положите_сюда/  # the ONLY place where the person puts things; the agent only reads it
-    1_Мои_документы/  # CVs, diplomas, certificates, references (originals)
-    2_Рассказ_о_себе/  # the person's story: transcripts, notes, interviews, the questions
-    3_Шаблон_отчёта/  # optional report template
-    4_Шаблон_резюме/  # everything about the CVs, any format; read only
-    5_Шаблон_сопроводительного_письма/  # everything about the cover letters; read only
+  Put_Here/  # the ONLY place where the person puts things; the agent only reads it
+    1_My_Documents/  # CVs, diplomas, certificates, references (originals)
+    2_My_Story/  # the person's story: transcripts, notes, interviews, the questions
+    3_Report_Template/  # optional report template
+    4_CV_Templates/  # everything about the CVs, any format; read only
+    5_Cover_Letter_Templates/  # everything about the cover letters; read only
   persons/<person_id>/
-    База_знаний/Жизнеописание.md  # the knowledge base: confirmed facts of the life story
+    Knowledge_Base/Life_Story.md  # the knowledge base: confirmed facts of the life story
     journal/transactions-YYYY-MM.jsonl  # the only authoritative journal; monthly segments, -pN parts above 500 lines
     journal/writer.lock  # exists only while one chat is writing
     state/person.json  # person, profile list, setup_progress
@@ -58,15 +58,15 @@
     001_Muster-Maschinenbau_Stuttgart_Maintenance-technician/  # number, company, city, role
       Company.md · Resume_v001.docx/.pdf · CoverLetter_v001.docx/.pdf · EmailText_de.txt · EMAIL_TO_SEND.txt
       Status.txt  # append-only history of this application
-      Replies.txt  # every reply and delivery notice in full (Ответы)
+      Replies.txt  # every reply and delivery notice in full
   dashboard/
     index.html  # local menu: statistics and readiness per profile
     profiles/<profile_id>/summary.js · index.html · readiness.html  # data; unchanged template copy; readiness page
 ```
 
-`Локальные_данные` — технический путь во всех языковых редакциях; у панели один путь, `Локальные_данные/dashboard/`; идентификаторы профилей уникальны. Каждая строка журнала несёт `person_id` и, где это применимо, свой профиль; перед действием агент проверяет, что профиль принадлежит этому человеку и этой учётной записи.
+`Local_Data` — технический путь во всех языковых редакциях; у панели один путь, `Local_Data/dashboard/`; идентификаторы профилей уникальны. Каждая строка журнала несёт `person_id` и, где это применимо, свой профиль; перед действием агент проверяет, что профиль принадлежит этому человеку и этой учётной записи.
 
-**Изоляция людей и профилей (процедура, F12).** У каждого человека есть `persons/<person_id>/` и оригиналы в `Положите_сюда/<name>/`; агент никогда не открывает оригиналы, базу знаний, журнал, состояние, outbox, архивы или почту другого человека. Новый человек проходит TODO_FOR_AI.md, Часть A, начиная с A2 (A1, проверка рабочей папки, не повторяется); его ход настройки — `setup_progress` в `persons/<person_id>/state/person.json` с теми же словами этапов, а `stage` в `workspace.json` описывает только настройку рабочей папки первым человеком. Согласия, квота, учётные записи и представления по людям: DATA_CONTRACT.md §17. Это изоляция процедурой, а не граница операционной системы.
+**Изоляция людей и профилей (процедура, F12).** У каждого человека есть `persons/<person_id>/` и оригиналы в `Put_Here/<name>/`; агент никогда не открывает оригиналы, базу знаний, журнал, состояние, outbox, архивы или почту другого человека. Новый человек проходит TODO_FOR_AI.md, Часть A, начиная с A2 (A1, проверка рабочей папки, не повторяется); его ход настройки — `setup_progress` в `persons/<person_id>/state/person.json` с теми же словами этапов, а `stage` в `workspace.json` описывает только настройку рабочей папки первым человеком. Согласия, квота, учётные записи и представления по людям: DATA_CONTRACT.md §17. Это изоляция процедурой, а не граница операционной системы.
 
 ## 4. Одна строка на завершённое действие
 

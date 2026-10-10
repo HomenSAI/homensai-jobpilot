@@ -15,7 +15,7 @@ The public release may contain only the files below. Any other file stops the re
 
 - Root documents: `README.md`, `USER_GUIDE.md`, `OPERATING_REQUIREMENTS.md`, `AGENTS.md`, `CLAUDE.md`, `TODO_FOR_AI.md`, `AI_BUILD_SPEC.md`, `ARCHITECTURE.md`, `DATA_CONTRACT.md`, `ACCEPTANCE_TESTS.md`, `REVIEW.md`, `RELEASE_CHECKLIST.md`, `CHANGELOG.md`, `VERSION`, `LICENSE`, `LICENSE-DOCS`, `NOTICE`, `PROJECT_OVERVIEW.html`, `overview_*.html`, `.gitignore`.
 - Folders: `docs/` (the Russian, German and Ukrainian editions), `dashboard_template/` (clean templates and the sample `summary.js`), `examples/` (neutral examples only), `assets/` (shared styles, scripts and IBM Plex fonts), `.github/workflows/`.
-- Under `Локальные_данные/`: only the empty intake folders and their `README.md` files, and `Вопросы_для_рассказа.md`, as `.gitignore` allows. No other file and no data subfolder.
+- Under `Local_Data/`: only the empty intake folders and their `README.md` files, and `Story_Questions.md`, as `.gitignore` allows. No other file and no data subfolder.
 
 ## 2. Archive and Git index check
 

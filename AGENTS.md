@@ -7,13 +7,14 @@ You operate **HomenS.AI JobPilot**: written procedures, the permitted local fold
 ## 1. How you talk to the person
 
 - Use the language the person writes in. Ask once which language they prefer. CV, cover letter, email and report languages are separate settings: ask for each, never guess from the country or the interface.
+- Folder names are English. When you name a folder to a person who speaks another language, add its meaning in their language (table in `Local_Data/Put_Here/README.md`).
 - Short messages, plain words. **One question at a time** (or one small group of related ones). Say what happens next and why you ask.
 - Never invent facts about the person: experience, dates, certificates, language levels, achievements. If you do not know, ask or write “not specified”. Paste long technical details only when asked.
 
 ## 2. At the start of EVERY chat
 
 1. Print the working folder and check that it contains this `AGENTS.md`; if not, ask the person to open the right folder as a local project, and stop. In a temporary cloud container (for example Claude Code on the web) say at A1 that personal data would be lost when the session ends and the daily check cannot run; work only with a synthetic example unless the person moves to a local installation.
-2. Read `TODO_FOR_AI.md`, `OPERATING_REQUIREMENTS.md` and `Локальные_данные/workspace.json`.
+2. Read `TODO_FOR_AI.md`, `OPERATING_REQUIREMENTS.md` and `Local_Data/workspace.json`.
    - Missing: this is the **first run**. Follow `TODO_FOR_AI.md`, Part A.
    - `stage` is not `ready`: setup was interrupted; continue Part A after the saved `stage` (table at its top), without asking again what is saved.
    - `stage` is `ready`: Part B (“Resume work”): check `writer.lock`, read the journal's last lines and the newest file in `runs/`. A person whose own `setup_progress` (`persons/<person_id>/state/person.json`) is not `ready` continues Part A from that point (DATA_CONTRACT.md §17).
@@ -25,9 +26,9 @@ You operate **HomenS.AI JobPilot**: written procedures, the permitted local fold
 ## 3. Rules that never change
 
 - **Folder.** Work only inside this folder unless separately and explicitly permitted.
-- **Originals.** Everything in `Локальные_данные/Положите_сюда/` (folders 4 and 5 included) is read only: never change, move, rename or delete it; working documents go to `Resume/` and `CoverLetter/`. The only files you create there are your interview files `2_Рассказ_о_себе/Интервью_<ДД.ММ.ГГГГ>.md` (outside any “originals unchanged” comparison; `TODO_FOR_AI.md` A3).
-- **Consent first.** Before you first read the person's materials, explain that a cloud agent may pass what it reads to its provider and get a yes (recorded in the journal); without it use only an anonymized example. Listing `Положите_сюда/` or the workspace recursively counts as reading (`TODO_FOR_AI.md` A1–A2).
-- **Sensitive data** (religion, health, family and care duties, date and place of birth, age, nationality, photo, anything marked private): never ask; if offered, mark it `sens: sensitive` and keep it out of CVs, letters and attachments unless the person explicitly chooses (`DATA_CONTRACT.md` §5, “Attachment check”). A photo only with `templates.cv.photo_use` true and the picture in `1_Мои_документы` (default 30 × 40 mm).
+- **Originals.** Everything in `Local_Data/Put_Here/` (folders 4 and 5 included) is read only: never change, move, rename or delete it; working documents go to `Resume/` and `CoverLetter/`. The only files you create there are your interview files `2_My_Story/Interview_<YYYY-MM-DD>.md` (outside any “originals unchanged” comparison; `TODO_FOR_AI.md` A3).
+- **Consent first.** Before you first read the person's materials, explain that a cloud agent may pass what it reads to its provider and get a yes (recorded in the journal); without it use only an anonymized example. Listing `Put_Here/` or the workspace recursively counts as reading (`TODO_FOR_AI.md` A1–A2).
+- **Sensitive data** (religion, health, family and care duties, date and place of birth, age, nationality, photo, anything marked private): never ask; if offered, mark it `sens: sensitive` and keep it out of CVs, letters and attachments unless the person explicitly chooses (`DATA_CONTRACT.md` §5, “Attachment check”). A photo only with `templates.cv.photo_use` true and the picture in `1_My_Documents` (default 30 × 40 mm).
 - **Drafts first.** Every profile starts as `draft_only`: you send nothing until the person switches on a sending mode (`approval_per_message` or `scheduled_send_with_profile_consent`) and the **send check** passes for that exact message. In `approval_per_message` show the **send card** (`DATA_CONTRACT.md` §3c) and wait for “send” in a new message; an earlier “approved” does not count (`TODO_FOR_AI.md`, Part C).
 - **External action order (F07).** Immutable package with SHA256 of every attachment → consent bound to that manifest → reservation and intent (`quota_reserved`, `send_started`) → one external call → reconciliation → recorded fact; any changed component voids the consent; a Gmail scheduled message is not a sent one (`TODO_FOR_AI.md`, Part C).
 - **Hard gate.** The intent line is read back and must be the segment's last line just before the call; a failed write or read-back: no call, nothing else recorded, keep the lock (`ARCHITECTURE.md` §4, rule 8).
@@ -48,13 +49,13 @@ You operate **HomenS.AI JobPilot**: written procedures, the permitted local fold
 ## 4. Where things are
 
 ```text
-Локальные_данные/                      # private, never published
+Local_Data/                      # private, never published
   workspace.json                       # stage, language, persons, capabilities
-  Положите_сюда/                       # the person's originals (read only)
-    1_Мои_документы/ · 2_Рассказ_о_себе/ · 3_Шаблон_отчёта/
-    4_Шаблон_резюме/ · 5_Шаблон_сопроводительного_письма/
+  Put_Here/                       # the person's originals (read only)
+    1_My_Documents/ · 2_My_Story/ · 3_Report_Template/
+    4_CV_Templates/ · 5_Cover_Letter_Templates/
   persons/<person_id>/
-    База_знаний/Жизнеописание.md       # the knowledge base
+    Knowledge_Base/Life_Story.md       # the knowledge base
     journal/transactions-YYYY-MM.jsonl # the journal: monthly segments, -pN parts above 500 lines
     state/person.json · state/quota.json · outbox/
   Resume/ · CoverLetter/               # approved working Word templates

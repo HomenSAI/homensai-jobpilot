@@ -14,25 +14,25 @@
 
 | Шлях відносно кореня | Призначення |
 |---|---|
-| `Локальные_данные/persons/<person_id>/state/person.json` | Ідентичність, часовий пояс квоти, дозволені значення `profile_id`, `setup_progress` (§17) |
-| `Локальные_данные/workspace.json` | Ідентифікатор робочого простору, `format_version`, мова, `stage` і `progress` першого запуску (TODO_FOR_AI.md, частина A), `run_id`, `person_ids`, перевірки можливостей |
-| `Локальные_данные/Положите_сюда/1_Мои_документы`, `2_Рассказ_о_себе`, `3_Шаблон_отчёта`, `4_Шаблон_резюме`, `5_Шаблон_сопроводительного_письма` | Оригінали людини, розповідь, необов'язковий шаблон звіту; лише для читання |
-| `Локальные_данные/persons/<person_id>/База_знаний/Жизнеописание.md` | База знань (§3a) |
-| `Локальные_данные/persons/<person_id>/journal/transactions-YYYY-MM.jsonl` | Єдиний первинний журнал у помісячних сегментах (§3c), зі спільною квотою людини |
-| `Локальные_данные/persons/<person_id>/journal/writer.lock` | Блокування, поки пише один чат (формат §3c, протокол ARCHITECTURE.md §4b) |
-| `Локальные_данные/persons/<person_id>/outbox/<send_attempt_id>/` | Незмінна копія пакета і маніфест однієї спроби (ARCHITECTURE.md §6) |
-| `Локальные_данные/persons/<person_id>/archives/<archive_id>/` | Локальні архіви (§11) |
-| `Локальные_данные/persons/<person_id>/state/quota.json` | Представлення квоти, яке можна перебудувати (ліміт, використано, зарезервовано, не перевірено, залишок, source_revision, зріз) (§5) |
-| `Локальные_данные/profiles/<profile_id>/profile.json` | Налаштування одного напряму пошуку (§3b) |
-| `Локальные_данные/profiles/<profile_id>/registry.json` | Представлення, яке можна перебудувати: цілі (компанії, філії, вакансії), заявки, слоти плану, черга |
-| `Локальные_данные/profiles/<profile_id>/plans/<plan_id>/plan_v<N>.json` | Незмінні версії плану (§14) |
-| `Локальные_данные/profiles/<profile_id>/runs/` | Записи запусків (§18) |
-| `Локальные_данные/profiles/<profile_id>/reports/<YYYY-MM>/` | Звіти й маніфести профілю |
+| `Local_Data/persons/<person_id>/state/person.json` | Ідентичність, часовий пояс квоти, дозволені значення `profile_id`, `setup_progress` (§17) |
+| `Local_Data/workspace.json` | Ідентифікатор робочого простору, `format_version`, мова, `stage` і `progress` першого запуску (TODO_FOR_AI.md, частина A), `run_id`, `person_ids`, перевірки можливостей |
+| `Local_Data/Put_Here/1_My_Documents`, `2_My_Story`, `3_Report_Template`, `4_CV_Templates`, `5_Cover_Letter_Templates` | Оригінали людини, розповідь, необов'язковий шаблон звіту; лише для читання |
+| `Local_Data/persons/<person_id>/Knowledge_Base/Life_Story.md` | База знань (§3a) |
+| `Local_Data/persons/<person_id>/journal/transactions-YYYY-MM.jsonl` | Єдиний первинний журнал у помісячних сегментах (§3c), зі спільною квотою людини |
+| `Local_Data/persons/<person_id>/journal/writer.lock` | Блокування, поки пише один чат (формат §3c, протокол ARCHITECTURE.md §4b) |
+| `Local_Data/persons/<person_id>/outbox/<send_attempt_id>/` | Незмінна копія пакета і маніфест однієї спроби (ARCHITECTURE.md §6) |
+| `Local_Data/persons/<person_id>/archives/<archive_id>/` | Локальні архіви (§11) |
+| `Local_Data/persons/<person_id>/state/quota.json` | Представлення квоти, яке можна перебудувати (ліміт, використано, зарезервовано, не перевірено, залишок, source_revision, зріз) (§5) |
+| `Local_Data/profiles/<profile_id>/profile.json` | Налаштування одного напряму пошуку (§3b) |
+| `Local_Data/profiles/<profile_id>/registry.json` | Представлення, яке можна перебудувати: цілі (компанії, філії, вакансії), заявки, слоти плану, черга |
+| `Local_Data/profiles/<profile_id>/plans/<plan_id>/plan_v<N>.json` | Незмінні версії плану (§14) |
+| `Local_Data/profiles/<profile_id>/runs/` | Записи запусків (§18) |
+| `Local_Data/profiles/<profile_id>/reports/<YYYY-MM>/` | Звіти й маніфести профілю |
 | Тека заявки `Applications/<YYYY>/<MM_Month>/<NNN_…>/`: `Company.md` | Дані компанії з джерелом і датою перевірки; представлення `company_registered`, `company_updated` |
-| та сама тека: `Replies.txt` (Ответы) | Лише дописування, один блок на `gmail_message_id` (лише якщо його ще немає), у порядку листування: ім'я та адреса відправника, Reply-To, Message-ID, дата й час із поясом, IP-адреса відправлення і ланцюжок Received, результати автентифікації, тема, одержувачі, повний текст дослівно, вкладення (назва, тип, розмір) або «вкладень немає»; відсутнє поле має текст «поштовий інструмент цього не надає», нічого не домислюється |
+| та сама тека: `Replies.txt` | Лише дописування, один блок на `gmail_message_id` (лише якщо його ще немає), у порядку листування: ім'я та адреса відправника, Reply-To, Message-ID, дата й час із поясом, IP-адреса відправлення і ланцюжок Received, результати автентифікації, тема, одержувачі, повний текст дослівно, вкладення (назва, тип, розмір) або «вкладень немає»; відсутнє поле має текст «поштовий інструмент цього не надає», нічого не домислюється |
 | та сама тека: `Status.txt` | Лише дописування: один рядок на `status_recorded`, локальний час і `event_id` |
-| `Локальные_данные/Resume/`, `CoverLetter/` | Чернетки з `4_Шаблон_резюме/` і `5_Шаблон_сопроводительного_письма/` та перевірена копія Word названого шаблону (§3b `templates`); джерела ніколи не змінюються, версії — це нові файли. Якщо людей кілька, `Resume/` і `CoverLetter/` мають по одній підтеці на `person_id`; якщо людина одна, вони використовуються напряму |
-| `Локальные_данные/dashboard/profiles/<profile_id>/summary.js`, `index.html`, `readiness.html` | Знімок (§9), незмінна копія шаблону, сторінка готовності (§10); `Локальные_данные/dashboard/index.html` — це меню. Єдиний шлях панелі |
+| `Local_Data/Resume/`, `CoverLetter/` | Чернетки з `4_CV_Templates/` і `5_Cover_Letter_Templates/` та перевірена копія Word названого шаблону (§3b `templates`); джерела ніколи не змінюються, версії — це нові файли. Якщо людей кілька, `Resume/` і `CoverLetter/` мають по одній підтеці на `person_id`; якщо людина одна, вони використовуються напряму |
+| `Local_Data/dashboard/profiles/<profile_id>/summary.js`, `index.html`, `readiness.html` | Знімок (§9), незмінна копія шаблону, сторінка готовності (§10); `Local_Data/dashboard/index.html` — це меню. Єдиний шлях панелі |
 
 Спочатку подія записується в журнал, потім оновлюються представлення; файл, який агент створює цілком (`profile.json`, пакет, `summary.js`), спершу записується й перевіряється, а його подія йде слідом. Жодне представлення не змінюється без події; виправлення — це нова подія з `supersedes_event_id`. Збій між рядком і представленням виправляється перебудовою (§3d). Зміни квоти й заявки однієї дії — це один рядок. Артефакти (пакети, плани, копії в outbox, архіви) спершу зберігаються незмінними, потім реєструються за назвами, розмірами й SHA-256.
 
@@ -91,7 +91,7 @@ UUID: `company_id`, `branch_id`, `vacancy_id`, `target_id`, `application_id`, `p
 
 ## 3a. База знань: життєпис людини
 
-**Один файл Markdown на людину**, `persons/<person_id>/База_знаний/Жизнеописание.md`, мовою людини: головне джерело фактів (резюме — це його проєкція). Людина може його редагувати; кожен чат порівнює його контрольну суму з останнім `knowledge_base_updated`, а змінений чи новий рядок без статусу вважається `proposed` і показується для підтвердження.
+**Один файл Markdown на людину**, `persons/<person_id>/Knowledge_Base/Life_Story.md`, мовою людини: головне джерело фактів (резюме — це його проєкція). Людина може його редагувати; кожен чат порівнює його контрольну суму з останнім `knowledge_base_updated`, а змінений чи новий рядок без статусу вважається `proposed` і показується для підтвердження.
 
 Розділи (заголовок мовою людини, потім ідентифікатор у фігурних дужках): `identity` (ім'я, місце, часовий пояс, дозволені контактні дані) · `goals` · `experience` (один `###` на посаду) · `education` · `certificates` · `languages` · `skills` · `projects` · `strengths` (завдання, дія, результат) · `conditions` (радіус, транспорт, графік, дата початку) · `private_notes` (не для роботодавця).
 
@@ -102,12 +102,12 @@ UUID: `company_id`, `branch_id`, `vacancy_id`, `target_id`, `application_id`, `p
 | Частина | Значення |
 |---|---|
 | `[F012]` | `fact_id`; один факт на рядок |
-| `source:` | файл у `Положите_сюда/` з місцем, `interview 07.10.2026` або `self-reported` |
+| `source:` | файл у `Put_Here/` з місцем, `interview 2026-10-07` або `self-reported` |
 | `status:` | `proposed`, `confirmed <date>` або `rejected` (завжди англійською); `rejected (replaced by F031)` |
 | `use:` | `cv` (дозволено в документах заявки) або `internal` |
 | `sens:` | `normal` або `sensitive` (ніколи в документах без явного вибору людини) |
 
-Пропущена тема: один рядок `(skipped by the person)` без ідентифікатора. Дата й місце народження та вік завжди мають `sens: sensitive`, `use: internal`; факт із `sens: normal`, який пізніше виявився чутливим, змінюють на місці, коли так вирішить людина (TODO_FOR_AI.md, A6). Факти ніколи не видаляються; виправлення додає рядок і відхиляє старий. До резюме чи листа потрапляють лише факти `confirmed` з `use: cv`. Сирі слова людини лишаються в `Положите_сюда/2_Рассказ_о_себе/` (`Интервью_<date>.md`). Кожен запис — це рядок `knowledge_base_updated`. Кожне вкладення перевіряється на чутливі факти (§5, «Перевірка вкладень [Attachment check]»).
+Пропущена тема: один рядок `(skipped by the person)` без ідентифікатора. Дата й місце народження та вік завжди мають `sens: sensitive`, `use: internal`; факт із `sens: normal`, який пізніше виявився чутливим, змінюють на місці, коли так вирішить людина (TODO_FOR_AI.md, A6). Факти ніколи не видаляються; виправлення додає рядок і відхиляє старий. До резюме чи листа потрапляють лише факти `confirmed` з `use: cv`. Сирі слова людини лишаються в `Put_Here/2_My_Story/` (`Interview_<YYYY-MM-DD>.md`). Кожен запис — це рядок `knowledge_base_updated`. Кожне вкладення перевіряється на чутливі факти (§5, «Перевірка вкладень [Attachment check]»).
 
 ## 3b. `profile.json`: налаштування одного напряму пошуку (первинне налаштування)
 
@@ -145,7 +145,7 @@ UUID: `company_id`, `branch_id`, `vacancy_id`, `target_id`, `application_id`, `p
 | `consent_granted` / `consent_revoked` | **consent_id**, **scope** (`cloud_processing`, `mail_reading`, `mail_sending_profile`, `send_once`, `follow_up`, `daily_report_email`), **person_id**, profile_id, account_id, **text_shown** (або його SHA-256); **binding** для `send_once`/`gmail_scheduled` (§5), `follow_up` (§4) | «так» або відкликання; відкликання нічого не скасовує в Gmail Scheduled |
 | `story_saved` | **file** | A3 |
 | `documents_listed` | **count**, **files** | A4 (порожньо: 0) |
-| `knowledge_base_updated` | **file**, **section**, **fact_ids**, **sha256** | кожен запис у `Жизнеописание.md` |
+| `knowledge_base_updated` | **file**, **section**, **fact_ids**, **sha256** | кожен запис у `Life_Story.md` |
 | `profile_created` / `profile_changed` | **profile_id**, **file**, changed_fields; **reason** для `profile_changed` (обов'язкова для нестандартного `daily_check_time`, ритму, часу, `max_per_run`, `max_per_day`) | `profile.json` записано або змінено |
 | `company_registered` | **company_id**, **branch_id**, **name**, місто/адреса, домен, канали, source_refs з checked_at | започатковує `Company.md` |
 | `company_updated` | **application_id**, **field**, **source**, **checked_at** | поле `Company.md` |
@@ -754,7 +754,7 @@ Gmail — це доказ. Втрата архівів ніколи не озн�
 
 **Хід налаштування.** Нова людина проходить TODO_FOR_AI.md, частину A, починаючи з A2; A1, перевірка робочого простору, не повторюється. Її хід зберігається в `persons/<person_id>/state/person.json` `setup_progress` (етап — словами `workspace.json` `stage`; крок, завершені теми, бракуючі пункти; `updated_at`). `workspace.json` `stage` описує лише налаштування робочого простору першою людиною. Кожна людина продовжує зі свого ходу налаштування.
 
-**Активна людина.** Одна на чат, названа до читання оригіналів цієї людини (підтеки `Положите_сюда/<name>/`) чи пошти; без неї — жодного доступу (`ACTIVE_PERSON_MISMATCH`).
+**Активна людина.** Одна на чат, названа до читання оригіналів цієї людини (підтеки `Put_Here/<name>/`) чи пошти; без неї — жодного доступу (`ACTIVE_PERSON_MISMATCH`).
 
 **Згоди й облікові записи.** Згода несе `person_id` і, де застосовно, `profile_id` і `account_id`; вона ніколи не уповноважує іншої людини; згода на обліковий запис охоплює лише профілі, які цей обліковий запис перелічують. `account_id` належить одній людині; профіль використовує лише облікові записи своєї людини.
 
