@@ -14,6 +14,18 @@ For the AI agent that continues the work on this repository. Written 10 October 
 - A consistency pass was running when the API session limit stopped it: three agents were comparing `docs/ru`, `docs/de`, `docs/uk` with the English root and editing the translations in place. Their edits are committed as they were left and may be incomplete or inconsistent. The English root files were NOT changed by that pass.
 - Two review reports (English self-consistency, and a cold read of the copy-paste prompts as ChatGPT/Codex) found the problems listed below; none of them is fixed yet.
 
+## Done after this file was first written (10 October 2026, later)
+In the English root (commit "Английский оригинал: …"), and then mirrored into `docs/ru|de|uk` by agents (check that the mirror is complete):
+- one start command in USER_GUIDE (step 5 and Part 3, step 6) and `overview_install.html`, naming `AGENTS.md`, `TODO_FOR_AI.md`, `OPERATING_REQUIREMENTS.md`;
+- the "Setup is stuck" and "Add a document" prompts fixed (workspace.json and stage, consent first, never write into `Положите_сюда`, journal); three short prompts added (Gmail reading only, check before sending, next month);
+- privacy gate described as "exists, tested locally, not yet run on GitHub" in README, USER_GUIDE, REVIEW, RELEASE_CHECKLIST; REVIEW verification section rewritten (model run, dry runs, headless Edge, what was not run);
+- Claude Code "compatibility not confirmed" on the overview, install and safety pages; the 45th refusal and the PDF check worded as the agent's procedure;
+- "four editions" and "five folders" in AGENTS, README, AI_BUILD_SPEC, RELEASE_CHECKLIST; README line about a later German edition removed;
+- `TODO_FOR_AI.md` R03 notes that the built-in browser normally cannot attach files; the dashboard path got its `Локальные_данные/` prefix; the materials README mentions the interview file;
+- NOTICE and LICENSE say "HomenS.AI"; NOTICE points to `assets/fonts/NOTICE.txt` and `OFL.txt` (both exist); `LICENSE-DOCS` already links the full CC BY-NC 4.0 legal code (fine as is); `THIRD_PARTY_NOTICES` in AI_BUILD_SPEC is conditional (fine);
+- stage names listed in `DATA_CONTRACT.md` §1 (workspace.json row).
+So items 2, 4, 5, 6, 7, 8 and most of 9 below are done; still open: 1 (verify the edition mirror and parity), 3 is done in REVIEW but check the roadmap page wording, 10 (step numbering of USER_GUIDE tables vs TODO order, schema-version table, one quota sentence), 11, 12.
+
 ## Do next, in this order
 1. **Edition sync.** Compare each file of `docs/ru|de|uk` with English (headings, table rows, backticked tokens, numbers). Fix leftovers: "three editions" must be four (AGENTS.md, README.md line ~70, AI_BUILD_SPEC.md line ~11 "all three"), "three folders" must be five folders `1_`..`5_` (README table, AI_BUILD_SPEC.md lines ~98 and ~456, installation texts), `docs/uk` missing from the German README and AI_BUILD_SPEC lists of editions, README row count differs by one, an extra link in `docs/de/overview_architecture.html`, one bullet in `docs/ru/AI_BUILD_SPEC.md`, one numbered item in `docs/de/ARCHITECTURE.md` and `docs/de/REVIEW.md`. Natural wording, one term per concept, no Russian words in the Ukrainian text.
 2. **Privacy gate status.** README "Capability" table, REVIEW.md and RELEASE_CHECKLIST.md say it is not available; it exists (`privacy-gate.yml`) but has never run on GitHub. Use one wording: "exists, not yet run on GitHub". Check its first run in the Actions tab for false positives.
