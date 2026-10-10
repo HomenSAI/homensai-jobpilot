@@ -6,6 +6,12 @@ The project version is in the file [VERSION](VERSION). The project is an AI-agen
 
 Rules: `MAJOR.MINOR.PATCH`. MAJOR changes when data formats or rules change so that old data no longer fits. MINOR is a new feature or a new part of the documentation. PATCH is a fix or a wording change without new capabilities. Every change to `main` adds a line here; the number is raised when a release is made. Each release gets a git tag `vX.Y.Z`. Each entry is written in Russian first, with the English text directly below it. The same entry appears in both language files.
 
+## 1.14.4 — 10 October 2026
+
+**English.** The Prepare section of the install page gets a block on the CV and cover-letter templates: what to put into folders 4 and 5, how the agent prepares drafts, how a template for mailings is chosen, what happens without a template, how a PDF is checked and when a photo appears. The block is in all four languages. This is a text change without new capabilities, so the patch number is raised.
+
+- **Pages:** the install page (EN, RU, DE, UK), section “Prepare your materials”.
+
 ## 1.14.3 — 10 October 2026
 
 **English.** The language switcher on the overview pages shows all four languages (EN, RU, DE, UK) without shrinking. The buttons no longer compress in a narrow row or get clipped on scaled screens. This is a visual fix without new capabilities, so the patch number is raised.
