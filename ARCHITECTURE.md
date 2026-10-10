@@ -1,4 +1,4 @@
-# HomenS.AI JobPilot — Architecture 1.7.0
+# HomenS.AI JobPilot — Architecture 1.8.0
 
 [English](ARCHITECTURE.md) | [Русский](docs/ru/ARCHITECTURE.md)
 
@@ -351,7 +351,7 @@ The mail scan is a loop: read a page, save its messages, ask for the next page w
 
 ### 8a. Sending cadence (R02)
 
-- **Cycles.** `schedule.cadence` is `immediate` (one message per permitted day), `allowed_workdays`, `every_second_allowed_workday`, `every_n_calendar_days`, `every_n_allowed_workdays` (a different count from calendar days, so the choice is confirmed with the person) or `selected_weekdays` (DATA_CONTRACT.md §13.1). With `approval_per_message` the cadence is `on_request`: there are no fixed slots, and each send happens at the moment the person answers the send card. `max_per_run` is one or two messages per run in the scheduled cadences. With two messages, the run has either two local times or one time plus an interval (`inter_message_delay_minutes`). In every mode the number of CV submissions in one local day is capped by `max_per_day` (DATA_CONTRACT.md §13.2; default 2, an open decision for the owner). Each message is a separate operation with its own package, slot and key.
+- **Cycles.** `schedule.cadence` is `immediate` (one message per permitted day), `allowed_workdays`, `every_second_allowed_workday`, `every_n_calendar_days`, `every_n_allowed_workdays` (a different count from calendar days, so the choice is confirmed with the person) or `selected_weekdays` (DATA_CONTRACT.md §13.1). With `approval_per_message` the cadence is `on_request`: there are no fixed slots, and each send happens at the moment the person answers the send card. `max_per_run` is one or two messages per run in the scheduled cadences. With two messages, the run has either two local times or one time plus an interval (`inter_message_delay_minutes`). In every mode the number of CV submissions in one local day is capped by `max_per_day`, a profile setting that the person chooses from 1 to 43 (DATA_CONTRACT.md §13.2; the default proposal for a new profile is 2; 0 and 44 or more are refused). A change takes effect from the next local day and never changes the monthly limit of 44. Each message is a separate operation with its own package, slot and key.
 - **Calendar.** Before any external action the agent shows the exact slot calendar for the month: date, local time, weekday, the quota month and the excluded dates. It uses the person's time zone, the holiday calendar of the chosen region from a verified source ("not checked" is never read as "no holidays") and the dates the person excludes.
 - **Daylight saving.** A local time that is missing or repeated on a clock change is not guessed. `dst_rule` is `ask` by default; `earlier`, `later` or `next_valid` apply only if the person chose one in advance and it is written into the profile.
 - **Transport.** Each message has exactly one transport: `agent_local_run` (a local agent run at the set time), `gmail_scheduled` (Gmail Schedule send, section 6a) or `manual_by_person`. The same package is never sent by two transports.
@@ -395,7 +395,7 @@ The journal grows by a few lines a day, which plain files handle easily. No inde
 ## 10. Format changes and the first release boundary
 
 **Version labels (each number has one meaning; other documents refer to these names).**
-- The documentation version is the file `VERSION`: now 1.7.0.
+- The documentation version is the file `VERSION`: now 1.8.0.
 - `schema_version` of a statistics snapshot (`summary.js`) is 1.4 (DATA_CONTRACT.md §9.1).
 - `schema_version` of settings (`profile.json`) is 1.3, and of `workspace.json` 1.3 (`examples/settings.example.json`, `examples/workspace.example.json`); `schema_version` of `quota.json` is 1.3 (`examples/quota.example.json`).
 - `format_version` of `workspace.json` is 1.4: the layout of the workspace file (DATA_CONTRACT.md §1).

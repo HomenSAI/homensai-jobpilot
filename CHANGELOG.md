@@ -6,6 +6,14 @@ The project version is in the file [VERSION](VERSION). The project is an AI-agen
 
 Rules: `MAJOR.MINOR.PATCH`. MAJOR changes when data formats or rules change so that old data no longer fits. MINOR is a new feature or a new part of the documentation. PATCH is a fix or a wording change without new capabilities. Every change to `main` adds a line here; the number is raised when a release is made. Each release gets a git tag `vX.Y.Z`.
 
+## 1.8.0 — 10 October 2026
+
+The daily maximum of CV submissions is now a setting the person chooses, from 1 to 43, instead of a fixed value of 2. The value 2 remains the default proposal shown to the person. The monthly limit of 44 is unchanged and cannot be changed in chat. A change of the daily value takes effect from the next local day and is recorded with its reason. This is a new capability in the rules, so the minor number is raised; no data needs migration, because the default for an existing profile stays 2.
+
+- **Settings:** `schedule.max_per_day` is an integer from 1 to 43 chosen by the person; 0 and 44 or more are refused at validation.
+- **Rules:** the send check refuses a CV submission that would reach the daily value (`DAILY_LIMIT`) in every mode; the plan never places more CV submissions on one local day than the value allows; a chat request for more than the value leads to an offer to change the setting, not to a send.
+- **Acceptance:** CAD-02 is rewritten for the configurable value (status NOT RUN until a run is recorded).
+
 ## 1.7.0 — 10 October 2026
 
 The consolidated review of the earlier audit (items F01–F14 and R01–R20) is applied to the rules, the statistics page and the user documents. A German edition is added. No real data was in use, so the changes need no migration of real records; a legacy single journal file is migrated by the procedure in DATA_CONTRACT.md §3d.

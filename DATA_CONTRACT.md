@@ -1,4 +1,4 @@
-# HomenS.AI JobPilot — Data Contract 1.7.0
+# HomenS.AI JobPilot — Data Contract 1.8.0
 
 [English](DATA_CONTRACT.md) | [Русский](docs/ru/DATA_CONTRACT.md)
 
@@ -408,7 +408,7 @@ Submissions that the person made outside JobPilot, or from another account, are 
 - **Free count (one formula).** For one month and the whole person: free = limit − used − reserved − unverified, the same as remaining(M) in §3c and §9.2. A claimed submission is in `unverified` from its `quota_consumed` until `evidence_attached` moves it to `used`, or `quota_corrected` withdraws it; it is counted once and never as free. The send check uses this count (TODO_FOR_AI.md, Part C, item 5). Any other count, for example one of used and reserved only, is not the free count.
 - **Confirmed or not.** The quota is confirmed only when the rebuild is complete: every counter is present and is a valid integer, no `send_started` lacks a result, no `claimed` submission is unresolved in the month, and every account and page of the reconciliation was covered. Otherwise the view reads "quota not confirmed" (`QUOTA_UNCONFIRMED`) and shows neither a remaining number nor a free slot.
 - **Zero and missing.** An explicit 0 comes from a complete rebuild; a missing counter is `null`. Negative, string or contradictory values are rejected.
-- **Limit.** The limit comes from the person's settings and is never replaced by a default. Limit changes are allowed only downwards. The person cannot override the limit: no instruction, approval or consent given in chat raises it or allows a 45th submission. A new plan or a changed calendar needs a new approval (§13.3, §14) and does not change the limit.
+- **Limit.** The limit comes from the person's settings and is never replaced by a default. Limit changes are allowed only downwards. The person cannot override the limit: no instruction, approval or consent given in chat raises it or allows a 45th submission. A new plan or a changed calendar needs a new approval (§13.3, §14) and does not change the limit. The monthly limit is not changeable by the person in chat. The daily cap `max_per_day` is a different thing: it is a profile setting from 1 to 43, chosen by the person (§13.1); a value of 0 or 44 or more is refused at validation; a change takes effect from the next local day and never raises the monthly limit. A send that would exceed the daily cap is refused with `DAILY_LIMIT`.
 - **Over the limit.** If confirmed used + reserved + unverified is greater than the limit, the view shows "limit exceeded by N". Recorded submissions are never cut to 44 and never removed to make a statistic look right. No new `cv_submission` is allowed (`QUOTA_EXHAUSTED`).
 - **Reservations** of plans and of Gmail Scheduled messages stay active and reduce availability.
 - **Source of the send check.** The send check reads the journal and its quota view, never the statistics page.
@@ -767,7 +767,7 @@ Acceptance tests for this section are listed in ACCEPTANCE_TESTS.md.
 | `timezone` | IANA name | derived from the place of residence; confirmed at setup |
 | `holiday_region`, `holiday_source`, `holidays_verified` | ISO 3166-2 code or null; a source; true or false | holidays are never invented; an empty list means "not checked" |
 | `max_per_run` | 1 or 2 (null with `on_request`) | the number of separate slots in one run of a scheduled cadence |
-| `max_per_day` | integer ≥ 1; default 2 ([open decision for the owner]) | the most `cv_submission` sends in one local calendar day (the person's time zone), counted at `send_started`, failed attempts included. Reaching it is `DAILY_LIMIT`. It applies in every mode and is not raised by the person in chat |
+| `max_per_day` | integer 1–43; the person chooses the value; the default proposal for a new profile is 2 (shown to the person) | the most `cv_submission` sends in one local calendar day (the person's time zone), counted at `send_started`, failed attempts included. Reaching it is `DAILY_LIMIT`. It applies in every mode. 0 and 44 or more are refused at validation (a day cannot allow more than the monthly limit of 44, and 0 would stop sending; to stop sending use the mode or the plan). The monthly limit of 44 is fixed and is not changed by this setting |
 | `local_send_times` | list of `HH:MM` (24-hour, local time), sorted, unique; empty with `on_request` | one entry for one slot; two entries for two slots at two times. `local_send_time` is not a separate setting |
 | `inter_message_delay_minutes` | integer ≥ 1, or null | required when `max_per_run` is 2 and there is one time: the second send follows after this interval; null when `max_per_run` is 1 |
 | `dst_rule` | `ask` (default), or a rule agreed in advance: `earlier`, `later` or `next_valid` | applies to a local time that does not exist or occurs twice when clocks change |
@@ -784,8 +784,8 @@ Acceptance tests for this section are listed in ACCEPTANCE_TESTS.md.
 6. The planned total of one month must not exceed the available quota; each slot reserves a slot in its own local month (§3c, §5).
 7. A slot that is moved into another month moves its reservation only after the remote state is verified (`reservation_moved`, §12).
 8. `on_request` requires `mail.mode` `approval_per_message`. `local_send_times` is empty, and `max_per_run`, `inter_message_delay_minutes` and `interval_days` are null. Each send is approved on its own by the send card. The permitted weekday, the excluded dates and the holiday calendar still apply (§7): with holidays not verified, the card carries the warning and the person confirms the date and time, otherwise the send is refused (`CALENDAR_NOT_ALLOWED`). A day that has passed without a send is recorded as `slot_missed` only if a slot was planned for it; nothing is sent for it later.
-9. `max_per_day` is counted per local calendar day at `send_started`, failed attempts included. The send check (TODO_FOR_AI.md, Part C, item 5) refuses a send that would exceed it (`DAILY_LIMIT`), in every mode.
-10. A change of cadence, times, `max_per_run` or `max_per_day` is a `profile_changed` line with its reason. It does not change the monthly limit (§5). For a scheduled cadence no send follows the change before a new plan is approved (`plan_committed`).
+9. `max_per_day` is the person's choice, an integer from 1 to 43 stored in the profile (§13.1); the value 2 is only the default proposal shown to the person. It is counted per local calendar day at `send_started`, failed attempts included. The send check (TODO_FOR_AI.md, Part C, item 5) refuses a send that would reach it (`DAILY_LIMIT`), in every mode.
+10. A change of cadence, times, `max_per_run` or `max_per_day` is a `profile_changed` line with its reason. A change of `max_per_day` takes effect from the next local calendar day. It does not change the monthly limit (§5). For a scheduled cadence no send follows the change before a new plan is approved (`plan_committed`).
 
 ### 13.3 Calendar and approval
 
