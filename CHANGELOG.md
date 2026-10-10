@@ -6,6 +6,14 @@ The project version is in the file [VERSION](VERSION). The project is an AI-agen
 
 Rules: `MAJOR.MINOR.PATCH`. MAJOR changes when data formats or rules change so that old data no longer fits. MINOR is a new feature or a new part of the documentation. PATCH is a fix or a wording change without new capabilities. Every change to `main` adds a line here; the number is raised when a release is made. Each release gets a git tag `vX.Y.Z`. Each entry is written in Russian first, with the English text directly below it. The same entry appears in both language files.
 
+## 1.12.0 — 10 October 2026
+
+**English.** An author page (EN, RU, DE) is added with background, projects and contacts; the Author link is in the navigation of all overview pages. The links to the vendor documentation moved from the install page to the Safety page, each with a short purpose and its step number. Unsupported claims were fixed on the overview pages: a photo is not requested and enters documents only by the person's explicit choice; the German footer date and the list of languages in the roadmap were corrected. This is a new part of the documentation, so the minor number is raised.
+
+- **Pages:** overview_author.html (EN, RU, DE); the “Official documentation” section on the Safety page.
+- **Fixes:** the photo sentence in the profile; the date and the language list; the book DOI on the author page.
+- **Left as is:** the market page and the version history in the roadmap — an owner decision.
+
 ## 1.11.0 — 10 October 2026
 
 **Русский.** Страницы обзора получили иконку сайта — логотип HomenS.AI, который показывается во вкладке браузера. На странице архитектуры добавлены четыре интерактивные схемы: путь одной заявки, ворота отправки, дневной и месячный лимит, деление журнала на части. Схемы только показывают правила; ничего не отправляют и не меняют файлы. Это новая часть документации, поэтому номер минорной версии повышен.
