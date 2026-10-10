@@ -116,7 +116,7 @@ Zusätzliche Prüfungen für die Architektur 1.3–1.4 (Regeln und Dateien):
 
 | ID | Bedingungen und Handlung | Erwartetes Ergebnis |
 |---|---|---|
-| RES-01 | Ein PDF-Lebenslauf wird in `4_Шаблон_резюме/` abgelegt | Der Agent erstellt eine Word-Arbeitskopie in `Resume/`, bevor andere Arbeit beginnt; das PDF bleibt unverändert (Größe, Datum und Prüfsumme); die Seite-für-Seite-Prüfung wird der Person gezeigt |
+| RES-01 | Ein PDF-Lebenslauf wird in `4_Шаблон_резюме/` abgelegt, und die Person benennt ihn als verwendete Vorlage | Der Agent erstellt eine Word-Arbeitskopie in `Resume/`, nachdem die Person die Vorlage benannt hat; das PDF bleibt unverändert (Größe, Datum und Prüfsumme); die Seite-für-Seite-Prüfung wird der Person gezeigt |
 | RES-03 | Ein PDF-Muster, dessen Word-Umwandlung ab Seite 2 vom Original abweicht | Die Word-Datei wird nicht für Pakete verwendet; die Person erfährt, welche Seite und was abweicht; das Original-PDF bleibt unverändert |
 | RES-02 | `Resume/` und `CoverLetter/` sind bei der Ersteinrichtung leer | Der Agent erstellt in jedem Ordner eine neutrale Vorlage in der Sprache der Person, eine Seite, gleicher Kopf und gleiche Schriften |
 | APP-01 | Für eine Firma wird ein Paket vorbereitet | `Applications/<Jahr>/<NN_Monat>/<NNN_…>/` enthält `Company.md` mit Quellen, den Lebenslauf und das Anschreiben als Word und PDF, `EmailText_<Sprache>.txt` und `Status.txt` mit `prepared`; eine zweite Version fügt `v002`-Dateien hinzu und lässt `v001` unverändert |

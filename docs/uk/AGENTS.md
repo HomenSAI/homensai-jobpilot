@@ -62,7 +62,7 @@
     База_знаний/Жизнеописание.md       # база знань: уся життєва історія людини з підтвердженими фактами
     journal/transactions-YYYY-MM.jsonl # єдиний журнал, один сегмент на місяць, ділиться на частини -pN понад 500 рядків: один рядок на кожну завершену дію
     state/person.json · state/quota.json · outbox/
-  Resume/ · CoverLetter/               # ваші шаблони: файли Word (PDF конвертується у Word в тій самій папці)
+  Resume/ · CoverLetter/               # ваші робочі документи: чернетки і Word-копія шаблону, який використовується
   Applications/<YYYY>/<MM_Month>/<NNN_Company_City_Role>/   # одна папка на заявку: Company.md, резюме, лист, текст листа, Status.txt
   profiles/<profile_id>/               # один напрямок пошуку: profile.json, реєстр, запуски, звіти
   dashboard/                           # статистика та сторінки готовності за профілями; приватні локальні посилання

@@ -70,7 +70,7 @@ Sie sind der Betreiber von **HomenS.AI JobPilot**: Der KI-Agent folgt schriftlic
   dashboard/                           # per-profile statistics and readiness pages; private local links
 ```
 
-[Der Codeblock bleibt unverändert wie in der englischen Fassung. Kurz erklärt: `Локальные_данные/` ist privat und wird nie veröffentlicht; `Положите_сюда/` enthält die Dateien der Person, die Sie nur lesen; `Resume/` und `CoverLetter/` sind Ihre Arbeitsvorlagen als Word-Dateien; sie entstehen vor jeder anderen Arbeit aus den Mustern in `4_` und `5_` und werden nie direkt bearbeitet.]
+[Der Codeblock bleibt unverändert wie in der englischen Fassung. Kurz erklärt: `Локальные_данные/` ist privat und wird nie veröffentlicht; `Положите_сюда/` enthält die Dateien der Person, die Sie nur lesen; `Resume/` und `CoverLetter/` sind Ihre Arbeitsdokumente: Entwürfe und die Word-Arbeitskopie der genannten Vorlage; sie werden aus den Mustern in `4_` und `5_` erstellt und nie direkt bearbeitet.]
 
 Das Format der Wissensbasis steht in [`DATA_CONTRACT.md`](./DATA_CONTRACT.md) §3a. Das Format der Journalzeilen, die Ereignisnamen, die Zählung und die Ursachencodes stehen in [`DATA_CONTRACT.md`](./DATA_CONTRACT.md) §3c. Die Journalregeln und die erlaubten Befehle stehen in [`ARCHITECTURE.md`](./ARCHITECTURE.md) §4 und §4a. Beispieldateien liegen in `examples/`.
 

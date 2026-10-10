@@ -160,7 +160,7 @@ The folders can be filled **before** the first run or left empty. The agent only
 
 **The first setup in order.** The agent leads it, and the person only answers; there is no form. (1) Where the story belongs: if the person has a written story, it goes into `2_Рассказ_о_себе`; if not, the agent offers to prepare it right now, preferably by voice, and saves it word for word. (2) The agent asks the person to put diplomas, certificates and other documents into `1_Мои_документы`. (3) The agent analyses the story and the documents and writes the knowledge base. (4) It asks about the gaps one topic at a time, always including certificates, courses, licences, language levels and the driving licence and a car. (5) The person confirms the facts. (6) The agent asks what is searched and how: the kind of search, roles, where the person lives, the radius, the means of travel and the limits of the journey, preferred towns, the four languages, the rhythm of sending; the answers are saved as `profiles/<profile_id>/profile.json` (DATA_CONTRACT.md §3b). (7) Mail is connected only if the person wants it. After that the first setup is finished and everything works from the saved files. The exact steps and questions are in TODO_FOR_AI.md, Part A.
 
-Template handling: keep the source unchanged, save a distinct editable DOCX beside a PDF, visually compare every page and approve the result before use. If conversion is unavailable, the agent reports it and asks for manual conversion or an approved reconstruction. Selected source/DOCX paths, hashes and verification times are stored per profile; each vacancy receives its own files. See [Application templates](OPERATING_REQUIREMENTS.md#application-templates).
+Template handling: keep the source unchanged, save the Word working copy of the named template in `Resume/` or `CoverLetter/`, compare every page with the original and approve the result before use. If conversion is unavailable, the agent reports it and asks for manual conversion or an approved reconstruction. Selected source/DOCX paths, hashes and verification times are stored per profile; each vacancy receives its own files. See [Application templates](OPERATING_REQUIREMENTS.md#application-templates).
 
 ## 5. Geographic search and the shared database
 
@@ -219,8 +219,8 @@ The user downloads the GitHub ZIP, chooses a convenient place and extracts it. T
       journal\writer.lock            # one local write lock
       state\quota.json               # derived counter by month
       outbox\                        # immutable packages of send attempts
-    Resume\                           # resume template: your Word file, or a PDF converted to Word here
-    CoverLetter\                      # cover letter template, same design as the resume
+    Resume\                           # working documents: CV drafts and the Word copy of the template in use
+    CoverLetter\                      # working documents: letter drafts and the Word copy of the template in use
     profiles\<profile_id>\
       profile.json
       registry.json                   # targets, applications and the queue (projection)

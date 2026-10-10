@@ -162,7 +162,7 @@ Die Ordner können **vor** dem ersten Lauf befüllt oder leer gelassen werden. D
 
 **Die Ersteinrichtung der Reihe nach.** Der Agent führt sie, die Person antwortet nur; es gibt kein Formular. (1) Wohin die Geschichte gehört: Gibt es eine schriftliche Geschichte, kommt sie nach `2_Рассказ_о_себе`; gibt es keine, bietet der Agent an, sie sofort vorzubereiten, möglichst per Sprache, und speichert sie wortwörtlich. (2) Der Agent bittet die Person, Diplome, Zeugnisse und andere Dokumente nach `1_Мои_документы` zu legen. (3) Der Agent analysiert die Geschichte und die Dokumente und schreibt die Wissensbasis. (4) Er fragt nach den Lücken jeweils ein Thema nach dem anderen und immer auch nach Zeugnissen, Kursen, Lizenzen, Sprachniveaus sowie Führerschein und Auto. (5) Die Person bestätigt die Fakten. (6) Der Agent fragt, was gesucht wird und wie: Art der Suche, Rollen, Wohnort, Radius, Verkehrsmittel und Grenzen der Anfahrt, bevorzugte Städte, die vier Sprachen, den Rhythmus des Versands; die Antworten werden als `profiles/<profile_id>/profile.json` gespeichert (DATA_CONTRACT.md §3b). (7) Post wird nur verbunden, wenn die Person es wünscht. Danach ist die Ersteinrichtung abgeschlossen, und alles arbeitet aus den gespeicherten Dateien. Die genauen Schritte und Fragen stehen in TODO_FOR_AI.md, Teil A.
 
-Vorlagen: Die Quelle bleibt unverändert; neben der PDF entsteht eine eigene bearbeitbare DOCX, jede Seite wird visuell verglichen und vor Verwendung freigegeben. Ist die Konvertierung nicht verfügbar, meldet der Agent dies und bietet manuelle Konvertierung oder einen freigegebenen Neuaufbau an. Quell-/DOCX-Pfade, Hashes und Prüfzeiten werden pro Profil gespeichert; jede Stelle erhält eigene Dateien. Siehe „Vorlagen für Lebenslauf und Anschreiben“ in den [Arbeitsregeln](OPERATING_REQUIREMENTS.md).
+Vorlagen: Die Quelle bleibt unverändert; die Word-Arbeitskopie der genannten Vorlage entsteht in `Resume/` bzw. `CoverLetter/` (eine eigene bearbeitbare DOCX), jede Seite wird visuell verglichen und vor Verwendung freigegeben. Ist die Konvertierung nicht verfügbar, meldet der Agent dies und bietet manuelle Konvertierung oder einen freigegebenen Neuaufbau an. Quell-/DOCX-Pfade, Hashes und Prüfzeiten werden pro Profil gespeichert; jede Stelle erhält eigene Dateien. Siehe „Vorlagen für Lebenslauf und Anschreiben“ in den [Arbeitsregeln](OPERATING_REQUIREMENTS.md).
 
 ## 5. Geografische Suche und die gemeinsame Datenbasis
 
@@ -221,8 +221,8 @@ Die Nutzerin oder der Nutzer lädt das GitHub-ZIP herunter, wählt einen passend
       journal\writer.lock            # one local write lock
       state\quota.json               # derived counter by month
       outbox\                        # immutable packages of send attempts
-    Resume\                           # resume template: your Word file, or a PDF converted to Word here
-    CoverLetter\                      # cover letter template, same design as the resume
+    Resume\                           # working documents: CV drafts and the Word copy of the template in use
+    CoverLetter\                      # working documents: letter drafts and the Word copy of the template in use
     profiles\<profile_id>\
       profile.json
       registry.json                   # targets, applications and the queue (projection)

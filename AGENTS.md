@@ -60,7 +60,7 @@ You are the operator of **HomenS.AI JobPilot**: the AI agent follows written pro
     База_знаний/Жизнеописание.md       # the knowledge base: the person's whole life story, with confirmed facts
     journal/transactions-YYYY-MM.jsonl # the single journal, one segment per month, split into -pN parts above 500 lines: one line per completed action
     state/person.json · state/quota.json · outbox/
-  Resume/ · CoverLetter/               # working Word templates, made from the samples in 4_ and 5_ before any work; never edited in place
+  Resume/ · CoverLetter/               # working Word templates, made from the template the person names in 4_ or 5_ after the one-to-one check; never edited in place
   Applications/<YYYY>/<MM_Month>/<NNN_Company_City_Role>/   # one folder per application: Company.md, resume, letter, email text, Status.txt
   profiles/<profile_id>/               # one search direction: profile.json, registry, runs, reports
   dashboard/                           # per-profile statistics and readiness pages; private local links
