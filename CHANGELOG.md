@@ -6,6 +6,12 @@ The project version is in the file [VERSION](VERSION). The project is an AI-agen
 
 Rules: `MAJOR.MINOR.PATCH`. MAJOR changes when data formats or rules change so that old data no longer fits. MINOR is a new feature or a new part of the documentation. PATCH is a fix or a wording change without new capabilities. Every change to `main` adds a line here; the number is raised when a release is made. Each release gets a git tag `vX.Y.Z`. Each entry is written in Russian first, with the English text directly below it. The same entry appears in both language files.
 
+## 1.16.2 — 10 October 2026
+
+**English.** The Safety page now states plainly who answers for the data: JobPilot works only through a cloud AI agent that the person chooses; where the data goes after the agent reads it, and what the agent's provider does with it, is the responsibility of that agent and its provider. Anyone who is worried that their data may go on beyond their control should not use the product. This is a wording change without new capabilities, so the patch number is raised.
+
+- **Pages:** the safety page (EN, RU, DE, UK), section “Privacy and confirmed facts”.
+
 ## 1.16.1 — 10 October 2026
 
 **English.** The fourth diagram on the architecture page, “Journal segments”, is removed in all four languages. It showed how the internal journal is split into files, which means nothing to the person using JobPilot. The page now has three diagrams: the path of one application, the six checks before sending, and the daily and monthly limits. This is a text and layout change without new capabilities, so the patch number is raised.
