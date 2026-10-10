@@ -51,7 +51,7 @@
 <div class="node"><strong>Schriftliche Regeln</strong><span>AGENTS.md, TODO_FOR_AI.md, die Spezifikation: eine Checkliste vor jeder Aktion</span></div><div class="arrow" aria-hidden="true">↓</div>
 <div class="split"><div class="node"><strong>Das Journal der Person</strong><span>Eine Zeile pro abgeschlossener Aktion; das Limit von 44 Bewerbungen wird daraus gezählt</span></div><div class="node alt"><strong>Gmail</strong><span>Die eigene, autorisierte Mailverbindung des Agenten: Lesen, Senden, Prüfen</span></div></div>
 <div class="arrow" aria-hidden="true">↓</div><div class="node"><strong>Unterlagen und lokale Statistik</strong><span>Datensätze, Warteschlange, DOCX/PDF und eine HTML-Seite für jedes Profil</span></div></div>
-<div class="notice"><p>Jede Person hat ein maßgebliches Journal, <code>persons/&lt;person_id&gt;/journal/transactions.jsonl</code>, und eine Markierungsdatei <code>writer.lock</code>, die nur existiert, solange ein Chat schreibt. Profil-Register, Warteschlange, <code>Status.txt</code> und Statistik lassen sich aus diesem Journal neu aufbauen. Mehrere Suchprofile teilen sich ein monatliches Limit, und ein neuer Chat kann die Arbeit fortsetzen, ohne eine Bewerbung doppelt zu senden.</p></div>
+<div class="notice"><p>Jede Person hat ein maßgebliches Journal, <code>persons/&lt;person_id&gt;/journal/transactions-YYYY-MM.jsonl</code> (Monatsabschnitte), und eine Markierungsdatei <code>writer.lock</code>, die nur existiert, solange ein Chat schreibt. Profil-Register, Warteschlange, <code>Status.txt</code> und Statistik lassen sich aus diesem Journal neu aufbauen. Mehrere Suchprofile teilen sich ein monatliches Limit, und ein neuer Chat kann die Arbeit fortsetzen, ohne eine Bewerbung doppelt zu senden.</p></div>
 <p style="margin-top:.9rem">Die Schutzmechanismen — das Limit von 44, niemals doppelt senden, nur ein Schreibender zur Zeit — sind Verfahren, die der Agent einhalten muss, keine technischen Sperren. Deshalb bereitet eine neue Einrichtung nur Entwürfe vor, und ein automatischer Versand setzt Ihre ausdrückliche Zustimmung zu dieser Einschränkung voraus. <a href="../../ARCHITECTURE.md">Detaillierte Architektur</a> · <a href="../../DATA_CONTRACT.md">Datenvertrag</a></p>
 </section>
 
@@ -72,7 +72,7 @@
     workspace.json                  # stage of the first run, language, tool checks
     persons/&lt;person_id&gt;/
       База_знаний/Жизнеописание.md  # the knowledge base: your life story as facts
-      journal/transactions.jsonl
+      journal/transactions-YYYY-MM.jsonl
       journal/writer.lock
     profiles/&lt;profile_id&gt;/
       profile.json · registry.json

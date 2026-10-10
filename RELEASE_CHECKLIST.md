@@ -22,7 +22,7 @@ The public release may contain only the files below. Any other file stops the re
 - Build the candidate archive in a new, empty folder. List its files and compare them with section 1. Do not run scripts from the unpacked archive and do not unpack it into the working folder.
 - Check the Git index of the release commit against the same list. `.gitignore` does not untrack files that are already in Git.
 - No nested archives (`.zip`, `.tar`, `.7z`, `.rar`), backups, lock files, logs or journals.
-- No file or folder names that carry personal data, application or company names, application dates, person or profile identifiers, or working-data names: `persons/`, `profiles/`, `journal/`, `runs/`, `outbox/`, `Applications/`, `dashboard/` (generated pages), `writer.lock`, `workspace.json`, `transactions.jsonl`, and any file in `Resume/` or `CoverLetter/` other than `README.md`.
+- No file or folder names that carry personal data, application or company names, application dates, person or profile identifiers, or working-data names: `persons/`, `profiles/`, `journal/`, `runs/`, `outbox/`, `Applications/`, `dashboard/` (generated pages), `writer.lock`, `workspace.json`, `transactions-*.jsonl`, and any file in `Resume/` or `CoverLetter/` other than `README.md`.
 - No CV, certificate, diploma, reference, scan, photo, PDF, DOCX or personal JSON file. The only binary files allowed are the project's own images and the IBM Plex fonts in `assets/`.
 
 ## 3. Content checks

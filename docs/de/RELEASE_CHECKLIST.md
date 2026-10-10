@@ -24,7 +24,7 @@ Das öffentliche Release darf nur die unten genannten Dateien enthalten. Jede an
 - Erstellen Sie das Kandidaten-Archiv in einem neuen, leeren Ordner. Listen Sie seine Dateien auf und vergleichen Sie sie mit Abschnitt 1. Führen Sie keine Skripte aus dem entpackten Archiv aus und entpacken Sie es nicht in den Arbeitsordner.
 - Prüfen Sie den Git-Index des Release-Commits gegen dieselbe Liste. `.gitignore` nimmt bereits in Git enthaltene Dateien nicht aus der Verfolgung heraus.
 - Keine verschachtelten Archive (`.zip`, `.tar`, `.7z`, `.rar`), keine Sicherungen, Sperrdateien, Logs oder Journale.
-- Keine Datei- oder Ordnernamen, die persönliche Daten, Namen von Bewerbungen oder Firmen, Bewerbungsdaten, Kennungen von Personen oder Profilen oder Namen von Arbeitsdaten tragen: `persons/`, `profiles/`, `journal/`, `runs/`, `outbox/`, `Applications/`, `dashboard/` (erzeugte Seiten), `writer.lock`, `workspace.json`, `transactions.jsonl` sowie jede Datei in `Resume/` oder `CoverLetter/` außer `README.md`.
+- Keine Datei- oder Ordnernamen, die persönliche Daten, Namen von Bewerbungen oder Firmen, Bewerbungsdaten, Kennungen von Personen oder Profilen oder Namen von Arbeitsdaten tragen: `persons/`, `profiles/`, `journal/`, `runs/`, `outbox/`, `Applications/`, `dashboard/` (erzeugte Seiten), `writer.lock`, `workspace.json`, `transactions-*.jsonl` sowie jede Datei in `Resume/` oder `CoverLetter/` außer `README.md`.
 - Keine Datei mit Lebenslauf, Zeugnis, Diplom, Referenz, Scan, Foto, PDF, DOCX oder persönlicher JSON-Datei. Die einzigen erlaubten Binärdateien sind die eigenen Bilder des Projekts und die IBM-Plex-Schriften in `assets/`.
 
 ## 3. Inhaltsprüfungen
