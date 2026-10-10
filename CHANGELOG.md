@@ -4,18 +4,29 @@
 
 The project version is in the file [VERSION](VERSION). The project is an AI-agent workflow package, not a standalone job-search or mail-sending application. Its local statistics view contains HTML/CSS/JavaScript for displaying and sorting a snapshot.
 
-Rules: `MAJOR.MINOR.PATCH`. MAJOR changes when data formats or rules change so that old data no longer fits. MINOR is a new feature or a new part of the documentation. PATCH is a fix or a wording change without new capabilities. Every change to `main` adds a line here; the number is raised when a release is made. Each release gets a git tag `vX.Y.Z`.
+Rules: `MAJOR.MINOR.PATCH`. MAJOR changes when data formats or rules change so that old data no longer fits. MINOR is a new feature or a new part of the documentation. PATCH is a fix or a wording change without new capabilities. Every change to `main` adds a line here; the number is raised when a release is made. Each release gets a git tag `vX.Y.Z`. Each entry is written in Russian first, with the English text directly below it. The same entry appears in both language files.
 
 ## 1.9.0 — 10 October 2026
 
-The journal keeps monthly segments, and a month that reaches 500 lines continues in numbered parts (`transactions-YYYY-MM-p2.jsonl`, `-p3` and so on). A closed part is never edited. Replay, counts and archives read the parts in order of month and part number, not by file name. This is a new rule for the journal, so the minor number is raised. Existing journals need no migration: a month under 500 lines keeps its single file.
+**Русский.** Журнал ведётся помесячными сегментами, а месяц, который дошёл до 500 строк, продолжается в пронумерованных частях (`transactions-ГГГГ-ММ-p2.jsonl`, `-p3` и так далее). Закрытая часть никогда не редактируется. Пересборка, подсчёты и архивы читают части по порядку месяца и номера части, а не по имени файла. Это новое правило журнала, поэтому номер минорной версии повышен. Перенос существующих журналов не нужен: месяц меньше 500 строк остаётся одним файлом.
+
+- **Журнал:** правило деления и порядок чтения (DATA_CONTRACT.md §3c, §3d; ARCHITECTURE.md §4, правило 8).
+- **Приёмка:** добавлен JRN-01 (статус NOT RUN, пока прогон не записан).
+
+**English.** The journal keeps monthly segments, and a month that reaches 500 lines continues in numbered parts (`transactions-YYYY-MM-p2.jsonl`, `-p3` and so on). A closed part is never edited. Replay, counts and archives read the parts in order of month and part number, not by file name. This is a new rule for the journal, so the minor number is raised. Existing journals need no migration: a month under 500 lines keeps its single file.
 
 - **Journal:** the split rule and the reading order (DATA_CONTRACT.md §3c, §3d; ARCHITECTURE.md §4, rule 8).
 - **Acceptance:** JRN-01 is added (status NOT RUN until a run is recorded).
 
 ## 1.8.0 — 10 October 2026
 
-The daily maximum of CV submissions is now a setting the person chooses, from 1 to 43, instead of a fixed value of 2. The value 2 remains the default proposal shown to the person. The monthly limit of 44 is unchanged and cannot be changed in chat. A change of the daily value takes effect from the next local day and is recorded with its reason. This is a new capability in the rules, so the minor number is raised; no data needs migration, because the default for an existing profile stays 2.
+**Русский.** Дневной максимум заявок с CV теперь настраивается человеком: целое число от 1 до 43 вместо фиксированного значения 2. Значение 2 остаётся предлагаемым по умолчанию. Месячный лимит 44 не изменился и в чате не меняется. Изменение дневного значения действует с следующего местного дня и записывается с причиной. Это новая возможность в правилах, поэтому номер минорной версии повышен; перенос данных не нужен, так как для существующих профилей значение по умолчанию остаётся 2.
+
+- **Настройки:** `schedule.max_per_day` — целое число от 1 до 43, выбирает человек; 0 и 44 и больше отклоняются при проверке.
+- **Правила:** проверка отправки отклоняет заявку с CV, которая достигнет дневного значения (`DAILY_LIMIT`), во всех режимах; план никогда не ставит на один местный день больше заявок с CV, чем допускает значение; просьба в чате о большем числе предлагает изменить настройку, а не отправлять.
+- **Приёмка:** CAD-02 переписан под настраиваемое значение (статус NOT RUN, пока прогон не записан).
+
+**English.** The daily maximum of CV submissions is now a setting the person chooses, from 1 to 43, instead of a fixed value of 2. The value 2 remains the default proposal shown to the person. The monthly limit of 44 is unchanged and cannot be changed in chat. A change of the daily value takes effect from the next local day and is recorded with its reason. This is a new capability in the rules, so the minor number is raised; no data needs migration, because the default for an existing profile stays 2.
 
 - **Settings:** `schedule.max_per_day` is an integer from 1 to 43 chosen by the person; 0 and 44 or more are refused at validation.
 - **Rules:** the send check refuses a CV submission that would reach the daily value (`DAILY_LIMIT`) in every mode; the plan never places more CV submissions on one local day than the value allows; a chat request for more than the value leads to an offer to change the setting, not to a send.
