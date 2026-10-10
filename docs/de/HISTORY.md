@@ -2,6 +2,7 @@
 
 Kurze Zusammenfassung jeder Veröffentlichung in einfachen Worten. Technische Einzelheiten stehen in CHANGELOG.md. Eine Zeile pro Veröffentlichung: `- Version | Datum | Text`.
 
+- 1.18.0 | 10. Oktober 2026 | Die Ersteinrichtung wurde mit drei erfundenen Personen erprobt, und die Regeln wurden dort korrigiert, wo die Anweisungen unklar waren (zum Beispiel, was bei einer nicht bestätigten Angabe zu tun ist). Die Versionsnummer in der Ecke der Seiten, die alt geblieben war, wurde korrigiert.
 - 1.17.1 | 10. Oktober 2026 | Zwei Unstimmigkeiten in den Senderegeln wurden behoben, und eine automatische Prüfung stoppt eine Veröffentlichung, wenn persönliche Daten oder Geheimnisse veröffentlicht würden. Beispielausgabe eines simulierten Laufs mit erfundenen Daten ergänzt.
 - 1.17.0 | 10. Oktober 2026 | Die Seite „Fahrplan“ wurde aufgeräumt: Der Versionsverlauf ist jetzt in einfacher Sprache geschrieben, und die Liste der verbleibenden Entwicklerarbeit steht in einer eigenen Datei auf GitHub. Auf der Autorenseite entfielen die Abschnitte zu Erfahrung und Projekten, und die Einleitung wurde lebendiger.
 - 1.16.3 | 10. Oktober 2026 | Ein veralteter Hinweis auf der Sicherheitsseite wurde entfernt.

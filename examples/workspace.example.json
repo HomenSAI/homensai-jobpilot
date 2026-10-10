@@ -77,7 +77,7 @@
     }
   },
   "_allowed_values": {
-    "format_version": "1.4 = the layout version of this file (DATA_CONTRACT.md section 1); it is neither the documentation version (VERSION file, now 1.6.0) nor a record schema_version (ARCHITECTURE.md section 10)",
+    "format_version": "1.4 = the layout version of this file (DATA_CONTRACT.md section 1); it is neither the documentation version (VERSION file) nor a record schema_version (ARCHITECTURE.md section 10)",
     "stage": [
       "new",
       "consent_given",

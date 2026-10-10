@@ -84,6 +84,39 @@ Points the rules leave open (decided in the model as written below; to be confir
 - A `failed_before_send` attempt does not count as “the last managed CV recipient” for `RECIPIENT_CONSECUTIVE`.
 - A failed attempt does count towards the daily cap (`DAILY_LIMIT`), as `TODO_FOR_AI.md` says; with a daily cap of 1, a failed send blocks a retry on the same local day.
 
+## Dry runs of the instructions on three made-up people
+
+A second kind of check: an AI agent (a Claude agent working in a sandbox copy of the package, not Codex and not the user's own installation) followed `CLAUDE.md`, `AGENTS.md` and `TODO_FOR_AI.md` from the person's first message through the whole first setup (Part A) to the stage `ready`, and then did one resumed start (Part B). The person was replaced by a file of answers; the agent could not use Gmail or the web. Every journal line passed the read-back check, the writer lock was taken and released each time, originals were not changed, and nothing was sent.
+
+| Person | Starting point | Result | Findings |
+|---|---|---|---|
+| A, “Tom” | nothing prepared, empty folders, short typed story | stage `ready`, 15 journal lines | 32 (5 high) |
+| B, “Anna” | folders filled with a CV, a reference, certificates, a photo, notes and templates; sensitive data in the documents; two sources disagree about a date | stage `ready`, 11 journal lines, 12 originals unchanged | 38 (8 high) |
+| C, “Olga” | one long Russian voice transcript with filler words and private matters (religion, a child's health, care for a parent); no documents | stage `ready`, 16 journal lines, the story saved word for word | 30 (2 high) |
+
+What worked: the consent order, one question at a time, the stage table that allowed an interrupted run to resume, the append and read-back procedure, the correction rule for conflicting facts, and the handling of private facts.
+
+Two mistakes were made by the testers themselves (a directory listing of the whole sandbox before the consent step); the rules made this easy to do by accident, so the text now forbids a recursive listing before the consent.
+
+### Fixed in version 1.18.0 (all four editions)
+
+- No answer to a confirmation: the facts stay `proposed`, the stage stays, the question is asked again at the next chat; documents use only confirmed facts.
+- The time zone is unknown until the search setup: the UTC month is used for journal segments and file names until then.
+- A person-level session note is created in step A2, so the lock can be recognised before a profile exists; the profile note is added in A9.
+- The readiness page starts at the end of A7 (it is per profile), is written without the template's header comment, and the template now shows the row markup and the required steps.
+- Holidays without a web search: the person names the dates (source `person_statement`), then `holidays_verified` becomes true; until then no scheduled plan can be committed.
+- Declined mail tracking: no daily mail check is due and no `mail_checked` line is written.
+- The templates: one rule for the neutral example, three layout variants, DOCX and Markdown sources, an unapproved working copy, and the photo slot.
+- A contradiction between an attachment and the confirmed facts is shown to the person.
+- Smaller points: the age counts as sensitive; `quota.json` is created in A9; private facts are shown for confirmation by category; skipped topics need no knowledge-base line; one `knowledge_base_updated` line per write; `uuidgen` alternatives and a unique tail of the last line are allowed; example settings gained `holiday_source` and `dst_rule`; the README of the materials folder lists all five folders; the version badge of every page is now kept equal to `VERSION` by the workflow (its pattern did not match badges with a `style` attribute, so the pages showed an old version).
+
+### Still open (see `REMAINING_WORK.md`)
+
+- Neutral CV, letter and report templates exist only in English and Ukrainian; German and Russian are missing.
+- A lock file that is empty because its owner stopped between creating and writing it.
+- A field for “flexible hours” in the search settings.
+- The dry run must be repeated with the real agents (Codex and Claude Code) and real people.
+
 ## What this does not show
 
-Gmail itself (reading, SENT and Scheduled proof, attachments), the behaviour of a real AI agent, Word rendering, real employers' mail, and scheduled runs. These are listed in `REMAINING_WORK.md`.
+Gmail itself (reading, SENT and Scheduled proof, attachments), the behaviour of the agents named by the project in a real installation, Word rendering, real employers' mail, and scheduled runs. These are listed in `REMAINING_WORK.md`.

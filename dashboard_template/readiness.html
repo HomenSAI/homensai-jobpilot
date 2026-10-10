@@ -12,7 +12,11 @@
        {{LAST_CHECK_AT}}  time of the last successful check, {{UPDATED_AT}}  time this page was written (plain text with the zone)
        {{SYSTEM_READINESS_ROWS}}  <tr> rows of the system block         {{PROFILE_DOCUMENT_ROWS}}  <tr> rows of the profile block
        {{NEXT_ACTION_EN}} {{NEXT_ACTION_RU}} {{NEXT_ACTION_DE}} {{NEXT_ACTION_UK}}  the next recommended action in four languages
-       {{STATISTICS_HREF}} {{OVERVIEW_HREF}}  relative links to the statistics page and the project guide -->
+       {{STATISTICS_HREF}} {{OVERVIEW_HREF}}  relative links to the statistics page and the project guide
+     Row markup. System block, four cells: step name | status cell <td class="st done"> (or todo, attn, na) | what remains | evidence and time of the last check.
+     Profile block, four cells: material or document | status cell | link <a href="relative path"> (or the text "no file") | what to improve.
+     Every text in a cell is written in the four languages with the spans l-en, l-ru, l-de, l-uk. The required steps behind the percentage are listed in DATA_CONTRACT.md section 10.
+     Write the finished page WITHOUT this header comment, so that replacing a placeholder never changes the documentation. -->
 <html lang="en">
 <head>
 <meta charset="utf-8">
@@ -76,7 +80,7 @@ html[lang="ru"] .l-ru,html[lang="de"] .l-de,html[lang="uk"] .l-uk{display:inline
 </style>
 </head>
 <body>
-<div class="ver-badge" data-app-version style="width:max-content">v1.15.1</div>
+<div class="ver-badge" data-app-version style="width:max-content">v1.18.0</div>
 <header><strong>HomenS.AI JobPilot</strong><span><a href="{{STATISTICS_HREF}}"><span class="l-en">Open statistics</span><span class="l-ru">Открыть статистику</span><span class="l-de">Statistik öffnen</span><span class="l-uk">Відкрити статистику</span></a> · <a href="{{OVERVIEW_HREF}}"><span class="l-en">Project guide</span><span class="l-ru">Руководство</span><span class="l-de">Anleitung</span><span class="l-uk">Посібник</span></a></span></header>
 <main>
 

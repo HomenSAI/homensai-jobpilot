@@ -93,7 +93,7 @@ jobs:
           gen_history docs/uk/HISTORY.md docs/uk/overview_roadmap.html
           # Keep the version badge on every page equal to VERSION (see data-app-version in the HTML).
           while IFS= read -r page; do
-            sed -i -E "s#(data-app-version>)v[0-9]+\.[0-9]+\.[0-9]+<#\1v${VERSION}<#" "$page"
+            sed -i -E "s#(data-app-version[^>]*>)v[0-9]+\.[0-9]+\.[0-9]+<#\1v${VERSION}<#" "$page"
           done < <(grep -rl 'data-app-version' --include='*.html' . || true)
           git add -- VERSION overview_roadmap.html docs/ru/overview_roadmap.html docs/de/overview_roadmap.html docs/uk/overview_roadmap.html
           git add -u -- '*.html'

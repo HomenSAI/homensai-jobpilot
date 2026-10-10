@@ -86,6 +86,8 @@
     ],
     "weekday_numbering": "ISO: Monday=1, Sunday=7",
     "holiday_region": null,
+    "holiday_source": null,
+    "dst_rule": "ask",
     "excluded_dates": [],
     "holidays_verified": false,
     "missed_send_policy": "needs_reschedule"
