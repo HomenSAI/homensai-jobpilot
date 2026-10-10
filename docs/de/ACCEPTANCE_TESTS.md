@@ -126,7 +126,7 @@ Zusätzliche Prüfungen für die Architektur 1.3–1.4 (Regeln und Dateien):
 | APP-02 | Ein Arbeitgeber schreibt nur, dass die Stelle besetzt ist | Der Status ist `rejected_no_reason`; der Agent erfindet keinen Grund; ein Dank ist, falls aktiviert, ein Entwurf |
 | APP-03 | Eine Adresse wird dauerhaft zurückgewiesen | Der Status ist `email_not_found`; kein automatisches erneutes Senden; die Person wird um eine neue Adresse mit Quelle gebeten |
 | STAT-01 | Die Statistikseite mit der Beispielmenge (36 Datensätze) | Die Anteile ergeben zusammen die Basis der versandten Bewerbungen; Tage ohne Antwort entsprechen der Zeit vom Versand bis zum Snapshot; die vier Sprachen zeigen dieselben Zahlen |
-| STAT-02 | Die Schaltfläche „Clear sample data“ [„Beispieldaten löschen“] | Die Beispieldatensätze und das Kontingent verschwinden in diesem Browser und bleiben nach dem Neuladen gelöscht; ein echter Snapshot (`demo: false`) hat keine Schaltfläche |
+| STAT-02 | Die rote Schaltfläche „Reset sample“ [„Beispiel zurücksetzen“] | Die Beispieldatensätze und das Kontingent verschwinden in diesem Browser und bleiben nach dem Neuladen gelöscht; ein echter Snapshot (`demo: false`) hat keine Schaltfläche |
 | STAT-03 | `summary.js` mit einem unbekannten Status | Die Seite zeigt den Grund statt einer halb ausgefüllten Tabelle |
 | LANG-02 | `readiness.html` mit `lang="de"` | Es werden nur die deutschen Bezeichnungen gezeigt; kein englischer oder russischer Text bleibt |
 | REL-01 | Ein Abschnitt `## 1.6.1` wird auf `main` in `CHANGELOG.md` ergänzt | Der Release-Ablauf schreibt `VERSION` = 1.6.1 selbst und erstellt das Release `v1.6.1` |

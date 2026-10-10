@@ -491,7 +491,7 @@ No `group` or `delivery` field.
 - Sorting and filters (§4).
 - A freshness warning when the snapshot is two or more days old; 1.4 does not show `last_mail_check_at`, so §16.3 mail freshness is not yet visible.
 - Language from the `lang` URL parameter, else `default_language`, else `en`; names and notes untranslated.
-- With `demo` `true`: a notice and a “Clear sample data” button clearing the sample in this browser only; a real snapshot (`demo` `false`) is never cleared.
+- With `demo` `true`: a notice with a red, pulsing “Reset sample” button (no pulsing with reduced motion); one press clears the sample for this copy of the page in this browser, and the notice and button then disappear for good; a real snapshot (`demo` `false`) is never cleared.
 - Browser storage: theme and sample-cleared flag only; no file written, no network request.
 
 ### 9.6 Validation and the agent's write procedure

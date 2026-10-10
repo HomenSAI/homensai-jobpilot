@@ -6,6 +6,16 @@ The project version is in the file [VERSION](VERSION). The project is an AI-agen
 
 Rules: `MAJOR.MINOR.PATCH`. MAJOR changes when data formats or rules change so that old data no longer fits. MINOR is a new feature or a new part of the documentation. PATCH is a fix or a wording change without new capabilities. Every change to `main` adds a line here; the number is raised when a release is made. Each release gets a git tag `vX.Y.Z`. **Language rule (from 1.22.0, for all HomenS.AI repositories):** every entry is written in English first, and the same text in Russian directly below it (`**English.**` block, then `**Русский.**` block, each with its own bullet list). The GitHub release notes are taken from this section, so every release reads English first, Russian below. The same bilingual entry appears in `CHANGELOG.md` and `docs/ru/CHANGELOG.md`. Entries before 1.22.0 are kept as they were written.
 
+## 1.23.1 — 10 October 2026
+
+**English.** The statistics page shows the invented example right after download, and a red, pulsing “Reset sample” button with a short explanation stands at the top: press it once before you use the statistics. The example and the button then disappear for good. The cleared state now belongs to one copy of the page, so a newly downloaded copy shows the example again (before, clearing it once cleared every local copy in the same browser, and a new download looked empty). The guide says to press the button first. Four languages.
+
+- **Files:** `dashboard_template/index.html`, USER_GUIDE, DATA_CONTRACT §9.5 and ACCEPTANCE_TESTS STAT-02 in four languages.
+
+**Русский.** Страница статистики сразу после скачивания показывает придуманный пример, а вверху стоит красная мигающая кнопка «Сбросить пример» с коротким пояснением: нажмите её один раз перед тем, как пользоваться статистикой. После этого пример и кнопка исчезают насовсем. Отметка о сбросе теперь относится к одной копии страницы, поэтому новая скачанная копия снова показывает пример (раньше один сброс очищал все локальные копии в том же браузере, и новая загрузка выглядела пустой). В руководстве написано сначала нажать кнопку. Четыре языка.
+
+- **Файлы:** `dashboard_template/index.html`, USER_GUIDE, DATA_CONTRACT §9.5 и ACCEPTANCE_TESTS STAT-02 на четырёх языках.
+
 ## 1.23.0 — 10 October 2026
 
 **English.** All folders now have English names, so that they are the same on every computer and for every agent: `Local_Data` (was `Локальные_данные`), `Put_Here` (`Положите_сюда`), `1_My_Documents`, `2_My_Story`, `3_Report_Template`, `4_CV_Templates`, `5_Cover_Letter_Templates`, `Knowledge_Base/Life_Story.md`, `Story_Questions.md` and the interview file `Interview_<YYYY-MM-DD>.md`. A table with the meaning of every folder in Russian, German and Ukrainian is in the README of each edition, on the installation page and in `Local_Data/Put_Here/README.md`; the agent also gives the meaning in the person's language when it names a folder. All documents, pages, examples, `.gitignore` and the privacy gate follow the new names. This changes the folder layout, so the minor number is raised; a folder made with an earlier version is renamed by hand to the new names.

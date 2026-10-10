@@ -124,7 +124,7 @@ Additional checks for architecture 1.3–1.4 (rules and files):
 | APP-02 | An employer writes only that the position is filled | The status is `rejected_no_reason`; the agent does not invent a reason; a thank-you is a draft if enabled |
 | APP-03 | An address bounces permanently | The status is `email_not_found`; no automatic resend; the person is asked for a new address with its source |
 | STAT-01 | The statistics page with the sample (36 records) | The shares add up to the base of sent applications; days without reply equal the time from sending to the snapshot; the four languages show the same numbers |
-| STAT-02 | The button “Clear sample data” | The sample records and the quota disappear in this browser and stay cleared after a reload; a real snapshot (`demo: false`) has no button |
+| STAT-02 | The red button “Reset sample” | The sample records and the quota disappear in this browser for this copy of the page, the notice and the button disappear and stay gone after a reload, and a new copy of the page shows the sample again; a real snapshot (`demo: false`) has no button |
 | STAT-03 | `summary.js` with an unknown status | The page shows the reason instead of a half-filled table |
 | LANG-02 | `readiness.html` with `lang="de"` | Only the German labels are shown; no English or Russian text remains |
 | REL-01 | A section `## 1.6.1` is added to `CHANGELOG.md` on `main` | The release workflow writes `VERSION` = 1.6.1 itself and creates the release `v1.6.1` |

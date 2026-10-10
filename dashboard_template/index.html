@@ -84,6 +84,11 @@ select, input[type=search] { font:inherit; font-weight:400; padding:.45rem .6rem
 .chip .n { font-family:var(--mono); font-size:.8em; opacity:.8; margin-left:.3rem; }
 .btn { font:inherit; font-size:.9rem; padding:.4rem .9rem; border-radius:8px; border:1px solid var(--accent); background:transparent; color:var(--accent); cursor:pointer; }
 .btn:disabled { opacity:.6; cursor:default; }
+.reset-note { border-left-color:#b3261e; }
+.btn-reset { background:#b3261e; border-color:#b3261e; color:#fff; font-weight:600; padding:.55rem 1.2rem; animation:jp-pulse 1.4s ease-in-out infinite; }
+.btn-reset:hover { background:#8f1d17; }
+@keyframes jp-pulse { 0%,100% { box-shadow:0 0 0 0 rgba(179,38,30,.55); } 50% { box-shadow:0 0 0 .55rem rgba(179,38,30,0); opacity:.85; } }
+@media (prefers-reduced-motion: reduce) { .btn-reset { animation:none; } }
 .count { color:var(--muted); font-size:.9rem; margin:0 0 .75rem; }
 
 details.year, details.month { margin:0 0 1rem; }
@@ -164,7 +169,7 @@ td.time { font-family:var(--mono); white-space:nowrap; color:var(--muted); } td 
 <h1 data-i="title"></h1>
 <p class="lead" data-i="lead"></p>
 <div class="pills" id="meta"></div>
-<div class="notice" id="demo-note" hidden><p data-i="demo"></p><p><button type="button" class="btn" id="clear-sample" data-i="sample_clear"></button></p></div>
+<div class="notice reset-note" id="demo-note" hidden><p data-i="demo"></p><p><button type="button" class="btn btn-reset" id="clear-sample" data-i="sample_clear"></button></p></div>
 </div>
 
 <section class="empty" id="err" role="alert" hidden></section>
@@ -260,7 +265,7 @@ td.time { font-family:var(--mono); white-space:nowrap; color:var(--muted); } td 
   var LANGS = ["en", "ru", "de", "uk"];
   var LOCALE = { en: "en-GB", ru: "ru-RU", de: "de-DE", uk: "uk-UA" };
   var SCHEMA = "1.4";
-  var STORE = "homensai.jp.sampleCleared";
+  var STORE = "homensai.jp.sampleCleared:" + location.pathname;  // per copy of the page: a new download shows the sample again
   var DAY = 86400000;
   var MAX_MONTHS = 600;
   var STATUSES = ["prepared", "scheduled", "not_sent", "sent_waiting", "email_not_found", "documents_requested", "meeting_invited",
@@ -285,8 +290,8 @@ td.time { font-family:var(--mono); white-space:nowrap; color:var(--muted); } td 
     en: {
       title: "Applications and answers", eyebrow: "Statistics", skip: "Skip to content",
       lead: "All applications and employer answers, grouped by year, month and day, with monthly results at a cutoff. Sort, filter and search. The page only shows a snapshot; the agent updates the data.",
-      demo: "Sample data: the companies and results below are invented to show how the page works. Press the button to clear them; the real snapshot from the agent replaces them.",
-      sample_clear: "Clear sample data", sample_cleared: "Sample data cleared",
+      demo: "This page shows an invented example so you can see how it works. Before you start using the statistics, press the red “Reset sample” button once: the example disappears and the page is ready for your own data. After that the button is gone.",
+      sample_clear: "Reset sample", sample_cleared: "Sample data cleared",
       meta_profile: "Profile", meta_tz: "Time zone", meta_snapshot: "Snapshot", meta_old: "Snapshot is {d} days old",
       period_h: "Monthly report (results by the state at the cutoff)", period_sel: "Report month",
       cutoff_line: "{m} · Cutoff: {c} · source revision {r} · time zone {tz}", cut_end: "end of the month", cut_snap: "snapshot time {t}",
@@ -361,8 +366,8 @@ td.time { font-family:var(--mono); white-space:nowrap; color:var(--muted); } td 
     ru: {
       title: "Заявки и ответы", eyebrow: "Статистика", skip: "Перейти к содержимому",
       lead: "Все заявки и ответы работодателей по годам, месяцам и дням, с результатами месяцев на срез. Сортировка, фильтры и поиск. Страница только показывает снимок; данные обновляет агент.",
-      demo: "Примеры данных: компании и результаты придуманы, чтобы показать работу страницы. Кнопка очищает их; настоящий снимок от агента заменяет их.",
-      sample_clear: "Очистить примеры", sample_cleared: "Примеры очищены",
+      demo: "Сейчас на странице придуманный пример, чтобы было видно, как она работает. Перед тем как пользоваться статистикой, один раз нажмите красную кнопку «Сбросить пример»: пример исчезнет, и страница будет готова для ваших данных. После этого кнопка пропадёт.",
+      sample_clear: "Сбросить пример", sample_cleared: "Примеры очищены",
       meta_profile: "Профиль", meta_tz: "Часовой пояс", meta_snapshot: "Снимок", meta_old: "Снимку {d} дн.",
       period_h: "Отчёт за месяц (результаты по состоянию на срез)", period_sel: "Отчётный месяц",
       cutoff_line: "{m} · Срез: {c} · ревизия источника {r} · часовой пояс {tz}", cut_end: "конец месяца", cut_snap: "время снимка {t}",
@@ -437,8 +442,8 @@ td.time { font-family:var(--mono); white-space:nowrap; color:var(--muted); } td 
     de: {
       title: "Bewerbungen und Antworten", eyebrow: "Statistik", skip: "Zum Inhalt springen",
       lead: "Alle Bewerbungen und Antworten der Arbeitgeber, gegliedert nach Jahr, Monat und Tag, mit Monatsergebnissen zum Stichtag. Sortierung, Filter und Suche. Die Seite zeigt nur einen Snapshot; die Daten aktualisiert der Agent.",
-      demo: "Beispieldaten: Firmen und Ergebnisse sind erfunden, um die Seite zu zeigen. Die Schaltfläche löscht sie; der echte Snapshot des Agenten ersetzt sie.",
-      sample_clear: "Beispieldaten löschen", sample_cleared: "Beispieldaten gelöscht",
+      demo: "Diese Seite zeigt ein erfundenes Beispiel, damit Sie sehen, wie sie funktioniert. Bevor Sie die Statistik nutzen, drücken Sie einmal die rote Schaltfläche „Beispiel zurücksetzen“: Das Beispiel verschwindet, und die Seite ist bereit für Ihre Daten. Danach ist die Schaltfläche weg.",
+      sample_clear: "Beispiel zurücksetzen", sample_cleared: "Beispieldaten gelöscht",
       meta_profile: "Profil", meta_tz: "Zeitzone", meta_snapshot: "Snapshot", meta_old: "Snapshot ist {d} Tage alt",
       period_h: "Monatsbericht (Ergebnisse nach dem Stand zum Stichtag)", period_sel: "Berichtsmonat",
       cutoff_line: "{m} · Stichtag: {c} · Quellrevision {r} · Zeitzone {tz}", cut_end: "Monatsende", cut_snap: "Snapshot-Zeit {t}",
@@ -513,8 +518,8 @@ td.time { font-family:var(--mono); white-space:nowrap; color:var(--muted); } td 
     uk: {
       title: "Заявки і відповіді", eyebrow: "Статистика", skip: "Перейти до вмісту",
       lead: "Усі заявки й відповіді роботодавців за роками, місяцями та днями, з результатами місяців на момент зрізу. Сортування, фільтри та пошук. Сторінка показує лише знімок; дані оновлює агент.",
-      demo: "Зразкові дані: компанії та результати вигадані, щоб показати роботу сторінки. Кнопка очищає їх; справжній знімок від агента замінює їх.",
-      sample_clear: "Очистити зразкові дані", sample_cleared: "Зразкові дані очищено",
+      demo: "Зараз на сторінці вигаданий приклад, щоб було видно, як вона працює. Перш ніж користуватися статистикою, один раз натисніть червону кнопку «Скинути приклад»: приклад зникне, і сторінка буде готова для ваших даних. Після цього кнопка зникне.",
+      sample_clear: "Скинути приклад", sample_cleared: "Зразкові дані очищено",
       meta_profile: "Профіль", meta_tz: "Часовий пояс", meta_snapshot: "Знімок", meta_old: "Знімку {d} дн.",
       period_h: "Звіт за місяць (результати на момент зрізу)", period_sel: "Звітний місяць",
       cutoff_line: "{m} · Зріз: {c} · ревізія джерела {r} · часовий пояс {tz}", cut_end: "кінець місяця", cut_snap: "час знімка {t}",
@@ -1154,8 +1159,7 @@ td.time { font-family:var(--mono); white-space:nowrap; color:var(--muted); } td 
     }
     document.getElementById("demo-note").hidden = !(isSample && !cleared);
     var btn = document.getElementById("clear-sample");
-    btn.disabled = cleared;
-    btn.textContent = cleared ? t("sample_cleared") : t("sample_clear");
+    btn.textContent = t("sample_clear");
   }
   function showError() {
     document.getElementById("data-area").hidden = true;

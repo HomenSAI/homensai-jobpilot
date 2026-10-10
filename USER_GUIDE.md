@@ -484,7 +484,7 @@ Statistics distinguish the number of response messages from the number of applic
 
 A separate PDF page contains a market recommendation with its date, search radius, transport mode, verified sources, and coverage. Unavailable estimates are marked explicitly; the size of the discovered sample is not presented as the exact size of the market. Your profile's reports are stored in `Local_Data\profiles\<profile_id>\reports\<YYYY-MM>\`.
 
-**You should see:** the statistics page with years, months and days. You can try it now with sample data: [dashboard_template/index.html](dashboard_template/index.html).
+**You should see:** the statistics page with years, months and days. You can try it now with sample data: [dashboard_template/index.html](dashboard_template/index.html). The page first shows an invented example. **Before you use the statistics, press the red “Reset sample” button once:** the example disappears and the button is gone for good.
 
 ### 13. Update the package and back up your data
 

@@ -493,7 +493,7 @@ Kein Feld `group` oder `delivery`.
 - Sortierung und Filter (§4).
 - Eine Aktualitätswarnung, wenn der Snapshot zwei oder mehr Tage alt ist; 1.4 zeigt `last_mail_check_at` nicht, daher ist die Mail-Aktualität aus §16.3 noch nicht sichtbar.
 - Sprache aus dem URL-Parameter `lang`, sonst `default_language`, sonst `en`; Namen und Notizen unübersetzt.
-- Mit `demo` `true`: ein Hinweis und eine Schaltfläche „Beispieldaten löschen“, die das Beispiel nur in diesem Browser löscht; ein echter Snapshot (`demo` `false`) wird nie gelöscht.
+- Mit `demo` `true`: ein Hinweis mit einer roten, pulsierenden Schaltfläche „Beispiel zurücksetzen“ (ohne Pulsieren bei reduzierter Bewegung); ein Druck löscht das Beispiel für diese Kopie der Seite in diesem Browser, danach verschwinden Hinweis und Schaltfläche dauerhaft; sie löscht das Beispiel nur in diesem Browser löscht; ein echter Snapshot (`demo` `false`) wird nie gelöscht.
 - Browserspeicher: nur Farbschema und das Kennzeichen „Beispiel gelöscht“; keine Datei geschrieben, keine Netzwerkanfrage.
 
 ### 9.6 Prüfung und Schreibverfahren des Agenten

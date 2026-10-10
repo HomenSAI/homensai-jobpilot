@@ -510,7 +510,7 @@ Die Statistik unterscheidet die Zahl der Antwortnachrichten von der Zahl der Bew
 
 Eine separate PDF-Seite enthält eine Marktempfehlung mit Datum, Suchradius, Verkehrsmittel, geprüften Quellen und Abdeckung. Nicht verfügbare Schätzungen werden ausdrücklich gekennzeichnet; die Größe der gefundenen Stichprobe wird nicht als genaue Größe des Marktes dargestellt. Die Berichte Ihres Profils werden in `Local_Data\profiles\<profile_id>\reports\<YYYY-MM>\` gespeichert.
 
-**Sie sollten sehen:** die Statistikseite mit Jahren, Monaten und Tagen. Sie können sie jetzt mit Beispieldaten ausprobieren: [dashboard_template/index.html](../../dashboard_template/index.html).
+**Sie sollten sehen:** die Statistikseite mit Jahren, Monaten und Tagen. Sie können sie jetzt mit Beispieldaten ausprobieren: [dashboard_template/index.html](../../dashboard_template/index.html). Zuerst zeigt die Seite ein erfundenes Beispiel. **Bevor Sie die Statistik nutzen, drücken Sie einmal die rote Schaltfläche „Beispiel zurücksetzen“:** Das Beispiel verschwindet, die Schaltfläche ebenfalls dauerhaft.
 
 ### 13. Das Paket aktualisieren und Ihre Daten sichern
 

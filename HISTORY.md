@@ -2,6 +2,7 @@
 
 Short summary of every release in plain words. Technical details are in CHANGELOG.md. One line per release: `- version | date | text`.
 
+- 1.23.1 | 10 October 2026 | The statistics page shows the example again after download; a red “Reset sample” button clears it once and then disappears.
 - 1.23.0 | 10 October 2026 | All folders have English names now; a table explains each name in Russian, German and Ukrainian.
 - 1.22.3 | 10 October 2026 | Ready for public access: developer notes moved aside, and anyone may use JobPilot for their own job search.
 - 1.22.2 | 10 October 2026 | The author page shows the HomenS.AI robot next to the heading.
