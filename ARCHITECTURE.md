@@ -66,7 +66,7 @@ Instruction files (Markdown, not code; drafts that have not yet been tried in pr
     3_Шаблон_отчёта/                # optional report template
   persons/<person_id>/
     База_знаний/Жизнеописание.md    # the knowledge base: the person's life story as confirmed facts
-    journal/transactions.jsonl       # sole authoritative journal
+    journal/transactions-YYYY-MM.jsonl  # sole authoritative journal, monthly segments; only the current month is written
     journal/writer.lock              # exists only while one chat is writing
     state/person.json               # person and profile-list view
     state/quota.json                # monthly counters, rebuilt from the journal
@@ -114,7 +114,7 @@ This is procedural isolation. It does not protect against another user of the sa
 
 ## 4. One line per completed action
 
-The journal is a text file with one JSON object per line. A line is written when an action is **completed**, and contains:
+The journal is a set of text files, one per month (monthly segments, rule 8), with one JSON object per line. A line is written when an action is **completed**, and contains:
 
 - `schema_version`, `sequence` (1, 2, 3 … without gaps), `action_id`, `person_id`, `recorded_at`;
 - an `events` list, each event with its own unique `event_id` (quota reservation, send start, application change, and so on);
@@ -123,18 +123,19 @@ The journal is a text file with one JSON object per line. A line is written when
 Rules for the agent:
 
 1. **Append only.** An old line is never edited or deleted. A correction is a new line that names the earlier event it replaces (`supersedes_event_id`).
-2. **Before writing:** read the last line, take the next `sequence`, and check that this `action_id` is not already in the journal. If it is, report the earlier result and do nothing else. This protects against an interrupted chat that is started again.
+2. **Before writing:** read the last line of the current segment (of the newest segment if the current one is new), take the next `sequence`, and check that this `action_id` is not already in any segment. If it is, report the earlier result and do nothing else. This protects against an interrupted chat that is started again.
 3. **Write the whole line at once**, then update the views (registry, queue, `Status.txt`, `quota.json`, statistics). If the chat stops between the two, the next chat rebuilds the views from the journal.
 4. **A damaged or half-written last line** is not repaired silently. The agent stops, keeps the file as it is, tells the user and recovers from the last complete line and the mail evidence.
 5. **One writer at a time.** Before writing a journal line, the agent takes `writer.lock` by exclusive creation, as described in section 4b. If the file belongs to another run, the agent stops and asks the user whether that chat is still working; it removes a foreign lock only after the checks in 4b. When the work is done, it deletes its own lock. The lock protects only if every chat follows this protocol and the environment provides exclusive creation; otherwise the user must keep one chat working at a time.
 6. A quota or send decision always rereads the journal; a summary from an earlier part of the chat is never trusted.
-7. **Count with the system's own tool, not by eye.** The slots used or reserved in a month are read from the journal by text search for the month fields of the quota events (formulas in DATA_CONTRACT.md §3c; commands in §4a below). The agent shows the number and how it was found. It compares the result with `quota.json`; if they differ or the file is missing, the journal is right and `quota.json` is rebuilt (`examples/quota.example.json`). The same applies to checksums of files. No script is added to the package for this.
-8. **Writing a line (one append method).** If the journal does not exist, the first line has `sequence` 1. Only the following method is used. JSON is not joined by hand, text is not written with shell redirection, and an anchored Edit call is not used to append.
-   1. Under the writer lock, read the whole journal. Note its line count and its last line (`sequence` n; n is 0 for a new journal). Check that the new `action_id` is not in the journal (rule 2).
+7. **Count with the system's own tool, not by eye.** The slots used, reserved or unverified in a month are read from all journal segments by text search for the month fields of the quota events (formulas in DATA_CONTRACT.md §3c and the free count in §5; commands in §4a below). The agent shows the number and how it was found. It compares the result with `quota.json`; if they differ or the file is missing, the journal is right and `quota.json` is rebuilt (`examples/quota.example.json`). The same applies to checksums of files. No script is added to the package for this.
+8. **Writing a line (one append method, monthly segments).** The journal is kept per month: the current segment is `journal/transactions-YYYY-MM.jsonl` (DATA_CONTRACT.md §3c). Only that segment is written; a closed segment is never edited. If no journal exists, the first line has `sequence` 1. Only the following method is used. JSON is not joined by hand, text is not written with shell redirection, and an anchored Edit call is not used to add a line.
+   1. Under the writer lock, determine the current local month M and read the whole current segment. If it does not exist, the segment is new and empty. Note its line count and its last line. Take `n`, the `sequence` of the last line of the journal: the last line of this segment or, for an empty or new segment, the last line of the newest earlier segment (n is 0 for the very first line). Check that the new `action_id` is not in any segment (rule 2).
    2. Build the new line in the key order of DATA_CONTRACT.md §3c with `sequence` n+1. Check that it is one JSON object on one line and that every identifier is a UUID in the UUID form. A failed check stops writing (step 5).
-   3. Write the whole file with the file tool, from the text read in step 1: the same lines, then exactly one new line with its line break at the end.
-   4. Read back the last two lines. The line count must have grown by exactly one; the new last line has `sequence` n+1 and the line before it has `sequence` n; both parse as JSON; and the line before the new one is byte-identical to the last line read in step 1.
-   5. A failed check stops writing. The file is kept as it is, no view is updated, no external action is taken, the lock is kept and the person is told (rule 4). The lock file has a fixed format (DATA_CONTRACT.md §3c). A check that no lock exists, followed by a separate creation, is not enough by itself (4b).
+   3. Write the whole current segment with the file tool, from the text read in step 1: the same lines (none for a new month), then exactly one new line with its line break at the end.
+   4. Read the segment back. The line count must have grown by exactly one; the text before the new line is byte-identical to the text read in step 1; the new last line parses as JSON with `sequence` n+1; and the line before it, if there is one, parses as JSON with `sequence` n.
+   5. A failed check stops writing. The segment file is kept as it is, no view is updated, no external action is taken, the lock is kept and the person is told (rule 4). Nothing is repaired by rewriting earlier lines. The lock file has a fixed format (DATA_CONTRACT.md §3c). A check that no lock exists, followed by a separate creation, is not enough by itself (4b).
+   6. Release. Only after step 4 has passed does the holder release the lock: it reads the lock file, checks that it carries its own `lock_id`, and deletes it (4b). A failed write never reaches this step.
 
 ### 4a. Commands the agent may use
 
@@ -148,13 +149,13 @@ The agent uses only commands that the person's operating system already has, typ
 | Local month of the person now | `[TimeZoneInfo]::ConvertTime([DateTimeOffset]::UtcNow,[TimeZoneInfo]::FindSystemTimeZoneById('W. Europe Standard Time')).ToString('yyyy-MM')` (the agent maps the person's IANA zone, for example `Europe/Berlin`, to the Windows name) |
 | Count events of a month | `(Select-String -Path <journal> -Pattern '"consumed_month"\s*:\s*"2026-10"' -AllMatches \| ForEach-Object { $_.Matches.Count } \| Measure-Object -Sum).Sum` (empty result means 0) |
 | Check that every journal line is valid JSON | `Get-Content <journal> \| ForEach-Object { $_ \| ConvertFrom-Json } \| Out-Null` (an error names the bad line) |
-| Last journal line | `Get-Content <journal> -Tail 1` |
-| Last two journal lines (read-back of an append, rule 8 of section 4) | `Get-Content <journal> -Tail 2` |
+| Last journal line (current segment) | `Get-Content <current segment> -Tail 1` |
+| Last two journal lines (read-back of an append, rule 8 of section 4) | `Get-Content <current segment> -Tail 2` |
 | Exclusive creation of `writer.lock` (fails if the file exists) | `[System.IO.File]::Open('<lock>', 'CreateNew', 'Write', 'None').Close()`; the one JSON line is then written into this empty file with the file tool and read back. On macOS or Linux: `set -C` (noclobber) before the creation |
 | Copy into `outbox/<send_attempt_id>/` | `Copy-Item -LiteralPath <source> -Destination <outbox folder>`, then the checksum row above for every copy |
 | DOCX and PDF creation (document tool) | The platform's document tool when the installation has one; otherwise LibreOffice in headless mode: `soffice --headless --convert-to pdf --outdir <folder> <file.docx>` for the PDF of an approved DOCX |
 
-Time-zone conversion of an old moment is not needed: months are written into the events when they happen. Text files are written with the agent's own file tool, not with shell redirection; the lock creation above is the only exception. These forms have not yet been tried on a real Windows machine; the first trial is part of the acceptance checks.
+In the table, `<journal>` is every segment `journal/transactions-*.jsonl` of the person, and `<current segment>` is the segment of the current month. Time-zone conversion of an old moment is not needed: months are written into the events when they happen. Text files are written with the agent's own file tool, not with shell redirection; the lock creation above is the only exception. These forms have not yet been tried on a real Windows machine; the first trial is part of the acceptance checks.
 
 Document packages are first prepared in a temporary folder and checked. They are then saved as a new, numbered version folder (`v001`, `v002`), and only then registered in the journal with file names, sizes and, where the system's own tools can provide it, a checksum. A package that was accepted is never changed in place: a change creates a new version and returns the application to review.
 
@@ -170,7 +171,7 @@ Document packages are first prepared in a temporary folder and checked. They are
 4. Before each write under the lock, the agent reads the lock again and confirms that it still carries its `lock_id`. If the lock has gone or changed, the write is abandoned and reported.
 5. Whether exclusive creation works in this installation is recorded in `workspace.json` under `capabilities.writer_lock` (`available`, `unavailable` or `unknown`). If the result is `unavailable` or `unknown`, the agent claims no exclusivity and starts no autonomous parallel write or external action: only one chat acts for that person, and the person is told so.
 
-**Releasing the lock.** Only the holder releases it: the agent reads the file, confirms that it carries its own `lock_id`, and deletes it. Release is never triggered by age, by another chat or by a timeout. Releasing writes no journal line.
+**Releasing the lock.** Only the holder releases it, and only after the last journal line it wrote has passed the read-back of rule 8, step 4 (a chat that wrote no line releases after its last check). The holder reads the lock file, confirms that it carries its own `lock_id`, and deletes it, as a separate step. A failed write keeps the lock and stops the chat; the lock is never deleted in the same command as a write that may have failed. The next start retakes nothing on its own: it reads the lock, and a lock whose `lock_id` and `run_id` belong to this chat's note is continued after that check (step 3 above); any other lock follows the stale-lock procedure. Release is never triggered by age, by another chat or by a timeout. Releasing writes no journal line.
 
 **Stale lock.** A lock never expires by age, and its expiry never releases a reservation. Before a lock that is not this chat's is removed, the following are needed, in this order:
 
@@ -235,17 +236,17 @@ The order below is the external action order of DATA_CONTRACT.md §5 and TODO_FO
 
 1. **Immutable package.** Create the `outbox/<send_attempt_id>/` copy of the exact files and a manifest with the SHA256 of every attachment, the recipient and the source of its address, the sending account, the subject, the body, the transport (`agent_local_run`, `gmail_scheduled` or `manual_by_person`; never two for one package) and the slot with its time zone. Read the copy back and check it against the approved package.
 2. **Consent bound to the manifest.** The approval (`package_approved`, or the approved plan with its consent) carries the manifest SHA256. Every component in step 1 must still match it. A changed component makes the earlier consent void for the new version, which needs a new approval (`approval_revoked`, `PACKAGE_CHANGED`). Then the send check runs.
-3. **Reservation and durable intent (hard gate).** Under the writer lock (4b), the chat rereads quota and history, then writes one journal line with `quota_reserved` and `send_started`. The line carries the intent, the transport, the `send_attempt_id` and the manifest SHA-256 (and the other fields of DATA_CONTRACT.md §3c). The chat reads it back under rule 8 of section 4, and then releases the lock. Immediately before step 4 it reads the last line of the journal once more: it must be this intent line, with the same `send_attempt_id` and manifest SHA-256 as the approval. **Gate:** if the write or its read-back fails, the chat stops before the lock is released, makes no external call, records nothing else and keeps the lock. If only the last-line check fails, the chat makes no external call, and the open intent is handled under 4b.
+3. **Reservation and durable intent (hard gate).** Under the writer lock (4b), the chat rereads quota and history, then writes one journal line with `quota_reserved` and `send_started`. The line carries the intent, the transport, the `send_attempt_id` and the manifest SHA-256 (and the other fields of DATA_CONTRACT.md §3c). The chat reads it back under rule 8 of section 4, and releases the lock only after that read-back passes (rule 8, step 6). Immediately before step 4 it reads the last line of the journal once more: it must be this intent line, with the same `send_attempt_id` and manifest SHA-256 as the approval. **Gate:** if the write or its read-back fails, the chat stops before the lock is released, makes no external call, records nothing else and keeps the lock. If only the last-line check fails, the chat makes no external call, and the open intent is handled under 4b.
 4. **One external call.** Exactly one, by the chat that wrote the intent. No retry in the same chat and no "second copy to be safe". Each `attempt_id` has one executor; a repeated run finds the existing attempt and reconciles it.
 5. **Reconciliation.** Search SENT or Scheduled for the exact message (account, package, recipient, slot). Found: go to step 6. Proven absent: `failed_before_send` and `quota_released` in one line. Otherwise `send_uncertain`: the reservation stays, no new external call is made, and the person decides after a check.
-6. **Record the fact.** `sent_verified` and `quota_consumed` in one line, or `gmail_scheduled_verified` for a schedule (which is not a sent event). Then update the views (6b) and create the local archive (section 12).
+6. **Record the fact.** For a `cv_submission`, `sent_verified` and `quota_consumed` in one line; a thank-you or an ordinary reply is recorded with `thank_you_sent` or `ordinary_reply_sent` (DATA_CONTRACT.md §4), never with `sent_verified`; `gmail_scheduled_verified` for a schedule (which is not a sent event). Then update the views (6b) and create the local archive (section 12).
 
 Views and reports can be rebuilt later. Losing the HTML page or `registry.json` never causes a second email.
 
 **Kinds of send and their repeat keys (F01).** Each kind of send has its own key, checked in the same journal line that starts it:
 
 - `cv_submission` (uses a slot): the same application attempt cannot be repeated. A CV sent earlier to the employer does not block a permitted follow-up.
-- `thank_you`: unique by account + incoming `gmail_message_id` + `thank_you`. A first thank-you after a sent CV is allowed; a second one for the same incoming message is not.
+- `thank_you`: unique by account + incoming `gmail_message_id` + `thank_you`. A first thank-you after a sent CV is allowed; a second one for the same incoming message is not. It is recorded as `thank_you_sent` and needs a valid `follow_up` consent (DATA_CONTRACT.md §4).
 - A period question is not a separate kind: it is an `ordinary_reply` (event `ordinary_reply_sent`), sent only after the person approves that message; it is unique by account + incoming Gmail Message-ID, and one period question is asked per thread (`thread_id`). `thank_you_sent` is the only automatic follow-up.
 - `ordinary_reply`: a reply without a CV; it uses no slot and is checked against the same thread history before it is written.
 
@@ -299,8 +300,8 @@ Daily reconciliation (R05) checks Scheduled and SENT: a scheduled message is not
 
 **Steps.**
 
-1. Copy the journal to a scratch location. Replay writes nothing into the person's journal.
-2. Validate every line: it parses, `sequence` runs without gaps, and no `event_id` or `action_id` repeats with different content (`INTEGRITY_CONFLICT`). A damaged or incomplete line stops the replay (`JOURNAL_DAMAGED`); no view is written.
+1. Copy all journal segments to a scratch location. Replay writes nothing into the person's journal.
+2. Validate every line: it parses, `sequence` runs without gaps across all segments, and no `event_id` or `action_id` repeats with different content (`INTEGRITY_CONFLICT`). A damaged or incomplete line stops the replay (`JOURNAL_DAMAGED`); no view is written.
 3. Apply the events in `sequence` order, as DATA_CONTRACT.md §3d defines them: companies and targets, routes, packages, plans and moves, cancellations, reservations and quota, consents, mail and responses, statuses, archives.
 4. Build the views in the scratch location: registry, queue, `Status.txt` entries, `quota.json` (counts as in section 4, rule 7) and `summary.js` with its `source_revision`.
 5. A file whose SHA-256 differs from the event that cites it marks the dependent view `INTEGRITY_CONFLICT`. Replay does not change the quota and does not write `approval_revoked` by itself; the agent records `approval_revoked` in a new line when the change affects an approved package.
@@ -354,7 +355,7 @@ The mail scan is a loop: read a page, save its messages, ask for the next page w
 - **Daylight saving.** A local time that is missing or repeated on a clock change is not guessed. `dst_rule` is `ask` by default; `earlier`, `later` or `next_valid` apply only if the person chose one in advance and it is written into the profile.
 - **Transport.** Each message has exactly one transport: `agent_local_run` (a local agent run at the set time), `gmail_scheduled` (Gmail Schedule send, section 6a) or `manual_by_person`. The same package is never sent by two transports.
 - **Missed runs.** A missed run creates no catch-up batch. Overdue slots are recorded as `slot_missed` (DATA_CONTRACT.md §3c) and listed, and the person agrees new slots (`plan_changed`). The reservation of a missed slot stays until the new plan or a cancellation; nothing is sent later for that slot.
-- **Quota.** Reservations are taken in the month of the actual send and count across all profiles of the person. A plan that crosses a month boundary moves its reservation only after the change in Scheduled is verified. At 44 used or reserved, no new CV is planned. The person cannot override the monthly limit in chat; any new plan, and any change of the calendar, needs a new approval (DATA_CONTRACT.md §5 and §14).
+- **Quota.** Reservations are taken in the month of the actual send and count across all profiles of the person. A plan that crosses a month boundary moves its reservation only after the change in Scheduled is verified. At 44 used, reserved or unverified (DATA_CONTRACT.md §5), no new CV is planned. The person cannot override the monthly limit in chat; any new plan, and any change of the calendar, needs a new approval (DATA_CONTRACT.md §5 and §14).
 
 ### 8b. Monthly preparation and reminder (R04)
 
@@ -419,7 +420,7 @@ persons/<person_id>/archives/
                                    # scope, local and UTC time, time zone, source_revision, files with
                                    # relative path, size and SHA-256, integrity result, referenced
                                    # immutable versions, missing_items
-    journal/transactions.jsonl     # copy of the journal up to source_revision
+    journal/transactions-YYYY-MM.jsonl  # copies of all journal segments up to source_revision
     settings/                      # profile and person settings, without secrets
     registry/                      # companies, branches, vacancies and routes
     plans/                         # plan and reservation views
@@ -433,10 +434,10 @@ Not stored: passwords, OAuth tokens, cookies, browser sessions, one-time codes, 
 
 **How it is written.**
 
-1. Fix the source revision: the last complete journal line (sequence n). Copy the journal while holding the writer lock (4b).
+1. Fix the source revision: the last complete journal line (sequence n). Copy all journal segments while holding the writer lock (4b).
 2. Write the temporary folder and compute the SHA-256 of every file with the system's own command (section 4a).
 3. Write `manifest.json`.
-4. Verify: read every file again and compare its checksum; parse every JSON and journal line; check that the journal copy ends at the stated sequence and that every line belongs to this person.
+4. Verify: read every file again and compare its checksum; parse every JSON and journal line; check that the copied segments end at the stated sequence, that their sequences have no gaps, and that every line belongs to this person.
 5. Publish: rename `_tmp_` to the final `archive_id`, atomically where the system supports it. Where it does not, the final name is used only after the check has passed.
 6. Record `backup_created` (archive_id, source revision, manifest hash). If any step fails, record `backup_failed` with the evidence and warn the person.
 
