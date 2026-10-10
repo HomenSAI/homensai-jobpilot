@@ -2,6 +2,7 @@
 
 Short summary of every release in plain words. Technical details are in CHANGELOG.md. One line per release: `- version | date | text`.
 
+- 1.18.4 | 10 October 2026 | Statistics page: the monthly-limit bar now shows used, reserved and left right on the bar.
 - 1.18.3 | 10 October 2026 | Time saved is recalculated: one application takes 30 minutes in all.
 - 1.18.2 | 10 October 2026 | Statistics page: the monthly-limit bars are smaller and the text no longer runs out of the card.
 - 1.18.1 | 10 October 2026 | Safety page: the author's name now links to his website.

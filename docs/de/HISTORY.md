@@ -2,6 +2,7 @@
 
 Kurze Zusammenfassung jeder Veröffentlichung in einfachen Worten. Technische Einzelheiten stehen in CHANGELOG.md. Eine Zeile pro Veröffentlichung: `- Version | Datum | Text`.
 
+- 1.18.4 | 10. Oktober 2026 | Statistikseite: Auf dem Balken des Monatslimits steht nun direkt, wie viel genutzt, reserviert und übrig ist.
 - 1.18.3 | 10. Oktober 2026 | Die gesparte Zeit wurde neu berechnet: Eine Bewerbung dauert insgesamt 30 Minuten.
 - 1.18.2 | 10. Oktober 2026 | Statistikseite: Die Balken des Monatslimits sind kleiner, der Text ragt nicht mehr aus der Karte.
 - 1.18.1 | 10. Oktober 2026 | Sicherheitsseite: Der Name des Autors verlinkt nun auf seine Website.

@@ -131,6 +131,9 @@ td.time { font-family:var(--mono); white-space:nowrap; color:var(--muted); } td 
 .hbar { display:grid; grid-template-columns:minmax(7rem,11rem) minmax(5rem,1fr) auto; gap:.6rem; align-items:center; margin:.45rem 0; font-size:.92rem; }
 .track { display:flex; height:.55rem; background:var(--line); border-radius:99px; overflow:hidden; }
 .track i { display:block; height:100%; }
+.hbar-q { grid-template-columns:minmax(7rem,11rem) 1fr; }
+.track-q { position:relative; height:1.7rem; border-radius:10px; }
+.track-q .track-t { position:absolute; right:.35rem; top:50%; transform:translateY(-50%); max-width:calc(100% - .7rem); padding:.05rem .55rem; background:var(--panel); color:var(--ink); border-radius:99px; font-size:.82rem; line-height:1.4; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; font-variant-numeric:tabular-nums; }
 .hbar-v { text-align:right; font-variant-numeric:tabular-nums; color:var(--muted); white-space:nowrap; min-width:0; }
 .hours-big { font-size:1.5rem; font-weight:600; letter-spacing:-.02em; margin:.2rem 0 .3rem; color:var(--ok); }
 .assume { margin:.6rem 0; } .assume summary { cursor:pointer; color:var(--accent); }
@@ -138,7 +141,7 @@ td.time { font-family:var(--mono); white-space:nowrap; color:var(--muted); } td 
 .unconf { color:var(--warn); font-weight:600; }
 .over { color:var(--bad); font-weight:600; }
 .group-h { font-size:1.3rem; margin:1.4rem 0 .2rem; letter-spacing:-.01em; border-bottom:2px solid var(--accent); padding-bottom:.2rem; }
-@media (max-width:640px) { .hbar { grid-template-columns:1fr; gap:.2rem; } .hbar-v { text-align:left; } }
+@media (max-width:640px) { .hbar, .hbar-q { grid-template-columns:1fr; gap:.2rem; } .track-q .track-t { white-space:normal; } .hbar-v { text-align:left; } }
 </style>
 </head>
 <body>
@@ -290,7 +293,7 @@ td.time { font-family:var(--mono); white-space:nowrap; color:var(--muted); } td 
       reasons_h: "Reasons for rejection (current status, applications)", r_vacancy: "Vacancy no longer available", r_cv: "CV does not match the vacancy",
       r_qual: "Qualifications do not match", r_none: "No reason given",
       quota_h: "Monthly limit (shared by all profiles of the person)", quota_note: "The numbers are the person's shared quota from the journal, for all profiles together. A missing count is shown as not confirmed, never as zero.",
-      q_counted: "counted from the journal", q_used: "used", q_res: "reserved", q_limit: "limit", q_not_conf: "not confirmed",
+      q_counted: "counted from the journal", q_used: "used", q_left: "left", q_res: "reserved", q_limit: "limit", q_not_conf: "not confirmed",
       q_unknown_note: "Free slots are not shown, because the counts for this month are not confirmed.",
       q_free_n: "Free slots: {n}", q_full: "No free slots: the limit is used up by submissions and reservations.",
       q_over: "Limit exceeded by {n}: new CV submissions are blocked. The true count is shown.",
@@ -362,7 +365,7 @@ td.time { font-family:var(--mono); white-space:nowrap; color:var(--muted); } td 
       reasons_h: "Причины отказов (текущий статус, заявки)", r_vacancy: "Вакансия больше не доступна", r_cv: "Резюме не соответствует вакансии",
       r_qual: "Квалификация не подходит", r_none: "Причина не указана",
       quota_h: "Месячный лимит (общий для всех профилей человека)", quota_note: "Числа — общая квота человека из журнала, по всем профилям вместе. Отсутствующее значение показывается как «не подтверждено», а не как ноль.",
-      q_counted: "по журналу", q_used: "использовано", q_res: "зарезервировано", q_limit: "лимит", q_not_conf: "не подтверждено",
+      q_counted: "по журналу", q_used: "использовано", q_left: "осталось", q_res: "зарезервировано", q_limit: "лимит", q_not_conf: "не подтверждено",
       q_unknown_note: "Свободные слоты не показаны: счётчики за этот месяц не подтверждены.",
       q_free_n: "Свободных слотов: {n}", q_full: "Свободных слотов нет: лимит занят отправками и резервами.",
       q_over: "Лимит превышен на {n}: новые отправки CV заблокированы. Показано фактическое число.",
@@ -434,7 +437,7 @@ td.time { font-family:var(--mono); white-space:nowrap; color:var(--muted); } td 
       reasons_h: "Absagegründe (aktueller Status, Bewerbungen)", r_vacancy: "Stelle nicht mehr verfügbar", r_cv: "Lebenslauf passt nicht zur Stelle",
       r_qual: "Qualifikation passt nicht", r_none: "Kein Grund angegeben",
       quota_h: "Monatliches Limit (gemeinsam für alle Profile der Person)", quota_note: "Die Zahlen sind das gemeinsame Kontingent der Person aus dem Journal, für alle Profile zusammen. Ein fehlender Wert wird als „nicht bestätigt“ gezeigt, nie als null.",
-      q_counted: "aus dem Journal gezählt", q_used: "genutzt", q_res: "reserviert", q_limit: "Limit", q_not_conf: "nicht bestätigt",
+      q_counted: "aus dem Journal gezählt", q_used: "genutzt", q_left: "übrig", q_res: "reserviert", q_limit: "Limit", q_not_conf: "nicht bestätigt",
       q_unknown_note: "Freie Plätze werden nicht angezeigt, weil die Zählungen für diesen Monat nicht bestätigt sind.",
       q_free_n: "Freie Plätze: {n}", q_full: "Keine freien Plätze: das Limit ist durch Einreichungen und Reservierungen belegt.",
       q_over: "Limit um {n} überschritten: neue CV-Einreichungen sind gesperrt. Die tatsächliche Zahl wird angezeigt.",
@@ -506,7 +509,7 @@ td.time { font-family:var(--mono); white-space:nowrap; color:var(--muted); } td 
       reasons_h: "Причини відмов (поточний статус, заявки)", r_vacancy: "Вакансія більше не доступна", r_cv: "CV не відповідає вакансії",
       r_qual: "Кваліфікація не відповідає", r_none: "Причину не вказано",
       quota_h: "Місячний ліміт (спільний для всіх профілів особи)", quota_note: "Числа — спільна квота особи з журналу, для всіх профілів разом. Відсутнє значення показано як «не підтверджено», а не як нуль.",
-      q_counted: "враховано з журналу", q_used: "використано", q_res: "зарезервовано", q_limit: "ліміт", q_not_conf: "не підтверджено",
+      q_counted: "враховано з журналу", q_used: "використано", q_left: "залишилось", q_res: "зарезервовано", q_limit: "ліміт", q_not_conf: "не підтверджено",
       q_unknown_note: "Вільні слоти не показано: лічильники за цей місяць не підтверджено.",
       q_free_n: "Вільних слотів: {n}", q_full: "Вільних слотів немає: ліміт вичерпано надсиланнями й резервами.",
       q_over: "Ліміт перевищено на {n}: нові подання CV заблоковано. Показано фактичну кількість.",
@@ -899,14 +902,15 @@ td.time { font-family:var(--mono); white-space:nowrap; color:var(--muted); } td 
     M.months.slice().reverse().forEach(function (mk) { var o = el("option", "", monthLabel(mk)); o.value = mk; if (mk === cur) o.selected = true; sel.appendChild(o); });
   }
   function barLine(label, q, valueText) {
-    var line = el("div", "hbar"); line.appendChild(el("span", "hbar-l", label));
-    var track = el("span", "track");
+    var line = el("div", "hbar hbar-q"); line.appendChild(el("span", "hbar-l", label));
+    var track = el("span", "track track-q");
     if (q) {
       var base = q.limit > 0 ? q.limit : 1;
       var fu = el("i", "s-wait"); fu.style.width = Math.min(100, q.u * 100 / base) + "%"; track.appendChild(fu);
       var fr = el("i", "s-res"); fr.style.width = Math.min(100 - Math.min(100, q.u * 100 / base), q.r * 100 / base) + "%"; track.appendChild(fr);
     }
-    line.appendChild(track); line.appendChild(el("span", "hbar-v", valueText)); return line;
+    track.appendChild(el("span", "track-t", valueText));
+    line.appendChild(track); return line;
   }
   function renderQuota() {
     var mk = periodMonth(), Q = quotaOf(mk);
@@ -928,7 +932,7 @@ td.time { font-family:var(--mono); white-space:nowrap; color:var(--muted); } td 
     M.months.slice().reverse().forEach(function (m) {
       var X = quotaOf(m);
       if (X.state === "unconfirmed") qm.appendChild(barLine(monthLabel(m), null, t("q_not_conf")));
-      else qm.appendChild(barLine(monthLabel(m), X, t("quota_val", { u: X.u, r: X.r })));
+      else qm.appendChild(barLine(monthLabel(m), X, t("q_used") + " " + X.u + " · " + t("q_res") + " " + X.r + " · " + t("q_left") + " " + Math.max(0, X.free) + " / " + X.limit));
     });
   }
   function renderHours() {
