@@ -52,25 +52,25 @@ Sie sind der Betreiber von **HomenS.AI JobPilot**: Der KI-Agent folgt schriftlic
 ## 4. Wo die Dinge liegen
 
 ```text
-Локальные_данные/                      # private, never published
-  workspace.json                       # stage, language, person/profile, capability checks
-  Положите_сюда/                       # what the person puts here (you only read it)
-    1_Мои_документы/                   # CVs, diplomas, certificates, references
-    2_Рассказ_о_себе/                  # the person's story: transcripts, notes, interviews
-    3_Шаблон_отчёта/                   # optional report template
-    4_Шаблон_резюме/                   # everything about your CVs, any format, old versions too; read only
-    5_Шаблон_сопроводительного_письма/ # everything about your cover letters, any format; read only
+Локальные_данные/                      # privat, wird nie veröffentlicht
+  workspace.json                       # stage, Sprache, Person/Profil, Fähigkeitsprüfungen
+  Положите_сюда/                       # was die Person hier ablegt (Sie lesen es nur)
+    1_Мои_документы/                   # Lebensläufe, Diplome, Zeugnisse, Referenzen
+    2_Рассказ_о_себе/                  # die Geschichte der Person: Abschriften, Notizen, Interviews
+    3_Шаблон_отчёта/                   # optionale Berichtsvorlage
+    4_Шаблон_резюме/                   # alles zu Ihren Lebensläufen, jedes Format, auch alte Fassungen; nur lesen
+    5_Шаблон_сопроводительного_письма/ # alles zu Ihren Anschreiben, jedes Format; nur lesen
   persons/<person_id>/
-    База_знаний/Жизнеописание.md       # the knowledge base: the person's whole life story, with confirmed facts
-    journal/transactions-YYYY-MM.jsonl # the single journal, one segment per month, split into -pN parts above 500 lines: one line per completed action
+    База_знаний/Жизнеописание.md       # die Wissensbasis: die ganze Lebensgeschichte der Person mit bestätigten Fakten
+    journal/transactions-YYYY-MM.jsonl # das einzige Journal, ein Abschnitt je Monat, ab 500 Zeilen in -pN-Teile geteilt: eine Zeile je abgeschlossener Aktion
     state/person.json · state/quota.json · outbox/
-  Resume/ · CoverLetter/               # working Word templates, made from the samples in 4_ and 5_ before any work; never edited in place
-  Applications/<YYYY>/<MM_Month>/<NNN_Company_City_Role>/   # one folder per application: Company.md, resume, letter, email text, Status.txt
-  profiles/<profile_id>/               # one search direction: profile.json, registry, runs, reports
-  dashboard/                           # per-profile statistics and readiness pages; private local links
+  Resume/ · CoverLetter/               # Arbeitsvorlagen für Word, aus der Vorlage erstellt, die die Person in 4_ oder 5_ nennt, nach der Prüfung Seite für Seite; nie direkt bearbeitet
+  Applications/<YYYY>/<MM_Month>/<NNN_Company_City_Role>/   # ein Ordner je Bewerbung: Company.md, Lebenslauf, Anschreiben, E-Mail-Text, Status.txt
+  profiles/<profile_id>/               # eine Suchrichtung: profile.json, Register, Läufe, Berichte
+  dashboard/                           # Statistik- und Bereitschaftsseiten je Profil; private lokale Links
 ```
 
-[Der Codeblock bleibt unverändert wie in der englischen Fassung. Kurz erklärt: `Локальные_данные/` ist privat und wird nie veröffentlicht; `Положите_сюда/` enthält die Dateien der Person, die Sie nur lesen; `Resume/` und `CoverLetter/` sind Ihre Arbeitsdokumente: Entwürfe und die Word-Arbeitskopie der genannten Vorlage; sie werden aus den Mustern in `4_` und `5_` erstellt und nie direkt bearbeitet.]
+[Der Codeblock behält Pfade und Aufbau der englischen Fassung; übersetzt sind nur die Kommentare. Kurz erklärt: `Локальные_данные/` ist privat und wird nie veröffentlicht; `Положите_сюда/` enthält die Dateien der Person, die Sie nur lesen; `Resume/` und `CoverLetter/` sind Ihre Arbeitsdokumente: Entwürfe und die Word-Arbeitskopie der genannten Vorlage; sie werden aus den Mustern in `4_` und `5_` erstellt und nie direkt bearbeitet.]
 
 Das Format der Wissensbasis steht in [`DATA_CONTRACT.md`](./DATA_CONTRACT.md) §3a. Das Format der Journalzeilen, die Ereignisnamen, die Zählung und die Ursachencodes stehen in [`DATA_CONTRACT.md`](./DATA_CONTRACT.md) §3c. Die Journalregeln und die erlaubten Befehle stehen in [`ARCHITECTURE.md`](./ARCHITECTURE.md) §4 und §4a. Beispieldateien liegen in `examples/`.
 

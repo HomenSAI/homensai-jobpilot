@@ -6,6 +6,13 @@ The project version is in the file [VERSION](VERSION). The project is an AI-agen
 
 Rules: `MAJOR.MINOR.PATCH`. MAJOR changes when data formats or rules change so that old data no longer fits. MINOR is a new feature or a new part of the documentation. PATCH is a fix or a wording change without new capabilities. Every change to `main` adds a line here; the number is raised when a release is made. Each release gets a git tag `vX.Y.Z`. Each entry is written in Russian first, with the English text directly below it. The same entry appears in both language files.
 
+## 1.14.2 — 10 October 2026
+
+**English.** The four editions are brought to one structure: the Russian edition gets `AGENTS.md` and `TODO_FOR_AI.md`, and its missing table rows and identifiers are restored; the German data contract is re-translated from version 1.9.0; the Ukrainian edition gets the folders 4 and 5 in its tree, install page, profile page and rules. The README and the specification now name four editions. `CLAUDE.md` stays only at the root: it is the entry file for Claude Code, not a document. This is a structural alignment without new capabilities, so the patch number is raised.
+
+- **Editions:** docs/ru (AGENTS, TODO_FOR_AI, acceptance rows), docs/de (data contract 1.9.0), docs/uk (tree, install page, profile page).
+- **Root:** the README and the specification name four editions.
+
 ## 1.14.1 — 10 October 2026
 
 **English.** The wording about the folders “4_Шаблон_резюме” and “5_Шаблон_сопроводительного_письма” is corrected: they hold all material about CVs and letters, and the Word working copy of the template the person names is made in “Resume” and “CoverLetter” after the page check. The old phrases “DOCX next to the PDF” and “converted in the same folder” are removed from the rules, the guide, the install page and the template README. This is a wording correction without new capabilities, so the patch number is raised.

@@ -14,7 +14,7 @@ JobPilot quota covers only applications managed by JobPilot: at most 44 CV-beari
 
 Project documentation **version [VERSION](VERSION)**, agent instructions, an illustrated overview and a local statistics page. The project has no separate job-search or mail-sending application: an AI agent follows the written procedures and maintains local files. The statistics view is the exception: it uses HTML, CSS and JavaScript to display an agent-prepared snapshot, sort and filter entries. It does not search, send mail, change files or call a mail API. The agent instructions remain experimental and require user review; the repository does not itself connect accounts or grant permission to send.
 
-English is the primary language at the root; the Russian edition is in `docs/ru`, the German edition in `docs/de`. All three share data formats and rules. CV, cover-letter, email and report languages are selected separately.
+English is the primary language at the root; the Russian edition is in `docs/ru`, the German edition in `docs/de`, the Ukrainian edition in `docs/uk`. All four share data formats and rules. CV, cover-letter, email and report languages are selected separately.
 
 
 | File | What it is |

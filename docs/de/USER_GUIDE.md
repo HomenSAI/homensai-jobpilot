@@ -161,7 +161,7 @@ Zwei weitere Ordner neben `Положите_сюда` enthalten Ihre **Vorlagen*
 Vorlagen: Die Quelle bleibt unverändert; die Word-Arbeitskopie der genannten Vorlage entsteht in `Resume/` bzw. `CoverLetter/` (eine eigene bearbeitbare DOCX), jede Seite wird visuell verglichen und vor Verwendung freigegeben. Ist die Konvertierung nicht verfügbar, meldet der Agent dies und bietet manuelle Konvertierung oder einen freigegebenen Neuaufbau an. Quell-/DOCX-Pfade, Hashes und Prüfzeiten werden pro Profil gespeichert; jede Stelle erhält eigene Dateien. Siehe „Vorlagen für Lebenslauf und Anschreiben“ in den [Arbeitsregeln](OPERATING_REQUIREMENTS.md).
 
 
-Jede Bewerbung, die der Agent vorbereitet, bekommt einen eigenen Ordner, `Локальные_данные\Applications\<Jahr>\<NN_Monat>\<NNN_Firma_Ort_Stelle>`, mit den Firmendaten, Lebenslauf und Anschreiben, dem E-Mail-Text und einer Statusdatei (`Status.txt`), die jeden Schritt festhält: prepared, sent, waiting, rejected, invited. [Die Statuswerte bleiben englisch, wie in der Statusdatei.]
+Jede Bewerbung, die der Agent vorbereitet, bekommt einen eigenen Ordner, `Локальные_данные\Applications\<year>\<NN_Month>\<NNN_Company_City_Role>`, mit den Firmendaten, Lebenslauf und Anschreiben, dem E-Mail-Text und einer Statusdatei (`Status.txt`), die jeden Schritt festhält: prepared, sent, waiting, rejected, invited. [Die Statuswerte bleiben englisch, wie in der Statusdatei.]
 
 **Erzählen Sie Ihre Geschichte per Sprache.** (1) Öffnen Sie einen Chat mit Claude oder ChatGPT und schalten Sie den Sprachmodus ein (das Mikrofonsymbol). (2) Sagen Sie: „I will tell you about myself for my CV. Ask me questions one topic at a time. At the end write down my story word for word, adding nothing, as a text file.“ Sie können die Fragen aus `Вопросы_для_рассказа.md` einfügen. (3) Sprechen Sie so lange Sie möchten, in Teilen, an verschiedenen Tagen, in beliebiger Reihenfolge; wenn Sie sich an etwas nicht erinnern, sagen Sie es. (4) Speichern Sie die Textdatei in `2_Рассказ_о_себе`. **Oder bereiten Sie nichts vor:** Starten Sie bei Schritt 6 den Agenten im Projektordner und sagen Sie, dass Sie von sich erzählen möchten, per Sprache oder als Text; er stellt die Fragen einzeln nach Themen, speichert Ihre Antworten wortwörtlich und schreibt daraus Ihre Wissensbasis.
 
@@ -229,7 +229,7 @@ Wenn Codex in der Oberfläche nicht erscheint, prüfen Sie, ob die Funktion für
 
 1. Öffnen Sie das Projekt-Repository auf GitHub im Browser: <https://github.com/HomenSAI/homensai-jobpilot>. Verwenden Sie das Release-Archiv, das dort angeboten wird, sobald das erste Release veröffentlicht ist.
 2. Wählen Sie auf der Repository-Seite **Code → Download ZIP**.
-3. Legen Sie im Explorer einen Ordner an, zum Beispiel `Dokumente\HomenSAI-JobPilot`.
+3. Legen Sie im Explorer einen Ordner an, zum Beispiel `Documents\HomenSAI-JobPilot`. Auf einem deutschsprachigen Windows heißt der Ordner „Dokumente“ und der Pfad lautet dann `Dokumente\HomenSAI-JobPilot`; wichtig ist nur, dass Sie den Ordner selbst wiederfinden.
 4. Entpacken Sie das ZIP in diesen Ordner. Prüfen Sie, dass er `README.md`, `USER_GUIDE.md`, `AI_BUILD_SPEC.md`, `AGENTS.md`, `CLAUDE.md`, `TODO_FOR_AI.md` und `dashboard_template` enthält.
 5. Entpacken Sie das Archiv nicht in einen Windows-Systemordner. Wenn Sie den Arbeitsordner nach der Einrichtung verschieben, aktualisieren Sie seinen Pfad in Codex.
 
@@ -243,12 +243,12 @@ Der entpackte Ordner enthält sowohl die Projektanweisungen als auch lokale Arbe
 
 1. Öffnen Sie **Projects** in Codex.
 2. Wählen Sie den Befehl zum Hinzufügen eines lokalen Projekts oder Ordners, etwa **Add local project** oder **Open folder**. Der genaue Name hängt von der Version der Anwendung ab.
-3. Wählen Sie den vollständigen Pfad zum entpackten Projektordner, zum Beispiel `C:\Users\IhrName\Documents\HomenSAI-JobPilot`.
+3. Wählen Sie den vollständigen Pfad zum entpackten Projektordner, zum Beispiel `C:\Users\YourName\Documents\HomenSAI-JobPilot` (ersetzen Sie `YourName` durch Ihren Windows-Benutzernamen).
 4. Wenn Sie bereits ein Projekt angelegt haben, öffnen Sie dessen Menü → **Edit project → Add folder**, wählen Sie den entpackten Ordner und dann **Make primary**.
 5. Benennen Sie das Projekt, zum Beispiel **Job search**.
 6. Prüfen Sie, dass der Hauptordner der Ordner mit den JobPilot-Dateien ist, nicht eine einzelne Datei und nicht ein übergeordneter Ordner mit fremden Daten.
 
-Dem Chat zu sagen „arbeite im Pfad …“ reicht nicht. Der Ordner muss tatsächlich als lokaler Projektordner geöffnet oder angehängt sein. Legen Sie kein gewöhnliches ChatGPT-Projekt ohne angehängten lokalen Ordner an. Die offiziellen Anleitungen finden Sie unter [lokale Projekte und das Hinzufügen von Ordnern](https://learn.chatgpt.com/docs/projects).
+Dem Chat zu sagen „arbeite im Pfad `…`“ reicht nicht. Der Ordner muss tatsächlich als lokaler Projektordner geöffnet oder angehängt sein. Legen Sie kein gewöhnliches ChatGPT-Projekt ohne angehängten lokalen Ordner an. Die offiziellen Anleitungen finden Sie unter [lokale Projekte und das Hinzufügen von Ordnern](https://learn.chatgpt.com/docs/projects).
 
 **Sie sollten sehen:** das Projekt in der Liste, mit dem Ordner, der `README.md` enthält, als Hauptordner.
 
@@ -306,7 +306,7 @@ Ab hier führt der Agent. Es gibt kein Formular: Er stellt eine Frage nach der a
 
 Speichern Sie nie Passwörter, Einmalcodes oder OAuth-Tokens in einer Datei. Private Notizen bleiben als sensibel markiert und gelangen nur mit Ihrer ausdrücklichen Wahl in einen Lebenslauf. Prüfen Sie, dass `Локальные_данные/` von der Veröffentlichung ausgeschlossen ist. Mehrere Suchrichtungen einer Person teilen sich ein Limit von 44 Bewerbungen pro Monat.
 
-**Sie sollten sehen:** die Datei `Локальные_данные\persons\<Ihre ID>\База_знаний\Жизнеописание.md` mit Ihrer Lebensgeschichte als Fakten, jeder als `confirmed` oder `self-reported` markiert, und die Datei `Локальные_данные\profiles\<Richtung>\profile.json` mit Ihren Sucheinstellungen. Beide können Sie in jedem Texteditor öffnen und lesen.
+**Sie sollten sehen:** die Datei `Локальные_данные\persons\<your id>\База_знаний\Жизнеописание.md` mit Ihrer Lebensgeschichte als Fakten, jeder als `confirmed` oder `self-reported` markiert, und die Datei `Локальные_данные\profiles\<direction>\profile.json` mit Ihren Sucheinstellungen. Beide können Sie in jedem Texteditor öffnen und lesen.
 
 ### 8. Gmail über einen freigegebenen Connector oder den integrierten Browser verbinden
 
