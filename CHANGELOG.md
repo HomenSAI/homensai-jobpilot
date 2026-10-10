@@ -6,6 +6,18 @@ The project version is in the file [VERSION](VERSION). The project is an AI-agen
 
 Rules: `MAJOR.MINOR.PATCH`. MAJOR changes when data formats or rules change so that old data no longer fits. MINOR is a new feature or a new part of the documentation. PATCH is a fix or a wording change without new capabilities. Every change to `main` adds a line here; the number is raised when a release is made. Each release gets a git tag `vX.Y.Z`. **Language rule (from 1.22.0, for all HomenS.AI repositories):** every entry is written in English first, and the same text in Russian directly below it (`**English.**` block, then `**Русский.**` block, each with its own bullet list). The GitHub release notes are taken from this section, so every release reads English first, Russian below. The same bilingual entry appears in `CHANGELOG.md` and `docs/ru/CHANGELOG.md`. Entries before 1.22.0 are kept as they were written.
 
+## 1.22.1 — 10 October 2026
+
+**English.** The Russian, German and Ukrainian editions of the six instruction files are translated anew from the shorter 1.22.0 English text (same headings, tables and technical names in all four languages). Several overview pages are rewritten in plain words for people who are not programmers: the CV and cover-letter templates (steps, two cards and a short explanation of every link), the rules for the facts of the knowledge base, the monthly report and the journal. No rule changed, so the patch number is raised.
+
+- **Translations:** `docs/ru|de|uk`: AGENTS, TODO_FOR_AI, OPERATING_REQUIREMENTS, DATA_CONTRACT, ARCHITECTURE, AI_BUILD_SPEC; links to the templates section point to the translated headings.
+- **Pages:** `overview_install.html`, `overview_profile.html`, `overview_architecture.html`; four languages.
+
+**Русский.** Русская, немецкая и украинская редакции шести файлов инструкций переведены заново с короткого английского текста 1.22.0 (те же заголовки, таблицы и технические названия на всех четырёх языках). Несколько страниц обзора переписаны простыми словами для людей, которые не программисты: шаблоны резюме и сопроводительного письма (шаги, две карточки и короткое пояснение к каждой ссылке), правила для фактов базы знаний, ежемесячный отчёт и журнал. Правила не менялись, поэтому повышен номер исправления.
+
+- **Переводы:** `docs/ru|de|uk`: AGENTS, TODO_FOR_AI, OPERATING_REQUIREMENTS, DATA_CONTRACT, ARCHITECTURE, AI_BUILD_SPEC; ссылки на раздел о шаблонах ведут на переведённые заголовки.
+- **Страницы:** `overview_install.html`, `overview_profile.html`, `overview_architecture.html`; четыре языка.
+
 ## 1.22.0 — 10 October 2026
 
 **English.** The instructions for the agent are half as long and say each rule once. The six instruction files shrank from 423 KB to 242 KB: every rule now lives in one place, and other files point to it instead of repeating it in other words. The agent reads `AGENTS.md`, `TODO_FOR_AI.md` and `OPERATING_REQUIREMENTS.md` at the start (about 75 KB instead of the whole set); `DATA_CONTRACT.md` and `ARCHITECTURE.md` are its reference by section; `AI_BUILD_SPEC.md` is the description for people. No feature was removed. Errors found in the review are fixed at the same time:

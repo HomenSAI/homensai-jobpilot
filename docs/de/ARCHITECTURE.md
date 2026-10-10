@@ -229,7 +229,7 @@ Ein Bericht wird einmal gezählt, an einer festen Journalposition; DOCX/PDF und 
 - `format_version` von `workspace.json` ist 1.4: der Aufbau der Datei des Arbeitsbereichs (DATA_CONTRACT.md §1).
 - `schema_version` einer Journalzeile ist 1.2 (der Zeilenaufbau, DATA_CONTRACT.md §3c); `registry.json` verwendet ebenfalls 1.2.
 
-Eine Nummer ändert sich nur mit ihrem eigenen Format; neue Ereignisnamen kommen hinzu, ohne andere zu ändern. Ordner der Nutzer werden nie überschrieben: Eine Migration arbeitet auf einer getrennten Kopie mit Bericht, behält alte Kennungen und Einträge und braucht die Zustimmung der Person (Journal in einer Datei: „Altes Journal“ [Legacy journal], DATA_CONTRACT.md §3d). Öffentliche Beispiele sind synthetisch.
+Eine Nummer ändert sich nur mit ihrem eigenen Format; neue Ereignisnamen kommen hinzu, ohne andere zu ändern. Ordner der Nutzer werden nie überschrieben: Eine Migration arbeitet auf einer getrennten Kopie mit Bericht, behält alte Kennungen und Einträge und braucht die Zustimmung der Person (Journal in einer Datei: „Altjournal“ [Legacy journal], DATA_CONTRACT.md §3d). Öffentliche Beispiele sind synthetisch.
 
 Der erste Versuch ist ein manueller Durchgang mit synthetischen Daten: Profil → Zielfirma → Paket → Plan → simulierte Antwort → Bericht und Offline-HTML; Lesen und Senden über Gmail kommen später, und die Tests für unterbrochene Arbeit und zwei parallele Chats kommen vor jedem terminierten Versand. Die Abnahme braucht festgehaltene Nachweise (ACCEPTANCE_TESTS.md).
 
