@@ -128,10 +128,10 @@ td.time { font-family:var(--mono); white-space:nowrap; color:var(--muted); } td 
 .s-pos { background:var(--ok); } .s-wait { background:var(--accent); } .s-rej { background:var(--bad); } .s-err { background:var(--warn); } .s-res { background:var(--gold); }
 .legend { list-style:none; padding:0; margin:.7rem 0 0; display:grid; gap:.3rem; color:var(--muted); font-size:.92rem; }
 .key { display:inline-block; width:.8rem; height:.8rem; border-radius:3px; margin-right:.45rem; vertical-align:-.05rem; }
-.hbar { display:grid; grid-template-columns:minmax(9rem,16rem) 1fr minmax(6rem,9rem); gap:.6rem; align-items:center; margin:.45rem 0; font-size:.92rem; }
-.track { display:flex; height:.75rem; background:var(--line); border-radius:99px; overflow:hidden; }
+.hbar { display:grid; grid-template-columns:minmax(7rem,11rem) minmax(5rem,1fr) auto; gap:.6rem; align-items:center; margin:.45rem 0; font-size:.92rem; }
+.track { display:flex; height:.55rem; background:var(--line); border-radius:99px; overflow:hidden; }
 .track i { display:block; height:100%; }
-.hbar-v { text-align:right; font-variant-numeric:tabular-nums; color:var(--muted); white-space:nowrap; }
+.hbar-v { text-align:right; font-variant-numeric:tabular-nums; color:var(--muted); white-space:nowrap; min-width:0; }
 .hours-big { font-size:1.5rem; font-weight:600; letter-spacing:-.02em; margin:.2rem 0 .3rem; color:var(--ok); }
 .assume { margin:.6rem 0; } .assume summary { cursor:pointer; color:var(--accent); }
 .assume ul { color:var(--muted); margin:.4rem 0 0 1.2rem; padding:0; }
