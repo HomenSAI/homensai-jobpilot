@@ -3,7 +3,7 @@
   "example_only": true,
   "_notice": "Copyright (c) 2026 Serhii Khomenko. HomenS.AI JobPilot. https://homensai.com/ . Documentation example: CC BY-NC 4.0. This is the structure of Локальные_данные/workspace.json; the agent creates it in step A1 of TODO_FOR_AI.md.",
   "workspace_id": "00000000-0000-4000-8000-000000000001",
-  "format_version": "1.5",
+  "format_version": "1.4",
   "language": "ru",
   "stage": "new",
   "run_id": null,
@@ -77,6 +77,7 @@
     }
   },
   "_allowed_values": {
+    "format_version": "1.4 = the layout version of this file (DATA_CONTRACT.md section 1); it is neither the documentation version (VERSION file, now 1.6.0) nor a record schema_version (ARCHITECTURE.md section 10)",
     "stage": [
       "new",
       "consent_given",
