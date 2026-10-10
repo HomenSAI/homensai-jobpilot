@@ -6,6 +6,18 @@
 
 Правила: `MAJOR.MINOR.PATCH`. MAJOR меняется, когда формат данных или правила изменились так, что старые данные не подходят. MINOR — новая функция или новая часть документации. PATCH — исправление или правка формулировок без новых возможностей. Каждое изменение в `main` добавляет строку сюда; номер повышается при выпуске. Каждый выпуск получает git-тег `vX.Y.Z`. Каждая запись пишется сначала по-русски, ниже — по-английски. Одна и та же запись есть в обоих файлах.
 
+## 1.11.0 — 10.10.2026
+
+**Русский.** Страницы обзора получили иконку сайта — логотип HomenS.AI, который показывается во вкладке браузера. На странице архитектуры добавлены четыре интерактивные схемы: путь одной заявки, ворота отправки, дневной и месячный лимит, деление журнала на части. Схемы только показывают правила; ничего не отправляют и не меняют файлы. Это новая часть документации, поэтому номер минорной версии повышен.
+
+- **Страницы:** иконка (`assets/logo.svg`) на всех страницах обзора в трёх языках; общие стили для интерактивных схем в `assets/site.css`.
+- **Схемы:** интерактивный раздел 04 на странице архитектуры (EN, RU, DE).
+
+**English.** The overview pages now show the site icon, the HomenS.AI logo, in the browser tab. The architecture page has four interactive diagrams: the path of one application, the send gate, the daily and monthly limits, and the split of the journal into parts. The diagrams only explain the rules; they send nothing and change no file. This is a new part of the documentation, so the minor number is raised.
+
+- **Pages:** the icon (`assets/logo.svg`) on all overview pages in three languages; shared styles for the diagrams in `assets/site.css`.
+- **Diagrams:** interactive section 04 on the architecture page (EN, RU, DE).
+
 ## 1.10.0 — 10.10.2026
 
 **Русский.** Завершён выбор шаблонов и уточнена область квоты по указанию владельца. Самостоятельные отправки пользователя не занимают 44 CV-слота JobPilot; ручной запасной способ для пакета JobPilot учитывается. Две подряд управляемые CV-подачи на один нормализованный адрес запрещены; допустимые ответы без CV сохраняют собственные правила.

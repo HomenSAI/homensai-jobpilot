@@ -108,6 +108,169 @@
 </ul></div>
 </section>
 
+<section id="interactive">
+<div class="sec-head"><div class="num">04 · Интерактив</div><h2>Как агент работает, шаг за шагом</h2><p>Четыре схемы, на которые можно нажимать. Они показывают правила, которым следует агент. Ничто на этой странице не отправляет почту и не меняет файлы.</p></div>
+
+<div class="widget" aria-labelledby="t-life">
+<h3 id="t-life">1 · Жизнь одной заявки</h3>
+<p class="hint">Нажмите этап, чтобы увидеть, что там делает агент, какое событие журнала он записывает и где останавливается.</p>
+<div class="choice-row" role="group" aria-label="Этапы заявки">
+<button type="button" class="choice-btn" data-stage="0" aria-pressed="true">Поиск</button>
+<button type="button" class="choice-btn" data-stage="1" aria-pressed="false">Карточка компании</button>
+<button type="button" class="choice-btn" data-stage="2" aria-pressed="false">Пакет</button>
+<button type="button" class="choice-btn" data-stage="3" aria-pressed="false">Одобрение</button>
+<button type="button" class="choice-btn" data-stage="4" aria-pressed="false">Отправка</button>
+<button type="button" class="choice-btn" data-stage="5" aria-pressed="false">Ответ</button>
+<button type="button" class="choice-btn" data-stage="6" aria-pressed="false">Статус</button>
+<button type="button" class="choice-btn" data-stage="7" aria-pressed="false">Отчёт</button>
+</div>
+<div class="out" aria-live="polite"><strong id="life-title"></strong><p id="life-do"></p><p class="ev" id="life-ev"></p><p class="stop" id="life-stop"></p></div>
+</div>
+
+<div class="widget" aria-labelledby="t-gate">
+<h3 id="t-gate">2 · Ворота отправки</h3>
+<p class="hint">Выберите шаг, на котором происходит сбой, или «нет». Затем нажмите <em>Следующий шаг</em>. Цепочка останавливается на первом сбое, и без строки намерения внешний вызов не происходит.</p>
+<label for="gate-fail">Сбой на шаге</label>
+<select id="gate-fail">
+<option value="0">нет</option>
+<option value="1">1 · Неизменяемый пакет</option>
+<option value="2">2 · Согласие, привязанное к манифесту</option>
+<option value="3">3 · Резервирование и строка намерения</option>
+<option value="4">4 · Один внешний вызов</option>
+<option value="5">5 · Сверка</option>
+<option value="6">6 · Зафиксированный факт</option>
+</select>
+<div class="choice-row"><button type="button" class="choice-btn" id="gate-next">Следующий шаг</button><button type="button" class="choice-btn" id="gate-reset">Сбросить</button></div>
+<ol class="flow" id="gate-flow"></ol>
+<div class="out" aria-live="polite"><p id="gate-out"></p></div>
+</div>
+
+<div class="widget" aria-labelledby="t-quota">
+<h3 id="t-quota">3 · Дневной и месячный лимиты</h3>
+<p class="hint">Дневной максимум выбирает человек: от 1 до 43. Месячный лимит в 44 никогда не меняется.</p>
+<label for="q-day">Дневной максимум: <output id="q-count" for="q-day">2</output></label>
+<input type="range" id="q-day" min="1" max="43" value="2">
+<div class="bar" aria-hidden="true"><span id="q-bar"></span></div>
+<div class="out" aria-live="polite"><p id="q-out"></p></div>
+</div>
+
+<div class="widget" aria-labelledby="t-journal">
+<h3 id="t-journal">4 · Сегменты журнала</h3>
+<p class="hint">Месяц — один файл, пока в нём не набралось 500 строк. Затем его продолжают пронумерованные части. Закрытая часть никогда не редактируется.</p>
+<label for="j-lines">Строк, записанных в этом месяце: <output id="j-count" for="j-lines">620</output></label>
+<input type="range" id="j-lines" min="0" max="1500" step="10" value="620">
+<div class="parts" id="j-parts"></div>
+<div class="out" aria-live="polite"><p id="j-out"></p></div>
+</div>
+</section>
+<script>
+(function () {
+  'use strict';
+  var LIMIT = 44, MONTH = 'transactions-2026-10', SIZE = 500;
+  // Labels and texts are kept in one place so that the other language editions can mirror them.
+  var L = { event: 'Событие журнала:', stops: 'Останавливается, если:', lastOk: 'Все шесть шагов выполнены. Факт записан.', start: 'Нажмите «Следующий шаг», чтобы запустить цепочку.' };
+  var STAGES = [
+    { t: 'Поиск', d: 'Агент ищет вакансии в выбранном радиусе, сначала ближайшие, и проверяет реальную дорогу выбранным транспортом.', ev: 'пока нет', stop: 'Без подтверждённого адреса e-mail компания остаётся в реестре, но пакет не готовится и слот не резервируется.' },
+    { t: 'Карточка компании', d: 'Файл Company.md в папке заявки фиксирует адрес, его источник, дату проверки, требования и маршрут.', ev: 'company_registered', stop: 'Вторая заявка в ту же компанию требует решения человека.' },
+    { t: 'Пакет', d: 'Резюме, сопроводительное письмо и текст письма пишутся только из подтверждённых фактов, затем проверяются: даты, получатель, вложения и чувствительные данные.', ev: 'package_registered', stop: 'Пропущенное поле или непроверенный чувствительный пункт означают, что пакет не регистрируется.' },
+    { t: 'Одобрение', d: 'Человек видит точный пакет на карточке отправки или утверждает месячный план. Более раннее «одобрено» не считается.', ev: 'package_approved', stop: 'Любое изменение файла или получателя после одобрения делает его недействительным.' },
+    { t: 'Отправка', d: 'Строка намерения (резервирование и send_started) записывается и читается обратно до единственного внешнего вызова.', ev: 'quota_reserved, send_started, затем sent_verified и quota_consumed', stop: 'Если запись или обратное чтение не удались, ничего не отправляется. Неопределённый результат блокирует новые отправки, пока не проверены SENT и Scheduled.' },
+    { t: 'Ответ', d: 'Весь тред читается целиком. Приглашения, вопросы и запросы документов передаются человеку как needs_user. Автоматические ответы только фиксируются.', ev: 'mail_received, mail_checked', stop: 'Агент никогда не отвечает работодателю автоматически и никогда не удаляет и не архивирует почту в Gmail.' },
+    { t: 'Статус', d: 'Статус в Status.txt и на странице статистики меняется только по записанному событию, с кодами из контракта данных.', ev: 'status_recorded', stop: 'Если смысл неясен, статус остаётся прежним, а случай передаётся человеку.' },
+    { t: 'Отчёт', d: 'Месячные цифры считаются один раз от фиксированной позиции журнала и одинаково показываются на странице, в DOCX и в PDF.', ev: 'report_built, statistics_updated', stop: 'Если одного из шести значений минут нет, снимок статистики не записывается.' }
+  ];
+  var GATE = [
+    { t: 'Неизменяемый пакет', d: 'Копия точных файлов в outbox, с SHA-256 каждого вложения, получателем, учётной записью, темой, текстом, способом передачи и слотом.', out: 'Остановлено на шаге 1. Ничего не отправлено. Одобрение не используется.' },
+    { t: 'Согласие, привязанное к манифесту', d: 'Одобрение должно совпадать с манифестом. Иначе согласие недействительно.', out: 'Остановлено на шаге 2. Ничего не отправлено. Одобрение не совпадает с пакетом, поэтому оно недействительно (PACKAGE_CHANGED).' },
+    { t: 'Резервирование и строка намерения', d: 'quota_reserved и send_started записываются одной строкой и читаются обратно как последняя строка журнала.', out: 'Остановлено на шаге 3. Внешний вызов не сделан. Если запись или обратное чтение не удались, блокировка сохраняется и человеку сообщают.' },
+    { t: 'Один внешний вызов', d: 'Ровно один вызов. Без повтора и без «второй копии на всякий случай».', out: 'Остановлено на шаге 4. Вызов не удался. Повтора нет: что произошло, решит сверка на шаге 5.' },
+    { t: 'Сверка', d: 'В SENT и Scheduled ищется точное сообщение. Найдено: продолжаем. Точно отсутствует: failed_before_send. Неизвестно: send_uncertain.', out: 'Остановлено на шаге 5. Результат неизвестен (send_uncertain). Решает человек после проверки. Новый вызов не делается.' },
+    { t: 'Зафиксированный факт', d: 'sent_verified и quota_consumed, либо thank_you_sent, ordinary_reply_sent или gmail_scheduled_verified, в зависимости от вида сообщения.', out: 'Остановлено на шаге 6. Факт не удалось записать. Представления пересобираются из журнала. Вторая отправка не следует.' }
+  ];
+  function $(id) { return document.getElementById(id); }
+  function el(tag, cls, text) { var e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
+
+  /* 1 · Life of one application */
+  var stageButtons = document.querySelectorAll('[data-stage]');
+  function showStage(i) {
+    var s = STAGES[i];
+    stageButtons.forEach(function (b, j) { b.setAttribute('aria-pressed', j === i ? 'true' : 'false'); });
+    $('life-title').textContent = s.t;
+    $('life-do').textContent = s.d;
+    $('life-ev').textContent = L.event + ' ' + s.ev;
+    $('life-stop').textContent = L.stops + ' ' + s.stop;
+  }
+  stageButtons.forEach(function (b, j) { b.addEventListener('click', function () { showStage(j); }); });
+  showStage(0);
+
+  /* 2 · Send gate */
+  var failAt = 0, done = 0, stopped = false;
+  function renderGate() {
+    var list = $('gate-flow');
+    list.textContent = '';
+    GATE.forEach(function (g, i) {
+      var k = i + 1, cls = 'idle';
+      if (stopped && k === failAt) cls = 'stopped';
+      else if (k <= done) cls = 'done';
+      else if (!stopped && k === done + 1) cls = 'current';
+      var li = el('li', cls), body = el('span');
+      body.appendChild(el('strong', null, g.t));
+      body.appendChild(document.createTextNode(' — ' + g.d));
+      li.appendChild(el('span', 'n', String(k)));
+      li.appendChild(body);
+      list.appendChild(li);
+    });
+    var msg;
+    if (stopped) msg = GATE[failAt - 1].out;
+    else if (done === 0) msg = L.start;
+    else if (done === GATE.length) msg = L.lastOk;
+    else msg = 'Шаг ' + done + ' выполнен. Далее: ' + GATE[done].t + '.';
+    $('gate-out').textContent = msg;
+  }
+  function nextGate() {
+    if (stopped || done >= GATE.length) return;
+    if (failAt && done + 1 === failAt) { stopped = true; } else { done++; }
+    renderGate();
+  }
+  function resetGate() {
+    failAt = +$('gate-fail').value; done = 0; stopped = false; renderGate();
+  }
+  $('gate-next').addEventListener('click', nextGate);
+  $('gate-reset').addEventListener('click', resetGate);
+  $('gate-fail').addEventListener('change', resetGate);
+  resetGate();
+
+  /* 3 · Daily and monthly limits */
+  function renderQuota() {
+    var n = +$('q-day').value, days = Math.ceil(LIMIT / n);
+    $('q-count').textContent = String(n);
+    $('q-bar').style.width = Math.min(100, (n / LIMIT) * 100).toFixed(1) + '%';
+    $('q-out').textContent = 'Месячный лимит (' + LIMIT + ') при ' + n + ' в день требует минимум ' + days + ' дн. с отправкой. Лимит не меняется: 45-я заявка отклоняется до подготовки. Новое значение действует со следующего местного дня.';
+  }
+  $('q-day').addEventListener('input', renderQuota);
+  renderQuota();
+
+  /* 4 · Journal segments */
+  function renderJournal() {
+    var total = +$('j-lines').value, parts = Math.max(1, Math.ceil(total / SIZE)), box = $('j-parts');
+    $('j-count').textContent = String(total);
+    box.textContent = '';
+    for (var i = 0; i < parts; i++) {
+      var last = i === parts - 1;
+      var name = i === 0 ? MONTH + '.jsonl' : MONTH + '-p' + (i + 1) + '.jsonl';
+      var lines = last ? total - SIZE * (parts - 1) : SIZE;
+      var box1 = el('div', 'part ' + (last ? 'current' : 'closed'), name);
+      box1.appendChild(el('small', null, 'строк: ' + lines + ' · ' + (last ? 'текущая' : 'закрыта, не редактируется')));
+      box.appendChild(box1);
+    }
+    var next = (total > 0 && total % SIZE === 0) ? MONTH + '-p' + (parts + 1) + '.jsonl' : (parts === 1 ? MONTH + '.jsonl' : MONTH + '-p' + parts + '.jsonl');
+    $('j-out').textContent = 'Следующая строка записывается в ' + next + '.' + (parts > 1 ? ' При пересборке из журнала, подсчётах и архивах файлы читаются по месяцу и номеру части, а не по имени файла.' : '');
+  }
+  $('j-lines').addEventListener('input', renderJournal);
+  renderJournal();
+})();
+</script>
+
 <div class="pager"><a href="overview_profile.html">← Профиль</a><a href="overview_safety.html">Безопасность →</a></div>
 </main>
 <footer class="site-footer"><div class="wrap">

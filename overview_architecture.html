@@ -108,6 +108,169 @@
 </ul></div>
 </section>
 
+<section id="interactive">
+<div class="sec-head"><div class="num">04 · Interactive</div><h2>How the agent works, step by step</h2><p>Four diagrams you can click. They show the rules the agent follows. Nothing on this page sends mail or changes a file.</p></div>
+
+<div class="widget" aria-labelledby="t-life">
+<h3 id="t-life">1 · The life of one application</h3>
+<p class="hint">Press a stage to see what the agent does there, which journal event it writes and where it stops.</p>
+<div class="choice-row" role="group" aria-label="Stages of an application">
+<button type="button" class="choice-btn" data-stage="0" aria-pressed="true">Search</button>
+<button type="button" class="choice-btn" data-stage="1" aria-pressed="false">Company card</button>
+<button type="button" class="choice-btn" data-stage="2" aria-pressed="false">Package</button>
+<button type="button" class="choice-btn" data-stage="3" aria-pressed="false">Approval</button>
+<button type="button" class="choice-btn" data-stage="4" aria-pressed="false">Send</button>
+<button type="button" class="choice-btn" data-stage="5" aria-pressed="false">Reply</button>
+<button type="button" class="choice-btn" data-stage="6" aria-pressed="false">Status</button>
+<button type="button" class="choice-btn" data-stage="7" aria-pressed="false">Report</button>
+</div>
+<div class="out" aria-live="polite"><strong id="life-title"></strong><p id="life-do"></p><p class="ev" id="life-ev"></p><p class="stop" id="life-stop"></p></div>
+</div>
+
+<div class="widget" aria-labelledby="t-gate">
+<h3 id="t-gate">2 · The send gate</h3>
+<p class="hint">Choose the step where something fails, or none. Then press <em>Next step</em>. The chain stops at the first failure, and no external call happens without the intent line.</p>
+<label for="gate-fail">Failure at step</label>
+<select id="gate-fail">
+<option value="0">none</option>
+<option value="1">1 · Immutable package</option>
+<option value="2">2 · Consent bound to the manifest</option>
+<option value="3">3 · Reservation and intent line</option>
+<option value="4">4 · One external call</option>
+<option value="5">5 · Reconciliation</option>
+<option value="6">6 · Recorded fact</option>
+</select>
+<div class="choice-row"><button type="button" class="choice-btn" id="gate-next">Next step</button><button type="button" class="choice-btn" id="gate-reset">Reset</button></div>
+<ol class="flow" id="gate-flow"></ol>
+<div class="out" aria-live="polite"><p id="gate-out"></p></div>
+</div>
+
+<div class="widget" aria-labelledby="t-quota">
+<h3 id="t-quota">3 · Daily and monthly limits</h3>
+<p class="hint">The daily maximum is chosen by the person, from 1 to 43. The monthly limit of 44 never changes.</p>
+<label for="q-day">Daily maximum: <output id="q-count" for="q-day">2</output></label>
+<input type="range" id="q-day" min="1" max="43" value="2">
+<div class="bar" aria-hidden="true"><span id="q-bar"></span></div>
+<div class="out" aria-live="polite"><p id="q-out"></p></div>
+</div>
+
+<div class="widget" aria-labelledby="t-journal">
+<h3 id="t-journal">4 · Journal segments</h3>
+<p class="hint">A month is one file until it holds 500 lines. Then numbered parts continue it. A closed part is never edited.</p>
+<label for="j-lines">Lines written this month: <output id="j-count" for="j-lines">620</output></label>
+<input type="range" id="j-lines" min="0" max="1500" step="10" value="620">
+<div class="parts" id="j-parts"></div>
+<div class="out" aria-live="polite"><p id="j-out"></p></div>
+</div>
+</section>
+<script>
+(function () {
+  'use strict';
+  var LIMIT = 44, MONTH = 'transactions-2026-10', SIZE = 500;
+  // Labels and texts are kept in one place so that the other language editions can mirror them.
+  var L = { event: 'Journal event:', stops: 'Stops if:', lastOk: 'All six steps are done. The fact is recorded.', start: 'Press Next step to start the chain.' };
+  var STAGES = [
+    { t: 'Search', d: 'The agent looks for vacancies within the chosen radius, nearest first, and checks the real commute by the chosen transport.', ev: 'none yet', stop: 'Without a confirmed e-mail address the company stays in the registry, but no package is made and no slot is reserved.' },
+    { t: 'Company card', d: 'A Company.md file in the application folder records the address, its source, the check date, the requirements and the route.', ev: 'company_registered', stop: 'A second application to the same company needs the person\'s decision.' },
+    { t: 'Package', d: 'The CV, the cover letter and the e-mail text are written from confirmed facts only, then checked: dates, recipient, attachments and sensitive data.', ev: 'package_registered', stop: 'A missing field or an unchecked sensitive item means the package is not registered.' },
+    { t: 'Approval', d: 'The person sees the exact package on a send card, or approves the monthly plan. An earlier “approved” does not count.', ev: 'package_approved', stop: 'Any change of a file or of the recipient after approval voids it.' },
+    { t: 'Send', d: 'The intent line (reservation and send_started) is written and read back before the single external call.', ev: 'quota_reserved, send_started, then sent_verified and quota_consumed', stop: 'If the write or the read-back fails, nothing is sent. An uncertain result blocks new sends until SENT and Scheduled have been checked.' },
+    { t: 'Reply', d: 'The whole thread is read. Invitations, questions and document requests go to the person as needs_user. Automatic replies are only recorded.', ev: 'mail_received, mail_checked', stop: 'The agent never answers an employer automatically and never deletes or archives mail in Gmail.' },
+    { t: 'Status', d: 'The status in Status.txt and on the statistics page changes only from a recorded event, using the codes of the data contract.', ev: 'status_recorded', stop: 'If the meaning is unclear, the status stays and the case goes to the person.' },
+    { t: 'Report', d: 'The monthly numbers are counted once from a fixed journal position and shown the same way on the page, in DOCX and in PDF.', ev: 'report_built, statistics_updated', stop: 'If one of the six minute values is missing, no statistics snapshot is written.' }
+  ];
+  var GATE = [
+    { t: 'Immutable package', d: 'A copy of the exact files in outbox, with the SHA-256 of every attachment, the recipient, the account, the subject, the body, the transport and the slot.', out: 'Stopped at step 1. Nothing was sent. The approval is not used.' },
+    { t: 'Consent bound to the manifest', d: 'The approval must match the manifest. Otherwise the consent is void.', out: 'Stopped at step 2. Nothing was sent. The approval does not match the package, so it is void (PACKAGE_CHANGED).' },
+    { t: 'Reservation and intent line', d: 'quota_reserved and send_started are written in one line and read back as the last line of the journal.', out: 'Stopped at step 3. No external call was made. If the write or the read-back failed, the lock is kept and the person is told.' },
+    { t: 'One external call', d: 'Exactly one call. No retry, and no “second copy to be safe”.', out: 'Stopped at step 4. The call failed. Nothing is retried: the reconciliation in step 5 decides what happened.' },
+    { t: 'Reconciliation', d: 'SENT and Scheduled are searched for the exact message. Found: go on. Proven absent: failed_before_send. Unknown: send_uncertain.', out: 'Stopped at step 5. The result is unknown (send_uncertain). The person decides after a check. No new call is made.' },
+    { t: 'Recorded fact', d: 'sent_verified and quota_consumed, or thank_you_sent, ordinary_reply_sent or gmail_scheduled_verified, depending on the kind of message.', out: 'Stopped at step 6. The fact could not be recorded. The views are rebuilt from the journal. No second send follows.' }
+  ];
+  function $(id) { return document.getElementById(id); }
+  function el(tag, cls, text) { var e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
+
+  /* 1 · Life of one application */
+  var stageButtons = document.querySelectorAll('[data-stage]');
+  function showStage(i) {
+    var s = STAGES[i];
+    stageButtons.forEach(function (b, j) { b.setAttribute('aria-pressed', j === i ? 'true' : 'false'); });
+    $('life-title').textContent = s.t;
+    $('life-do').textContent = s.d;
+    $('life-ev').textContent = L.event + ' ' + s.ev;
+    $('life-stop').textContent = L.stops + ' ' + s.stop;
+  }
+  stageButtons.forEach(function (b, j) { b.addEventListener('click', function () { showStage(j); }); });
+  showStage(0);
+
+  /* 2 · Send gate */
+  var failAt = 0, done = 0, stopped = false;
+  function renderGate() {
+    var list = $('gate-flow');
+    list.textContent = '';
+    GATE.forEach(function (g, i) {
+      var k = i + 1, cls = 'idle';
+      if (stopped && k === failAt) cls = 'stopped';
+      else if (k <= done) cls = 'done';
+      else if (!stopped && k === done + 1) cls = 'current';
+      var li = el('li', cls), body = el('span');
+      body.appendChild(el('strong', null, g.t));
+      body.appendChild(document.createTextNode(' — ' + g.d));
+      li.appendChild(el('span', 'n', String(k)));
+      li.appendChild(body);
+      list.appendChild(li);
+    });
+    var msg;
+    if (stopped) msg = GATE[failAt - 1].out;
+    else if (done === 0) msg = L.start;
+    else if (done === GATE.length) msg = L.lastOk;
+    else msg = 'Step ' + done + ' is done. Next: ' + GATE[done].t + '.';
+    $('gate-out').textContent = msg;
+  }
+  function nextGate() {
+    if (stopped || done >= GATE.length) return;
+    if (failAt && done + 1 === failAt) { stopped = true; } else { done++; }
+    renderGate();
+  }
+  function resetGate() {
+    failAt = +$('gate-fail').value; done = 0; stopped = false; renderGate();
+  }
+  $('gate-next').addEventListener('click', nextGate);
+  $('gate-reset').addEventListener('click', resetGate);
+  $('gate-fail').addEventListener('change', resetGate);
+  resetGate();
+
+  /* 3 · Daily and monthly limits */
+  function renderQuota() {
+    var n = +$('q-day').value, days = Math.ceil(LIMIT / n);
+    $('q-count').textContent = String(n);
+    $('q-bar').style.width = Math.min(100, (n / LIMIT) * 100).toFixed(1) + '%';
+    $('q-out').textContent = 'At ' + n + ' per day, the ' + LIMIT + ' monthly places need at least ' + days + ' sending day' + (days === 1 ? '' : 's') + '. The monthly limit does not change: the 45th is refused before it is prepared. A new value takes effect from the next local day.';
+  }
+  $('q-day').addEventListener('input', renderQuota);
+  renderQuota();
+
+  /* 4 · Journal segments */
+  function renderJournal() {
+    var total = +$('j-lines').value, parts = Math.max(1, Math.ceil(total / SIZE)), box = $('j-parts');
+    $('j-count').textContent = String(total);
+    box.textContent = '';
+    for (var i = 0; i < parts; i++) {
+      var last = i === parts - 1;
+      var name = i === 0 ? MONTH + '.jsonl' : MONTH + '-p' + (i + 1) + '.jsonl';
+      var lines = last ? total - SIZE * (parts - 1) : SIZE;
+      var box1 = el('div', 'part ' + (last ? 'current' : 'closed'), name);
+      box1.appendChild(el('small', null, lines + ' lines · ' + (last ? 'current' : 'closed, never edited')));
+      box.appendChild(box1);
+    }
+    var next = (total > 0 && total % SIZE === 0) ? MONTH + '-p' + (parts + 1) + '.jsonl' : (parts === 1 ? MONTH + '.jsonl' : MONTH + '-p' + parts + '.jsonl');
+    $('j-out').textContent = 'The next line is written to ' + next + '.' + (parts > 1 ? ' Replay, counts and archives read the files by month and part number, not by file name.' : '');
+  }
+  $('j-lines').addEventListener('input', renderJournal);
+  renderJournal();
+})();
+</script>
+
 <div class="pager"><a href="overview_profile.html">← Profile</a><a href="overview_safety.html">Safety →</a></div>
 </main>
 <footer class="site-footer"><div class="wrap">
