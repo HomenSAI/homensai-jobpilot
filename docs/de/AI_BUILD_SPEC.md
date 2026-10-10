@@ -2,15 +2,15 @@ Deutsche Fassung. Maßgeblich ist die englische Fassung (Datei im Hauptverzeichn
 
 # HomenS.AI JobPilot · Jobsuchmaschine und Bewerbungsmanager
 
-[English](../../AI_BUILD_SPEC.md) | [Deutsch](AI_BUILD_SPEC.md) | [Русский](../ru/AI_BUILD_SPEC.md)
+[English](../../AI_BUILD_SPEC.md) | [Русский](../ru/AI_BUILD_SPEC.md) | [Deutsch](AI_BUILD_SPEC.md) | [Українська](../uk/AI_BUILD_SPEC.md)
 
-**Projektspezifikation für Codex / Claude Code — [VERSION](../../VERSION)**
+**Projektspezifikation für Codex / Claude Code — [VERSION](../../VERSION), 10. Oktober 2026**
 
 **Status:** Projektspezifikation und experimenteller Agenten-Ablauf. Es gibt keine eigenständige Anwendung für die Jobsuche oder den Mailversand. Die Ausnahme ist die Statistikansicht: HTML/CSS/JavaScript prüft, sortiert, filtert und zeigt den vom Agenten geschriebenen Snapshot an. Sie führt keine Suchen aus, versendet keine Post und ändert keine Datensätze. Dies ist keine Behauptung, dass der vollständige Agenten-Ablauf die Abnahme bestanden hat, und keine Erlaubnis, E-Mail-Konten zu verbinden oder Bewerbungen zu versenden. Die Anweisungen bleiben experimentell und bedürfen der Prüfung durch den Nutzer.
 
-Beginnen Sie mit [README.md](../../README.md). Die betrieblichen Abläufe stehen in [OPERATING_REQUIREMENTS.md](OPERATING_REQUIREMENTS.md); die Architektur steht in [ARCHITECTURE.md](ARCHITECTURE.md), Dateiformate und Wiederherstellung in [DATA_CONTRACT.md](DATA_CONTRACT.md), die Testszenarien in [ACCEPTANCE_TESTS.md](ACCEPTANCE_TESTS.md). Eine Schritt-für-Schritt-Installation finden Sie in [USER_GUIDE.md](../../USER_GUIDE.md) und [overview_install.html](../../overview_install.html). Der Agent führt den Ablauf aus; die Statistikseite zeigt nur seinen lokalen Snapshot.
+Beginnen Sie mit [README.md](README.md). Die betrieblichen Abläufe stehen in [OPERATING_REQUIREMENTS.md](OPERATING_REQUIREMENTS.md); die Architektur steht in [ARCHITECTURE.md](ARCHITECTURE.md), Dateiformate und Wiederherstellung in [DATA_CONTRACT.md](DATA_CONTRACT.md), die Testszenarien in [ACCEPTANCE_TESTS.md](ACCEPTANCE_TESTS.md). Eine Schritt-für-Schritt-Installation finden Sie in [USER_GUIDE.md](USER_GUIDE.md) und [overview_install.html](overview_install.html). Der Agent führt den Ablauf aus; die Statistikseite zeigt nur seinen lokalen Snapshot.
 
-Das Projekt hat drei Fassungen: Englisch im Stamm, Russisch in `docs/ru`, Deutsch in `docs/de`. Englisch ist maßgeblich; technische Kennungen, Regeln und Beispiele sind gemeinsam. Dokument- und Berichtssprachen werden getrennt gewählt. Regeländerungen gelten für alle Fassungen.
+Das Projekt hat vier Fassungen: Englisch im Stamm, Russisch in `docs/ru`, Deutsch in `docs/de`, Ukrainisch in `docs/uk`. Englisch ist maßgeblich; alle verwenden dieselben technischen Kennungen, Regeln und Beispiele. Dokument- und Berichtssprachen werden getrennt gewählt. Regeländerungen gelten für alle Fassungen.
 
 **Urheberschaft und eigenständige Entwicklung.** Serhii Khomenko ist der Urheber der Idee und der Entwickler des Systems. Das Konzept, das Szenario und die Anforderungen wurden vom Autor aus seiner eigenen Erfahrung und seinem eigenen Arbeitsablauf formuliert; das System selbst wurde eigenständig entworfen. Die in Abschnitt 14 aufgeführten GitHub-Projekte wurden nur als Überblick über bestehende Lösungen betrachtet. Ihr Quellcode, ihre Komponenten, Vorlagen, Gestaltung, Architektur, Prompts und sonstigen Materialien wurden bei der Erstellung dieser Dokumente nicht verwendet und sind nicht die Grundlage des Systems: Sie werden nicht kopiert, angepasst oder geforkt. Das System wird von Serhii Khomenko unabhängig von dieser Spezifikation entwickelt. Die Wahl der Bibliotheken und Entwicklungswerkzeuge wird gesondert vereinbart; sie bedeutet nicht, dass Code der geprüften Projekte verwendet wird.
 
@@ -65,22 +65,22 @@ Der lokale KI-Agent und der entpackte Ordner, auf den er zugreifen kann, sind di
 `TODO_FOR_AI.md` ist der schrittweise Arbeitsplan: der erste Lauf, also die Ersteinrichtung (Vorstellung, Prüfung der Werkzeuge des Agenten, Einwilligung, die Lebensgeschichte der Person, ihre Unterlagen, Analyse und Wissensbasis, Bestätigung der Fakten, die Sucheinstellungen, Post), die Fortsetzung in einem späteren Chat sowie eine Checkliste für jede Standardhandlung. Beim ersten Lauf führt der Agent das Gespräch selbst: Er sagt, was er braucht, stellt jeweils eine Frage und führt den nächsten sicheren Schritt aus. Seine Position hält er in `workspace.json` fest (`stage`).
 
 ~~~text
-GitHub ZIP → extracted folder → open it locally in Codex / Claude Code
+GitHub-ZIP → entpackter Ordner → lokal in Codex / Claude Code öffnen
                                             ↓
-                              new project / chat / task
+                              neues Projekt / Chat / Aufgabe
                                             ↓
             README + AGENTS.md/CLAUDE.md + TODO_FOR_AI.md
                                             ↓
-AI agent ↔ allowed project folder (the single source of data)
-  ├─ materials in Положите_сюда + interview → knowledge base (confirmed facts) → profiles
-  ├─ search → verified companies/vacancies/routes → unique records
-  ├─ documents and plan → CV/Anschreiben → preparation / permitted sending
-  ├─ mail → replies/DSN → journal → daily and monthly report
-  ├─ updating local data and generating the statistics page from the template
-  └─ a question to the user when new data / a decision / access is needed
+KI-Agent ↔ erlaubter Projektordner (die einzige Datenquelle)
+  ├─ Materialien in Положите_сюда + Interview → Wissensbasis (bestätigte Fakten) → Profile
+  ├─ Suche → geprüfte Firmen/Stellen/Routen → eindeutige Datensätze
+  ├─ Unterlagen und Plan → Lebenslauf/Anschreiben → Vorbereitung / zulässiger Versand
+  ├─ Post → Antworten/DSN → Journal → Tages- und Monatsbericht
+  ├─ Aktualisierung der lokalen Daten und Erzeugung der Statistikseite aus der Vorlage
+  └─ eine Frage an die Nutzerin bzw. den Nutzer, wenn neue Daten / eine Entscheidung / ein Zugang nötig sind
                                             ↓
-                  local read-only HTML page
-                  (year → month → day; sorting by date and result)
+                  lokale HTML-Seite, nur lesend
+                  (Jahr → Monat → Tag; Sortierung nach Datum und Ergebnis)
 ~~~
 
 ### Abgrenzung der Komponenten
@@ -97,7 +97,7 @@ AI agent ↔ allowed project folder (the single source of data)
 
 ### 4.1 Import und Bestätigung
 
-Bei der Ersteinrichtung entpackt die Person das Paket und öffnet diesen Ordner lokal im gewählten Agenten. Der Ordner enthält bereits drei fertige Eingangsordner (Abschnitt 4.6). Die Person kann vorher vorhandene Lebensläufe, Diplome, Zeugnisse, Referenzen und ein Portfolio hineinlegen oder die Ordner leer lassen und den Agenten das Interview führen lassen. Der Agent verwendet nur den bereitgestellten Arbeitsordner, schreibt die vorgeschlagenen Fakten in die Wissensbasis und zeigt, aus welcher Datei und welcher Stelle jeder Fakt stammt.
+Bei der Ersteinrichtung entpackt die Person das Paket und öffnet diesen Ordner lokal im gewählten Agenten. Der Ordner enthält bereits fünf fertige Eingangsordner (Abschnitt 4.6). Die Person kann vorher vorhandene Lebensläufe, Diplome, Zeugnisse, Referenzen und ein Portfolio hineinlegen oder die Ordner leer lassen und den Agenten das Interview führen lassen. Der Agent verwendet nur den bereitgestellten Arbeitsordner, schreibt die vorgeschlagenen Fakten in die Wissensbasis und zeigt, aus welcher Datei und welcher Stelle jeder Fakt stammt.
 
 Die KI behandelt extrahierten Text nicht automatisch als bestätigt. Die Person akzeptiert, korrigiert oder verwirft jeden Eintrag. Für jeden Fakt werden gespeichert: der Wert, die Quelle, das Datum bzw. der Gültigkeitszeitraum, der Bestätigungsstatus, die Originalsprache und die Grenzen der Verwendung. Eine Selbsteinschätzung bleibt Selbsteinschätzung; sie darf nicht als Zeugnis oder geprüfte Qualifikation dargestellt werden.
 
@@ -193,59 +193,59 @@ Die Nutzerin oder der Nutzer lädt das GitHub-ZIP herunter, wählt einen passend
 ~~~text
 <folder from the GitHub ZIP>\
   README.md
-  USER_GUIDE.md                     # step-by-step installation and use
-  AGENTS.md                         # rules for Codex
-  CLAUDE.md                         # rules for Claude Code
+  USER_GUIDE.md                     # Schritt-für-Schritt-Installation und Nutzung
+  AGENTS.md                         # Regeln für Codex
+  CLAUDE.md                         # Regeln für Claude Code
   AI_BUILD_SPEC.md
-  ARCHITECTURE.md                   # parts, journal rules and standard actions
-  DATA_CONTRACT.md                  # shared data, states and recovery
-  ACCEPTANCE_TESTS.md               # verifiable readiness scenarios
-  PROJECT_OVERVIEW.html             # illustrated overview with a menu
-  overview_*.html                   # overview pages: install, profile, architecture, safety, market, roadmap
-  docs\ru\                          # Russian edition of documents and pages
-  assets\                           # shared styles, scripts and fonts of the pages
-  dashboard_template\index.html    # statistics page (source for generation)
-  TODO_FOR_AI.md                    # the step-by-step playbook for the agent
-  .gitignore                        # excludes the user's real data
-  Локальные_данные\                  # stays only on the user's computer
-    workspace.json                    # stage of the first run, language, capability checks
-    Положите_сюда\                    # the ONLY place where the person puts things (the agent only reads it)
-      1_Мои_документы\                # CVs, diplomas, certificates, references
-      2_Рассказ_о_себе\               # the story: voice transcripts, notes, interviews, the questions
-      3_Шаблон_отчёта\                # optional report template
-      4_Шаблон_резюме\                # everything about the CVs, any format
-      5_Шаблон_сопроводительного_письма\  # everything about the cover letters
+  ARCHITECTURE.md                   # Teile, Journalregeln und Standardaktionen
+  DATA_CONTRACT.md                  # gemeinsame Daten, Zustände und Wiederherstellung
+  ACCEPTANCE_TESTS.md               # prüfbare Bereitschaftsszenarien
+  PROJECT_OVERVIEW.html             # bebilderte Übersicht mit Menü
+  overview_*.html                   # Übersichtsseiten: Installation, Profil, Architektur, Sicherheit, Markt, Fahrplan
+  docs\ru\ · docs\de\ · docs\uk\         # russische, deutsche und ukrainische Fassung der Dokumente und Seiten
+  assets\                           # gemeinsame Stile, Skripte und Schriften der Seiten
+  dashboard_template\index.html    # Statistikseite (Quelle für die Erzeugung)
+  TODO_FOR_AI.md                    # die Schritt-für-Schritt-Anleitung für den Agenten
+  .gitignore                        # schließt die echten Daten der Nutzerin bzw. des Nutzers aus
+  Локальные_данные\                  # bleibt nur auf dem Computer der Nutzerin bzw. des Nutzers
+    workspace.json                    # Stufe des ersten Laufs, Sprache, Fähigkeitsprüfungen
+    Положите_сюда\                    # der EINZIGE Ort, an dem die Person etwas ablegt (der Agent liest nur)
+      1_Мои_документы\                # Lebensläufe, Diplome, Zeugnisse, Referenzen
+      2_Рассказ_о_себе\               # die Geschichte: Sprachabschriften, Notizen, Interviews, die Fragen
+      3_Шаблон_отчёта\                # optionale Berichtsvorlage
+      4_Шаблон_резюме\                # alles zu den Lebensläufen, jedes Format
+      5_Шаблон_сопроводительного_письма\  # alles zu den Anschreiben
     persons\<person_id>\
-      База_знаний\Жизнеописание.md   # the knowledge base: the person's life story, confirmed facts
-      journal\transactions-YYYY-MM.jsonl  # the person's single primary journal, one segment per month, split into -pN parts above 500 lines
-      journal\writer.lock            # one local write lock
-      state\quota.json               # derived counter by month
-      outbox\                        # immutable packages of send attempts
-    Resume\                           # working documents: CV drafts and the Word copy of the template in use
-    CoverLetter\                      # working documents: letter drafts and the Word copy of the template in use
+      База_знаний\Жизнеописание.md   # die Wissensbasis: die Lebensgeschichte der Person, bestätigte Fakten
+      journal\transactions-YYYY-MM.jsonl  # das einzige primäre Journal der Person, ein Abschnitt je Monat, ab 500 Zeilen in -pN-Teile geteilt
+      journal\writer.lock            # eine lokale Schreibersperre
+      state\quota.json               # abgeleiteter Zähler nach Monat
+      outbox\                        # unveränderliche Pakete der Sendeversuche
+    Resume\                           # Arbeitsdokumente: Lebenslaufentwürfe und die Word-Kopie der verwendeten Vorlage
+    CoverLetter\                      # Arbeitsdokumente: Anschreibenentwürfe und die Word-Kopie der verwendeten Vorlage
     profiles\<profile_id>\
       profile.json
-      registry.json                   # targets, applications and the queue (projection)
-      runs\                           # work sessions, resuming from a new chat
-      reports\                        # reports of this profile (English, Russian or German)
-    Applications\                     # all application work, one tree for all years
+      registry.json                   # Ziele, Bewerbungen und die Warteschlange (Projektion)
+      runs\                           # Arbeitssitzungen, Fortsetzung aus einem neuen Chat
+      reports\                        # Berichte dieses Profils (Englisch, Russisch, Deutsch oder Ukrainisch)
+    Applications\                     # die gesamte Bewerbungsarbeit, ein Baum für alle Jahre
       2026\
         10_October\
           001_Muster-Maschinenbau_Stuttgart_Maintenance-technician\
-            Company.md                # company data from public sources, with source and check date
+            Company.md                # Firmendaten aus öffentlichen Quellen, mit Quelle und Prüfdatum
             Resume_v001.docx
             Resume_v001.pdf
             CoverLetter_v001.docx
             CoverLetter_v001.pdf
-            EmailText_de.txt          # the approved e-mail text in the sending language (EMAIL_TO_SEND.txt is built from it)
-            EMAIL_TO_SEND.txt         # manual-send file: account, recipient, subject, body block, attachments, slot, status
-            ReviewTranslation_ru.txt  # optional review translation; labelled "not for the employer", never attached
-            Status.txt                # append-only history of this application
-            Replies.txt               # every reply and delivery notice in full (Ответы)
-    dashboard\index.html             # menu of local profiles
+            EmailText_de.txt          # der freigegebene E-Mail-Text in der Versandsprache (daraus wird EMAIL_TO_SEND.txt erzeugt)
+            EMAIL_TO_SEND.txt         # Datei für den manuellen Versand: Konto, Empfänger, Betreff, Textblock, Anhänge, Slot, Status
+            ReviewTranslation_ru.txt  # optionale Prüfübersetzung; gekennzeichnet „nicht für den Arbeitgeber“, nie angehängt
+            Status.txt                # nur anhängbarer Verlauf dieser Bewerbung
+            Replies.txt               # jede Antwort und Zustellungsmeldung vollständig (Ответы)
+    dashboard\index.html             # Menü der lokalen Profile
     dashboard\profiles\<profile_id>\summary.js
-    dashboard\profiles\<profile_id>\index.html  # snapshot of one profile
-    dashboard\profiles\<profile_id>\readiness.html  # readiness page of one profile
+    dashboard\profiles\<profile_id>\index.html  # Snapshot eines Profils
+    dashboard\profiles\<profile_id>\readiness.html  # Bereitschaftsseite eines Profils
 ~~~
 
 Die Nummer beginnt in jedem Monat bei 001. Der Verzeichnisname ersetzt nicht die stabile interne ID der Firma bzw. der Bewerbung. Die maßgebliche Faktenbasis ist die Datei der Wissensbasis der Person (Abschnitt 4.6); das gesamte Archiv wird nicht in jede Bewerbung kopiert. Die Person legt CVs und Materialien in `Положите_сюда`; diese und das Interview speisen die eine Wissensbasis. Für bestehende Nutzer werden ein schreibgeschützter Import und eine Zuordnungstabelle vorgeschlagen; ihre alten Verzeichnisse werden ohne Bestätigung nicht neu geordnet. Alle persönlichen Daten unter `Локальные_данные/` sind standardmäßig von Git ausgeschlossen; die Veröffentlichung von Arbeitsdateien ist verboten.
@@ -365,12 +365,12 @@ Automatische Antworten müssen je Profil aktiviert oder deaktiviert werden. Selb
 
 Ist die entsprechende Regel für das Profil aktiviert und teilt ein Arbeitgeber mit, dass der gewünschte Zeitraum belegt ist, die Möglichkeit eines Praktikums aber nicht schließt, kann das System nach dem Lesen des gesamten Threads und der Prüfung, dass dieselbe Frage nicht bereits gestellt wurde, im selben Thread eine Frage nach dem nächstmöglichen Monat bzw. Datum als Entwurf vorbereiten. Sie wird nur als `ordinary_reply` (Ereignis `ordinary_reply_sent`) versandt, nachdem die Person diese Nachricht auf der Versandkarte freigegeben hat; `thank_you_sent` ist der einzige automatische Nachfass-Versand; die Verfügbarkeit der Bewerberin oder des Bewerbers darf nur flexibel dargestellt werden, wenn das Profil dies bestätigt. Nennt der Arbeitgeber selbst ein künftiges Datum, stellt eine Frage, lädt ein oder fordert Dokumente an, antwortet das System nicht automatisch, sondern verlangt die Entscheidung der Nutzerin oder des Nutzers. Automatische Bestätigungen, Nicht-Antwort-Mails, Newsletter und DSN sind ausgeschlossen. Für Berichte werden das ursprüngliche Versanddatum und der konkrete Grund bzw. Inhalt des Ergebnisses verwendet; ein Dank ist nicht das Ergebnis einer Bewerbung. Der Betreff wird durch die Regeln des Profils begrenzt (zum Beispiel höchstens 50 Zeichen). Der Abschlussbericht wird ohne gesonderte Anweisung nicht per E-Mail verschickt.
 
-### 7.6 Reihenfolge einer externen Handlung und die Schreibsperre (F07)
+### 7.6 Reihenfolge einer externen Handlung und die Schreibersperre (F07)
 
 Die Vorbereitung eines Pakets ist keine externe Handlung. Jede externe Handlung folgt dieser Reihenfolge:
 1. **Unveränderliches Paket:** eine geprüfte Kopie mit einem Manifest, das den SHA256 jedes Anhangs (beide Teile der Bewerbung), den Empfänger und seine Quelle, das versendende Konto, den Betreff, den Text, den Transport und den Termin mit seiner Zeitzone auflistet.
 2. **Einwilligung, gebunden an dieses Manifest.** Eine Änderung eines aufgeführten Bestandteils macht die frühere Einwilligung ungültig; die Änderung ist eine neue Version, die eine neue Freigabe braucht.
-3. **Reservierung und dauerhafte Absicht** (`quota_reserved`, sofern der festgelegte Plan den Termin nicht bereits reserviert hat; `send_started`) unter der Schreibsperre, vor dem Aufruf gespeichert. Hartes Tor: Die Absichtszeile wird zurückgelesen und muss unmittelbar vor dem Aufruf die letzte Zeile des Journals sein; schlagen Schreiben, Zurücklesen oder diese Prüfung fehl, erfolgt kein Aufruf und es wird nichts anderes erfasst (ARCHITECTURE.md §6, Schritt 3).
+3. **Reservierung und dauerhafte Absicht** (`quota_reserved`, sofern der festgelegte Plan den Termin nicht bereits reserviert hat; `send_started`) unter der Schreibersperre, vor dem Aufruf gespeichert. Hartes Tor: Die Absichtszeile wird zurückgelesen und muss unmittelbar vor dem Aufruf die letzte Zeile des Journals sein; schlagen Schreiben, Zurücklesen oder diese Prüfung fehl, erfolgt kein Aufruf und es wird nichts anderes erfasst (ARCHITECTURE.md §6, Schritt 3).
 4. **Ein externer Aufruf.** Kein Wiederholungsversuch im selben Chat.
 5. **Abgleich** in SENT oder Scheduled. Ein unbekanntes Ergebnis ist `send_uncertain`, nie eine Wiederholung.
 6. **Die Tatsache wird mit dem Ereignis der eigenen Absicht erfasst:** bei einer `cv_submission` `sent_verified` mit `quota_consumed`, oder `failed_before_send` mit `quota_released`, wenn das Fehlen nachgewiesen ist; ein Dankesschreiben und eine Antwort ohne Lebenslauf (einschließlich einer Zeitraumfrage) haben eigene Ereignisse, `thank_you_sent` und `ordinary_reply_sent`, nie `sent_verified`; eine Gmail-Terminierung hat `gmail_scheduled_verified`.
@@ -447,7 +447,7 @@ Das Paket wird als GitHub-Archiv veröffentlicht und enthält `README.md`, die S
 
 ### 10.1 Reihenfolge der Installation: der Agent, dann das Archiv, dann die Verbindung
 
-Die Schritt-für-Schritt-Anleitung für die Nutzerin oder den Nutzer existiert in zwei Formen mit gleichem Inhalt: `USER_GUIDE.md` und die HTML-Seite `overview_install.html` (die russische Fassung ist `docs/ru/overview_install.html`). Beide Formen sind in jeder Veröffentlichung verpflichtend; ändert sich eine, wird die andere aktualisiert. Die Inhaberin bzw. der Inhaber des Projekts hat in der Regel ein sauberes Windows ohne Git oder Entwicklungswerkzeuge; daher verlangt die Anleitung keine Installation von Git, Python oder Node. Das Archiv wird über die Schaltfläche **Code → Download ZIP** [Schaltfläche „Code“, dann „Download ZIP“ in der GitHub-Oberfläche] im Browser heruntergeladen, und jeder Schritt enthält eine einzige Handlung, eine Beschreibung dessen, was auf dem Bildschirm erscheinen sollte, und einen Hinweis für den Fall eines Fehlers.
+Die Schritt-für-Schritt-Anleitung für die Nutzerin oder den Nutzer existiert in zwei Formen mit gleichem Inhalt: `USER_GUIDE.md` und die HTML-Seite `overview_install.html` (die weiteren Fassungen liegen unter demselben Namen in `docs/ru/`, `docs/de/` und `docs/uk/`). Beide Formen sind in jeder Veröffentlichung verpflichtend; ändert sich eine, wird die andere aktualisiert. Die Inhaberin bzw. der Inhaber des Projekts hat in der Regel ein sauberes Windows ohne Git oder Entwicklungswerkzeuge; daher verlangt die Anleitung keine Installation von Git, Python oder Node. Das Archiv wird über die Schaltfläche **Code → Download ZIP** [Schaltfläche „Code“, dann „Download ZIP“ in der GitHub-Oberfläche] im Browser heruntergeladen, und jeder Schritt enthält eine einzige Handlung, eine Beschreibung dessen, was auf dem Bildschirm erscheinen sollte, und einen Hinweis für den Fall eines Fehlers.
 
 Die Installation gliedert sich in drei Teile in genau dieser Reihenfolge:
 
@@ -455,7 +455,7 @@ Die Installation gliedert sich in drei Teile in genau dieser Reihenfolge:
 2. **Der Projektordner.** Das ZIP aus dem veröffentlichten Repository herunterladen und in einen eigenen Ordner entpacken; prüfen, dass `README.md`, `USER_GUIDE.md`, `AI_BUILD_SPEC.md`, `AGENTS.md`, `CLAUDE.md`, `TODO_FOR_AI.md`, `dashboard_template` und der Ordner `Локальные_данные\Положите_сюда` mit seinen fünf Unterordnern direkt darin liegen, nicht in einem verschachtelten Ordner. Das Archiv ist nur eine Menge von Dateien; es wird nützlich, wenn der Agent es öffnet.
 3. **Verbindung und erster Start.** Ein lokales Projekt anlegen oder den Ordner öffnen und den entpackten Stamm als Hauptordner festlegen; im Projekt einen Chat in der lokalen Umgebung (Local) anlegen; `Ask for approval` einschalten; den Startprompt im Modus nur-Entwurf ausführen.
 
-Danach legt die Nutzerin oder der Nutzer Materialien in die drei Ordner `Положите_сюда` (das kann schon vor Schritt 1 geschehen) oder lässt den Agenten sie im Interview erfassen, bestätigt die Fakten der Wissensbasis (bevor ein Cloud-Agent zum ersten Mal etwas liest, willigt die Nutzerin oder der Nutzer ein, die gewählten Informationen zu übergeben), verbindet Gmail gesondert, bereitet die erste Warteschlange vor und prüft sie, aktiviert bei Bedarf Computer Use, geht zur täglichen Arbeit und Planung über, öffnet Statistik und Berichte, erstellt eine Sicherung und aktualisiert das Paket.
+Danach legt die Nutzerin oder der Nutzer Materialien in die fünf Ordner `Положите_сюда` (das kann schon vor Schritt 1 geschehen) oder lässt den Agenten sie im Interview erfassen, bestätigt die Fakten der Wissensbasis (bevor ein Cloud-Agent zum ersten Mal etwas liest, willigt die Nutzerin oder der Nutzer ein, die gewählten Informationen zu übergeben), verbindet Gmail gesondert, bereitet die erste Warteschlange vor und prüft sie, aktiviert bei Bedarf Computer Use, geht zur täglichen Arbeit und Planung über, öffnet Statistik und Berichte, erstellt eine Sicherung und aktualisiert das Paket.
 
 Die Anleitung unterscheidet ein lokales Projekt mit einem Ordner des Computers von einem gewöhnlichen Cloud-Projekt von ChatGPT: Der Name eines Chats oder ein in einer Nachricht geschriebener Pfad gewährt keinen Dateizugriff. Ist eine Veröffentlichung noch nicht erfolgt, werden die GitHub-URL, die Schaltflächen und der Aufbau des Pakets nicht erfunden: Der Link wird als „wartet auf Veröffentlichung“ gekennzeichnet. Codex und Claude Code sind alternative Agenten; Berechtigungen und Mail-Verbindungen werden in ihnen getrennt eingerichtet. Offizielle Links und Oberflächenelemente werden vor jeder Veröffentlichung geprüft.
 

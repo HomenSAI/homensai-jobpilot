@@ -2,7 +2,7 @@ Deutsche Fassung. Maßgeblich ist die englische Fassung (Datei im Hauptverzeichn
 
 # HomenS.AI JobPilot — Prüfung und Status
 
-[English](../../REVIEW.md) | [Русский](../ru/REVIEW.md) | [Deutsch](REVIEW.md)
+[English](../../REVIEW.md) | [Русский](../ru/REVIEW.md) | [Deutsch](REVIEW.md) | [Українська](../uk/REVIEW.md)
 
 10. Oktober 2026 · Version [VERSION](../../VERSION) (die Datei `VERSION`) · Autor der Idee und Entwickler: Serhii Khomenko / HomenS.AI · [homensai.com](https://homensai.com/) · CC BY-NC 4.0
 

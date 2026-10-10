@@ -1,14 +1,14 @@
 Deutsche Fassung. Maßgeblich ist die englische Fassung (DATA_CONTRACT.md bzw. ARCHITECTURE.md im Hauptverzeichnis).
 
-# HomenS.AI JobPilot — Architektur 1.5
+# HomenS.AI JobPilot — Architektur 1.9.0
 
-[English](../../ARCHITECTURE.md) | [Русский](../ru/ARCHITECTURE.md) | [Deutsch](ARCHITECTURE.md)
+[English](../../ARCHITECTURE.md) | [Русский](../ru/ARCHITECTURE.md) | [Deutsch](ARCHITECTURE.md) | [Українська](../uk/ARCHITECTURE.md)
 
 9. Oktober 2026 · Autor der Idee und Entwickler: Serhii Khomenko / HomenS.AI · https://homensai.com/ · Dokumentation: CC BY-NC 4.0.
 
 Status: Entwurf und Betriebsspezifikation. Der Arbeitsablauf hat keine eigene Anwendung für die Jobsuche oder den Mailversand; er besteht aus einem KI-Agenten, schriftlichen Verfahren und lokalen Dateien. Die Statistikansicht enthält HTML/CSS/JavaScript, das einen vom Agenten geschriebenen Snapshot prüft, sortiert, filtert und anzeigt. Sie führt keine Recherche durch, verschickt keine Mails und ändert das Journal nicht. Dieses Dokument ergänzt AI_BUILD_SPEC.md, DATA_CONTRACT.md und OPERATING_REQUIREMENTS.md. Server, Docker und SQL werden nicht verwendet.
 
-Die Abschnitte 3 (Isolation), 4b (Schreibsperre), 6a (Gmail Scheduled), 6b (Replay), 8a–8c (Takt, monatliche Vorbereitung, tägliche Prüfung) und 12 (lokale Archive und Wiederherstellung) beschreiben Verfahren, die bei der konsolidierten Prüfung (Befunde F04, F07, F12 und Anforderungen R01–R05) ergänzt wurden. Es sind nur schriftliche Verfahren; keines davon wurde bisher ausgeführt. Den Status jedes Verfahrens hält ACCEPTANCE_TESTS.md im Abschnitt „Consolidated review F01–F14 and R01–R20“ fest.
+Die Abschnitte 3 (Isolation), 4b (Schreibersperre), 6a (Gmail Scheduled), 6b (Replay), 8a–8c (Takt, monatliche Vorbereitung, tägliche Prüfung) und 12 (lokale Archive und Wiederherstellung) beschreiben Verfahren, die bei der konsolidierten Prüfung (Befunde F04, F07, F12 und Anforderungen R01–R05) ergänzt wurden. Es sind nur schriftliche Verfahren; keines davon wurde bisher ausgeführt. Den Status jedes Verfahrens hält ACCEPTANCE_TESTS.md im Abschnitt „Consolidated review F01–F14 and R01–R20“ fest.
 
 ## 1. Grundentscheidung: Regeln und Dateien
 
@@ -23,15 +23,15 @@ Das System besteht aus einem **KI-Agenten** (Codex oder Claude Code), **schriftl
 
 ```mermaid
 flowchart TD
-    U[User] --> A[Chat with the agent: Codex or Claude Code]
-    A --> R[Rules: AGENTS.md, TODO_FOR_AI.md, AI_BUILD_SPEC, DATA_CONTRACT]
-    A --> J[Person journal: one line per completed action]
-    J --> P[Views: records, queue, Status.txt, quota.json]
-    A --> M[Gmail through the agent's own authorized connection]
+    U[Nutzer] --> A[Chat mit dem Agenten: Codex oder Claude Code]
+    A --> R[Regeln: AGENTS.md, TODO_FOR_AI.md, AI_BUILD_SPEC, DATA_CONTRACT]
+    A --> J[Journal der Person: eine Zeile je abgeschlossener Aktion]
+    J --> P[Ansichten: Datensätze, Warteschlange, Status.txt, quota.json]
+    A --> M[Gmail über die eigene autorisierte Verbindung des Agenten]
     M --> A
-    J --> B[Report and statistics: numbers copied from the journal]
-    B --> H[Local HTML page: years, months, days; sorting by date and result]
-    B --> F[DOCX and PDF with recommendations]
+    J --> B[Bericht und Statistik: aus dem Journal übernommene Zahlen]
+    B --> H[Lokale HTML-Seite: Jahre, Monate, Tage; Sortierung nach Datum und Ergebnis]
+    B --> F[DOCX und PDF mit Empfehlungen]
     H --> U
     F --> U
 ```
@@ -61,48 +61,48 @@ Anweisungsdateien (Markdown, kein Code; Entwürfe, die in der Praxis noch nicht 
 
 ```text
 Локальные_данные/
-  workspace.json                    # workspace_id, format, language, stage of the first run, capability check results
-  Положите_сюда/                    # the ONLY place where the person puts things (the agent only reads it)
-    1_Мои_документы/                # CVs, diplomas, certificates, references (originals, never changed)
-    2_Рассказ_о_себе/               # the person's story: voice transcripts, notes, interviews, the questions
-    3_Шаблон_отчёта/                # optional report template
-    4_Шаблон_резюме/                # everything about your CVs, any format; read only
-    5_Шаблон_сопроводительного_письма/  # everything about your cover letters; read only
+  workspace.json                    # workspace_id, Format, Sprache, Stufe des ersten Laufs, Ergebnisse der Fähigkeitsprüfung
+  Положите_сюда/                    # der EINZIGE Ort, an dem die Person etwas ablegt (der Agent liest nur)
+    1_Мои_документы/                # Lebensläufe, Diplome, Zeugnisse, Referenzen (Originale, nie verändert)
+    2_Рассказ_о_себе/               # die Geschichte der Person: Sprachabschriften, Notizen, Interviews, die Fragen
+    3_Шаблон_отчёта/                # optionale Berichtsvorlage
+    4_Шаблон_резюме/                # alles zu Ihren Lebensläufen, jedes Format; nur lesen
+    5_Шаблон_сопроводительного_письма/  # alles zu Ihren Anschreiben; nur lesen
   persons/<person_id>/
-    База_знаний/Жизнеописание.md    # the knowledge base: the person's life story as confirmed facts
-    journal/transactions-YYYY-MM.jsonl  # sole authoritative journal, monthly segments, split into -pN parts above 500 lines; only the current segment is written
-    journal/writer.lock              # exists only while one chat is writing
-    state/person.json               # person and profile-list view
-    state/quota.json                # monthly counters, rebuilt from the journal
-    outbox/<send_attempt_id>/            # prepared send package, never edited
-  Resume/                              # working documents: CV drafts and the Word copy of the template in use
-  CoverLetter/                         # working documents: letter drafts and the Word copy of the template in use
+    База_знаний/Жизнеописание.md    # die Wissensbasis: die Lebensgeschichte der Person als bestätigte Fakten
+    journal/transactions-YYYY-MM.jsonl  # das einzige maßgebliche Journal, Monatsabschnitte, ab 500 Zeilen in -pN-Teile geteilt; nur der aktuelle Abschnitt wird beschrieben
+    journal/writer.lock              # existiert nur, solange ein Chat schreibt
+    state/person.json               # Ansicht auf Person und Profilliste
+    state/quota.json                # Monatszähler, aus dem Journal neu aufgebaut
+    outbox/<send_attempt_id>/            # vorbereitetes Sendepaket, nie bearbeitet
+  Resume/                              # Arbeitsdokumente: Lebenslaufentwürfe und die Word-Kopie der verwendeten Vorlage
+  CoverLetter/                         # Arbeitsdokumente: Anschreibenentwürfe und die Word-Kopie der verwendeten Vorlage
   profiles/<profile_id>/
-    profile.json                    # current confirmed configuration
-    registry.json                   # targets, applications and the queue (projection)
-    runs/                           # work sessions: plans, results, questions
-    reports/<YYYY-MM>/              # report revisions and manifests (in English, Russian or German)
-  Applications/                       # ALL application work of the person, one tree for all years
-    2026/                           # year
-      10_October/                   # two-digit month number + English month name
-        001_Muster-Maschinenbau_Stuttgart_Maintenance-technician/   # number, company, city, role
-          Company.md                # company data from public sources, each with source and check date
-          Resume_v001.docx          # versions are new files: Resume_v002.docx, ...
+    profile.json                    # aktuelle bestätigte Konfiguration
+    registry.json                   # Ziele, Bewerbungen und die Warteschlange (Projektion)
+    runs/                           # Arbeitssitzungen: Pläne, Ergebnisse, Fragen
+    reports/<YYYY-MM>/              # Berichtsfassungen und Manifeste (auf Englisch, Russisch, Deutsch oder Ukrainisch)
+  Applications/                       # die GESAMTE Bewerbungsarbeit der Person, ein Baum für alle Jahre
+    2026/                           # Jahr
+      10_October/                   # zweistellige Monatsnummer + englischer Monatsname
+        001_Muster-Maschinenbau_Stuttgart_Maintenance-technician/   # Nummer, Firma, Stadt, Stelle
+          Company.md                # Firmendaten aus öffentlichen Quellen, jeweils mit Quelle und Prüfdatum
+          Resume_v001.docx          # Versionen sind neue Dateien: Resume_v002.docx, ...
           Resume_v001.pdf
           CoverLetter_v001.docx
           CoverLetter_v001.pdf
-          EmailText_de.txt          # the e-mail text in the chosen language
-          Status.txt                # append-only history of this application
-          Replies.txt               # every reply and delivery notice in full, in thread order (Ответы)
+          EmailText_de.txt          # der E-Mail-Text in der gewählten Sprache
+          Status.txt                # nur anhängbarer Verlauf dieser Bewerbung
+          Replies.txt               # jede Antwort und Zustellungsmeldung vollständig, in Thread-Reihenfolge (Ответы)
   dashboard/
-    index.html                      # local menu: statistics and readiness per profile
+    index.html                      # lokales Menü: Statistik und Bereitschaft je Profil
     profiles/<profile_id>/
-      summary.js                    # the data of this profile plus the person's shared quota
-      index.html                    # an unchanged copy of dashboard_template/index.html
-      readiness.html                # the readiness page of this profile
+      summary.js                    # die Daten dieses Profils plus das gemeinsame Kontingent der Person
+      index.html                    # eine unveränderte Kopie von dashboard_template/index.html
+      readiness.html                # die Bereitschaftsseite dieses Profils
 ```
 
-Der Verzeichnisname `Локальные_данные` ist ein gemeinsamer technischer Pfad in beiden Sprachfassungen. Das Dashboard hat nur einen Pfad, `Локальные_данные/dashboard/`, neben `persons/` und `profiles/`. Profil-IDs sind im ganzen Arbeitsbereich eindeutig, sodass sich die Seiten mehrerer Personen nicht überschneiden.
+Der Verzeichnisname `Локальные_данные` ist ein gemeinsamer technischer Pfad in allen Sprachfassungen. Das Dashboard hat nur einen Pfad, `Локальные_данные/dashboard/`, neben `persons/` und `profiles/`. Profil-IDs sind im ganzen Arbeitsbereich eindeutig, sodass sich die Seiten mehrerer Personen nicht überschneiden.
 
 Jede Journalzeile trägt `person_id` und gegebenenfalls ihr Profil; das gemeinsame Kontingent hat Personenbezug. Vor jeder Handlung prüft der Agent, dass das Profil zur Person und das Konto zum Profil gehört. Die Trennung verhindert Zuordnungsfehler in den Regeln; eine andere `profile_id` bildet für denselben Computerbenutzer selbst keine Zugriffsgrenze des Betriebssystems.
 
@@ -134,17 +134,17 @@ Regeln für den Agenten:
 5. **Ein Schreiber zur Zeit.** Vor dem Schreiben einer Journalzeile nimmt der Agent `writer.lock` durch exklusives Anlegen, wie in Abschnitt 4b beschrieben. Gehört die Datei zu einem anderen Lauf, hält der Agent an und fragt die Person, ob dieser Chat noch arbeitet; eine fremde Sperre entfernt er erst nach den Prüfungen in 4b. Ist die Arbeit erledigt, löscht er seine eigene Sperre. Die Sperre schützt nur, wenn jeder Chat dieses Protokoll einhält und die Umgebung exklusives Anlegen bietet; andernfalls muss die Person dafür sorgen, dass nur ein Chat zur Zeit arbeitet.
 6. Eine Entscheidung über Kontingent oder Versand liest das Journal immer neu; eine Zusammenfassung aus einem früheren Teil des Chats wird nie als Grundlage genommen.
 7. **Mit dem Werkzeug des Systems zählen, nicht nach Augenmaß.** Die in einem Monat belegten, reservierten oder ungeprüften Slots werden aus allen Monatsabschnitten des Journals per Textsuche nach den Monatsfeldern der Kontingent-Ereignisse gelesen (Formeln in DATA_CONTRACT.md §3c und der verbleibende Stand in §5; Befehle in §4a unten). Der Agent zeigt die Zahl und wie sie ermittelt wurde. Er vergleicht sie mit `quota.json`; weichen sie ab oder fehlt die Datei, gilt das Journal, und `quota.json` wird neu aufgebaut (`examples/quota.example.json`). Dasselbe gilt für Prüfsummen von Dateien. Dem Paket wird dafür kein Skript hinzugefügt.
-8. **Eine Zeile schreiben (ein Anhängeverfahren, Monatsabschnitte).** Das Journal nutzt `journal/transactions-YYYY-MM.jsonl` und ab 500 Zeilen nummerierte Teile `journal/transactions-YYYY-MM-pN.jsonl` (DATA_CONTRACT.md §3c). Nur der aktuelle Teil wird beschrieben; geschlossene Teile bleiben unverändert. Die erste `sequence` ist 1. JSON wird nicht von Hand zusammengesetzt; Shell-Umleitung und Heredocs schreiben keine Journalzeilen. Exaktes Ersetzen mit dem Dateiwerkzeug dient ausschließlich dem Anhängen nach der letzten Zeile.
-   1. Unter der Schreibsperre den lokalen Monat und den aktuellen Teil bestimmen. Hat er 500 Zeilen, den nächsten Teil (`-p2`, `-p3` …) als neuen Abschnitt wählen. Letzte vollständige Zeile des aktuellen Teils lesen; bei neuem/leeren Teil die letzte Zeile des neuesten früheren Teils verwenden. `n` ist deren `sequence`, bei der ersten Zeile 0. Die neue `action_id` darf in keinem Teil vorkommen. Zeilenzahl, letzte Zeile `L` ohne Zeilenumbruch und SHA-256 `C0` des ganzen Teils notieren; bei neuem Teil gilt der Hash der leeren Datei, `e3b0c442…b855`. Ein vorhandener Teil muss mit Zeilenumbruch enden.
-   2. Die neue Zeile `N` in der Schlüsselreihenfolge von DATA_CONTRACT.md §3c mit `sequence` n+1 bilden. Sie muss ein JSON-Objekt in einer Zeile sein; Kennungen müssen ihrer festgelegten Form entsprechen. Ein Fehler führt zu Schritt 5.
-   3. Anhängen: (a) Bei vorhandenem Inhalt `L` exakt durch `L`, Zeilenumbruch und `N` ersetzen; `L` muss genau einmal vorkommen (ist `L` sehr lang, genügt als Suchtext ein eindeutiges Ende von `L`; die Präfix-Prüfsumme aus Schritt 4 beweist, dass sich kein früheres Byte geändert hat). Die Datei endet mit `N` und Zeilenumbruch. (b) Einen neuen Teil nur anlegen, wenn er nicht existiert; Inhalt genau `N` mit Zeilenumbruch. (c) Nur ein Teil mit weniger als 300 Zeilen darf alternativ vollständig aus dem in Schritt 1 gelesenen Inhalt plus `N` geschrieben werden. Dies ist die einzige erlaubte vollständige Neuschreibung.
-   4. Zurücklesen: `N` ist gültiges JSON mit `sequence` n+1; die vorherige Zeile ist byte-identisch mit `L` und hat `sequence` n. Die Zeilenzahl ist genau um eins gewachsen. SHA-256 des Teils ohne die letzte Zeile muss `C0` entsprechen (zum Beispiel `head -n -1 <segment> | sha256sum`, Abschnitt 4a), damit alle früheren Bytes unverändert sind. Ergebnisse im Laufprotokoll festhalten.
-   5. Ein Fehler stoppt jede weitere Schreib- oder externe Aktion. Datei erhalten, keine Ansicht aktualisieren, Sperre behalten und Person informieren. Frühere Zeilen nicht reparieren oder neu schreiben. Die Sperre wird wie in 4b exklusiv angelegt; getrenntes Prüfen und Anlegen genügt nicht.
-   6. Erst nach erfolgreicher Rücklesung die eigene Sperre freigeben: `lock_id` prüfen und die eigene Sperrdatei löschen. Ein fehlgeschlagenes Schreiben erreicht diesen Schritt nie.
+8. **Eine Zeile schreiben (ein Anhängeverfahren, Monatsabschnitte).** Das Journal wird pro Monat geführt: Der aktuelle Abschnitt ist `journal/transactions-YYYY-MM.jsonl`, oder sein nummerierter Teil `journal/transactions-YYYY-MM-pN.jsonl`, sobald der Monat 500 Zeilen hat (DATA_CONTRACT.md §3c). Nur der aktuelle Abschnitt wird beschrieben; ein geschlossener Abschnitt wird nie bearbeitet. Existiert kein Journal, hat die erste Zeile die `sequence` 1. Es wird nur das folgende Verfahren verwendet. JSON wird nicht von Hand zusammengesetzt, und Text wird nicht mit Shell-Umleitung oder Heredocs geschrieben. Das exakte Ersetzen des Dateiwerkzeugs dient nur einem Zweck: eine Zeile nach der letzten Zeile des Abschnitts anzuhängen, wie die Schritte 3 und 4 beschreiben.
+   1. Unter der Schreibersperre den aktuellen lokalen Monat M und seinen aktuellen Abschnitt bestimmen. Hat dieser Abschnitt bereits 500 Zeilen, kommt die neue Zeile in den nächsten nummerierten Teil (`-p2`, `-p3` …), der in Schritt 3(b) als neuer Abschnitt gilt. Die letzte Zeile des aktuellen Abschnitts lesen; sie muss eine vollständige Zeile sein. Ist der Abschnitt neu oder leer, stattdessen die letzte Zeile des neuesten früheren Abschnitts lesen; für die allererste Zeile gibt es keine, und `n` ist 0. `n` ist die `sequence` dieser letzten Journalzeile. Prüfen, dass die neue `action_id` in keinem Abschnitt vorkommt (Regel 2). Im Laufprotokoll festhalten: die Zeilenzahl des Abschnitts; die letzte Zeile `L` ohne Zeilenumbruch (sie ist eindeutig, weil sie ihre eigene `sequence` und `action_id` trägt); und `C0`, die SHA-256 der ganzen Abschnittsdatei (bei einem neuen Abschnitt die SHA-256 einer leeren Datei, `e3b0c442…b855`). Prüfen, dass die Datei mit einem Zeilenumbruch endet.
+   2. Die neue Zeile in der Schlüsselreihenfolge von DATA_CONTRACT.md §3c mit `sequence` n+1 bilden. Prüfen, dass sie ein JSON-Objekt in einer Zeile ist und dass die Kennungen ihrer in DATA_CONTRACT.md §2 festgelegten Form folgen. Eine fehlgeschlagene Prüfung beendet das Schreiben (Schritt 5).
+   3. Anhängen. (a) Hat der Abschnitt Zeilen: mit dem exakten Ersetzen des Dateiwerkzeugs `L` durch `L`, einen Zeilenumbruch und `N` ersetzen (ist `L` sehr lang, genügt als zu suchender Text ein eindeutiges Ende von `L`; die Präfix-Prüfsumme aus Schritt 4 beweist, dass sich kein früheres Byte geändert hat). Wird `L` nicht genau einmal gefunden, anhalten (Schritt 5). Die Datei endet dann mit `N` und seinem Zeilenumbruch. (b) Ist der Abschnitt neu: prüfen, dass die Datei nicht existiert, und sie dann mit dem Dateiwerkzeug anlegen, mit genau `N` und seinem Zeilenumbruch als Inhalt. (c) Ein Abschnitt mit weniger als 300 Zeilen darf stattdessen vollständig mit dem Dateiwerkzeug geschrieben werden, aus dem in Schritt 1 gelesenen Text: dieselben Zeilen, dann `N` mit seinem Zeilenumbruch. Variante (c) ist die einzige vollständige Neuschreibung eines Abschnitts, und nur für einen kleinen Abschnitt.
+   4. Zurücklesen. (a) `N` ist gültiges JSON mit `sequence` n+1; die Zeile davor, falls es eine gibt, ist byte-identisch mit `L` und gültiges JSON mit `sequence` n. (b) Die Zeilenzahl ist genau um eins gewachsen. (c) Die SHA-256 des Abschnitts ohne seine letzte Zeile entspricht `C0`, sodass jedes Byte vor `N` unverändert ist (zum Beispiel `head -n -1 <segment> | sha256sum`, Abschnitt 4a). Die Werte der Rücklesung werden im Laufprotokoll festgehalten.
+   5. Eine fehlgeschlagene Prüfung beendet das Schreiben. Die Abschnittsdatei bleibt, wie sie ist; keine Ansicht wird aktualisiert, keine externe Aktion ausgeführt, die Sperre bleibt bestehen, und die Person wird informiert (Regel 4). Nichts wird durch Neuschreiben früherer Zeilen repariert. Die Sperrdatei hat ein festes Format (DATA_CONTRACT.md §3c). Die Prüfung, dass keine Sperre existiert, mit anschließendem getrennten Anlegen genügt für sich allein nicht (4b).
+   6. Freigabe. Erst nachdem Schritt 4 bestanden ist, gibt der Inhaber die Sperre frei: Er liest die Sperrdatei, prüft, dass sie seine eigene `lock_id` trägt, und löscht sie (4b). Ein fehlgeschlagenes Schreiben erreicht diesen Schritt nie.
 
 ### 4a. Befehle, die der Agent verwenden darf
 
-Der Agent verwendet nur Befehle, die das Betriebssystem der Person ohnehin bereitstellt, direkt im Chat eingegeben; nichts wird als Skript ins Paket gespeichert. Erlaubt sind: die aktuelle Zeit, eine neue UUID, eine Dateiprüfsumme, eine Textsuche mit Zählung, eine JSON-Gültigkeitsprüfung, eine Zeitzonenumrechnung für den aktuellen Moment, ein Verzeichnislisting, das Anlegen von Ordnern, das Kopieren der freigegebenen Dateien in einen Outbox-Ordner (mit Prüfsummen-Rücklesung jeder Kopie), das Erstellen von DOCX- und PDF-Dateien mit dem unten genannten Dokumentwerkzeug sowie das Kopieren und Löschen eigener temporärer Dateien des Agenten. Vier Ausnahmen sind genannt: das exklusive Anlegen von `writer.lock`, die Kopie nach `outbox/`, das Dokumentwerkzeug und die einmalige Aufteilung eines alten Journals (DATA_CONTRACT.md §3d), die Bytes nach Zeilenbereichen kopiert und per Prüfsumme zurückliest. JSON-Dateien und alle anderen Textdateien (Status.txt, Company.md, Laufnotizen, EMAIL_TO_SEND.txt) werden mit dem Dateiwerkzeug geschrieben, nie mit Shell-Umleitung, Heredocs, `sed` oder ähnlichem. Python ist kein Betriebswerkzeug des Agenten. Die folgenden Formen sind die Windows-Formen (PowerShell); unter macOS oder Linux verwendet der Agent die Entsprechungen: `date -u +%Y-%m-%dT%H:%M:%SZ`, `uuidgen` (oder `cat /proc/sys/kernel/random/uuid`), `sha256sum`, `wc -l`, `od -c`, `diff` oder `cmp` (ein schreibgeschützter Vergleich zweier Dateien, zum Beispiel um zu prüfen, dass eine Erzählung wörtlich gespeichert wurde), `grep -c` und `grep -o` (Zählungen), `tail -n 1` und `tail -n 2`, `head -n -1` (ein Abschnitt ohne seine letzte Zeile), `cp` sowie `set -C` (noclobber) für das exklusive Anlegen von `writer.lock`:
+Der Agent verwendet nur Befehle, die das Betriebssystem der Person ohnehin bereitstellt, direkt im Chat eingegeben; nichts wird als Skript ins Paket gespeichert. Erlaubt sind: die aktuelle Zeit, eine neue UUID, eine Dateiprüfsumme, eine Textsuche mit Zählung, eine JSON-Gültigkeitsprüfung, eine Zeitzonenumrechnung für den aktuellen Moment, ein Verzeichnislisting, das Anlegen von Ordnern, das Kopieren der freigegebenen Dateien in einen Outbox-Ordner (mit Prüfsummen-Rücklesung jeder Kopie), das Erstellen von DOCX- und PDF-Dateien mit dem unten genannten Dokumentwerkzeug sowie das Kopieren und Löschen eigener temporärer Dateien des Agenten. Die Ausnahmen sind genannt: das exklusive Anlegen von `writer.lock`, die Kopie nach `outbox/`, das Dokumentwerkzeug und die einmalige Aufteilung eines alten Journals (DATA_CONTRACT.md §3d), die Bytes nach Zeilenbereichen kopiert und per Prüfsumme zurückliest. JSON-Dateien und alle anderen Textdateien (Status.txt, Company.md, Laufnotizen, EMAIL_TO_SEND.txt) werden mit dem Dateiwerkzeug geschrieben, nie mit Shell-Umleitung, Heredocs, `sed` oder ähnlichem; eine Journalzeile wird nur durch das Anhängen mit exaktem Ersetzen nach Regel 8 hinzugefügt. Python ist kein Betriebswerkzeug des Agenten: Es ist ausschließlich das Prüfwerkzeug des Testers. Zählungen, Seitenfolgen und Prüfsummen in einem Chat werden mit den eigenen Textsuch- und Prüfsummenbefehlen des Betriebssystems und mit dem Dateiwerkzeug erstellt. Die folgenden Formen sind die Windows-Formen (PowerShell); unter macOS oder Linux verwendet der Agent die Entsprechungen: `date -u +%Y-%m-%dT%H:%M:%SZ`, `uuidgen` (oder `cat /proc/sys/kernel/random/uuid`), `sha256sum`, `wc -l`, `od -c`, `diff` oder `cmp` (ein schreibgeschützter Vergleich zweier Dateien, zum Beispiel um zu prüfen, dass eine Erzählung wörtlich gespeichert wurde), `grep -c` und `grep -o` (Zählungen), `tail -n 1` und `tail -n 2`, `head -n -1` (ein Abschnitt ohne seine letzte Zeile), `cp` sowie `set -C` (noclobber) für das exklusive Anlegen von `writer.lock`:
 
 | Bedarf | PowerShell |
 |---|---|
@@ -161,18 +161,18 @@ Der Agent verwendet nur Befehle, die das Betriebssystem der Person ohnehin berei
 | Kopie nach `outbox/<send_attempt_id>/` | `Copy-Item -LiteralPath <source> -Destination <outbox folder>`, danach die Prüfsummenzeile oben für jede Kopie |
 | Erstellung von DOCX und PDF (Dokumentwerkzeug) | Das Dokumentwerkzeug der Plattform, wenn die Installation eines hat; sonst LibreOffice im Headless-Modus: `soffice --headless --convert-to pdf --outdir <folder> <file.docx>` für das PDF eines freigegebenen DOCX |
 
-In der Tabelle ist `<journal>` jeder Abschnitt `journal/transactions-*.jsonl` der Person, und `<current segment>` ist der Abschnitt des aktuellen Monats. Eine Zeitzonenumrechnung eines alten Moments ist nicht nötig: Monate werden in die Ereignisse geschrieben, wenn sie geschehen. Textdateien schreibt der Agent mit seinem eigenen Dateiwerkzeug, nicht durch Umleitung in der Shell; die oben genannte Sperrdatei-Anlage ist die einzige Ausnahme. Diese Formen wurden auf einem echten Windows-Rechner noch nicht erprobt; der erste Test ist Teil der Abnahmeprüfungen.
+In der Tabelle ist `<journal>` jeder Abschnitt `journal/transactions-*.jsonl` der Person, und `<current segment>` ist der Abschnitt des aktuellen Monats. Eine Zeitzonenumrechnung eines alten Moments ist nicht nötig: Monate werden in die Ereignisse geschrieben, wenn sie geschehen. Textdateien schreibt der Agent mit seinem eigenen Dateiwerkzeug, nicht durch Umleitung in der Shell; die oben genannte Anlage der Sperrdatei und die einmalige Aufteilung bei der Migration (DATA_CONTRACT.md §3d) sind die einzigen Ausnahmen. Diese Formen wurden auf einem echten Windows-Rechner noch nicht erprobt; der erste Test ist Teil der Abnahmeprüfungen.
 
 Dokumentpakete werden zuerst in einem temporären Ordner vorbereitet und geprüft. Danach werden sie als neuer, nummerierter Versionsordner gespeichert (`v001`, `v002`) und erst dann mit Dateinamen, Größen und — wo die Systemwerkzeuge es liefern können — einer Prüfsumme im Journal registriert. Ein angenommenes Paket wird nie an Ort und Stelle geändert: Eine Änderung erzeugt eine neue Version und setzt die Bewerbung zurück in die Prüfung.
 
-### 4b. Protokoll der Schreibsperre (F07)
+### 4b. Protokoll der Schreibersperre (F07)
 
 **Geltungsbereich.** Eine Sperre pro Person: `persons/<person_id>/journal/writer.lock`. Sie schützt das Journal, das Kontingent und die Profilereignisse dieser Person. Sie gilt nur für die Schreibschritte; Suche, Rendering und externe Aufrufe finden außerhalb statt. Die Sperre einer anderen Person blockiert die Arbeit dieser Person nicht, und die Sperre dieser Person erlaubt nie Schreibvorgänge für eine andere Person.
 
 **Sperre setzen.**
 
 1. Die Datei wird mit einer Operation angelegt, die scheitert, wenn die Datei bereits existiert: exklusives Anlegen („neu anlegen“-Modus, ein exklusives Öffnen-Flag oder ein gleichwertiges Verfahren, das die Umgebung dokumentiert). Zu prüfen, dass die Datei fehlt, und sie danach in einem zweiten Schritt anzulegen, ist kein exklusives Anlegen.
-2. Der Inhalt ist eine JSON-Zeile mit `lock_id`, `run_id`, `owner` (eine kurze Bezeichnung des Chats), `person_id` und `created_at` (UTC), wie in DATA_CONTRACT.md §5, „Schreibsperre (writer lock, F07)“. Die `run_id` wird auch in die Sitzungsnotiz des Chats geschrieben.
+2. Der Inhalt ist eine JSON-Zeile mit `lock_id`, `run_id`, `owner` (eine kurze Bezeichnung des Chats), `person_id` und `created_at` (UTC), wie in DATA_CONTRACT.md §5, „Schreibersperre (writer lock, F07)“. Die `run_id` wird auch in die Sitzungsnotiz des Chats geschrieben.
 3. Scheitert das Anlegen, weil die Datei existiert, schreibt der Agent nichts und liest die Datei. Trägt sie die `run_id` dieses Chats, arbeitet der Agent weiter (ein neu gestarteter Chat erkennt seine eigene Sperre über seine Notiz). Andernfalls hält er an, meldet `LOCK_HELD` und fragt die Person; es gilt das Verfahren für veraltete Sperren unten.
 4. Vor jedem Schreiben unter der Sperre liest der Agent die Sperre erneut und bestätigt, dass sie noch seine `lock_id` trägt. Ist die Sperre verschwunden oder geändert, wird das Schreiben abgebrochen und gemeldet.
 5. Ob exklusives Anlegen in dieser Installation funktioniert, wird in `workspace.json` unter `capabilities.writer_lock` festgehalten (`available`, `unavailable` oder `unknown`). Ist das Ergebnis `unavailable` oder `unknown`, beansprucht der Agent keine Exklusivität und startet kein autonomes paralleles Schreiben oder externes Handeln: Nur ein Chat handelt für diese Person, und die Person wird darüber informiert.
@@ -228,7 +228,7 @@ Statt programmierter Befehle führt der Agent benannte Aktionen aus. Jede Aktion
 | Create local archive (R01) | Ein geprüfter, versionierter Snapshot nach einer abgeschlossenen Operation (Abschnitt 12) |
 | Schedule in Gmail (R03) | Ein in Gmail Scheduled geprüfter Eintrag (6a); dies ist noch keine gesendete Nachricht |
 | Plan the month and cadence (R02, R04) | Ein geprüfter Slot-Kalender und Reservierungen für den Monat (8a, 8b) |
-| Daily check at 16:00 (R05) | Abgleich von Scheduled, SENT, Antworten und Zustellungsmeldungen (8c) |
+| Tägliche Prüfung um 16:00 (R05) | Abgleich von Scheduled, SENT, Antworten und Zustellungsmeldungen (8c) |
 
 Die Antwort des Agenten zu jeder Aktion nennt: das Ergebnis (`ok`, `needs_input`, `conflict`, `blocked` oder `failed`), einen Grundcode, die Journalposition, die erzeugten Dateien und den nächsten Schritt in verständlicher Sprache. Die Grundcodes bleiben stabil; die vollständige Liste steht in DATA_CONTRACT.md §3c (zum Beispiel `ACCOUNT_MISMATCH`, `QUOTA_EXHAUSTED`, `SEND_UNCERTAIN`, `PACKAGE_CHANGED`, `SUBJECT_TOO_LONG`, `MODE_DRAFT_ONLY`, `LOCK_HELD`). Dort ist auch festgelegt, welche Aktionen eine Journalzeile schreiben.
 
@@ -242,7 +242,7 @@ Die folgende Reihenfolge ist die Reihenfolge externer Aktionen aus DATA_CONTRACT
 
 1. **Unveränderliches Paket.** Eine Kopie der genauen Dateien im Ordner `outbox/<send_attempt_id>/` und ein Manifest mit dem SHA256 jedes Anhangs, dem Empfänger und der Quelle seiner Adresse, dem sendenden Konto, dem Betreff, dem Text, dem Transportweg (`agent_local_run`, `gmail_scheduled` oder `manual_by_person`; nie zwei für ein Paket) und dem Slot mit seiner Zeitzone. Die Kopie wird zurückgelesen und mit dem freigegebenen Paket verglichen.
 2. **Einwilligung an das Manifest gebunden.** Die Freigabe (`package_approved` bzw. der freigegebene Plan mit seiner Einwilligung) trägt den SHA256 des Manifests. Jede Komponente aus Schritt 1 muss noch damit übereinstimmen. Eine geänderte Komponente macht die frühere Einwilligung für die neue Version ungültig; es braucht eine neue Freigabe (`approval_revoked`, `PACKAGE_CHANGED`). Danach läuft die Sendeprüfung.
-3. **Reservierung und dauerhafte Absicht (hartes Tor).** Unter der Schreibsperre (4b) liest der Chat Kontingent und Verlauf erneut und schreibt eine Journalzeile mit `quota_reserved` und `send_started`. Die Zeile trägt die Absicht, den Transportweg, die `send_attempt_id` und den SHA-256 des Manifests (und die übrigen Felder aus DATA_CONTRACT.md §3c). Der Chat liest sie nach Regel 8 aus Abschnitt 4 zurück und löst die Sperre erst, nachdem die Rücklesung bestanden hat (Regel 8, Schritt 6). Unmittelbar vor Schritt 4 liest er noch einmal die letzte Zeile des Journals: Es muss genau diese Absichtszeile sein, mit derselben `send_attempt_id` und demselben SHA-256 des Manifests wie in der Freigabe. **Tor:** Schlagen Schreiben oder Zurücklesen fehl, hält der Chat vor dem Lösen der Sperre an, macht keinen externen Aufruf, schreibt nichts anderes und behält die Sperre. Schlägt nur die Prüfung der letzten Zeile fehl, macht der Chat keinen externen Aufruf, und die offene Absicht wird nach 4b behandelt.
+3. **Reservierung und dauerhafte Absicht (hartes Tor).** Unter der Schreibersperre (4b) liest der Chat Kontingent und Verlauf erneut und schreibt eine Journalzeile mit `quota_reserved` und `send_started`. Die Zeile trägt die Absicht, den Transportweg, die `send_attempt_id` und den SHA-256 des Manifests (und die übrigen Felder aus DATA_CONTRACT.md §3c). Der Chat liest sie nach Regel 8 aus Abschnitt 4 zurück und löst die Sperre erst, nachdem die Rücklesung bestanden hat (Regel 8, Schritt 6). Unmittelbar vor Schritt 4 liest er noch einmal die letzte Zeile des Journals: Es muss genau diese Absichtszeile sein, mit derselben `send_attempt_id` und demselben SHA-256 des Manifests wie in der Freigabe. **Tor:** Schlagen Schreiben oder Zurücklesen fehl, hält der Chat vor dem Lösen der Sperre an, macht keinen externen Aufruf, schreibt nichts anderes und behält die Sperre. Schlägt nur die Prüfung der letzten Zeile fehl, macht der Chat keinen externen Aufruf, und die offene Absicht wird nach 4b behandelt.
 4. **Ein externer Aufruf.** Genau einer, durch den Chat, der die Absicht geschrieben hat. Kein Wiederholen im selben Chat und kein „zweites Exemplar zur Sicherheit“. Jede `attempt_id` hat genau einen Ausführenden; ein wiederholter Lauf findet den vorhandenen Versuch und gleicht ihn ab.
 5. **Abgleich.** Suche in SENT bzw. Scheduled nach genau dieser Nachricht (Konto, Paket, Empfänger, Slot). Gefunden: weiter mit Schritt 6. Nachweislich nicht vorhanden: `failed_before_send` und `quota_released` in einer Zeile. Sonst `send_uncertain`: Die Reservierung bleibt, es wird kein neuer externer Aufruf gemacht, und die Person entscheidet nach einer Prüfung.
 6. **Tatsache festhalten.** Bei einer `cv_submission` `sent_verified` und `quota_consumed` in einer Zeile; ein Dankesschreiben oder eine Antwort ohne Lebenslauf wird mit `thank_you_sent` bzw. `ordinary_reply_sent` festgehalten (DATA_CONTRACT.md §4), nie mit `sent_verified`; `gmail_scheduled_verified` für eine Terminierung (das ist kein Versandereignis). Danach Ansichten aktualisieren (6b) und das lokale Archiv erstellen (Abschnitt 12).
@@ -270,8 +270,8 @@ Die Deduplizierung von Dankesschreiben verwendet: account_id + eingehende gmail_
 
 **Schritte.** Die Reihenfolge folgt Abschnitt 6.
 
-1. **Vorher.** Prüfe die Person, den aktiven Gmail-Absender (es muss das Konto im Profil sein, und der Browser muss dieselbe Adresse zeigen), Modus und Einwilligung, den freigegebenen Slot, den Empfänger und seine Quelle, den Betreff (höchstens 50 Zeichen nach NFC-Normalisierung), den Text und jeden Anhang (Name, Größe und SHA256 gegen das Manifest).
-2. **Reservieren.** Unter der Schreibsperre `quota_reserved` und `send_started` mit dem Transportweg `gmail_scheduled` für den Monat des geplanten Versands schreiben. Danach die Sperre lösen. Diese Zeile ist die dauerhafte Absicht.
+1. **Vorher.** Die Person, den aktiven Gmail-Absender (es muss das Konto im Profil sein, und der Browser muss dieselbe Adresse zeigen), Modus und Einwilligung, den freigegebenen Slot, den Empfänger und seine Quelle, den Betreff (höchstens 50 Zeichen nach NFC-Normalisierung), den Text und jeden Anhang (Name, Größe und SHA256 gegen das Manifest) prüfen.
+2. **Reservieren.** Unter der Schreibersperre `quota_reserved` und `send_started` mit dem Transportweg `gmail_scheduled` für den Monat des geplanten Versands schreiben. Danach die Sperre lösen. Diese Zeile ist die dauerhafte Absicht.
 3. **Verfassen.** Eine neue Nachricht öffnen, nur die freigegebenen Felder ausfüllen, nur die freigegebenen Dateien anhängen und warten, bis jeder Upload abgeschlossen ist. Schlägt ein Anhang fehl, anhalten: Es ist noch nichts terminiert.
 4. **Terminieren.** **Schedule send** wählen, nicht **Send**. Das genaue Datum und die lokale Uhrzeit einstellen und die angezeigte Zeitzone prüfen.
 5. **In Scheduled prüfen.** Den Ordner Scheduled öffnen und den Eintrag mit Konto, Empfänger, Betreff, Text, Anhängen sowie Datum und Uhrzeit abgleichen. Ein Klick oder eine Bestätigungsmeldung ist kein Beleg.
@@ -374,7 +374,7 @@ Der Mail-Abruf ist eine Schleife: Eine Seite lesen, ihre Nachrichten speichern, 
 
 - **Registrierung.** Bei der Einrichtung legt der Agent eine tägliche Aufgabe zu `schedule.daily_check_time` (Standard 16:00) in der Zeitzone der Person an. Die Zeit wird bei der Einrichtung bestätigt und nicht aus der UTC des Servers übernommen; die Aufgabe läuft auch an Wochenenden (DATA_CONTRACT.md §15.1). Er hält die Aufgaben-ID, den Zeitplan, die Zeitzone, den Geltungsbereich (Person und Profil), den letzten Lauf und dessen Ergebnis fest. Eine spätere erneute Einrichtung aktualisiert die bestehende Aufgabe und legt nie eine zweite an. Hat die Agenten-Plattform keinen dauerhaften Planer oder benötigt sie eine offene Anwendung oder einen laufenden Computer, sagt der Agent das und bietet den vereinbarten manuellen Start an. Eine Zeile in einer Konfigurationsdatei ist kein Nachweis, dass eine Aufgabe läuft.
 - **Jeder Lauf.**
-  1. Prüfe den Zugriff auf den erlaubten Ordner und das gewählte Mail-Konto. Ohne Zugriff wird ein fehlgeschlagener Lauf festgehalten; es wird nicht „keine Änderungen“ geschrieben, und kein unbekannter Status wird geändert.
+  1. Den Zugriff auf den erlaubten Ordner und das gewählte Mail-Konto prüfen. Ohne Zugriff wird ein fehlgeschlagener Lauf festgehalten; es wird nicht „keine Änderungen“ geschrieben, und kein unbekannter Status wird geändert.
   2. Scheduled und SENT werden mit dem Plan abgeglichen. Ein Versand zählt nur mit Beleg; Reservierung und Kontingent folgen dem Journal.
   3. Neue Antworten und Zustellungsmeldungen werden auf jeder Seite (mit der Token-Schleife aus Abschnitt 8, bis kein nächstes Token mehr kommt) und für jeden Monat gelesen, ganze Threads gelesen und den Bewerbungen zugeordnet.
   4. Duplikate werden über stabile Nachrichten-IDs übersprungen. Das ursprüngliche Versanddatum, das Antwortdatum, der Absender, der Link zur Bewerbung, der Beleg und ein kurzer Grund werden festgehalten.
@@ -412,9 +412,9 @@ Die erste Erprobung ist ein vollständiger Durchlauf mit synthetischen Daten, vo
 
 Die Prüfszenarien stehen in ACCEPTANCE_TESTS.md. Die Abnahme braucht festgehaltene Belege dafür, dass die Regeln in der Praxis funktionieren, nicht nur das Vorhandensein dieses Dokuments.
 
-## 11. Drei Sprachen, ein Projekt
+## 11. Vier Sprachen, ein Projekt
 
-Die englische Hauptfassung liegt im Stamm, Russisch in `docs/ru`, Deutsch in `docs/de`. Alle drei Fassungen teilen Datenvertrag, Ereignisnamen und Verhalten; Regeländerungen werden in allen drei übernommen. Die Statistikoberfläche unterstützt `en`, `ru`, `de`; ein Wechsel ändert Beschriftungen, nicht Datensätze oder die unabhängig gewählten Sprachen von CV, Anschreiben, E-Mail und Bericht.
+Die englische Hauptfassung liegt im Stamm, Russisch in `docs/ru`, Deutsch in `docs/de`, Ukrainisch in `docs/uk`. Alle vier Fassungen teilen Datenvertrag, Ereignisnamen und Verhalten; Regeländerungen werden in allen vier übernommen. Die Statistikoberfläche unterstützt `en`, `ru`, `de` und `uk`; ein Wechsel ändert Beschriftungen, nicht Datensätze oder die unabhängig gewählten Sprachen von CV, Anschreiben, E-Mail und Bericht.
 
 ## 12. Lokale Archive und Wiederherstellung (R01)
 
@@ -426,26 +426,26 @@ Die Regeln stehen in DATA_CONTRACT.md §11 (Namen, Manifest, Integritätsfehler,
 
 ```text
 persons/<person_id>/archives/
-  <YYYY-MM-DD_HHmmss>_<UUID>/      # archive_id: one finished archive
-    manifest.json                  # schema and product version, archive_id, operation_id list, run_id,
-                                   # scope, local and UTC time, time zone, source_revision, files with
-                                   # relative path, size and SHA-256, integrity result, referenced
-                                   # immutable versions, missing_items
-    journal/transactions-YYYY-MM.jsonl  # copies of all journal segments up to source_revision
-    settings/                      # profile and person settings, without secrets
-    registry/                      # companies, branches, vacancies and routes
-    plans/                         # plan and reservation views
-    packages/                      # package versions with their manifests (or references to them)
-    applications/                  # Status.txt and Company.md of each application
-    derived/                       # statistics summary.js and report manifests at this revision
-  _tmp_<UUID>/                     # unfinished: marked incomplete and ignored by restores
+  <YYYY-MM-DD_HHmmss>_<UUID>/      # archive_id: ein fertiges Archiv
+    manifest.json                  # Schema- und Produktversion, archive_id, operation_id-Liste, run_id,
+                                   # Umfang, lokale und UTC-Zeit, Zeitzone, source_revision, Dateien mit
+                                   # relativem Pfad, Größe und SHA-256, Integritätsergebnis, referenzierten
+                                   # unveränderlichen Versionen, missing_items
+    journal/transactions-YYYY-MM.jsonl  # Kopien aller Journalabschnitte bis source_revision
+    settings/                      # Profil- und Personeneinstellungen, ohne Geheimnisse
+    registry/                      # Firmen, Niederlassungen, Stellen und Routen
+    plans/                         # Plan- und Reservierungsansichten
+    packages/                      # Paketversionen mit ihren Manifesten (oder Verweise darauf)
+    applications/                  # Status.txt und Company.md jeder Bewerbung
+    derived/                       # Statistik summary.js und Berichtsmanifeste bei dieser Revision
+  _tmp_<UUID>/                     # unfertig: als unvollständig markiert und von Wiederherstellungen ignoriert
 ```
 
 Nicht gespeichert werden Passwörter, OAuth-Tokens, Cookies, Browser-Sitzungen, Einmalcodes, echte `.env`-Dateien mit Geheimnissen oder überflüssige vollständige Kopien von Nachrichten. Nur der Beleg, den die Ereignisse brauchen (Kennungen, Daten, Empfänger, kurze Auszüge), wird behalten. Hashes sind Integritätsprüfungen, keine Verschlüsselung; eine Verschlüsselung wäre eine gesonderte Entscheidung. Ein Verweis statt einer kopierten Paketdatei ist nur zulässig, wenn die referenzierte unveränderliche Version bei der Wiederherstellung verfügbar ist; andernfalls ist das Archiv unvollständig, und es sagt das.
 
 **Wie es geschrieben wird.**
 
-1. Die Quellrevision festlegen: die letzte vollständige Journalzeile (`sequence` n). Alle Journalabschnitte unter der Schreibsperre (4b) kopieren.
+1. Die Quellrevision festlegen: die letzte vollständige Journalzeile (`sequence` n). Alle Journalabschnitte unter der Schreibersperre (4b) kopieren.
 2. Den temporären Ordner schreiben und die SHA-256 jeder Datei mit dem Systembefehl berechnen (Abschnitt 4a).
 3. `manifest.json` schreiben.
 4. Prüfen: Jede Datei erneut lesen und ihre Prüfsumme vergleichen; jedes JSON und jede Journalzeile parsen; prüfen, dass die kopierten Abschnitte bei der angegebenen `sequence` enden, dass ihre Sequenzen ohne Lücken sind und jede Zeile zu dieser Person gehört.

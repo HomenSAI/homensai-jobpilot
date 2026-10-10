@@ -2,6 +2,7 @@
 
 Kurze Zusammenfassung jeder Veröffentlichung in einfachen Worten. Technische Einzelheiten stehen in CHANGELOG.md. Eine Zeile pro Veröffentlichung: `- Version | Datum | Text`.
 
+- 1.19.2 | 10. Oktober 2026 | Die Übersetzungen wurden teilweise mit den englischen Texten abgeglichen; eine Übergabenotiz für die nächste Arbeitssitzung wurde ergänzt.
 - 1.19.1 | 10. Oktober 2026 | Der Wert der gesparten Zeit nutzt einen Satz, den deutschen Mindestlohn für 2026, mit Quelle.
 - 1.19.0 | 10. Oktober 2026 | Statistikseite: Ein neuer Block schätzt, was die gesparte Zeit zum deutschen Mindestlohn wert ist, pro Monat und pro Jahr (grobe Schätzung, mit Quellen).
 - 1.18.4 | 10. Oktober 2026 | Statistikseite: Auf dem Balken des Monatslimits steht nun direkt, wie viel genutzt, reserviert und übrig ist.

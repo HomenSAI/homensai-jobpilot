@@ -6,6 +6,12 @@ The project version is in the file [VERSION](VERSION). The project is an AI-agen
 
 Rules: `MAJOR.MINOR.PATCH`. MAJOR changes when data formats or rules change so that old data no longer fits. MINOR is a new feature or a new part of the documentation. PATCH is a fix or a wording change without new capabilities. Every change to `main` adds a line here; the number is raised when a release is made. Each release gets a git tag `vX.Y.Z`. Each entry is written in Russian first, with the English text directly below it. The same entry appears in both language files.
 
+## 1.19.2 — 10 October 2026
+
+**English.** `NEXT_SESSION.md` is added: an ordered list of what to do next, the working rules and the open decisions, for the next AI session. The Russian, German and Ukrainian editions were edited in a consistency pass against the English text; the pass was cut short by a session limit, so it is not finished. This is a developer file, so the patch number is raised.
+
+- **Files:** `NEXT_SESSION.md`, `REMAINING_WORK.md`, partial edits in `docs/ru|de|uk`.
+
 ## 1.19.1 — 10 October 2026
 
 **English.** The value of the saved time on the statistics page now uses one rate, the German statutory minimum wage for 2026 (13.90 EUR gross per hour), for every month, and says so; the 2025 and 2027 rates are removed. The sources stay linked and the rate is not updated automatically. This is a simplification without new capabilities, so the patch number is raised.

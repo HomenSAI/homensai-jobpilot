@@ -2,9 +2,9 @@ Deutsche Fassung. Maßgeblich ist die englische Fassung (DATA_CONTRACT.md bzw. A
 
 # HomenS.AI JobPilot — Datenvertrag 1.9.0
 
-[English](../../DATA_CONTRACT.md) | [Русский](../ru/DATA_CONTRACT.md) | [Deutsch](DATA_CONTRACT.md)
+[English](../../DATA_CONTRACT.md) | [Русский](../ru/DATA_CONTRACT.md) | [Deutsch](DATA_CONTRACT.md) | [Українська](../uk/DATA_CONTRACT.md)
 
-Ein Vertrag für die Dateien und Verfahren, denen der KI-Agent folgt. Das Journal, das Kontingent, die Einwilligung, die Schreibsperre sowie die Mail- und Versandverfahren werden nicht durch eine eigene Anwendung erzwungen. Die Statistikseite enthält nur Code, um einen Snapshot zu prüfen und anzuzeigen; sie führt die vertraglich geregelten Aktionen nicht aus. Der Agent folgt diesem Vertrag, und die Person prüft ihn mit den Abnahmeszenarien. Er ergänzt AI_BUILD_SPEC.md; die Teile des Systems sind in [ARCHITECTURE.md](ARCHITECTURE.md) beschrieben, die Betriebsverfahren in [OPERATING_REQUIREMENTS.md](../../OPERATING_REQUIREMENTS.md). Dieses Dokument ermächtigt nicht zum Versand von E-Mails, zur Planung von Versänden oder zu anderen externen Aktionen: Jede dieser Handlungen braucht die Freigabe der Person nach §5, §12 und §13.
+Ein Vertrag für die Dateien und Verfahren, denen der KI-Agent folgt. Das Journal, das Kontingent, die Einwilligung, die Schreibersperre sowie die Mail- und Versandverfahren werden nicht durch eine eigene Anwendung erzwungen. Die Statistikseite enthält nur Code, um einen Snapshot zu prüfen und anzuzeigen; sie führt die vertraglich geregelten Aktionen nicht aus. Der Agent folgt diesem Vertrag, und die Person prüft ihn mit den Abnahmeszenarien. Er ergänzt AI_BUILD_SPEC.md; die Teile des Systems sind in [ARCHITECTURE.md](ARCHITECTURE.md) beschrieben, die Betriebsverfahren in [OPERATING_REQUIREMENTS.md](OPERATING_REQUIREMENTS.md). Dieses Dokument ermächtigt nicht zum Versand von E-Mails, zur Planung von Versänden oder zu anderen externen Aktionen: Jede dieser Handlungen braucht die Freigabe der Person nach §5, §12 und §13.
 
 Autor: Serhii Khomenko / HomenS.AI · https://homensai.com/ · Dokumentation: CC BY-NC 4.0.
 
@@ -34,7 +34,7 @@ Die erste Version verwendet UTF-8-JSON für Konfiguration und Datensätze und JS
 | `Локальные_данные/Resume/`, `CoverLetter/` | Arbeitsdokumente: Entwürfe, die aus `4_Шаблон_резюме/` und `5_Шаблон_сопроводительного_письма/` erstellt werden, und die Word-Kopie der Vorlage, die die Person benennt (Seite für Seite geprüft, §3b `templates`); die Quellen werden nie geändert, Versionen sind neue Dateien |
 | `Локальные_данные/dashboard/profiles/<profile_id>/summary.js`, `index.html`, `readiness.html` | Statistik-Snapshot (§9), eine unveränderte Kopie der Vorlage und die private Bereitschaftsseite; `Локальные_данные/dashboard/index.html` ist ein lokales Menü mit Links für jedes Profil. Das ist der einzige Dashboard-Pfad |
 
-Neue Ereignisse werden zuerst dauerhaft im Journal festgehalten, danach werden die Projektionen aktualisiert. Das Zeilenformat, die Ereignisnamen und die Zählregeln stehen in §3c; das vollständige Replay in §3d. (Ausnahme: Eine Datei, die der Agent als Ganzes erzeugt, etwa `profile.json`, ein Paket oder `summary.js`, wird zuerst geschrieben und geprüft; ihr Ereignis wird direkt danach festgehalten, weil das Journal abgeschlossene Aktionen festhält.) Eine Projektion ohne Ereignis zu ändern, ist untersagt. Eine Korrektur eines Fakts oder einer Klassifikation erfordert ein neues Ereignis mit `supersedes_event_id`, keine Änderung der Vergangenheit. Beim Neuaufbau einer Projektion dürfen keine Zeilen in `Status.txt` und keine Antwortdatensätze doppelt entstehen: Prüfe die `event_id` und den Mail-Deduplizierungsschlüssel (§3d).
+Neue Ereignisse werden zuerst dauerhaft im Journal festgehalten, danach werden die Projektionen aktualisiert. Das Zeilenformat, die Ereignisnamen und die Zählregeln stehen in §3c; das vollständige Replay in §3d. (Ausnahme: Eine Datei, die der Agent als Ganzes erzeugt, etwa `profile.json`, ein Paket oder `summary.js`, wird zuerst geschrieben und geprüft; ihr Ereignis wird direkt danach festgehalten, weil das Journal abgeschlossene Aktionen festhält.) Eine Projektion ohne Ereignis zu ändern, ist untersagt. Eine Korrektur eines Fakts oder einer Klassifikation erfordert ein neues Ereignis mit `supersedes_event_id`, keine Änderung der Vergangenheit. Beim Neuaufbau einer Projektion dürfen keine Zeilen in `Status.txt` und keine Antwortdatensätze doppelt entstehen: Prüfen Sie die `event_id` und den Mail-Deduplizierungsschlüssel (§3d).
 
 Ein Fehler zwischen dem Schreiben einer Journalzeile und der Aktualisierung von Registry bzw. `Status.txt` wird durch den Neuaufbau der Ansichten aus dem Journal behoben. Änderungen am Kontingent und an Bewerbungen gehören zu einer einzigen Hauptjournalzeile, nicht zu zwei unabhängigen Journalen. Jede vollständige Zeile ist eine abgeschlossene Aktion mit `sequence`, `action_id`, `events` und einem kurzen `result`. Die Reihenfolge von Schreiben und Prüfen ist in ARCHITECTURE.md §4 festgelegt. Artefakte (Pakete, Planversionen, Outbox-Kopien, Archive) werden zuerst als unveränderliche Versionen gespeichert und danach per Verweis im Journal registriert (Dateinamen, Größen und SHA-256).
 
@@ -65,7 +65,7 @@ Jede Kennung hat einen Typ. Der Vertrag verwendet diese Typen überall (auch in 
 | `send_attempt_id` | UUID | Ein externer Versuch (ein sofortiger Versand oder eine Gmail-Terminierung); ein Ausführender |
 | `action_id`, `event_id`, `operation_id` | UUID | `event_id` ist je Ereignis eindeutig; `operation_id` gruppiert die Ereignisse einer Operation |
 | `consent_id` | UUID | Entspricht der `event_id` des Ereignisses `consent_granted` |
-| `run_id` | UUID | Ein Chat oder Lauf; Teil des Namens des Laufprotokolls und der Schreibsperre (§5, §18); nie wiederverwendet |
+| `run_id` | UUID | Ein Chat oder Lauf; Teil des Namens des Laufprotokolls und der Schreibersperre (§5, §18); nie wiederverwendet |
 | `archive_id` | `<YYYY-MM-DD_HHmmss>_<UUID>` | Lokaler Archiv-Snapshot (§11); nie überschrieben |
 | `snapshot_id` | `<profile_id>-s<N>` | Statistik-Snapshot (§9); `N` wächst mit jedem geschriebenen Snapshot |
 | `restore_id` | UUID | Eine Wiederherstellung in einer separaten Kopie (§11) |
@@ -348,7 +348,7 @@ Steht im Text nicht, ob die Stelle offen ist, lautet die Absage `rejected_no_rea
 
 ### Absichten und Wiederholungsschlüssel
 
-Jede ausgehende Nachricht hat genau eine Absicht. Der Wiederholungsschlüssel wird im Journal unter der Schreibsperre geprüft, unmittelbar vor `send_started` (§5). Absichten werden nie vermischt: Ein Schlüssel einer Absicht blockiert keine andere Absicht, außer wie in den Regeln unten aufgeführt.
+Jede ausgehende Nachricht hat genau eine Absicht. Der Wiederholungsschlüssel wird im Journal unter der Schreibersperre geprüft, unmittelbar vor `send_started` (§5). Absichten werden nie vermischt: Ein Schlüssel einer Absicht blockiert keine andere Absicht, außer wie in den Regeln unten aufgeführt.
 
 | Absicht | Verbraucht Kontingent | Wer entscheidet | Wiederholungsschlüssel | Abgelehnt, wenn |
 |---|---|---|---|---|
@@ -441,7 +441,7 @@ Jede externe Aktion folgt dieser Reihenfolge. Ein Paket vorzubereiten ist kein V
 
 0. **Unveränderliches Paket.** Die Paketversion wird registriert (`package_registered`); ihre Dateien werden als unveränderliche Version gespeichert; eine Outbox-Kopie `outbox/<send_attempt_id>/` wird geschrieben und mit einem Manifest zurückgelesen (Namen, Größen und der SHA-256 jedes Anhangs, des Textes und des Betreffs).
 1. **Freigabe gebunden an das Manifest.** `package_approved` verweist auf `manifest_sha256`. Für `send_once` und `gmail_scheduled` muss die Bindung der Einwilligung genau enthalten: `manifest_sha256`, den Empfänger, die `account_id`, den SHA-256 des Betreffs, den SHA-256 des Textes, die Hashes der Anhänge, den Transportweg und den Slot (lokal und UTC). Eine Änderung eines dieser Punkte macht die frühere Freigabe ungültig: `approval_revoked` wird geschrieben, und die Bewerbung kehrt zu `ready_for_review` zurück.
-2. **Reservierung und dauerhafte Absicht unter der Sperre.** Unter der Schreibsperre liest der Agent Journal und Kontingent erneut (das Kontingent muss bestätigt sein); er wendet den Wiederholungsschlüssel (§4), den Kalender (§7, §13), die Transportregel (ein Transportweg je Nachricht, `TRANSPORT_CONFLICT`) und die Prüfung an, dass für die Person kein Versand offen ist. Danach schreibt er `quota_reserved` (sofern das Kontingent gilt) und `send_started` (Absicht, Transportweg, `send_attempt_id`, `manifest_sha256`) in einer Zeile. Die Zeile wird auf die Platte geschrieben und zurückgelesen (ARCHITECTURE.md §4, Regel 8); erst nachdem die Rücklesung bestanden hat, wird die Sperre gelöst (siehe „Schreibsperre“ unten). **Hartes Tor:** Schlagen Schreiben oder Zurücklesen fehl, erfolgt kein externer Aufruf, es wird nichts anderes festgehalten, und die Sperre bleibt. Unmittelbar vor Schritt 3 muss die letzte Zeile des aktuellen Journalabschnitts noch diese Absichtszeile sein; ist sie es nicht, erfolgt kein Aufruf, und die offene Absicht geht an den Abgleich in Schritt 4.
+2. **Reservierung und dauerhafte Absicht unter der Sperre.** Unter der Schreibersperre liest der Agent Journal und Kontingent erneut (das Kontingent muss bestätigt sein); er wendet den Wiederholungsschlüssel (§4), den Kalender (§7, §13), die Transportregel (ein Transportweg je Nachricht, `TRANSPORT_CONFLICT`) und die Prüfung an, dass für die Person kein Versand offen ist. Danach schreibt er `quota_reserved` (sofern das Kontingent gilt) und `send_started` (Absicht, Transportweg, `send_attempt_id`, `manifest_sha256`) in einer Zeile. Die Zeile wird auf die Platte geschrieben und zurückgelesen (ARCHITECTURE.md §4, Regel 8); erst nachdem die Rücklesung bestanden hat, wird die Sperre gelöst (siehe „Schreibersperre“ unten). **Hartes Tor:** Schlagen Schreiben oder Zurücklesen fehl, erfolgt kein externer Aufruf, es wird nichts anderes festgehalten, und die Sperre bleibt. Unmittelbar vor Schritt 3 muss die letzte Zeile des aktuellen Journalabschnitts noch diese Absichtszeile sein; ist sie es nicht, erfolgt kein Aufruf, und die offene Absicht geht an den Abgleich in Schritt 4.
 3. **Ein externer Aufruf.** Ein Ausführender macht genau einen externen Aufruf für diese `send_attempt_id`. Ein wiederholter Lauf gleicht nur diesen Versuch ab; er ruft nie erneut auf.
 4. **Abgleich.** Das Ergebnis wird gegen Belege geprüft: ein sofortiger Versand in SENT oder eine geplante Nachricht in Gmail Scheduled (§12). Das Ergebnis wird dann mit dem Ereignis seiner Absicht festgehalten (§4): bei einer `cv_submission` als `sent_verified` mit `quota_consumed` (das die Reservierung schließt); bei Nachfassaktionen `thank_you_sent` bzw. `ordinary_reply_sent`; bei einer Terminierung als `gmail_scheduled_verified`; als `failed_before_send` mit `quota_released`, nur wenn die Nichteinreichung nachgewiesen ist; sonst als `send_uncertain` oder `schedule_uncertain`.
 5. **Festhalten der Tatsache und Ansichten.** Die Tatsache wird unter der Sperre festgehalten, die Ansichten werden neu aufgebaut (§6), und das Archiv wird erstellt (§11).
@@ -456,7 +456,7 @@ Nach `quota_consumed`, `quota_released` oder `reservation_moved` ist die entspre
 
 An einer Monatsgrenze prüft der Agent die tatsächliche Zeit und reserviert einen Slot im neuen Monat erneut, bevor der externe Aufruf erfolgt. Bleibt eine Operation über die Grenze hinweg unsicher, werden neue Einreichungen für diese Person blockiert, bis ihre Zeit und ihr Ergebnis feststehen; die Reservierung wird nicht verschoben und die Nachricht nicht erneut gesendet. Eine Änderung der Zeitzone der Person erfordert eine Neuberechnung und Prüfung des Verlaufs und setzt das Kontingent nicht zurück. Limit-Änderungen sind nur nach unten erlaubt.
 
-### Schreibsperre (writer lock, F07)
+### Schreibersperre (writer lock, F07)
 
 - **Geltungsbereich.** Eine Sperre pro Person: `persons/<person_id>/journal/writer.lock`. Sie schützt Journal, Kontingent und Profilereignisse dieser Person. Die Sperre umfasst nur die Schreibschritte. Suche, Rendering und externe Aufrufe finden außerhalb statt; Schritt 2 der obigen Reihenfolge ist der einzige Schritt, der unter ihr stattfindet.
 - **Setzen** erfolgt durch exklusives Anlegen: eine Dateioperation, die die Datei nur anlegt, wenn sie nicht existiert, und sonst scheitert. Eine Prüfung „die Datei existiert nicht“ mit anschließendem separatem Anlegen gilt nicht als Setzen. Kann die Umgebung kein geprüftes exklusives Anlegen bieten, darf der Agent keine Exklusivität behaupten, keine autonomen parallelen Schreib- oder Versandaktionen ausführen und bittet die Person, nur einen Chat aktiv zu halten. Ein deterministischer Mechanismus ist eine gesonderte Entscheidung und nicht Teil dieses Vertrags.
@@ -641,11 +641,11 @@ Referenzcodes werden als „Reference: <code>“ angezeigt. Meldungen nennen ein
 
 **Das Schreibverfahren des Agenten**
 
-1. Zähle aus einem vollständigen Neuaufbau des Journals bei einer einzigen `source_revision` (§3d). Ein Kontingentwert wird für einen Monat nur geschrieben, wenn das Journal ihn bestätigt (§5); sonst wird dieser Monat weggelassen. Fehlt ein Wert aus `minutes_per_application`, wird hier angehalten: Bis die Person geantwortet hat, wird kein Snapshot geschrieben (§9.3).
-2. Baue das Objekt aus 9.1 bis 9.4. `generated_at` ist der Stichtag; `snapshot_id` ist `<profile_id>-s<N>` mit dem nächsten `N`.
-3. Schreibe das ganze Objekt in eine temporäre Datei neben `summary.js`, lies sie zurück und prüfe jede Regel dieses Abschnitts. Schlägt eine Prüfung fehl, bleibt die vorherige Datei erhalten, `statistics_updated` wird nicht festgehalten, und der Snapshot wird aus dem Journal neu aufgebaut (§6).
-4. Ersetze `summary.js` durch die geprüfte Datei.
-5. Halte `statistics_updated` (`profile_id`, `snapshot_id`, `source_revision`, `cutoff`, `file`) im Journal fest und erstelle danach das Archiv (§11). `summary.js` enthält nur den aktuellen Snapshot; jeder geschriebene Snapshot ist durch seine Zeile `statistics_updated` identifiziert.
+1. Zählen Sie aus einem vollständigen Neuaufbau des Journals bei einer einzigen `source_revision` (§3d). Ein Kontingentwert wird für einen Monat nur geschrieben, wenn das Journal ihn bestätigt (§5); sonst wird dieser Monat weggelassen. Fehlt ein Wert aus `minutes_per_application`, wird hier angehalten: Bis die Person geantwortet hat, wird kein Snapshot geschrieben (§9.3).
+2. Bauen Sie das Objekt aus 9.1 bis 9.4. `generated_at` ist der Stichtag; `snapshot_id` ist `<profile_id>-s<N>` mit dem nächsten `N`.
+3. Schreiben Sie das ganze Objekt in eine temporäre Datei neben `summary.js`, lesen Sie sie zurück und prüfen Sie jede Regel dieses Abschnitts. Schlägt eine Prüfung fehl, bleibt die vorherige Datei erhalten, `statistics_updated` wird nicht festgehalten, und der Snapshot wird aus dem Journal neu aufgebaut (§6).
+4. Ersetzen Sie `summary.js` durch die geprüfte Datei.
+5. Halten Sie `statistics_updated` (`profile_id`, `snapshot_id`, `source_revision`, `cutoff`, `file`) im Journal fest und erstellen Sie danach das Archiv (§11). `summary.js` enthält nur den aktuellen Snapshot; jeder geschriebene Snapshot ist durch seine Zeile `statistics_updated` identifiziert.
 6. `dashboard/profiles/<profile_id>/index.html` ist eine unveränderte Kopie von `dashboard_template/index.html`. Sie wird neben `summary.js` kopiert, wenn die Statistik des Profils erstmals geschrieben wird, und nie bearbeitet.
 
 ## 10. Grenze der Bereitschaftsseite
@@ -691,7 +691,7 @@ Der Name ist `<YYYY-MM-DD_HHmmss>_<UUID>` (die `archive_id`). Ein neues Archiv �
 
 ### 11.4 Schreiben und Fehler
 
-Schreibe einen temporären Ordner, lies die Dateien zurück, prüfe das Manifest und jeden Hash und veröffentliche dann den endgültigen Namen durch ein atomares Umbenennen, sofern das System es unterstützt. Ein unfertiges Archiv wird nie als gültige Sicherung angezeigt; es bleibt im Zustand `incomplete` (unvollständig) und wird von Wiederherstellungen ignoriert.
+Schreiben Sie einen temporären Ordner, lesen Sie die Dateien zurück, prüfen Sie das Manifest und jeden Hash und veröffentlichen Sie dann den endgültigen Namen durch ein atomares Umbenennen, sofern das System es unterstützt. Ein unfertiges Archiv wird nie als gültige Sicherung angezeigt; es bleibt im Zustand `incomplete` (unvollständig) und wird von Wiederherstellungen ignoriert.
 
 Ein Datenträgerfehler, fehlender Speicherplatz, verweigerter Zugriff oder ein Komprimierungsfehler macht eine bereits erfolgte Operation nicht rückgängig. `backup_failed` wird festgehalten (wenn das Journal geschrieben werden kann), und eine Warnung wird angezeigt. Das Erstellen des Archivs darf wiederholt werden; eine Nachricht darf nicht erneut gesendet werden. Arbeitsdaten werden nie automatisch gelöscht, um Platz zu schaffen.
 
@@ -849,14 +849,14 @@ Die Prüfung ist kein Versender. Ihre Aufgabe muss einen Agenten ausführen, der
 
 ### 15.2 Was jeder Lauf tut
 
-1. Prüfe den Zugriff, das aktive Konto und den richtigen Datenbereich. Fehlt der Zugriff, halte eine unvollständige `mail_checked` mit ihrem Grund fest. Nie „keine Änderungen“ schreiben und nie einen unbekannten Status ändern.
-2. Gleiche Gmail Scheduled und SENT mit dem festgeschriebenen Plan ab. Eine gesendete Nachricht wird nur mit Beleg festgehalten; Reservierung und Kontingent werden wie in §5 und §12 behandelt.
-3. Prüfe neue Antworten und Zustellungsmeldungen über alle Monate, einschließlich Antworten auf Bewerbungen früherer Monate. Lies den ganzen Thread und ordne die Antwort der Bewerbung oder dem Ordner zu.
-4. Schließe Duplikate über die stabilen Nachrichten-Kennungen aus. Halte das Datum des ursprünglichen Versands, das Antwortdatum, den Absender, den Link zur Bewerbung, den Beleg und ein kurzes Ergebnis oder einen Grund fest.
-5. Führe nur die erlaubten Reaktionen aus: ein Dankesschreiben oder eine Zeitraumfrage, wenn die Einwilligung sie abdeckt und keine Wiederholung vorliegt (§4). Eine Einladung, eine positive Antwort, eine Frage oder eine Unterlagenanforderung geht an die Person. Ein Zustellfehler wird getrennt von einer Absage gezählt.
-6. Aktualisiere das einzige Journal, die aktuelle Statistik und die Berichtsdaten. Eine Antwort auf eine alte Bewerbung gehört zu dem Monat, in dem sie eingegangen ist. Ein bereits gezähltes Ereignis wird nicht wiederholt. Der historische Monat und der aktuelle Status werden nicht vermischt.
-7. Erstelle die Archive (§11) nach den verarbeiteten Operationen. Zeit und Ergebnis der Prüfung selbst werden in `mail_checked` festgehalten. Eine wiederholte Prüfung ohne neue Ereignisse erzeugt kein doppeltes Operationsarchiv.
-8. Informiere die Person nur über ein neues inhaltliches Ergebnis, einen Fehler oder eine Entscheidung, die sie treffen muss. Eine erfolgreiche Prüfung ohne Änderung speichert ihren Eintrag und die aktuelle Statistik; eine tägliche Meldung „nichts Neues“ wird nicht gesendet, es sei denn, die Person hat sie verlangt.
+1. Prüfen Sie den Zugriff, das aktive Konto und den richtigen Datenbereich. Fehlt der Zugriff, halten Sie eine unvollständige `mail_checked` mit ihrem Grund fest. Schreiben Sie nie „keine Änderungen“ und ändern Sie nie einen unbekannten Status.
+2. Gleichen Sie Gmail Scheduled und SENT mit dem festgeschriebenen Plan ab. Eine gesendete Nachricht wird nur mit Beleg festgehalten; Reservierung und Kontingent werden wie in §5 und §12 behandelt.
+3. Prüfen Sie neue Antworten und Zustellungsmeldungen über alle Monate, einschließlich Antworten auf Bewerbungen früherer Monate. Lesen Sie den ganzen Thread und ordnen Sie die Antwort der Bewerbung oder dem Ordner zu.
+4. Schließen Sie Duplikate über die stabilen Nachrichten-Kennungen aus. Halten Sie das Datum des ursprünglichen Versands, das Antwortdatum, den Absender, den Link zur Bewerbung, den Beleg und ein kurzes Ergebnis oder einen Grund fest.
+5. Führen Sie nur die erlaubten Reaktionen aus: ein Dankesschreiben oder eine Zeitraumfrage, wenn die Einwilligung sie abdeckt und keine Wiederholung vorliegt (§4). Eine Einladung, eine positive Antwort, eine Frage oder eine Unterlagenanforderung geht an die Person. Ein Zustellfehler wird getrennt von einer Absage gezählt.
+6. Aktualisieren Sie das einzige Journal, die aktuelle Statistik und die Berichtsdaten. Eine Antwort auf eine alte Bewerbung gehört zu dem Monat, in dem sie eingegangen ist. Ein bereits gezähltes Ereignis wird nicht wiederholt. Der historische Monat und der aktuelle Status werden nicht vermischt.
+7. Erstellen Sie die Archive (§11) nach den verarbeiteten Operationen. Zeit und Ergebnis der Prüfung selbst werden in `mail_checked` festgehalten. Eine wiederholte Prüfung ohne neue Ereignisse erzeugt kein doppeltes Operationsarchiv.
+8. Informieren Sie die Person nur über ein neues inhaltliches Ergebnis, einen Fehler oder eine Entscheidung, die sie treffen muss. Eine erfolgreiche Prüfung ohne Änderung speichert ihren Eintrag und die aktuelle Statistik; eine tägliche Meldung „nichts Neues“ wird nicht gesendet, es sei denn, die Person hat sie verlangt.
 
 ### 15.3 Vollständigkeitskennzeichen
 

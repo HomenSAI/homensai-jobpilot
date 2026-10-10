@@ -1,5 +1,7 @@
 # Remaining work
 
+The next AI session starts with `NEXT_SESSION.md` (an ordered to-do list and the working rules).
+
 This file is for the person who builds the project. It is not for users, and the web pages do not repeat it. What is finished is described on the Roadmap page; the history of releases is in `CHANGELOG.md` (technical) and `HISTORY.md` (plain words).
 
 ## Needs real people, real accounts or real services

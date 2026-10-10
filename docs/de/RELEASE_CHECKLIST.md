@@ -2,12 +2,12 @@ Deutsche Fassung. Maßgeblich ist die englische Fassung (Datei im Hauptverzeichn
 
 # Freigabe-Checkliste
 
-[English](../../RELEASE_CHECKLIST.md) | [Русский](../ru/RELEASE_CHECKLIST.md) | [Deutsch](RELEASE_CHECKLIST.md)
+[English](../../RELEASE_CHECKLIST.md) | [Русский](../ru/RELEASE_CHECKLIST.md) | [Deutsch](RELEASE_CHECKLIST.md) | [Українська](../uk/RELEASE_CHECKLIST.md)
 
 Autor und Entwickler: Serhii Khomenko / HomenS.AI  
 Gilt für: Quell- und Dokumentationsfreigaben von HomenS.AI JobPilot.
 
-Dies ist eine manuelle Kontrolle vor der Freigabe (F10). Der Freigabe-Workflow (`.github/workflows/release.yml`) läuft, wenn `CHANGELOG.md` oder `VERSION` auf `main` geändert werden. Er liest die Version aus dem neuesten Abschnitt von `CHANGELOG.md`, committet `VERSION` zurück nach `main` und erstellt das GitHub-Release. Er prüft weder die öffentliche Dateiliste noch persönliche Daten oder Geheimnisse. Der Maintainer führt diese Checkliste **vor** der Änderung auf `main` durch, weil der Workflow automatisch veröffentlicht.
+Dies ist eine manuelle Kontrolle vor der Freigabe (F10). Der Freigabe-Workflow (`.github/workflows/release.yml`) läuft bei jedem Push auf `main`. Er liest die Version aus dem neuesten Abschnitt von `CHANGELOG.md`, committet `VERSION` zurück nach `main` und erstellt das GitHub-Release. Er prüft weder die öffentliche Dateiliste noch persönliche Daten oder Geheimnisse. Die Betreuerin bzw. der Betreuer des Projekts führt diese Checkliste **vor** der Änderung auf `main` durch, weil der Workflow automatisch veröffentlicht.
 
 Führen Sie diese Prüfungen mit synthetischen Testdaten und an einem Kandidaten-Release-Archiv durch. Führen Sie kein echtes Release aus, nur um die Prüfungen zu testen.
 
@@ -52,7 +52,7 @@ Führen Sie die Prüfungen von Hand durch. Ein automatischer Scanner kann helfen
 ## 6. Version und Changelog
 
 - `CHANGELOG.md` hat einen neuen obersten Abschnitt mit Version und Datum. Nach dem Lauf des Workflows entspricht `VERSION` dieser Version.
-- Jede Änderung an `CHANGELOG.md` oder `VERSION` auf `main` startet den Release-Workflow. Schieben Sie eine solche Änderung erst, wenn die Abschnitte 1 bis 5 vollständig sind.
+- Jeder Push auf `main` startet den Release-Workflow. Pushen Sie eine solche Änderung erst, wenn die Abschnitte 1 bis 5 vollständig sind.
 
 ## 7. Links und Darstellung
 
