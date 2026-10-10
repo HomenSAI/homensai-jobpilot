@@ -6,6 +6,12 @@ The project version is in the file [VERSION](VERSION). The project is an AI-agen
 
 Rules: `MAJOR.MINOR.PATCH`. MAJOR changes when data formats or rules change so that old data no longer fits. MINOR is a new feature or a new part of the documentation. PATCH is a fix or a wording change without new capabilities. Every change to `main` adds a line here; the number is raised when a release is made. Each release gets a git tag `vX.Y.Z`. Each entry is written in Russian first, with the English text directly below it. The same entry appears in both language files.
 
+## 1.18.3 — 10 October 2026
+
+**English.** The time-saved estimate is recalculated: one application now takes 30 minutes in all, not 70 (the example values) or 100 (the sample on the statistics page). The six steps are 10, 8, 3, 4, 3 and 2 minutes. The sample statistics page now shows about 15.5 hours saved for 31 applications. The person's own numbers still replace these estimates. This changes example values only, so the patch number is raised.
+
+- **Files:** `examples/settings.example.json`, `dashboard_template/summary.js`, the playbook question in `TODO_FOR_AI.md` (four editions), `REMAINING_WORK.md`.
+
 ## 1.18.2 — 10 October 2026
 
 **English.** On the statistics page, the monthly-limit bars are now shorter and thinner, and the text next to each bar (“used … · reserved …”) takes the width it needs, so it no longer runs out of its card. This is a layout fix without new capabilities, so the patch number is raised.

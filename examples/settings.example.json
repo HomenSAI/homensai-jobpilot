@@ -94,12 +94,12 @@
   },
   "minutes_per_application": {
     "_note": "estimate, change to your own values (asked in TODO_FOR_AI.md, A7); used only for the time-saved figure of the statistics (DATA_CONTRACT.md §9.3)",
-    "cv_adapting": 30,
-    "cover_letter": 20,
-    "email_text": 5,
-    "attachments_and_sending": 5,
-    "date_and_text_checks": 5,
-    "reply_tracking": 5
+    "cv_adapting": 10,
+    "cover_letter": 8,
+    "email_text": 3,
+    "attachments_and_sending": 4,
+    "date_and_text_checks": 3,
+    "reply_tracking": 2
   },
   "quota": {
     "max_cv_submissions_per_person_month": 44,

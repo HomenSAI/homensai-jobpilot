@@ -31,7 +31,7 @@ These cannot be done by simulation. Until they are done, the matching rows of `A
 ## Open decisions for the owner
 
 - The daily maximum of CV submissions: the allowed range is 1 to 43 and the default proposal is 2. Whether 44 per day should be allowed is not decided.
-- Minutes per application used by the statistics page (example values 30/20/5/5/5/5 are accepted only for now).
+- Minutes per application used by the statistics page (example values 10/8/3/4/3/2, 30 minutes in all, are accepted only for now).
 - Approval cadence values and the journal segment size rule.
 - `CLAUDE.md` exists only at the root; whether it needs language editions is not decided.
 - The Author page: the owner is deciding whether to keep it, shorten it, or replace it with the contact page of homensai.com.

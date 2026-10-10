@@ -46,12 +46,12 @@ window.JP_DATA = {
   }
  },
  "minutes_per_application": {
-  "cv_adapting": 40,
-  "cover_letter": 25,
-  "email_text": 10,
-  "attachments_and_sending": 10,
-  "date_and_text_checks": 10,
-  "reply_tracking": 5
+  "cv_adapting": 10,
+  "cover_letter": 8,
+  "email_text": 3,
+  "attachments_and_sending": 4,
+  "date_and_text_checks": 3,
+  "reply_tracking": 2
  },
  "applications": [
   {

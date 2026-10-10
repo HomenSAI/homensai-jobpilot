@@ -2,6 +2,7 @@
 
 Kurze Zusammenfassung jeder Veröffentlichung in einfachen Worten. Technische Einzelheiten stehen in CHANGELOG.md. Eine Zeile pro Veröffentlichung: `- Version | Datum | Text`.
 
+- 1.18.3 | 10. Oktober 2026 | Die gesparte Zeit wurde neu berechnet: Eine Bewerbung dauert insgesamt 30 Minuten.
 - 1.18.2 | 10. Oktober 2026 | Statistikseite: Die Balken des Monatslimits sind kleiner, der Text ragt nicht mehr aus der Karte.
 - 1.18.1 | 10. Oktober 2026 | Sicherheitsseite: Der Name des Autors verlinkt nun auf seine Website.
 - 1.18.0 | 10. Oktober 2026 | Die Ersteinrichtung wurde mit drei erfundenen Personen erprobt, und die Regeln wurden dort korrigiert, wo die Anweisungen unklar waren (zum Beispiel, was bei einer nicht bestätigten Angabe zu tun ist). Die Versionsnummer in der Ecke der Seiten, die alt geblieben war, wurde korrigiert.

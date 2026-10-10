@@ -2,6 +2,7 @@
 
 Short summary of every release in plain words. Technical details are in CHANGELOG.md. One line per release: `- version | date | text`.
 
+- 1.18.3 | 10 October 2026 | Time saved is recalculated: one application takes 30 minutes in all.
 - 1.18.2 | 10 October 2026 | Statistics page: the monthly-limit bars are smaller and the text no longer runs out of the card.
 - 1.18.1 | 10 October 2026 | Safety page: the author's name now links to his website.
 - 1.18.0 | 10 October 2026 | Tried the first setup on three made-up people and corrected the rules where the instructions were unclear (for example what to do when a fact is not confirmed). Fixed the version number shown in the corner of the pages, which had stayed old.
