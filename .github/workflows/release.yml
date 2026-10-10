@@ -95,7 +95,12 @@ jobs:
           gen_history CHANGELOG.md 'English.' overview_roadmap.html
           gen_history docs/ru/CHANGELOG.md 'Русский.' docs/ru/overview_roadmap.html
           gen_history CHANGELOG.md 'English.' docs/de/overview_roadmap.html
+          # Keep the version badge on every page equal to VERSION (see data-app-version in the HTML).
+          while IFS= read -r page; do
+            sed -i -E "s#(data-app-version>)v[0-9]+\.[0-9]+\.[0-9]+<#\1v${VERSION}<#" "$page"
+          done < <(grep -rl 'data-app-version' --include='*.html' . || true)
           git add -- VERSION overview_roadmap.html docs/ru/overview_roadmap.html docs/de/overview_roadmap.html
+          git add -u -- '*.html'
           if ! git diff --cached --quiet; then
             git config user.name 'github-actions[bot]'
             git config user.email '41898282+github-actions[bot]@users.noreply.github.com'

@@ -6,6 +6,13 @@ The project version is in the file [VERSION](VERSION). The project is an AI-agen
 
 Rules: `MAJOR.MINOR.PATCH`. MAJOR changes when data formats or rules change so that old data no longer fits. MINOR is a new feature or a new part of the documentation. PATCH is a fix or a wording change without new capabilities. Every change to `main` adds a line here; the number is raised when a release is made. Each release gets a git tag `vX.Y.Z`. Each entry is written in Russian first, with the English text directly below it. The same entry appears in both language files.
 
+## 1.14.5 — 10 October 2026
+
+**English.** Every HTML page now shows a version badge in the top-left corner, for example `v1.14.5`, so a screenshot shows which version is open. The number comes from the VERSION file and is updated at every release by a step of the release workflow. This is a visible label without new capabilities, so the patch number is raised.
+
+- **Pages:** overview, safety, install, roadmap, author page, PROJECT_OVERVIEW in four languages, and the statistics page (template).
+- **Release:** a workflow step keeps the badge equal to VERSION.
+
 ## 1.14.4 — 10 October 2026
 
 **English.** The Prepare section of the install page gets a block on the CV and cover-letter templates: what to put into folders 4 and 5, how the agent prepares drafts, how a template for mailings is chosen, what happens without a template, how a PDF is checked and when a photo appears. The block is in all four languages. This is a text change without new capabilities, so the patch number is raised.
