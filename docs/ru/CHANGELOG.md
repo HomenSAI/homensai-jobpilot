@@ -6,6 +6,22 @@
 
 Правила: `MAJOR.MINOR.PATCH`. MAJOR меняется, когда формат данных или правила изменились так, что старые данные не подходят. MINOR — новая функция или новая часть документации. PATCH — исправление или правка формулировок без новых возможностей. Каждое изменение в `main` добавляет строку сюда; номер повышается при выпуске. Каждый выпуск получает git-тег `vX.Y.Z`. **Правило языков (с версии 1.22.0, для всех репозиториев HomenS.AI):** каждая запись пишется сначала по-английски, а прямо под ней — тот же текст по-русски (блок `**English.**`, затем блок `**Русский.**`, у каждого свой список). Описание релиза на GitHub берётся из этого раздела, поэтому каждый релиз читается сначала по-английски, ниже по-русски. Одна и та же двуязычная запись есть в `CHANGELOG.md` и `docs/ru/CHANGELOG.md`. Записи до 1.22.0 остаются как были.
 
+## 1.24.2 — 12 October 2026
+
+**English.** Candidate fixes awaiting review; no release or merge is performed by this change.
+
+- Pin the release checkout to the same immutable commit that passed the privacy gate.
+- Reject impossible calendar dates, completed events after the snapshot cutoff, inconsistent send/history states and archive links outside this package's archive folder. Planned slots and future meetings remain supported.
+- Block statistics when summary.js fails to load or execute, even if it already assigned its data object. Synchronize the data contract in four languages.
+- Verification: 88 synthetic validator/browser checks passed; local JavaScript, JSON and 1,334 link checks passed. A synthetic Git scenario confirmed the fixed release revision. Real Gmail, release publication and the full personal workflow were not run. Review evidence and reproduction steps are in REVIEW.md.
+
+**Русский.** Исправления подготовлены к проверке; это изменение не выполняет выпуск или слияние.
+
+- Шаг релиза привязан к тому же неизменяемому коммиту, который прошёл проверку приватности.
+- Отвергаются несуществующие календарные даты, завершённые события после среза, противоречия отправки и истории, а также ссылки за пределами папки архива этого пакета. Запланированные отправки и будущие встречи остаются допустимыми.
+- Статистика блокируется при ошибке загрузки или исполнения summary.js, даже если объект данных уже присвоен. Контракт данных согласован на четырёх языках.
+- Проверка: пройдено 88 синтетических проверок валидатора и браузера; синтаксис JavaScript и JSON, а также 1 334 локальные ссылки проверены. Искусственный Git-сценарий подтвердил исправленный выбор коммита релиза. Реальные Gmail, публикация релиза и полный личный рабочий цикл не запускались. Доказательства проверки и примеры воспроизведения — в REVIEW.md.
+
 ## 1.24.1 — 10 October 2026
 
 **English.** The statistics page has the same top menu as the overview pages (overview, installation, profile, architecture, safety, roadmap, author, statistics) in the chosen language, with a menu button on phones. The menu was never there before; it is shown when the page sits in the package (the template or a profile's copy in `Local_Data/dashboard/`). On very narrow phones the header of all pages now fits without a sideways scroll.

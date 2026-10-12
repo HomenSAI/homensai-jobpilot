@@ -26,7 +26,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: main
+          # Use the same immutable revision as the privacy gate, never a newer main.
+          ref: ${{ github.sha }}
           fetch-depth: 0
       - name: Validate the changelog version
         shell: bash

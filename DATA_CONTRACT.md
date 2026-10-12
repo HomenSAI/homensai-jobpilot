@@ -415,6 +415,8 @@ The report calendar runs from `history_start_month` (local month of `person_crea
 
 `dashboard/profiles/<profile_id>/summary.js` holds `window.JP_DATA = ` and one JSON object with `schema_version` exactly `"1.4"` (anything else refused), validated whole before any number is shown. Times are ISO 8601 with `Z` or an offset; months `YYYY-MM` in the person's time zone. The page only displays: no network, mail, sending or record change.
 
+Dates must exist in the calendar (including leap years); invalid dates are never normalized into another day. A load or execution error in `summary.js` blocks the snapshot even if `window.JP_DATA` was assigned before the error.
+
 ### 9.1 Top level
 
 | Field | Type | Req. | Rule |
@@ -432,6 +434,8 @@ The report calendar runs from `history_start_month` (local month of `person_crea
 | `quota`, `minutes_per_application`, `applications` | object, object, array | yes | 9.2–9.4 |
 | `responses` | array | no | absent = `[]` |
 | `archive` | object | no | the daily archive (§11.9): `folder_href` (link to `Local_Data/Archive/` relative to the page, for example `../../../Archive/`), `folder_path` (the absolute path, shown and copied), `last_daily_at` (ISO time or null), `last_daily_name` (text or null) |
+
+`archive.folder_href` must resolve to this package's `Local_Data/Archive/`, with no query or fragment. External URLs, network paths, backslashes, control characters and links outside that folder are refused. The package root is identifiable from `dashboard_template/` or `Local_Data/dashboard/profiles/<profile_id>/`; when the page is elsewhere, omit `archive` because its permitted folder cannot be verified there.
 
 ### 9.2 Quota
 
@@ -472,6 +476,9 @@ Six numbers ≥ 0 from `profile.json`: `cv_adapting`, `cover_letter`, `email_tex
 No `group` or `delivery` field.
 
 **History rules**
+
+`prepared`, `scheduled` and `not_sent` have no `sent_at`; every other status requires it. `status_at` and `thank_you_sent_at` cannot be after `generated_at`; a thank-you also needs a `sent_at` and cannot predate it. Future `planned_at` and `meeting_at` remain valid. The history's lower bound uses the presence of `sent_at`, not the current status group.
+
 - Entries: `status` (§4) and `at` (not after `generated_at`), non-decreasing, none before `sent_at`; a non-empty history ends with the current `status`; one entry per `status_recorded`, from the status at sending.
 - The result in M is the last entry at or before the end of M (`generated_at` for the current month): rejected in July, `meeting_invited` in September → July Rejected, September Invited.
 

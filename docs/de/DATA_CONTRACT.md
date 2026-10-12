@@ -417,6 +417,8 @@ Der Berichtskalender reicht von `history_start_month` (lokaler Monat von `person
 
 `dashboard/profiles/<profile_id>/summary.js` enthält `window.JP_DATA = ` und ein JSON-Objekt mit `schema_version` genau `"1.4"` (alles andere wird abgelehnt), als Ganzes geprüft, bevor eine Zahl gezeigt wird. Zeiten sind ISO 8601 mit `Z` oder einem Versatz; Monate `YYYY-MM` in der Zeitzone der Person. Die Seite zeigt nur an: kein Netzwerk, keine Mail, kein Versand, keine Änderung von Datensätzen.
 
+Das Datum muss im Kalender existieren, auch unter Berücksichtigung der Schaltjahre; ungültige Daten werden nie auf einen anderen Tag verschoben. Ein Lade- oder Ausführungsfehler in `summary.js` sperrt den Snapshot, auch wenn `window.JP_DATA` vor dem Fehler bereits zugewiesen wurde.
+
 ### 9.1 Oberste Ebene
 
 | Feld | Typ | Pflicht | Regel |
@@ -434,6 +436,8 @@ Der Berichtskalender reicht von `history_start_month` (lokaler Monat von `person
 | `quota`, `minutes_per_application`, `applications` | Objekt, Objekt, Array | ja | 9.2–9.4 |
 | `responses` | Array | nein | fehlt = `[]` |
 | `archive` | Objekt | nein | das tägliche Archiv (§11.9): `folder_href` (Link auf `Local_Data/Archive/` relativ zur Seite, zum Beispiel `../../../Archive/`), `folder_path` (der absolute Pfad, angezeigt und kopiert), `last_daily_at` (ISO-Zeit oder null), `last_daily_name` (Text oder null) |
+
+`archive.folder_href` muss genau auf `Local_Data/Archive/` dieses Pakets verweisen, ohne Abfrageparameter oder Fragment. Externe URLs, Netzwerkpfade, Rückwärtsschrägstriche, Steuerzeichen und Links außerhalb dieses Ordners werden abgelehnt. Die Paketwurzel lässt sich für Seiten unter `dashboard_template/` oder `Local_Data/dashboard/profiles/<profile_id>/` bestimmen; an anderen Orten wird `archive` weggelassen, weil der zulässige Ordner dort nicht geprüft werden kann.
 
 ### 9.2 Kontingent
 
@@ -474,6 +478,9 @@ Sechs Zahlen ≥ 0 aus `profile.json`: `cv_adapting`, `cover_letter`, `email_tex
 Kein Feld `group` oder `delivery`.
 
 **Regeln für den Verlauf**
+
+`prepared`, `scheduled` und `not_sent` haben kein `sent_at`; alle anderen Status verlangen es. `status_at` und `thank_you_sent_at` dürfen nicht nach `generated_at` liegen; ein Dank braucht außerdem `sent_at` und darf nicht davor liegen. Zukünftige Werte für `planned_at` und `meeting_at` bleiben zulässig. Die Untergrenze des Verlaufs hängt vom Vorhandensein von `sent_at` ab, nicht von der aktuellen Statusgruppe.
+
 - Einträge: `status` (§4) und `at` (nicht nach `generated_at`), nicht absteigend, keiner vor `sent_at`; ein nicht leerer Verlauf endet mit dem aktuellen `status`; ein Eintrag je `status_recorded`, ab dem Status beim Senden.
 - Das Ergebnis in M ist der letzte Eintrag am oder vor dem Ende von M (`generated_at` für den laufenden Monat): Absage im Juli, `meeting_invited` im September → Juli Abgelehnt, September Eingeladen.
 

@@ -167,7 +167,7 @@ td.time { font-family:var(--mono); white-space:nowrap; color:var(--muted); } td 
 </style>
 </head>
 <body>
-<div class="ver-badge" data-app-version style="width:max-content">v1.24.1</div>
+<div class="ver-badge" data-app-version style="width:max-content">v1.24.2</div>
 <a class="skip-link" href="#main" data-i="skip">Skip to content</a>
 <header class="topbar"><div class="wrap">
 <a class="brand" href="../PROJECT_OVERVIEW.html" id="brand" aria-label="HomenS.AI JobPilot"><svg class="brand-mark" focusable="false" viewBox="0 0 100 100" aria-hidden="true"><path d="M50.0 13.0 L48.1 13.1 L46.1 13.2 L44.2 13.5 L42.3 13.8 L42.2 21.0 L40.7 21.5 L39.2 22.0 L37.8 22.6 L36.4 23.3 L31.5 18.0 L29.8 19.0 L28.3 20.1 L26.7 21.2 L25.2 22.5 L28.8 28.8 L27.7 29.9 L26.7 31.1 L25.7 32.4 L24.8 33.7 L18.0 31.5 L17.0 33.2 L16.2 35.0 L15.5 36.7 L14.8 38.6 L21.0 42.2 L20.7 43.8 L20.4 45.3 L20.2 46.9 L20.0 48.4 L13.0 50.0 L13.1 51.9 L13.2 53.9 L13.5 55.8 L13.8 57.7 L21.0 57.8 L21.5 59.3 L22.0 60.8 L22.6 62.2 L23.3 63.6 L18.0 68.5 L19.0 70.2 L20.1 71.7 L21.2 73.3 L22.5 74.8 L28.8 71.2 L29.9 72.3 L31.1 73.3 L32.4 74.3 L33.7 75.2 L31.5 82.0 L33.2 83.0 L35.0 83.8 L36.7 84.5 L38.6 85.2 L42.2 79.0 L43.8 79.3 L45.3 79.6 L46.9 79.8 L48.4 80.0 L50.0 87.0 Z" fill="#c9a24a"/><path d="M50 20 A30 30 0 0 1 50 80" fill="none" stroke="#2bb3c4" stroke-width="5"/><g fill="none" stroke="#2bb3c4" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M50 36 H64 L70 30"/><path d="M50 50 H72"/><path d="M50 64 H62 L68 70"/></g><g fill="#2bb3c4"><circle cx="71" cy="29" r="4"/><circle cx="74" cy="50" r="4"/><circle cx="69" cy="71" r="4"/></g><circle cx="50" cy="50" r="9" fill="currentColor"/><circle cx="50" cy="50" r="3.5" fill="#c9a24a"/></svg><span>HomenS<span class="ai">.AI</span> <span class="sub">JobPilot</span></span></a>
@@ -300,7 +300,7 @@ td.time { font-family:var(--mono); white-space:nowrap; color:var(--muted); } td 
   var MEETINGS = ["in_person", "video", "phone"];
   var CHANNELS = ["email", "web_form", "portal", "other"];
   var KINDS = ["substantive", "auto_ack", "dsn"];
-  var ISO = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}(:\d{2}(\.\d{1,9})?)?(Z|[+-]\d{2}:?\d{2})$/;
+  var ISO = /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})(?::(\d{2})(?:\.(\d{1,9}))?)?(Z|[+-]\d{2}:?\d{2})$/;
 
   // ---- texts: every language is complete and separate; nothing is mixed between languages ----
   var T = {
@@ -385,7 +385,7 @@ td.time { font-family:var(--mono); white-space:nowrap; color:var(--muted); } td 
       e_missing: "the file is missing", e_unreadable: "the file cannot be read (syntax error or unexpected content)", e_nodata: "the data object is missing",
       e_schema: "the schema version is not 1.4; this page does not interpret other versions", e_field: "field {f} is missing or invalid",
       e_tz: "the time zone is not a valid IANA zone", e_app: "application {n}: field {f} is missing or invalid",
-      e_app_dup: "application {n}: the id is used twice", e_app_sent: "application {n}: it has a result but no sent date",
+      e_app_dup: "application {n}: the id is used twice", e_app_sent: "application {n}: the status and sent date do not agree",
       e_app_future: "application {n}: a date is later than the snapshot time", e_hist: "application {n}: the status history is missing, out of order or does not end with the current status",
       e_resp: "response {n}: field {f} is missing or invalid", e_resp_dup: "response {n}: the id is used twice",
       e_resp_app: "response {n} refers to an application that is not in this snapshot", e_resp_scope: "response {n} belongs to another person or profile",
@@ -472,7 +472,7 @@ td.time { font-family:var(--mono); white-space:nowrap; color:var(--muted); } td 
       e_missing: "файл отсутствует", e_unreadable: "файл не удаётся прочитать (синтаксическая ошибка или неожиданное содержимое)", e_nodata: "объект данных отсутствует",
       e_schema: "версия схемы не 1.4; эта страница не интерпретирует другие версии", e_field: "поле {f} отсутствует или неверно",
       e_tz: "часовой пояс не является допустимой зоной IANA", e_app: "заявка {n}: поле {f} отсутствует или неверно",
-      e_app_dup: "заявка {n}: идентификатор повторяется", e_app_sent: "заявка {n}: есть результат, но нет даты отправки",
+      e_app_dup: "заявка {n}: идентификатор повторяется", e_app_sent: "заявка {n}: статус и дата отправки противоречат друг другу",
       e_app_future: "заявка {n}: дата позже времени снимка", e_hist: "заявка {n}: история статусов отсутствует, не по порядку или не заканчивается текущим статусом",
       e_resp: "ответ {n}: поле {f} отсутствует или неверно", e_resp_dup: "ответ {n}: идентификатор повторяется",
       e_resp_app: "ответ {n} ссылается на заявку, которой нет в снимке", e_resp_scope: "ответ {n} относится к другому человеку или профилю",
@@ -559,7 +559,7 @@ td.time { font-family:var(--mono); white-space:nowrap; color:var(--muted); } td 
       e_missing: "die Datei fehlt", e_unreadable: "die Datei lässt sich nicht lesen (Syntaxfehler oder unerwarteter Inhalt)", e_nodata: "das Datenobjekt fehlt",
       e_schema: "die Schema-Version ist nicht 1.4; diese Seite deutet andere Versionen nicht", e_field: "Feld {f} fehlt oder ist ungültig",
       e_tz: "die Zeitzone ist keine gültige IANA-Zone", e_app: "Bewerbung {n}: Feld {f} fehlt oder ist ungültig",
-      e_app_dup: "Bewerbung {n}: die ID kommt doppelt vor", e_app_sent: "Bewerbung {n}: Ergebnis vorhanden, aber kein Versanddatum",
+      e_app_dup: "Bewerbung {n}: die ID kommt doppelt vor", e_app_sent: "Bewerbung {n}: Status und Versanddatum stimmen nicht überein",
       e_app_future: "Bewerbung {n}: ein Datum liegt nach dem Snapshot-Zeitpunkt", e_hist: "Bewerbung {n}: der Statusverlauf fehlt, ist nicht sortiert oder endet nicht mit dem aktuellen Status",
       e_resp: "Antwort {n}: Feld {f} fehlt oder ist ungültig", e_resp_dup: "Antwort {n}: die ID kommt doppelt vor",
       e_resp_app: "Antwort {n} verweist auf eine Bewerbung, die nicht im Snapshot ist", e_resp_scope: "Antwort {n} gehört zu einer anderen Person oder einem anderen Profil",
@@ -646,7 +646,7 @@ td.time { font-family:var(--mono); white-space:nowrap; color:var(--muted); } td 
       e_missing: "файл відсутній", e_unreadable: "файл неможливо прочитати (синтаксична помилка або неочікуваний вміст)", e_nodata: "об’єкт даних відсутній",
       e_schema: "версія схеми не 1.4; ця сторінка не інтерпретує інші версії", e_field: "поле {f} відсутнє або некоректне",
       e_tz: "часовий пояс не є коректною зоною IANA", e_app: "заявка {n}: поле {f} відсутнє або некоректне",
-      e_app_dup: "заявка {n}: ідентифікатор використано двічі", e_app_sent: "заявка {n}: є результат, але немає дати надсилання",
+      e_app_dup: "заявка {n}: ідентифікатор використано двічі", e_app_sent: "заявка {n}: статус і дата надсилання суперечать одне одному",
       e_app_future: "заявка {n}: дата пізніша за час знімка", e_hist: "заявка {n}: історія статусів відсутня, не за порядком або не закінчується поточним статусом",
       e_resp: "відповідь {n}: поле {f} відсутнє або некоректне", e_resp_dup: "відповідь {n}: ідентифікатор використано двічі",
       e_resp_app: "відповідь {n} посилається на заявку, якої немає в знімку", e_resp_scope: "відповідь {n} належить іншій особі або іншому профілю",
@@ -676,7 +676,19 @@ td.time { font-family:var(--mono); white-space:nowrap; color:var(--muted); } td 
 
   // ---- validation: the whole snapshot is checked before anything is shown ----
   function isRec(v) { return !!v && typeof v === "object" && !Array.isArray(v); }
-  function isIso(v) { return typeof v === "string" && ISO.test(v) && Number.isFinite(Date.parse(v)); }
+  function isIso(v) {
+    if (typeof v !== "string") return false;
+    var p = ISO.exec(v);
+    if (!p) return false;
+    var y = +p[1], m = +p[2], day = +p[3];
+    var days = [31, y % 4 === 0 && (y % 100 !== 0 || y % 400 === 0) ? 29 : 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+    if (m < 1 || m > 12 || day < 1 || day > days[m - 1] || +p[4] > 23 || +p[5] > 59 || +(p[6] || 0) > 59) return false;
+    if (p[8] !== "Z") {
+      var offset = p[8].slice(1).replace(":", "");
+      if (+offset.slice(0, 2) > 23 || +offset.slice(2) > 59) return false;
+    }
+    return Number.isFinite(Date.parse(v));
+  }
   function isDate(v) { return v === undefined || v === null || isIso(v); }
   function isMonth(v) { return typeof v === "string" && /^\d{4}-(0[1-9]|1[0-2])$/.test(v); }
   function isCount(v) { return typeof v === "number" && Number.isInteger(v) && v >= 0; }
@@ -685,6 +697,13 @@ td.time { font-family:var(--mono); white-space:nowrap; color:var(--muted); } td 
   function isTz(z) {
     if (typeof z !== "string" || z === "") return false;
     try { new Intl.DateTimeFormat("en-US", { timeZone: z }); return true; } catch (e) { return false; }
+  }
+  function isArchiveHref(v) {
+    if (typeof v !== "string" || !v || /[\u0000-\u0020\u007f\\]/.test(v) || /^[a-z][a-z0-9+.-]*:|^\//i.test(v)) return false;
+    var root = packageRoot();
+    if (root === null) return false; // The allowed archive cannot be identified outside the package.
+    try { return new URL(v, location.href).href === new URL(root + "Local_Data/Archive/", location.href).href; }
+    catch (e) { return false; }
   }
   function bad(code, key, vars) { return { ok: false, code: code, key: key, vars: vars || {} }; }
 
@@ -718,7 +737,7 @@ td.time { font-family:var(--mono); white-space:nowrap; color:var(--muted); } td 
     for (var s = 0; s < scalars.length; s++) if (!scalars[s][1]) return bad("FIELD-" + scalars[s][0], "e_field", { f: scalars[s][0] });
     if (d.archive !== undefined) {
       var ar = d.archive, strOrNull = function (v) { return v === undefined || v === null || typeof v === "string"; };
-      if (!isRec(ar) || typeof ar.folder_href !== "string" || /^[a-z][a-z0-9+.-]*:/i.test(ar.folder_href) || !strOrNull(ar.folder_path) ||
+      if (!isRec(ar) || !isArchiveHref(ar.folder_href) || !strOrNull(ar.folder_path) ||
           !(ar.last_daily_at === undefined || ar.last_daily_at === null || isIso(ar.last_daily_at)) || !strOrNull(ar.last_daily_name)) return bad("ARCHIVE", "e_field", { f: "archive" });
     }
     if (!isTz(d.timezone)) return bad("FIELD-timezone", "e_tz");
@@ -760,8 +779,10 @@ td.time { font-family:var(--mono); white-space:nowrap; color:var(--muted); } td 
       var dates = ["sent_at", "planned_at", "status_at", "thank_you_sent_at", "meeting_at"];
       for (var dd = 0; dd < dates.length; dd++) if (!isDate(a[dates[dd]])) return bad("APP#" + n + "-" + dates[dd], "e_app", { n: n, f: dates[dd] });
       var sent = GROUP[a.status] !== "drafts";
-      if (sent && !a.sent_at) return bad("APP#" + n + "-sent", "e_app_sent", { n: n });
+      if (sent !== !!a.sent_at) return bad("APP#" + n + "-sent", "e_app_sent", { n: n });
       if (a.sent_at && Date.parse(a.sent_at) > gen) return bad("APP#" + n + "-future", "e_app_future", { n: n });
+      if ((a.status_at && Date.parse(a.status_at) > gen) || (a.thank_you_sent_at && Date.parse(a.thank_you_sent_at) > gen)) return bad("APP#" + n + "-future", "e_app_future", { n: n });
+      if (a.thank_you_sent_at && (!a.sent_at || Date.parse(a.thank_you_sent_at) < Date.parse(a.sent_at))) return bad("APP#" + n + "-thank-you", "e_app", { n: n, f: "thank_you_sent_at" });
       if (!Array.isArray(a.history)) return bad("APP#" + n + "-history", "e_hist", { n: n });
       if (sent && a.history.length === 0) return bad("APP#" + n + "-history", "e_hist", { n: n });
       var prev = -Infinity;
@@ -769,7 +790,7 @@ td.time { font-family:var(--mono); white-space:nowrap; color:var(--muted); } td 
         var h = a.history[j];
         if (!isRec(h) || STATUSES.indexOf(h.status) < 0 || !isIso(h.at)) return bad("APP#" + n + "-history", "e_hist", { n: n });
         var ts = Date.parse(h.at);
-        if (ts < prev || ts > gen || (sent && ts < Date.parse(a.sent_at))) return bad("APP#" + n + "-history-order", "e_hist", { n: n });
+        if (ts < prev || ts > gen || (a.sent_at && ts < Date.parse(a.sent_at))) return bad("APP#" + n + "-history-order", "e_hist", { n: n });
         prev = ts;
       }
       if (a.history.length && a.history[a.history.length - 1].status !== a.status) return bad("APP#" + n + "-history-end", "e_hist", { n: n });
@@ -801,8 +822,10 @@ td.time { font-family:var(--mono); white-space:nowrap; color:var(--muted); } td 
     return { ok: true };
   }
   var CHECK;
-  if (RAW === undefined) {
-    CHECK = window.__jpLoadFailed ? bad("FILE-missing", "e_missing") : bad(window.__jpScriptError ? "FILE-syntax" : "FILE-empty", "e_unreadable");
+  if (window.__jpLoadFailed || window.__jpScriptError) {
+    CHECK = window.__jpLoadFailed ? bad("FILE-missing", "e_missing") : bad("FILE-syntax", "e_unreadable");
+  } else if (RAW === undefined) {
+    CHECK = bad("FILE-empty", "e_unreadable");
   } else {
     try { CHECK = validate(RAW); } catch (e) { CHECK = e && e.ok === false ? e : bad("INTERNAL", "e_unreadable"); }
   }

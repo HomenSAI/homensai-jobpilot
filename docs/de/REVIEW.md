@@ -8,6 +8,23 @@ Deutsche Fassung. Maßgeblich ist die englische Fassung (Datei im Hauptverzeichn
 
 ## Prüfumfang dieser Revision
 
+### Kandidat 1.24.2 — Auditkorrekturen zur Prüfung (12. Oktober 2026)
+
+Der Kandidat bleibt bis zur ausdrücklichen PR-Freigabe in einem eigenen Branch; Zusammenführung, Veröffentlichung und Gmail-Aktionen gehören nicht dazu. Ausgangspunkt: Commit `af55848c3b8c10925d92578c67ce3bb3a499b999` (1.24.1). Die sechs Fehler wurden mit synthetischen Daten reproduziert; das Veröffentlichungsrennen nur in einem lokalen Git-Modell.
+
+| ID | Reproduktion im Ausgangsstand | Ergebnis des Kandidaten |
+|---|---|---|
+| JP-001 | Die Datenschutzprüfung prüft A, vor dem Checkout erscheint ein neuer main B | Beide Jobs verwenden den Ereignis-SHA. Das Modell behält A; B fällt durch die Prüfung |
+| JP-002 | `sent_at` und Verlauf enthalten `2026-02-30T10:00:00Z` | Abgelehnt statt auf den 2. März verschoben; gültige Schalttage und ISO-Versätze bleiben gültig |
+| JP-003 | `thank_you_sent_at` liegt 2030, `generated_at` 2026 | Abgelehnt statt als Sent gezeigt; zukünftige Pläne und Treffen bleiben zulässig |
+| JP-004 | Ein Entwurfsstatus behält `sent_at` und einen Verlauf vor dem Versand | Abgelehnt; Status/Versand und Verlaufsgrenzen werden getrennt geprüft |
+| JP-005 | `archive.folder_href` ist `//example.com/` oder verlässt das Paket | Abgelehnt; nur `Local_Data/Archive/` dieses Pakets, auch auf lokalen Profilseiten mit `file:` |
+| JP-006 | `summary.js` weist gültige Daten zu und wirft danach einen Fehler | Statistik verborgen, Diagnose sichtbar |
+
+**Nachweise:** 88/88 synthetische Prüfungen in einer JavaScript-VM und Microsoft Edge ohne Fenster bestanden: ursprüngliche Fehler, vier Oberflächensprachen, Suche, Zurücksetzen, 390 px Breite und 28 Anleitungsseiten. Statische Prüfungen: 6 JavaScript-Dateien, 7 eingebettete Skripte, 4 JSON-Dateien, 40 JSONL-Zeilen, 1.334 lokale Links. Der unveränderte Bash-Prüfcode akzeptierte den sauberen synthetischen Commit und lehnte den verbotenen Pfad ab; die Korrektur wählte den geprüften SHA. Auditwerkzeuge und Rohdaten bleiben außerhalb des Pakets, das keine neuen Skripte erhält. Ein unabhängiger KI-Prüfer bestand außerdem 43/43 Validatorprüfungen und gab die Kernkorrekturen frei; die abschließende PR-Prüfung bleibt erforderlich.
+
+**Prüfauftrag:** Diff und Tabelle lesen; Kalenderdaten, Stichtag, Entwurfs-/Versandkonsistenz, Archivlinks unter HTTP und auf lokalen Profilseiten, Skriptfehler sowie identische Prüf-/Release-SHAs prüfen. Gültige Snapshots müssen weiter funktionieren. Vor jeder Zusammenführung in `main` ausdrücklich freigeben oder konkrete Änderungen nennen. Keine echten Gmail-Konten oder persönlichen Datensätze verwenden. Der historische Bericht darunter beschreibt nicht diese neuen Prüfungen.
+
 Was bis zu dieser Version ausgeführt wurde, von wem und womit. Nichts davon verwendete ein echtes Gmail-Konto, einen echten Arbeitgeber, Codex oder das eigene Claude Code des Nutzers.
 
 - **Ausführbares Modell der Regeln** (`examples/simulation/SIMULATION_REPORT.md`): Der Tester hat die schriftlichen Regeln als Wegwerfmodell mit einem simulierten Postfach umgesetzt. 46 Prüfungen bestanden: fünf Bewerbungen mit Antworten, eine Absage, ein Zustellfehler und ein Mailfehler, doppelter Versand, Limits, zwei Chats, unterbrochene Arbeit. Zwei Widersprüche in den Regeln wurden gefunden und behoben (1.17.1).

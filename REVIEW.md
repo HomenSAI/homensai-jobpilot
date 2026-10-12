@@ -6,6 +6,23 @@
 
 ## Verification scope for this revision
 
+### Candidate 1.24.2 — audit fixes awaiting review (12 October 2026)
+
+This candidate stays on a separate branch until its PR is reviewed and approved; no merge, release or Gmail action is part of this work. The audit baseline is commit `af55848c3b8c10925d92578c67ce3bb3a499b999` (1.24.1). The six defects below were reproduced with synthetic data; the release race was demonstrated in a local Git model, not by publishing a release.
+
+| ID | Reproduction on the baseline | Candidate result |
+|---|---|---|
+| JP-001 | Privacy gate checks A; a newer main B appears before release checkout | Both jobs use the event SHA. The local model keeps A while B fails the gate |
+| JP-002 | `sent_at` and its history use `2026-02-30T10:00:00Z` | Refused; no silent conversion to 2 March. Valid leap days and ISO offsets still work |
+| JP-003 | `thank_you_sent_at` is in 2030, but `generated_at` is in 2026 | Refused; a future completed event cannot appear as Sent. Future plans and meetings remain valid |
+| JP-004 | A draft status retains `sent_at` and history predating that send | Refused; send/date consistency and history bounds are checked separately |
+| JP-005 | `archive.folder_href` is `//example.com/` or escapes the package | Refused; only this package's `Local_Data/Archive/` is accepted, including per-profile `file:` pages |
+| JP-006 | `summary.js` assigns valid data and then throws | Statistics stay hidden and a diagnostic is shown |
+
+**Evidence:** 88/88 synthetic checks passed in a JavaScript VM and headless Microsoft Edge, including the original failures, four UI languages, search, sample reset, a 390 px viewport and 28 guide pages. Static checks passed for 6 JavaScript files, 7 inline scripts, 4 JSON files, 40 JSONL records and 1,334 local links. The exact privacy-gate Bash body accepted a clean synthetic commit and rejected a forbidden synthetic path; the fixed release selected the guarded SHA. These audit tools and raw results stay outside the package because it contains no added scripts. An independent AI reviewer also ran 43/43 validator checks and approved the core fixes; final PR review remains required.
+
+**Reviewer request:** read the diff and this table; check calendar validation, cutoff semantics, draft/send consistency, archive URL resolution on HTTP and local profile pages, script failure handling and identical gate/release SHA. Confirm valid snapshots still work. State approval or actionable changes explicitly before any merge into `main`. Do not use real Gmail or personal records to validate this candidate. The historical review below is retained and does not describe these new checks.
+
 What was run, by whom and with what, up to this version. Nothing here used a real Gmail account, a real employer, Codex or the user's own Claude Code.
 
 - **Executable model of the rules** (`examples/simulation/SIMULATION_REPORT.md`): the tester implemented the written rules as a throw-away model with a simulated mailbox. 46 checks passed: five applications with replies, a rejection, a delivery failure and a mail error, double sending, limits, two chats, interrupted work. Two inconsistencies in the rules were found and fixed (1.17.1).
