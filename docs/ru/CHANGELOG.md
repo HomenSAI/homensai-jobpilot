@@ -8,19 +8,19 @@
 
 ## 1.24.2 — 12 October 2026
 
-**English.** Candidate fixes awaiting review; no release or merge is performed by this change.
+**English.** Fixes for the six defects of the 11 October 2026 audit (JP-001 to JP-006) of version 1.24.1.
 
-- Pin the release checkout to the same immutable commit that passed the privacy gate.
+- Pin the release checkout to the same immutable commit that passed the privacy gate; a run whose commit is no longer the tip of `main` stops without publishing, because the newer push has its own gated run.
 - Reject impossible calendar dates, completed events after the snapshot cutoff, inconsistent send/history states and archive links outside this package's archive folder. Planned slots and future meetings remain supported.
 - Block statistics when summary.js fails to load or execute, even if it already assigned its data object. Synchronize the data contract in four languages.
-- Verification: 88 synthetic validator/browser checks passed; local JavaScript, JSON and 1,334 link checks passed. A synthetic Git scenario confirmed the fixed release revision. Real Gmail, release publication and the full personal workflow were not run. Review evidence and reproduction steps are in REVIEW.md.
+- Verification: 88 synthetic validator/browser checks passed; local JavaScript, JSON and 1,334 link checks passed. A synthetic Git scenario confirmed the fixed release revision. Real Gmail and the full personal workflow were not run. The privacy gate has run on GitHub. Review evidence and reproduction steps are in REVIEW.md.
 
-**Русский.** Исправления подготовлены к проверке; это изменение не выполняет выпуск или слияние.
+**Русский.** Исправлены шесть дефектов аудита версии 1.24.1 от 11 октября 2026 (JP-001 — JP-006).
 
-- Шаг релиза привязан к тому же неизменяемому коммиту, который прошёл проверку приватности.
+- Шаг релиза привязан к тому же неизменяемому коммиту, который прошёл проверку приватности; если этот коммит уже не вершина `main`, запуск останавливается без публикации, потому что у нового push есть свой проверенный запуск.
 - Отвергаются несуществующие календарные даты, завершённые события после среза, противоречия отправки и истории, а также ссылки за пределами папки архива этого пакета. Запланированные отправки и будущие встречи остаются допустимыми.
 - Статистика блокируется при ошибке загрузки или исполнения summary.js, даже если объект данных уже присвоен. Контракт данных согласован на четырёх языках.
-- Проверка: пройдено 88 синтетических проверок валидатора и браузера; синтаксис JavaScript и JSON, а также 1 334 локальные ссылки проверены. Искусственный Git-сценарий подтвердил исправленный выбор коммита релиза. Реальные Gmail, публикация релиза и полный личный рабочий цикл не запускались. Доказательства проверки и примеры воспроизведения — в REVIEW.md.
+- Проверка: пройдено 88 синтетических проверок валидатора и браузера; синтаксис JavaScript и JSON, а также 1 334 локальные ссылки проверены. Искусственный Git-сценарий подтвердил исправленный выбор коммита релиза. Реальные Gmail и полный личный рабочий цикл не запускались. Проверка приватности уже запускалась на GitHub. Доказательства проверки и примеры воспроизведения — в REVIEW.md.
 
 ## 1.24.1 — 10 October 2026
 

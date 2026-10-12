@@ -73,7 +73,7 @@ Halten Sie Datum, Repository, Branch, Commit, SHA-256-Wert des Archivs, Prüfer 
 ## Status des aktuellen Pakets
 
 - Dokumentationsänderungen wurden vorbereitet. Die Abschnitte 1 bis 8 wurden an keinem Kandidaten-Release-Archiv durchgeführt.
-- Automatische Datenschutzprüfung: `.github/workflows/privacy-gate.yml` (GitHub-Automatisierung, nicht Teil des Pakets der Person); lokal getestet, ihr erster Lauf auf GitHub muss geprüft werden.
+- Automatische Datenschutzprüfung: `.github/workflows/privacy-gate.yml` (GitHub-Automatisierung, nicht Teil des Pakets der Person); lokal getestet; sie läuft auf GitHub bei jedem Push auf `main` und vor jeder Freigabe.
 - Prüfungen der Statistik-VM: für 1.6.0 in diesem Durchgang nicht wiederholt.
 - Vollständige Prüfungen von Browser, Agent, Gmail, Gmail Scheduled und DOCX/LibreOffice: NOT RUN.
 
@@ -81,7 +81,7 @@ Ein Release darf nicht als vollständig abgenommen beschrieben werden, solange e
 
 ## Version auf main
 
-`CHANGELOG.md` ist die Quelle der Release-Version. Bei jedem Push auf `main` oder manuellen Release-Lauf liest GitHub Actions die neueste Überschrift `MAJOR.MINOR.PATCH` und schreibt bei Bedarf `VERSION` automatisch. Wiederholungen erhalten bestehende Releases/Tags. Ungültige, doppelte, falsch geordnete oder herabstufende Versionen stoppen die Veröffentlichung. Ein normaler Git-Push überschreibt kein neueres main; bei zwischenzeitlicher Änderung den Workflow erneut ausführen. Aktuelle Dokumentlabels verlinken `VERSION`, statt eigene Zahlen zu führen. Eine SHA bezeichnet einen Commit; `VERSION` bezeichnet den Paketrelease, nicht jeden Commit. GitHub Actions dient nur der Veröffentlichung und ergänzt keinen Maildienst auf dem Rechner der Person.
+`CHANGELOG.md` ist die Quelle der Release-Version. Bei jedem Push auf `main` oder manuellen Release-Lauf liest GitHub Actions die neueste Überschrift `MAJOR.MINOR.PATCH` und schreibt bei Bedarf `VERSION` automatisch. Wiederholungen erhalten bestehende Releases/Tags. Ungültige, doppelte, falsch geordnete oder herabstufende Versionen stoppen die Veröffentlichung. Eine Veröffentlichung verwendet genau den Commit, der die Datenschutzprüfung bestanden hat; ist `main` inzwischen weiter, hält dieser Lauf ohne Veröffentlichung an und der neuere Push veröffentlicht. Ein normaler Git-Push überschreibt kein neueres main; wurde er abgelehnt, einen manuellen Release-Lauf auf `main` starten. Aktuelle Dokumentlabels verlinken `VERSION`, statt eigene Zahlen zu führen. Eine SHA bezeichnet einen Commit; `VERSION` bezeichnet den Paketrelease, nicht jeden Commit. GitHub Actions dient nur der Veröffentlichung und ergänzt keinen Maildienst auf dem Rechner der Person.
 
 ---
 

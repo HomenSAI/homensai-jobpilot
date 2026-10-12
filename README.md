@@ -77,7 +77,7 @@ The project was developed, audited locally and checked virtually in the **Codex*
 | Built-in browser uploading attachments | not available (per the official Browser documentation, checked 8 October 2026) |
 | DOCX/PDF creation and visual rendering | neutral examples are supplied; prior rendering is reported in the changelog; the real user's agent/document cycle still requires verification |
 | Daily 16:00 check and daily report by Gmail | described, not tested in practice |
-| Release privacy gate (automated check) | exists as `.github/workflows/privacy-gate.yml`: it stops a release when private folders, secrets, foreign e-mail addresses or paths of a real computer are tracked; tested locally, not yet run on GitHub. The manual [RELEASE_CHECKLIST.md](RELEASE_CHECKLIST.md) stays |
+| Release privacy gate (automated check) | exists as `.github/workflows/privacy-gate.yml`: it stops a release when private folders, secrets, foreign e-mail addresses or paths of a real computer are tracked; tested locally and runs on GitHub before every release. The manual [RELEASE_CHECKLIST.md](RELEASE_CHECKLIST.md) stays |
 | Claude Code / Anthropic | described, not tested in practice; compatibility not confirmed |
 
 ## What is deliberately not implemented
@@ -133,7 +133,7 @@ The product is experimental. Searching and assessing are done by the external ag
 
 ## Version on main
 
-`CHANGELOG.md` is the release-version source. On every push to `main` or manual Release run, GitHub Actions reads its newest `MAJOR.MINOR.PATCH` heading and writes `VERSION` automatically when needed. A repeated run keeps an existing release/tag. Invalid, duplicated, out-of-order or downgrade versions stop publication. A normal Git push cannot overwrite a newer main; rerun the workflow if main advanced during synchronization. Current document labels link to `VERSION` instead of carrying independent numbers. A commit SHA identifies a particular commit; `VERSION` identifies the package release, not each commit. GitHub Actions is release automation and adds no sender or background application to the user's package.
+`CHANGELOG.md` is the release-version source. On every push to `main` or manual Release run, GitHub Actions reads its newest `MAJOR.MINOR.PATCH` heading and writes `VERSION` automatically when needed. A repeated run keeps an existing release/tag. Invalid, duplicated, out-of-order or downgrade versions stop publication. A release uses exactly the commit that passed the privacy gate; when `main` has moved on, that run stops without publishing and the newer push releases. A normal Git push cannot overwrite a newer main; if it was rejected, start a manual Release run on `main`. Current document labels link to `VERSION` instead of carrying independent numbers. A commit SHA identifies a particular commit; `VERSION` identifies the package release, not each commit. GitHub Actions is release automation and adds no sender or background application to the user's package.
 
 ---
 

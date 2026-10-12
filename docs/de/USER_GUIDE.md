@@ -536,7 +536,7 @@ Das Projekt wurde entwickelt, lokal geprüft und virtuell in der Umgebung **Code
 | Hochladen von Anhängen durch den integrierten Browser | not available (die offizielle Browser-Dokumentation, geprüft am 8. Oktober 2026, besagt, dass der Agent dort Datei-Uploads nicht automatisieren kann) |
 | DOCX-/PDF-Erstellung und visuelle Darstellung | neutrale Beispiele werden mitgeliefert; frühere Darstellungsprüfungen stehen im Änderungsprotokoll; der echte Ablauf von Agent und Dokument beim Nutzer muss noch geprüft werden |
 | Tägliche Prüfung um 16:00 Uhr und täglicher Bericht per Gmail | described, not tested in practice |
-| Freigabe-Datenschutzprüfung (automatische Prüfung) | vorhanden als `.github/workflows/privacy-gate.yml`; lokal getestet, auf GitHub noch nicht ausgeführt |
+| Freigabe-Datenschutzprüfung (automatische Prüfung) | vorhanden als `.github/workflows/privacy-gate.yml`; lokal getestet; läuft auf GitHub vor jeder Freigabe |
 | Claude Code / Anthropic | described, not tested in practice; Kompatibilität nicht bestätigt |
 
 ## Was nicht umgesetzt ist — und was in Ihrer Verantwortung bleibt

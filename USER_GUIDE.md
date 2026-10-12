@@ -510,7 +510,7 @@ The project was developed, audited locally and checked virtually in the **Codex*
 | Built-in browser uploading attachments | not available (the official Browser documentation, checked 8 October 2026, says the agent cannot automate file uploads there) |
 | DOCX/PDF creation and visual rendering | neutral examples are supplied; their prior rendering is reported in the changelog; the real user's agent/document cycle still requires verification |
 | Daily 16:00 check and daily report by Gmail | described, not tested in practice |
-| Release privacy gate (automated check) | exists as `.github/workflows/privacy-gate.yml`; tested locally, not yet run on GitHub |
+| Release privacy gate (automated check) | exists as `.github/workflows/privacy-gate.yml`; tested locally; runs on GitHub before every release |
 | Claude Code / Anthropic | described, not tested in practice; compatibility not confirmed |
 
 ## What is not implemented — and what remains your responsibility

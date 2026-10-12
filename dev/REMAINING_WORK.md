@@ -22,7 +22,7 @@ These cannot be done by simulation. Until they are done, the matching rows of `A
 
 ## Release and tooling
 
-10. **Release / personal-data gate.** Done as `.github/workflows/privacy-gate.yml` and tested locally; it has not yet run on GitHub. Check its first run and adjust the allowed lists if it reports a false positive.
+10. **Release / personal-data gate.** Done as `.github/workflows/privacy-gate.yml`, tested locally and running on GitHub (first runs passed, for example https://github.com/HomenSAI/homensai-jobpilot/actions/runs/38063183306). Adjust the allowed lists if it ever reports a false positive.
 11. **Claude Code setup.** A complete, verified setup of Claude Code for this folder (permissions limited to the project folder).
 
 ## Found by the dry runs, not yet fixed

@@ -2,7 +2,7 @@
 
 Short summary of every release in plain words. Technical details are in CHANGELOG.md. One line per release: `- version | date | text`.
 
-- 1.24.2 | 12 October 2026 | Candidate for review: statistics reject inconsistent data, and the release uses the checked revision.
+- 1.24.2 | 12 October 2026 | The statistics page refuses inconsistent data (impossible dates, future facts, wrong archive links), and a release always uses the commit that passed the privacy check.
 - 1.24.1 | 10 October 2026 | The statistics page has the project menu at the top, like the other pages.
 - 1.24.0 | 10 October 2026 | Every day a full archive of your data is made; the statistics page reminds you to copy it to a USB stick and links the folder.
 - 1.23.1 | 10 October 2026 | The statistics page shows the example again after download; a red “Reset sample” button clears it once and then disappears.

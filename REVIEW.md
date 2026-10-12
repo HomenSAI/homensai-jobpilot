@@ -6,11 +6,11 @@
 
 ## Verification scope for this revision
 
-### Candidate 1.24.2 — audit fixes awaiting review (12 October 2026)
+### 1.24.2 — audit fixes (12 October 2026)
 
-This candidate stays on a separate branch until its PR is reviewed and approved; no merge, release or Gmail action is part of this work. The audit baseline is commit `af55848c3b8c10925d92578c67ce3bb3a499b999` (1.24.1). The six defects below were reproduced with synthetic data; the release race was demonstrated in a local Git model, not by publishing a release.
+This release fixes the six defects of the audit; no Gmail action is part of this work. The audit baseline is commit `af55848c3b8c10925d92578c67ce3bb3a499b999` (1.24.1). The six defects below were reproduced with synthetic data; the release race was demonstrated in a local Git model, not by publishing a release.
 
-| ID | Reproduction on the baseline | Candidate result |
+| ID | Reproduction on the baseline | Result in 1.24.2 |
 |---|---|---|
 | JP-001 | Privacy gate checks A; a newer main B appears before release checkout | Both jobs use the event SHA. The local model keeps A while B fails the gate |
 | JP-002 | `sent_at` and its history use `2026-02-30T10:00:00Z` | Refused; no silent conversion to 2 March. Valid leap days and ISO offsets still work |
@@ -21,14 +21,14 @@ This candidate stays on a separate branch until its PR is reviewed and approved;
 
 **Evidence:** 88/88 synthetic checks passed in a JavaScript VM and headless Microsoft Edge, including the original failures, four UI languages, search, sample reset, a 390 px viewport and 28 guide pages. Static checks passed for 6 JavaScript files, 7 inline scripts, 4 JSON files, 40 JSONL records and 1,334 local links. The exact privacy-gate Bash body accepted a clean synthetic commit and rejected a forbidden synthetic path; the fixed release selected the guarded SHA. These audit tools and raw results stay outside the package because it contains no added scripts. An independent AI reviewer also ran 43/43 validator checks and approved the core fixes; final PR review remains required.
 
-**Reviewer request:** read the diff and this table; check calendar validation, cutoff semantics, draft/send consistency, archive URL resolution on HTTP and local profile pages, script failure handling and identical gate/release SHA. Confirm valid snapshots still work. State approval or actionable changes explicitly before any merge into `main`. Do not use real Gmail or personal records to validate this candidate. The historical review below is retained and does not describe these new checks.
+**Second review (12 October 2026):** the changes were checked again before the merge into `main`: 27 browser cases in headless Chromium (the original failures, valid leap days and offsets, future planned dates, archive links on the template page and on a profile page under `Local_Data/dashboard/profiles/`, a script error after the data was assigned) passed on 1.24.2 and 17 of them failed on 1.24.1. The release job also stops without publishing when `main` has moved past the checked commit. The historical review below is retained and does not describe these new checks.
 
 What was run, by whom and with what, up to this version. Nothing here used a real Gmail account, a real employer, Codex or the user's own Claude Code.
 
 - **Executable model of the rules** (`examples/simulation/SIMULATION_REPORT.md`): the tester implemented the written rules as a throw-away model with a simulated mailbox. 46 checks passed: five applications with replies, a rejection, a delivery failure and a mail error, double sending, limits, two chats, interrupted work. Two inconsistencies in the rules were found and fixed (1.17.1).
 - **Dry runs of the first setup**: a Claude agent in a sandbox copy of the package followed `CLAUDE.md`, `AGENTS.md` and `TODO_FOR_AI.md` for three made-up people (nothing prepared; folders filled; a long voice story) up to the stage `ready`. Their findings were applied in 1.18.0. LibreOffice was used there to convert and render templates.
 - **Statistics page**: opened in headless Microsoft Edge in Russian and German (the value-of-time block, the quota bars); earlier validator checks of the snapshot (18 in a JavaScript VM). Layout on phones, keyboard use and printing were not tested.
-- **Privacy gate**: `.github/workflows/privacy-gate.yml` was run locally on a clean copy (passed) and on a copy with planted personal data (failed as expected); it has not yet run on GitHub.
+- **Privacy gate**: `.github/workflows/privacy-gate.yml` was run locally on a clean copy (passed) and on a copy with planted personal data (failed as expected); on GitHub it runs on every push to `main` and before every release ([run of 10 October 2026: passed](https://github.com/HomenSAI/homensai-jobpilot/actions/runs/38063183306)).
 - **Not run**: Codex; the user's Claude Code; real Gmail (reading, SENT and Scheduled proof, attachments); Word; real users; scheduled tasks.
 
 ## Where the project stands
@@ -39,7 +39,7 @@ What was run, by whom and with what, up to this version. Nothing here used a rea
 
 **Development environment:** the project was developed, audited locally and checked virtually in the **Codex** environment. **Anthropic / Claude Code was not tested in this cycle**; its compatibility is not confirmed. The Codex checks are not a full certification of the project, and the independent full acceptance of the source agent remains incomplete.
 
-**Not done yet:** full manual acceptance of the agent workflow; real Codex or Claude Code onboarding; real Gmail scheduled-send and reply processing; DOCX rendering through Word; the first run of the release and privacy-gate workflows on GitHub. Gmail, employers and external AI APIs were not connected.
+**Not done yet:** full manual acceptance of the agent workflow; real Codex or Claude Code onboarding; real Gmail scheduled-send and reply processing; DOCX rendering through Word. Gmail, employers and external AI APIs were not connected.
 
 The workflow deliberately has no separate job-search or mail-sending application. The statistics view contains HTML/CSS/JavaScript for validating, sorting, filtering and displaying the agent-written snapshot. The safeguards for consent, quota and external mail remain procedures rather than technical locks. Versions 1.2–1.4 established the bilingual architecture, person-scoped journal and agent playbook; version 1.5 expands the monthly workflow, Gmail reconciliation, local archives, reporting, attribution files and statistics validation.
 
@@ -90,7 +90,7 @@ Each capability is marked with one of three labels: **verified in tests** (a rec
 | Readiness page (static template filled by the agent) | described, not tested in practice | No browser or data test recorded |
 | Local archives and recovery (R01) | described, not tested in practice | |
 | Document review in the agent chat (second way of adding a document) | described, not tested in practice | |
-| Release privacy gate (automated check) | verified in tests | `.github/workflows/privacy-gate.yml`; tested locally on a clean copy and on a copy with planted personal data; not yet run on GitHub |
+| Release privacy gate (automated check) | verified in tests | `.github/workflows/privacy-gate.yml`; tested locally on a clean copy and on a copy with planted personal data; runs on GitHub before every release |
 | Anthropic / Claude Code | described, not tested in practice | Compatibility not confirmed |
 
 ## Work not yet verified or not implemented
@@ -99,7 +99,7 @@ Each capability is marked with one of three labels: **verified in tests** (a rec
 - Gmail connector and built-in-browser capabilities must be checked separately on the user's installed account, including whole-thread reading, Gmail Scheduled, attachments, SENT proof, and interrupted-session recovery. No real Gmail account was connected for this review.
 - DOCX/PDF creation and page-by-page rendering in Word or LibreOffice have not been exercised end-to-end by the agent.
 - A complete step-by-step setup for Claude Code is not written; the detailed installation guide is for Codex on Windows.
-- The release workflow and the privacy gate (`.github/workflows/privacy-gate.yml`) still need their first run on GitHub. The manual release checklist stays.
+- The release workflow and the privacy gate (`.github/workflows/privacy-gate.yml`) run on GitHub; the manual release checklist stays.
 - The shared 44-per-person monthly quota, approvals, Gmail operations, scheduling, archives and report delivery are procedures, not hard locks or guaranteed background services.
 - The daily report by Gmail (R08), the price and plan statements (checked on 8 October 2026 from the official pricing page; not re-verified since), and the two-way document review (R19) need a recorded run before they can be called tested.
 - Neutral CV, cover-letter and report templates exist only in English and Ukrainian; German and Russian are missing.

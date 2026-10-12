@@ -71,7 +71,7 @@ Record the date, repository, branch, commit, archive SHA-256 value, reviewer, an
 ## Status for the current package
 
 - Documentation changes were prepared. Sections 1 to 8 were not run on a candidate release archive.
-- Automated privacy check: `.github/workflows/privacy-gate.yml` (GitHub automation, not part of the user's package); tested locally, its first run on GitHub must be checked.
+- Automated privacy check: `.github/workflows/privacy-gate.yml` (GitHub automation, not part of the user's package); tested locally; it runs on GitHub on every push to `main` and before every release.
 - Statistics VM checks: not repeated for 1.6.0 in this pass.
 - Full browser, agent, Gmail, Gmail Scheduled, and DOCX/LibreOffice checks: NOT RUN.
 
@@ -79,7 +79,7 @@ A release must not be described as fully accepted while any required check remai
 
 ## Version on main
 
-`CHANGELOG.md` is the release-version source. On every push to `main` or manual Release run, GitHub Actions reads its newest `MAJOR.MINOR.PATCH` heading and writes `VERSION` automatically when needed. A repeated run keeps an existing release/tag. Invalid, duplicated, out-of-order or downgrade versions stop publication. A normal Git push cannot overwrite a newer main; rerun the workflow if main advanced during synchronization. Current document labels link to `VERSION` instead of carrying independent numbers. A commit SHA identifies a particular commit; `VERSION` identifies the package release, not each commit. GitHub Actions is release automation and adds no sender or background application to the user's package.
+`CHANGELOG.md` is the release-version source. On every push to `main` or manual Release run, GitHub Actions reads its newest `MAJOR.MINOR.PATCH` heading and writes `VERSION` automatically when needed. A repeated run keeps an existing release/tag. Invalid, duplicated, out-of-order or downgrade versions stop publication. A release uses exactly the commit that passed the privacy gate; when `main` has moved on, that run stops without publishing and the newer push releases. A normal Git push cannot overwrite a newer main; if it was rejected, start a manual Release run on `main`. Current document labels link to `VERSION` instead of carrying independent numbers. A commit SHA identifies a particular commit; `VERSION` identifies the package release, not each commit. GitHub Actions is release automation and adds no sender or background application to the user's package.
 
 ---
 

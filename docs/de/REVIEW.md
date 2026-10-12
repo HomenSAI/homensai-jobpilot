@@ -8,11 +8,11 @@ Deutsche Fassung. Maßgeblich ist die englische Fassung (Datei im Hauptverzeichn
 
 ## Prüfumfang dieser Revision
 
-### Kandidat 1.24.2 — Auditkorrekturen zur Prüfung (12. Oktober 2026)
+### 1.24.2 — Auditkorrekturen (12. Oktober 2026)
 
-Der Kandidat bleibt bis zur ausdrücklichen PR-Freigabe in einem eigenen Branch; Zusammenführung, Veröffentlichung und Gmail-Aktionen gehören nicht dazu. Ausgangspunkt: Commit `af55848c3b8c10925d92578c67ce3bb3a499b999` (1.24.1). Die sechs Fehler wurden mit synthetischen Daten reproduziert; das Veröffentlichungsrennen nur in einem lokalen Git-Modell.
+Diese Version behebt die sechs Fehler des Audits; Gmail-Aktionen gehören nicht dazu. Ausgangspunkt: Commit `af55848c3b8c10925d92578c67ce3bb3a499b999` (1.24.1). Die sechs Fehler wurden mit synthetischen Daten reproduziert; das Veröffentlichungsrennen nur in einem lokalen Git-Modell.
 
-| ID | Reproduktion im Ausgangsstand | Ergebnis des Kandidaten |
+| ID | Reproduktion im Ausgangsstand | Ergebnis in 1.24.2 |
 |---|---|---|
 | JP-001 | Die Datenschutzprüfung prüft A, vor dem Checkout erscheint ein neuer main B | Beide Jobs verwenden den Ereignis-SHA. Das Modell behält A; B fällt durch die Prüfung |
 | JP-002 | `sent_at` und Verlauf enthalten `2026-02-30T10:00:00Z` | Abgelehnt statt auf den 2. März verschoben; gültige Schalttage und ISO-Versätze bleiben gültig |
@@ -23,14 +23,14 @@ Der Kandidat bleibt bis zur ausdrücklichen PR-Freigabe in einem eigenen Branch;
 
 **Nachweise:** 88/88 synthetische Prüfungen in einer JavaScript-VM und Microsoft Edge ohne Fenster bestanden: ursprüngliche Fehler, vier Oberflächensprachen, Suche, Zurücksetzen, 390 px Breite und 28 Anleitungsseiten. Statische Prüfungen: 6 JavaScript-Dateien, 7 eingebettete Skripte, 4 JSON-Dateien, 40 JSONL-Zeilen, 1.334 lokale Links. Der unveränderte Bash-Prüfcode akzeptierte den sauberen synthetischen Commit und lehnte den verbotenen Pfad ab; die Korrektur wählte den geprüften SHA. Auditwerkzeuge und Rohdaten bleiben außerhalb des Pakets, das keine neuen Skripte erhält. Ein unabhängiger KI-Prüfer bestand außerdem 43/43 Validatorprüfungen und gab die Kernkorrekturen frei; die abschließende PR-Prüfung bleibt erforderlich.
 
-**Prüfauftrag:** Diff und Tabelle lesen; Kalenderdaten, Stichtag, Entwurfs-/Versandkonsistenz, Archivlinks unter HTTP und auf lokalen Profilseiten, Skriptfehler sowie identische Prüf-/Release-SHAs prüfen. Gültige Snapshots müssen weiter funktionieren. Vor jeder Zusammenführung in `main` ausdrücklich freigeben oder konkrete Änderungen nennen. Keine echten Gmail-Konten oder persönlichen Datensätze verwenden. Der historische Bericht darunter beschreibt nicht diese neuen Prüfungen.
+**Zweite Prüfung (12. Oktober 2026):** vor der Zusammenführung in `main` wurden die Änderungen erneut geprüft: 27 Browserfälle in Chromium ohne Fenster (die ursprünglichen Fehler, gültige Schalttage und Zeitversätze, künftige geplante Daten, Archivlinks auf der Vorlagenseite und auf einer Profilseite unter `Local_Data/dashboard/profiles/`, ein Skriptfehler nach der Datenzuweisung) bestanden mit 1.24.2; 17 davon scheiterten mit 1.24.1. Der Veröffentlichungsjob hält außerdem ohne Veröffentlichung an, wenn `main` über den geprüften Commit hinaus fortgeschritten ist. Der historische Bericht darunter beschreibt nicht diese neuen Prüfungen.
 
 Was bis zu dieser Version ausgeführt wurde, von wem und womit. Nichts davon verwendete ein echtes Gmail-Konto, einen echten Arbeitgeber, Codex oder das eigene Claude Code des Nutzers.
 
 - **Ausführbares Modell der Regeln** (`examples/simulation/SIMULATION_REPORT.md`): Der Tester hat die schriftlichen Regeln als Wegwerfmodell mit einem simulierten Postfach umgesetzt. 46 Prüfungen bestanden: fünf Bewerbungen mit Antworten, eine Absage, ein Zustellfehler und ein Mailfehler, doppelter Versand, Limits, zwei Chats, unterbrochene Arbeit. Zwei Widersprüche in den Regeln wurden gefunden und behoben (1.17.1).
 - **Probeläufe der Ersteinrichtung**: Ein Claude-Agent in einer Sandbox-Kopie des Pakets folgte `CLAUDE.md`, `AGENTS.md` und `TODO_FOR_AI.md` für drei erfundene Personen (nichts vorbereitet; Ordner gefüllt; eine lange gesprochene Geschichte) bis zur Stufe `ready`. Ihre Befunde wurden in 1.18.0 übernommen. Dabei wurde LibreOffice zum Umwandeln und Rendern der Vorlagen verwendet.
 - **Statistikseite**: im Headless-Microsoft-Edge auf Russisch und Deutsch geöffnet (der Block zum Wert der Zeit, die Kontingentbalken); frühere Validatorprüfungen des Schnappschusses (18 in einer JavaScript-VM). Layout auf Telefonen, Tastaturbedienung und Druck wurden nicht getestet.
-- **Datenschutzgate**: `.github/workflows/privacy-gate.yml` wurde lokal an einer sauberen Kopie ausgeführt (bestanden) und an einer Kopie mit eingeschleusten persönlichen Daten (wie erwartet fehlgeschlagen); auf GitHub ist es noch nicht gelaufen.
+- **Datenschutzgate**: `.github/workflows/privacy-gate.yml` wurde lokal an einer sauberen Kopie ausgeführt (bestanden) und an einer Kopie mit eingeschleusten persönlichen Daten (wie erwartet fehlgeschlagen); auf GitHub läuft es bei jedem Push auf `main` und vor jeder Veröffentlichung ([Lauf vom 10. Oktober 2026: bestanden](https://github.com/HomenSAI/homensai-jobpilot/actions/runs/38063183306)).
 - **Nicht ausgeführt**: Codex; das Claude Code des Nutzers; echtes Gmail (Lesen, Nachweis in SENT und Scheduled, Anhänge); Word; echte Nutzer; geplante Aufgaben.
 
 ## Stand des Projekts
@@ -41,7 +41,7 @@ Was bis zu dieser Version ausgeführt wurde, von wem und womit. Nichts davon ver
 
 **Entwicklungsumgebung:** Das Projekt wurde entwickelt, lokal geprüft und virtuell in der Umgebung **Codex** überprüft. **Anthropic / Claude Code wurde in diesem Zyklus nicht getestet**; seine Kompatibilität ist nicht bestätigt. Die Codex-Prüfungen sind keine vollständige Zertifizierung des Projekts, und die unabhängige vollständige Abnahme des Quell-Agenten bleibt unvollständig.
 
-**Noch nicht erledigt:** vollständige manuelle Abnahme des Agenten-Ablaufs; echte Einrichtung mit Codex oder Claude Code; echter geplanter Gmail-Versand und Verarbeitung von Antworten; DOCX-Rendering über Word; der erste Lauf der Freigabe- und Datenschutzgate-Workflows auf GitHub. Gmail, Arbeitgeber und externe KI-Schnittstellen wurden nicht angebunden.
+**Noch nicht erledigt:** vollständige manuelle Abnahme des Agenten-Ablaufs; echte Einrichtung mit Codex oder Claude Code; echter geplanter Gmail-Versand und Verarbeitung von Antworten; DOCX-Rendering über Word. Gmail, Arbeitgeber und externe KI-Schnittstellen wurden nicht angebunden.
 
 Das Workflow verzichtet bewusst auf eine eigenständige Anwendung zur Stellensuche oder zum Versand von E-Mails. Die Statistikansicht enthält HTML/CSS/JavaScript zum Prüfen, Sortieren, Filtern und Anzeigen des vom Agenten geschriebenen Schnappschusses. Die Schutzmaßnahmen für Zustimmung, Kontingent und externe Post bleiben Verfahren und keine technischen Sperren. Die Versionen 1.2 bis 1.4 haben die zweisprachige Architektur, das personenbezogene Journal und das Agenten-Playbook festgelegt; Version 1.5 erweitert den Monatsablauf, die Abstimmung mit Gmail, lokale Archive, Berichte, Dateien zur Namensnennung und die Prüfung der Statistik-Schnappschüsse.
 
@@ -92,7 +92,7 @@ Jede Fähigkeit trägt eine von drei Kennzeichnungen: **verified in tests** [in 
 | Bereitschaftsseite (statische, vom Agenten gefüllte Vorlage) | described, not tested in practice | Kein Browser- oder Datentest aufgezeichnet |
 | Lokale Archive und Wiederherstellung (R01) | described, not tested in practice | |
 | Dokumentenprüfung im Agenten-Chat (zweiter Weg, ein Dokument hinzuzufügen) | described, not tested in practice | |
-| Freigabe-Datenschutzgate (automatische Prüfung) | verified in tests | `.github/workflows/privacy-gate.yml`; lokal an einer sauberen Kopie und an einer Kopie mit eingeschleusten persönlichen Daten getestet; auf GitHub noch nicht ausgeführt |
+| Freigabe-Datenschutzgate (automatische Prüfung) | verified in tests | `.github/workflows/privacy-gate.yml`; lokal an einer sauberen Kopie und an einer Kopie mit eingeschleusten persönlichen Daten getestet; läuft auf GitHub vor jeder Veröffentlichung |
 | Anthropic / Claude Code | described, not tested in practice | Kompatibilität nicht bestätigt |
 
 ## Noch nicht geprüfte oder nicht umgesetzte Arbeiten
@@ -101,7 +101,7 @@ Jede Fähigkeit trägt eine von drei Kennzeichnungen: **verified in tests** [in 
 - Die Fähigkeiten des Gmail-Connectors und des integrierten Browsers müssen am installierten Konto des Nutzers gesondert geprüft werden, einschließlich des Lesens ganzer Verläufe, Gmail Scheduled, Anhängen, SENT-Nachweis und Wiederherstellung nach unterbrochener Sitzung. Für diese Prüfung wurde kein echtes Gmail-Konto verbunden.
 - DOCX-/PDF-Erstellung und seitenweises Rendering in Word oder LibreOffice wurden vom Agenten noch nicht durchgehend ausgeführt.
 - Eine vollständige Schritt-für-Schritt-Einrichtung für Claude Code ist nicht geschrieben; die ausführliche Installationsanleitung gilt für Codex unter Windows.
-- Der Freigabe-Workflow und das Datenschutzgate (`.github/workflows/privacy-gate.yml`) brauchen noch ihren ersten Lauf auf GitHub. Die manuelle Freigabe-Checkliste bleibt bestehen.
+- Der Freigabe-Workflow und das Datenschutzgate (`.github/workflows/privacy-gate.yml`) laufen auf GitHub; die manuelle Freigabe-Checkliste bleibt bestehen.
 - Das gemeinsame Kontingent von 44 Bewerbungen pro Person und Monat, Freigaben, Gmail-Vorgänge, Terminplanung, Archive und Berichtszustellung sind Verfahren, keine harten Sperren oder garantierten Hintergrunddienste.
 - Der tägliche Bericht per Gmail (R08), die Angaben zu Preisen und Tarifen (geprüft am 8. Oktober 2026 auf der offiziellen Preisseite; seitdem nicht erneut geprüft) und die zweiseitige Dokumentenprüfung (R19) brauchen einen aufgezeichneten Lauf, bevor sie als geprüft gelten können.
 - Neutrale Vorlagen für Lebenslauf, Anschreiben und Bericht gibt es nur auf Englisch und Ukrainisch; Deutsch und Russisch fehlen.

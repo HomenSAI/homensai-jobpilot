@@ -78,7 +78,7 @@ Das Projekt wurde entwickelt, lokal geprüft und virtuell in der Umgebung **Code
 | Hochladen von Anhängen durch den integrierten Browser | not available (laut offizieller Browser-Dokumentation, geprüft am 8. Oktober 2026) |
 | DOCX-/PDF-Erstellung und visuelle Darstellung | neutrale Beispiele werden mitgeliefert; frühere Darstellungsprüfungen stehen im Änderungsprotokoll; der echte Ablauf von Agent und Dokument beim Nutzer muss noch geprüft werden |
 | Tägliche Prüfung um 16:00 Uhr und täglicher Bericht per Gmail | described, not tested in practice |
-| Freigabe-Datenschutzprüfung (automatische Prüfung) | vorhanden als `.github/workflows/privacy-gate.yml`: Sie stoppt eine Freigabe, wenn private Ordner, Geheimnisse, fremde E-Mail-Adressen oder Pfade eines echten Computers verfolgt werden; lokal getestet, auf GitHub noch nicht ausgeführt. Die manuelle [RELEASE_CHECKLIST.md](RELEASE_CHECKLIST.md) bleibt bestehen |
+| Freigabe-Datenschutzprüfung (automatische Prüfung) | vorhanden als `.github/workflows/privacy-gate.yml`: Sie stoppt eine Freigabe, wenn private Ordner, Geheimnisse, fremde E-Mail-Adressen oder Pfade eines echten Computers verfolgt werden; lokal getestet und läuft auf GitHub vor jeder Freigabe. Die manuelle [RELEASE_CHECKLIST.md](RELEASE_CHECKLIST.md) bleibt bestehen |
 | Claude Code / Anthropic | described, not tested in practice; Kompatibilität nicht bestätigt |
 
 ## Was bewusst nicht umgesetzt ist
@@ -133,7 +133,7 @@ Das Produkt ist experimentell. Suche und Bewertung erfolgen durch den von Ihnen 
 
 ## Version auf main
 
-`CHANGELOG.md` ist die Quelle der Release-Version. Bei jedem Push auf `main` oder manuellen Release-Lauf liest GitHub Actions die neueste Überschrift `MAJOR.MINOR.PATCH` und schreibt bei Bedarf `VERSION` automatisch. Wiederholungen erhalten bestehende Releases/Tags. Ungültige, doppelte, falsch geordnete oder herabstufende Versionen stoppen die Veröffentlichung. Ein normaler Git-Push überschreibt kein neueres main; bei zwischenzeitlicher Änderung den Workflow erneut ausführen. Aktuelle Dokumentlabels verlinken `VERSION`, statt eigene Zahlen zu führen. Eine SHA bezeichnet einen Commit; `VERSION` bezeichnet den Paketrelease, nicht jeden Commit. GitHub Actions dient nur der Veröffentlichung und ergänzt keinen Maildienst auf dem Rechner der Person.
+`CHANGELOG.md` ist die Quelle der Release-Version. Bei jedem Push auf `main` oder manuellen Release-Lauf liest GitHub Actions die neueste Überschrift `MAJOR.MINOR.PATCH` und schreibt bei Bedarf `VERSION` automatisch. Wiederholungen erhalten bestehende Releases/Tags. Ungültige, doppelte, falsch geordnete oder herabstufende Versionen stoppen die Veröffentlichung. Eine Veröffentlichung verwendet genau den Commit, der die Datenschutzprüfung bestanden hat; ist `main` inzwischen weiter, hält dieser Lauf ohne Veröffentlichung an und der neuere Push veröffentlicht. Ein normaler Git-Push überschreibt kein neueres main; wurde er abgelehnt, einen manuellen Release-Lauf auf `main` starten. Aktuelle Dokumentlabels verlinken `VERSION`, statt eigene Zahlen zu führen. Eine SHA bezeichnet einen Commit; `VERSION` bezeichnet den Paketrelease, nicht jeden Commit. GitHub Actions dient nur der Veröffentlichung und ergänzt keinen Maildienst auf dem Rechner der Person.
 
 ---
 

@@ -29,7 +29,18 @@ jobs:
           # Use the same immutable revision as the privacy gate, never a newer main.
           ref: ${{ github.sha }}
           fetch-depth: 0
+      # A push that landed while the gate ran has its own gated run; this older run publishes nothing.
+      - name: Stop when main has moved past the checked commit
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch --quiet origin main
+          if [ "$(git rev-parse origin/main)" != "$GITHUB_SHA" ]; then
+            echo "::notice::main moved past $GITHUB_SHA while the gate ran; the newer push has its own gated release run."
+            echo 'STALE=1' >> "$GITHUB_ENV"
+          fi
       - name: Validate the changelog version
+        if: env.STALE != '1'
         shell: bash
         run: |
           set -euo pipefail
@@ -66,6 +77,7 @@ jobs:
             fi
           done
       - name: Synchronize VERSION and the roadmap history on main
+        if: env.STALE != '1'
         shell: bash
         run: |
           set -euo pipefail
@@ -112,6 +124,7 @@ jobs:
           fi
           printf 'RELEASE_TARGET_SHA=%s\n' "$(git rev-parse HEAD)" >> "$GITHUB_ENV"
       - name: Create the release once
+        if: env.STALE != '1'
         env:
           GH_TOKEN: ${{ github.token }}
         shell: bash
